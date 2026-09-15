@@ -1,0 +1,18 @@
+{
+  "name": "Setwel Biz Suite",
+  "short_name": "Setwel",
+  "description": "Invoicing, quotes and expense scanning for South African businesses — works offline.",
+  "start_url": "/mobile.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0A0808",
+  "theme_color": "#0A0808",
+  "lang": "en-ZA",
+  "icons": [
+    { "src": "setwel-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "setwel-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "setwel-logo.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "setwel-logo.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

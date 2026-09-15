@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free SARS Tax Calculator — VAT201, Provisional & Income Tax Estimate | Setwel Biz Suite</title>
+<meta name="description" content="Free calculator for South African small businesses: estimate your VAT201 liability and your provisional/income tax before you file. No signup required.">
+<link rel="canonical" href="https://setwelbusiness.co.za/tax-calculator.html">
+<link rel="icon" href="setwel-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#0A0808;--dark2:#121010;--dark3:#1A1616;--ink:#F2EDE8;--ink2:#A09088;--ink3:#6A5A52;--orange:#E8801A;--orange-dim:rgba(232,128,26,.13);--orange-border:rgba(232,128,26,.3);--red:#C93050;--green:#2A7A40;--green2:#4CAF70;--line:rgba(232,128,26,.1);--r:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:115px;font-size:17.5px}
+body{font-family:"Inter",sans-serif;background:var(--dark);color:var(--ink);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"DM Serif Display",Georgia,serif;line-height:1.15;letter-spacing:-.01em}
+p{color:var(--ink2);line-height:1.75}
+a{text-decoration:none;color:var(--orange)}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:12px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .2s;font-family:"Inter",sans-serif;white-space:nowrap;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--orange),var(--red));color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(232,128,26,.45)}
+.btn-outline{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn-outline:hover{border-color:var(--orange-border);color:var(--orange)}
+.btn-sm{padding:9px 18px;font-size:.85rem;border-radius:9px}
+#langbar{background:var(--dark2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:200}
+.lb-inner{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:8px 24px;max-width:1000px;margin:0 auto}
+.lb-lbl{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-right:4px}
+.lb-btn{background:transparent;border:1px solid transparent;border-radius:7px;color:var(--ink2);font-family:"Inter",sans-serif;font-size:.78rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.lb-btn.active{background:var(--orange-dim);border-color:var(--orange-border);color:var(--orange);font-weight:700}
+.lb-code{font-size:.62rem;font-weight:800;background:rgba(255,255,255,.08);border-radius:3px;padding:1px 5px}
+.lb-btn.active .lb-code{background:var(--orange);color:#fff}
+.lb-right{margin-left:auto}
+.lb-mob{display:flex;align-items:center;gap:6px;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange),var(--red));border:none;border-radius:9px;padding:6px 13px;text-decoration:none}
+#nav{background:rgba(10,8,8,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);position:sticky;top:41px;z-index:100}
+.nav-inner{display:flex;align-items:center;height:66px;gap:4px;max-width:1000px;margin:0 auto;padding:0 24px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:"DM Serif Display",Georgia,serif;font-size:1.1rem;color:var(--ink);margin-right:10px}
+.nav-logo img{width:36px;height:36px;border-radius:8px;object-fit:contain}
+.nav-logo em{font-style:normal;color:var(--orange)}
+.nav-links{display:flex;gap:1px}
+.nav-links a{color:var(--ink2);padding:8px 12px;border-radius:8px;font-size:.86rem;font-weight:500;transition:all .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+#hamburger{display:none;background:rgba(255,255,255,.06);border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--ink);font-size:1rem}
+#mob-menu{display:none;background:var(--dark2);border-bottom:1px solid var(--line);padding:16px 20px;flex-direction:column;gap:4px}
+#mob-menu a{color:var(--ink2);padding:11px 14px;border-radius:8px;font-size:.95rem;font-weight:500;display:block}
+#mob-menu .btn{width:100%;justify-content:center;margin-top:8px;display:flex}
+@media(max-width:900px){.nav-links{display:none}#hamburger{display:flex;align-items:center}}
+.page-hero{padding:56px 0 36px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);text-align:center;border-bottom:1px solid var(--line)}
+.s-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:block}
+.page-hero h1{font-size:clamp(1.7rem,3.6vw,2.6rem);color:#fff;margin-bottom:12px}
+.page-hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.page-hero p{font-size:1rem;max-width:36rem;margin:0 auto 16px}
+.free-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(42,122,64,.12);border:1px solid rgba(76,175,112,.3);color:var(--green2);border-radius:20px;padding:5px 14px;font-size:.76rem;font-weight:700}
+
+.section{padding:40px 0 72px}
+.calc-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.calc-tab{background:var(--dark2);border:1.5px solid var(--line);color:var(--ink2);font-family:"Inter",sans-serif;font-size:.88rem;font-weight:700;padding:11px 20px;border-radius:11px;cursor:pointer;transition:all .18s}
+.calc-tab.active{background:linear-gradient(135deg,var(--orange),var(--red));border-color:transparent;color:#fff}
+.calc-panel{display:none}
+.calc-panel.active{display:block;animation:fatIn .3s ease}
+@keyframes fatIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:780px){.calc-grid{grid-template-columns:1fr}}
+.calc-card{background:var(--dark2);border:1px solid var(--line);border-radius:18px;padding:28px 24px}
+.calc-card h2{font-size:1.15rem;color:#fff;margin-bottom:18px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--ink2);margin-bottom:7px}
+.field input[type=number],.field select{width:100%;background:var(--dark3);border:1px solid var(--line);border-radius:9px;padding:12px 14px;color:var(--ink);font-family:"Inter",sans-serif;font-size:.95rem;outline:none;transition:border-color .15s}
+.field input[type=number]:focus,.field select:focus{border-color:var(--orange-border)}
+.field-row{display:flex;gap:10px}
+.field-row .field{flex:1}
+.toggle-row{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:.78rem;color:var(--ink2)}
+.toggle-row input{accent-color:var(--orange)}
+
+.result-card{background:var(--dark3);border:1px solid var(--orange-border);border-radius:18px;padding:26px 24px;position:sticky;top:150px}
+.result-card h3{font-size:1.05rem;color:#fff;margin-bottom:16px}
+.res-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);font-size:.87rem;color:var(--ink2)}
+.res-row:last-of-type{border-bottom:none}
+.res-row .val{color:var(--ink);font-weight:600;font-family:"DM Serif Display",Georgia,serif;font-size:1rem}
+.res-row.total{margin-top:10px;padding-top:16px;border-top:2px solid var(--orange-border)}
+.res-row.total span:first-child{color:#fff;font-weight:700;font-size:.92rem}
+.res-row.total .val{font-size:1.5rem;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.res-row.refund .val{background:linear-gradient(90deg,var(--green2),#7ED9A0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.res-note{font-size:.76rem;color:var(--ink3);margin-top:14px;line-height:1.6}
+
+.bracket-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:.8rem}
+.bracket-table th{text-align:left;color:var(--ink3);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line);font-size:.68rem;text-transform:uppercase;letter-spacing:.05em}
+.bracket-table td{padding:7px 8px;border-bottom:1px solid rgba(232,128,26,.06);color:var(--ink2)}
+.bracket-table tr.hit td{color:var(--ink);background:rgba(232,128,26,.05)}
+
+.disclaimer-box{background:rgba(232,128,26,.06);border:1px dashed var(--orange-border);border-radius:14px;padding:20px 22px;margin-top:36px}
+.disclaimer-box h4{font-size:.92rem;color:var(--orange);margin-bottom:8px;font-family:"Inter",sans-serif;font-weight:700}
+.disclaimer-box p{font-size:.84rem;margin-bottom:6px}
+
+.cta-strip{background:linear-gradient(135deg,var(--dark2),rgba(36,20,16,.95) 60%);border:1px solid var(--orange-border);border-radius:20px;padding:40px;text-align:center;margin-top:44px}
+.cta-strip h2{font-size:1.5rem;color:#fff;margin-bottom:10px}
+.cta-strip p{margin-bottom:20px}
+footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 24px;text-align:center}
+.f-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:12px}
+.f-links a{color:var(--ink2);font-size:.86rem}
+.f-links a:hover{color:var(--orange)}
+.f-copy{font-size:.76rem;color:var(--ink3)}
+@media(max-width:767px){
+  .wrap{padding:0 16px}
+  #langbar .lb-inner{padding:6px 12px}
+  .lb-btn{padding:4px 6px;font-size:.7rem}
+  #nav{top:37px}
+  .nav-inner{height:56px;padding:0 16px;gap:8px}
+  .nav-logo{font-size:.95rem;margin-right:auto}
+  .nav-logo img{width:28px;height:28px}
+  .nav-right{gap:6px}
+  .nav-right .btn-outline{display:none}
+  .nav-right .btn-primary{padding:8px 12px;font-size:.78rem}
+  .page-hero{padding:40px 0 28px}
+  .section{padding:28px 0 52px}
+  .result-card{position:static}
+}
+</style>
+</head>
+<body>
+<div id="langbar"><div class="lb-inner"><span class="lb-lbl">Language</span>
+<button class="lb-btn active" data-lang="en"><span class="lb-code">EN</span> English</button>
+<button class="lb-btn" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
+<button class="lb-btn" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
+<button class="lb-btn" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
+<button class="lb-btn" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
+<button class="lb-btn" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
+<div class="lb-right"><a href="mobile.html" class="lb-mob">&#128241; Mobile</a></div>
+</div></div>
+<div id="nav"><div class="nav-inner">
+<a href="index.html" class="nav-logo"><img src="setwel-logo.png" alt="Setwel">Setwel <em>Biz Suite</em></a>
+<nav class="nav-links">
+<a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a>
+</nav>
+<div class="nav-right">
+<a href="pricing.html" class="btn btn-outline btn-sm">See plans</a>
+<a href="download.html" class="btn btn-primary btn-sm">Start free trial</a>
+<button id="hamburger" onclick="toggleMenu()">&#9776;</button>
+</div></div>
+<div id="mob-menu">
+<a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a>
+<a href="download.html" class="btn btn-primary">&#8595; Download Free Trial</a>
+</div></div>
+
+<div class="page-hero">
+<div class="wrap">
+<span class="s-label">Free tool — no signup</span>
+<h1>SARS Tax Calculator — <em>know your numbers before you file.</em></h1>
+<p>Estimate your VAT201 liability and your provisional or annual income tax in seconds. Built into Setwel Biz Suite for every Grinder+ subscriber — try it free here first.</p>
+<span class="free-badge">&#10003; Free to use, no account needed</span>
+</div>
+</div>
+
+<section class="section">
+<div class="wrap">
+
+<div class="calc-tabs">
+<button class="calc-tab active" data-panel="vat" onclick="showCalc('vat')">&#127963; VAT201 Estimate</button>
+<button class="calc-tab" data-panel="income" onclick="showCalc('income')">&#128176; Provisional &amp; Income Tax</button>
+</div>
+
+<!-- VAT201 CALCULATOR -->
+<div class="calc-panel active" id="panel-vat">
+<div class="calc-grid">
+<div class="calc-card">
+<h2>Your sales &amp; expenses this period</h2>
+<div class="field">
+<label>Total sales / income for the period</label>
+<input type="number" id="v-sales" placeholder="e.g. 85000" oninput="calcVat()" min="0" step="0.01">
+<div class="toggle-row"><input type="checkbox" id="v-sales-incl" checked onchange="calcVat()"><label for="v-sales-incl">This amount already includes VAT</label></div>
+</div>
+<div class="field">
+<label>Total qualifying business expenses for the period</label>
+<input type="number" id="v-exp" placeholder="e.g. 32000" oninput="calcVat()" min="0" step="0.01">
+<div class="toggle-row"><input type="checkbox" id="v-exp-incl" checked onchange="calcVat()"><label for="v-exp-incl">This amount already includes VAT</label></div>
+</div>
+<p style="font-size:.78rem">Only include expenses SARS allows you to claim input VAT on (standard-rated business purchases with a valid tax invoice). Zero-rated and exempt items don't carry input VAT to claim.</p>
+</div>
+<div class="result-card">
+<h3>Estimated VAT201</h3>
+<div class="res-row"><span>Output VAT (on sales)</span><span class="val" id="v-out">R 0.00</span></div>
+<div class="res-row"><span>Input VAT (on expenses)</span><span class="val" id="v-in">R 0.00</span></div>
+<div class="res-row total" id="v-total-row"><span>Net VAT payable</span><span class="val" id="v-total">R 0.00</span></div>
+<div class="res-note">Based on the standard 15% VAT rate. This is an estimate for planning purposes — your actual VAT201 depends on exactly how each transaction is coded.</div>
+</div>
+</div>
+</div>
+
+<!-- INCOME / PROVISIONAL TAX CALCULATOR -->
+<div class="calc-panel" id="panel-income">
+<div class="calc-grid">
+<div class="calc-card">
+<h2>Your business income this tax year</h2>
+<div class="field">
+<label>Total annual turnover / income</label>
+<input type="number" id="i-income" placeholder="e.g. 480000" oninput="calcIncome()" min="0" step="0.01">
+</div>
+<div class="field">
+<label>Total annual deductible business expenses</label>
+<input type="number" id="i-exp" placeholder="e.g. 120000" oninput="calcIncome()" min="0" step="0.01">
+</div>
+<div class="field">
+<label>Age</label>
+<select id="i-age" onchange="calcIncome()">
+<option value="under65">Under 65</option>
+<option value="65to74">65 to 74</option>
+<option value="75plus">75 and older</option>
+</select>
+</div>
+<p style="font-size:.78rem">This estimates tax as a sole proprietor / individual taxpayer using SARS's individual tax tables, after the primary/secondary/tertiary rebate. It does not account for other income, medical aid credits, retirement contributions or other deductions.</p>
+</div>
+<div class="result-card">
+<h3>Estimated tax</h3>
+<div class="res-row"><span>Taxable income</span><span class="val" id="i-taxable">R 0.00</span></div>
+<div class="res-row"><span>Tax before rebate</span><span class="val" id="i-beforereb">R 0.00</span></div>
+<div class="res-row"><span>Rebate</span><span class="val" id="i-rebate">R 0.00</span></div>
+<div class="res-row total"><span>Estimated annual tax</span><span class="val" id="i-total">R 0.00</span></div>
+<div class="res-row"><span>1st provisional payment (Aug)</span><span class="val" id="i-p1">R 0.00</span></div>
+<div class="res-row"><span>2nd provisional payment (Feb)</span><span class="val" id="i-p2">R 0.00</span></div>
+<div class="res-note">Provisional tax is normally split roughly 50/50 across the two payment periods, topped up or adjusted at your final assessment.</div>
+</div>
+</div>
+
+<div class="calc-card" style="margin-top:24px">
+<h2>How this is calculated</h2>
+<table class="bracket-table" id="bracket-table">
+<thead><tr><th>Taxable income</th><th>Rate</th></tr></thead>
+<tbody id="bracket-body"></tbody>
+</table>
+</div>
+</div>
+
+<div class="disclaimer-box">
+<h4>&#9888; This is an estimate, not tax advice</h4>
+<p>Rates shown are the most recently published SARS individual income tax brackets and the standard 15% VAT rate. SARS updates income tax brackets and rebates every year at the Budget Speech (usually February) — always confirm current rates at <a href="https://www.sars.gov.za" target="_blank" rel="noopener">sars.gov.za</a> or with a registered tax practitioner before filing or making a payment.</p>
+<p>Setwel Africa (Pty) Ltd is not a registered tax practitioner and this tool does not constitute tax advice. See our full <a href="terms.html#s12">SARS compliance disclaimer</a>.</p>
+</div>
+
+<div class="cta-strip">
+<h2>Want this running live against your real invoices?</h2>
+<p>Setwel Biz Suite calculates this automatically from your actual invoices and expenses — no manual entry, always up to date. Included from Grinder tier up.</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+<a href="download.html" class="btn btn-primary">&#8595; Start Free 30-Day Trial</a>
+<a href="pricing.html" class="btn btn-outline">See plans</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer><div class="wrap">
+<div class="f-links"><a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a><a href="tax-calculator.html">Tax Calculator</a></div>
+<div class="f-copy">&#169; 2016&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
+</div></footer>
+
+<script>
+function toggleMenu(){var m=document.getElementById("mob-menu");m.style.display=m.style.display==="flex"?"none":"flex"}
+
+function showCalc(key){
+  document.querySelectorAll(".calc-tab").forEach(function(t){t.classList.toggle("active",t.dataset.panel===key)});
+  document.querySelectorAll(".calc-panel").forEach(function(p){p.classList.toggle("active",p.id==="panel-"+key)});
+}
+
+function fmtR(n){
+  if(!isFinite(n)) n=0;
+  var neg = n < 0;
+  n = Math.abs(n);
+  var s = 'R ' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return neg ? '(' + s + ')' : s;
+}
+
+/* ── VAT201 ── */
+var VAT_RATE = 0.15;
+function calcVat(){
+  var sales = parseFloat(document.getElementById('v-sales').value) || 0;
+  var exp = parseFloat(document.getElementById('v-exp').value) || 0;
+  var salesIncl = document.getElementById('v-sales-incl').checked;
+  var expIncl = document.getElementById('v-exp-incl').checked;
+
+  var outputVat = salesIncl ? sales - (sales / (1 + VAT_RATE)) : sales * VAT_RATE;
+  var inputVat = expIncl ? exp - (exp / (1 + VAT_RATE)) : exp * VAT_RATE;
+  var net = outputVat - inputVat;
+
+  document.getElementById('v-out').textContent = fmtR(outputVat);
+  document.getElementById('v-in').textContent = fmtR(inputVat);
+  var totalRow = document.getElementById('v-total-row');
+  var totalEl = document.getElementById('v-total');
+  totalRow.querySelector('span:first-child').textContent = net >= 0 ? 'Net VAT payable' : 'Net VAT refundable';
+  totalRow.classList.toggle('refund', net < 0);
+  totalEl.textContent = fmtR(net);
+}
+
+/* ── Income / Provisional Tax ──
+   SARS individual income tax brackets — most recently published rates.
+   SARS revises these every Budget Speech (Feb). Update this table then.  */
+var TAX_BRACKETS = [
+  { upTo: 237100,        rate: 0.18, base: 0 },
+  { upTo: 370500,        rate: 0.26, base: 42678 },
+  { upTo: 512800,        rate: 0.31, base: 77362 },
+  { upTo: 673000,        rate: 0.36, base: 121475 },
+  { upTo: 857900,        rate: 0.39, base: 179147 },
+  { upTo: 1817000,       rate: 0.41, base: 251258 },
+  { upTo: Infinity,      rate: 0.45, base: 644489 }
+];
+var BRACKET_FLOORS = [0, 237100, 370500, 512800, 673000, 857900, 1817000];
+var REBATES = { under65: 17235, '65to74': 26679, '75plus': 29824 };
+
+function renderBracketTable(taxable){
+  var tbody = document.getElementById('bracket-body');
+  tbody.innerHTML = '';
+  TAX_BRACKETS.forEach(function(b, i){
+    var floor = BRACKET_FLOORS[i];
+    var label = (i === TAX_BRACKETS.length - 1)
+      ? fmtR(floor).replace('R ','R') + ' and above'
+      : fmtR(floor).replace('R ','R') + ' – ' + fmtR(b.upTo).replace('R ','R');
+    var hit = taxable > floor;
+    var tr = document.createElement('tr');
+    if (hit) tr.className = 'hit';
+    tr.innerHTML = '<td>' + label + '</td><td>' + (b.rate*100) + '%</td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function calcIncome(){
+  var income = parseFloat(document.getElementById('i-income').value) || 0;
+  var exp = parseFloat(document.getElementById('i-exp').value) || 0;
+  var age = document.getElementById('i-age').value;
+  var taxable = Math.max(0, income - exp);
+
+  var beforeRebate = 0;
+  for (var i = 0; i < TAX_BRACKETS.length; i++) {
+    var floor = BRACKET_FLOORS[i];
+    var b = TAX_BRACKETS[i];
+    if (taxable <= b.upTo) {
+      beforeRebate = b.base + (taxable - floor) * b.rate;
+      break;
+    }
+  }
+  var rebate = REBATES[age] || REBATES.under65;
+  var finalTax = Math.max(0, beforeRebate - rebate);
+
+  document.getElementById('i-taxable').textContent = fmtR(taxable);
+  document.getElementById('i-beforereb').textContent = fmtR(beforeRebate);
+  document.getElementById('i-rebate').textContent = fmtR(rebate);
+  document.getElementById('i-total').textContent = fmtR(finalTax);
+  document.getElementById('i-p1').textContent = fmtR(finalTax / 2);
+  document.getElementById('i-p2').textContent = fmtR(finalTax / 2);
+
+  renderBracketTable(taxable);
+}
+
+renderBracketTable(0);
+</script>
+</body>
+</html>

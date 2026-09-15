@@ -399,65 +399,21 @@ function submitTrial() {
   var last = document.getElementById('co-last').value.trim();
   var biz = document.getElementById('co-biz').value.trim();
 
-  // Send trial request via email (until PayFast merchant account is set up)
-  var subject = encodeURIComponent('New Trial Request: ' + selectedPlan + ' Plan');
-  var body = encodeURIComponent(
-    'New Setwel Biz Suite Trial Request\n\n' +
-    'Plan: ' + selectedPlan + ' (' + billing + ')\n' +
-    'Price after trial: R' + price + '\n\n' +
-    'Customer Details:\n' +
-    'Name: ' + first + ' ' + last + '\n' +
-    'Email: ' + email + '\n' +
-    'Phone/WhatsApp: ' + phone + '\n' +
-    'Business: ' + (biz || 'Not specified') + '\n\n' +
-    'Action: Send download link + PayFast payment link after 30 days'
-  );
-
-  // If PayFast merchant ID is set, redirect to PayFast hosted checkout
-  // Otherwise fall back to email notification
-  var PF_MERCHANT_ID = '36150721'; // PayFast Merchant ID
-  var PF_MERCHANT_KEY = 'komqftyo2czhi'; // PayFast Merchant Key
-
-  if (PF_MERCHANT_ID && PF_MERCHANT_KEY) {
-    // Build PayFast hosted checkout form
-    var pfForm = document.createElement('form');
-    pfForm.method = 'POST';
-    pfForm.action = 'https://www.payfast.co.za/eng/process';
-    var fields = {
-      merchant_id: PF_MERCHANT_ID,
-      merchant_key: PF_MERCHANT_KEY,
-      return_url: window.location.origin + '/thank-you.html',
-      cancel_url: window.location.origin + '/pay.html',
-      notify_url: 'https://setwelbusiness.co.za/payment-notify.php',
-      name_first: first,
-      name_last: last,
-      email_address: email,
-      cell_number: phone.replace(/\s/g,''),
-      m_payment_id: 'SETWEL-' + Date.now(),
-      amount: price + '.00',
-      item_name: 'Setwel Biz Suite ' + selectedPlan + ' (' + billing + ')',
-      item_description: '30-day free trial then R' + price + ' ' + billing.toLowerCase(),
-      subscription_type: billing === 'Monthly' ? '1' : '2',
-      billing_date: new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0],
-    };
-    Object.keys(fields).forEach(function(k) {
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = k;
-      input.value = fields[k];
-      pfForm.appendChild(input);
-    });
-    document.body.appendChild(pfForm);
-    pfForm.submit();
-  } else {
-    // Fallback: send via email + WhatsApp
-    window.location.href = 'mailto:sales@setwelbusiness.co.za?subject=' + subject + '&body=' + body;
-    closeCheckout();
-    // Also show confirmation
-    setTimeout(function() {
-      alert('Thank you ' + first + '! We\'ve received your trial request for the ' + selectedPlan + ' plan.\n\nWe will send your download link via WhatsApp to ' + phone + ' within 1 hour.\n\nYour 30-day trial will begin immediately after installation.');
-    }, 500);
-  }
+  // The actual PayFast signing happens server-side in api/create-payment.php —
+  // this page never sees the merchant key or passphrase. We just navigate
+  // there with the checkout details; it redirects on to PayFast.
+  var params = new URLSearchParams({
+    type: 'subscription',
+    plan: selectedPlan,
+    billing: billing,
+    price: price,
+    first: first,
+    last: last,
+    email: email,
+    phone: phone,
+    biz: biz
+  });
+  window.location.href = 'api/create-payment.php?' + params.toString();
 }
 
 // Close modal on background click

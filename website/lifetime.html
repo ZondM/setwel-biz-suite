@@ -558,64 +558,19 @@ function submitPurchase() {
   var last = document.getElementById('co-last').value.trim();
   var biz  = document.getElementById('co-biz').value.trim();
 
-  var PF_MERCHANT_ID  = '36150721'; // PayFast Merchant ID
-  var PF_MERCHANT_KEY = 'komqftyo2czhi'; // PayFast Merchant Key
-
-  if (PF_MERCHANT_ID && PF_MERCHANT_KEY) {
-    // Live PayFast checkout
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://www.payfast.co.za/eng/process';
-    var fields = {
-      merchant_id:   PF_MERCHANT_ID,
-      merchant_key:  PF_MERCHANT_KEY,
-      return_url:    window.location.origin + '/thank-you.html',
-      cancel_url:    window.location.href,
-      notify_url:    'https://setwelbusiness.co.za/payment-notify.php',
-      name_first:    first,
-      name_last:     last,
-      email_address: email,
-      cell_number:   phone.replace(/\s/g, ''),
-      m_payment_id:  'LTD-' + Date.now(),
-      amount:        currentPrice + '.00',
-      item_name:     'Setwel Biz Suite ' + currentPlan,
-      item_description: 'Lifetime licence — ' + currentFeatures.join(', ')
-    };
-    Object.keys(fields).forEach(function(k) {
-      var inp = document.createElement('input');
-      inp.type = 'hidden'; inp.name = k; inp.value = fields[k];
-      form.appendChild(inp);
-    });
-    document.body.appendChild(form);
-    form.submit();
-  } else {
-    // Fallback: email notification
-    var subj = encodeURIComponent('Lifetime Licence Purchase: ' + currentPlan);
-    var body = encodeURIComponent(
-      'Setwel Biz Suite — Lifetime Licence Purchase\n\n' +
-      'Package: ' + currentPlan + '\n' +
-      'Amount: R ' + currentPrice + ' (once-off)\n\n' +
-      'Customer:\n' +
-      'Name: ' + first + ' ' + last + '\n' +
-      'Email: ' + email + '\n' +
-      'Phone: ' + phone + '\n' +
-      'Business: ' + (biz || 'Not specified') + '\n\n' +
-      'Action required:\n' +
-      '1. Send EFT banking details to customer\n' +
-      '2. Upon payment confirmation, email licence key + download link\n' +
-      '3. WhatsApp confirmation to ' + phone
-    );
-    window.location.href = 'mailto:sales@setwelbusiness.co.za?subject=' + subj + '&body=' + body;
-    closeModal();
-    setTimeout(function() {
-      alert(
-        'Thank you ' + first + '!\n\n' +
-        'Your purchase request for ' + currentPlan + ' (R ' + currentPrice + ') has been received.\n\n' +
-        'Our team will WhatsApp you at ' + phone + ' within 1 hour with payment details.\n\n' +
-        'Your licence key and download link will be sent immediately after payment.'
-      );
-    }, 500);
-  }
+  // The actual PayFast signing happens server-side in api/create-payment.php —
+  // this page never sees the merchant key or passphrase.
+  var params = new URLSearchParams({
+    type: 'once-off',
+    plan: currentPlan,
+    price: currentPrice,
+    first: first,
+    last: last,
+    email: email,
+    phone: phone,
+    biz: biz
+  });
+  window.location.href = 'api/create-payment.php?' + params.toString();
 }
 
 document.getElementById('checkout-modal').addEventListener('click', function(e) {

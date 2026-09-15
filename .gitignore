@@ -1,0 +1,6 @@
+# Real PayFast credentials — never commit. Copy from config.example.php.
+website/api/config.php
+
+# Runtime payment data / logs generated on the server — not source.
+website/data/*.json
+website/data/*.log

@@ -15,7 +15,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);-webki
 a{color:var(--or);text-decoration:none}
 a:hover{text-decoration:underline}
 
-#langbar{position:sticky;top:0;z-index:200;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
+#langbar{z-index:1;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
 .lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 24px;max-width:820px;margin:0 auto;flex-wrap:wrap}
 .lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6A5A52;margin-right:4px}
 .lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:#A09088;font-family:'Inter',sans-serif;font-size:.77rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s}
@@ -30,7 +30,7 @@ a:hover{text-decoration:underline}
 @keyframes bounce{0%,100%{transform:translateY(0)}45%{transform:translateY(-3px)}}
 @media(max-width:640px){.lb-label{display:none}.lb-btn{font-size:.72rem;padding:4px 8px}.lb-mob{font-size:.74rem;padding:5px 10px}}
 
-.topbar{background:rgba(10,8,8,.97);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:41px;z-index:50}
+.topbar{background:rgba(10,8,8,.97);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tb-brand{display:flex;align-items:center;gap:9px;font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;color:var(--ink)}
 .tb-brand img{width:30px;height:30px;border-radius:7px;object-fit:contain}
 .tb-brand em{font-style:normal;color:var(--or)}
@@ -76,7 +76,7 @@ footer a{color:var(--or)}
   .legal-hero{padding:36px 0 28px}
   .legal-body{padding:32px 20px 60px}
   .toc{padding:16px}
-  .topbar{top:37px}
+  .topbar{top:0}
 }
 </style>
 </head>
@@ -87,12 +87,12 @@ footer a{color:var(--or)}
 <div id="langbar">
   <div class="lb-wrap">
     <span class="lb-label">Language</span>
-    <button class="lb-btn active" onclick="setLang('en')" data-lang="en"><span class="lb-code">EN</span> English</button>
-    <button class="lb-btn" onclick="setLang('af')" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
-    <button class="lb-btn" onclick="setLang('zu')" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
-    <button class="lb-btn" onclick="setLang('xh')" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
-    <button class="lb-btn" onclick="setLang('ve')" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
-    <button class="lb-btn" onclick="setLang('st')" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
+    <button class="lb-btn active" onclick="setLang('en',this)" data-lang="en"><span class="lb-code">EN</span> English</button>
+    <button class="lb-btn" onclick="setLang('af',this)" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
+    <button class="lb-btn" onclick="setLang('zu',this)" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
+    <button class="lb-btn" onclick="setLang('xh',this)" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
+    <button class="lb-btn" onclick="setLang('ve',this)" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
+    <button class="lb-btn" onclick="setLang('st',this)" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
     <div class="lb-right">
       <a href="mobile.html" class="lb-mob"><span class="blink">&#128241;</span> Mobile version</a>
     </div>
@@ -105,7 +105,7 @@ footer a{color:var(--or)}
     <img src="setwel-logo.png" alt="" onerror="this.style.display='none'">
     Setwel <em>Biz Suite</em>
   </a>
-  <a href="index.html" class="tb-back">&#8592; Back to home</a>
+  <a href="index.html" class="tb-back" data-nk="back">&#8592; Back to home</a>
 </div>
 
 <div class="legal-hero">
@@ -168,7 +168,7 @@ footer a{color:var(--or)}
 
   <div class="legal-section" id="s2">
     <h2><span class="sec-num">2</span> Who We Are</h2>
-    <p>Setwel Biz Suite is a product of <strong style="color:var(--ink)">Setwel Africa (Pty) Ltd</strong>, a South African company established in 2016. We develop accounting, invoicing, and payroll software designed specifically for South African small and medium businesses.</p>
+    <p>Setwel Biz Suite is a product of <strong style="color:var(--ink)">Setwel Africa (Pty) Ltd</strong>, a South African company established in 2023. We develop accounting, invoicing, and payroll software designed specifically for South African small and medium businesses.</p>
     <div class="contact-box" style="margin-top:14px">
       <div class="contact-row"><strong>Registered name:</strong> Setwel Africa (Pty) Ltd</div>
       <div class="contact-row"><strong>Cape Town:</strong> 124 Adderley Street, Constitution House, Cape Town, 8001</div>
@@ -361,11 +361,31 @@ footer a{color:var(--or)}
   <a href="pricing.html">Pricing</a> &nbsp;&#183;&nbsp;
   <a href="refund.html">Refund Policy</a> &nbsp;&#183;&nbsp;
   <a href="contact.html">Contact</a>
-  <br><br>&#169; 2016&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved &nbsp;&#183;&nbsp; Republic of South Africa
+  <br><br>&#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved &nbsp;&#183;&nbsp; Republic of South Africa
 </footer>
 
 <script>
-function setLang(lang){try{localStorage.setItem("setwel_lang",lang)}catch(e){}window.location.href="index.html"}
+var NAV_LANG={
+  en:{back:'← Back to home'},
+  af:{back:'← Terug na tuisblad'},
+  zu:{back:'← Buyela ekhaya'},
+  xh:{back:'← Buyela ekhaya'},
+  ve:{back:'← Vhuyani hayani'},
+  st:{back:'← Khutlela hae'}
+};
+function setLang(lang,btn){
+  document.querySelectorAll(".lb-btn").forEach(function(b){b.classList.remove("active")});
+  if(btn) btn.classList.add("active");
+  try{localStorage.setItem("setwel_lang",lang)}catch(e){}
+  var t = NAV_LANG[lang] || NAV_LANG.en;
+  document.querySelectorAll('[data-nk]').forEach(function(el){
+    var k = el.getAttribute('data-nk');
+    if(t[k]) el.textContent = t[k];
+  });
+}
+window.addEventListener('DOMContentLoaded', function(){
+  try{ var s=localStorage.getItem('setwel_lang'); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}
+});
 </script>
 </body>
 </html>

@@ -24,7 +24,7 @@ a{text-decoration:none;color:var(--orange)}
 .btn-outline:hover{border-color:var(--orange-border);color:var(--orange)}
 .btn-sm{padding:9px 18px;font-size:.85rem;border-radius:9px}
 .btn-lg{padding:17px 34px;font-size:1.05rem;border-radius:14px}
-#langbar{background:var(--dark2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:200}
+#langbar{background:var(--dark2);border-bottom:1px solid var(--line);z-index:1}
 .lb-inner{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:8px 24px;max-width:1180px;margin:0 auto}
 .lb-lbl{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-right:4px}
 .lb-btn{background:transparent;border:1px solid transparent;border-radius:7px;color:var(--ink2);font-family:"Inter",sans-serif;font-size:.78rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
@@ -33,7 +33,7 @@ a{text-decoration:none;color:var(--orange)}
 .lb-btn.active .lb-code{background:var(--orange);color:#fff}
 .lb-right{margin-left:auto}
 .lb-mob{display:flex;align-items:center;gap:6px;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange),var(--red));border:none;border-radius:9px;padding:6px 13px;text-decoration:none}
-#nav{background:rgba(10,8,8,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);position:sticky;top:41px;z-index:100}
+#nav{background:rgba(10,8,8,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
 .nav-inner{display:flex;align-items:center;height:66px;gap:4px}
 .nav-logo{display:flex;align-items:center;gap:10px;font-family:"DM Serif Display",Georgia,serif;font-size:1.1rem;color:var(--ink);margin-right:10px}
 .nav-logo img{width:36px;height:36px;border-radius:8px;object-fit:contain}
@@ -49,7 +49,7 @@ a{text-decoration:none;color:var(--orange)}
 @media(max-width:900px){.nav-links{display:none}#hamburger{display:flex;align-items:center}}
 .page-hero{padding:72px 0 56px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);text-align:center;border-bottom:1px solid var(--line)}
 .s-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:block}
-.page-hero h1{font-size:clamp(2rem,4vw,3.2rem);color:#fff;margin-bottom:14px}
+.page-hero h1{font-size:clamp(1.7rem,3.4vw,2.6rem);color:#fff;margin-bottom:14px}
 .page-hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin:24px 0 8px;font-size:.9rem}
 .toggle-track{width:48px;height:26px;background:var(--dark3);border:1px solid var(--line);border-radius:13px;position:relative;cursor:pointer;transition:background .2s}
@@ -110,7 +110,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
   .wrap{padding:0 16px}
   #langbar .lb-inner{padding:6px 12px}
   .lb-btn{padding:4px 6px;font-size:.7rem}
-  #nav{top:37px}
+  #nav{top:0}
   .nav-inner{height:56px;padding:0 16px;gap:8px}
   .nav-logo{font-size:.95rem;margin-right:auto}
   .nav-logo img{width:28px;height:28px}
@@ -134,15 +134,15 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div></div>
 <div id="nav"><div class="wrap nav-inner">
 <a href="index.html" class="nav-logo"><img src="setwel-logo.png" alt="Setwel">Setwel <em>Biz Suite</em></a>
-<nav class="nav-links"><a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html" class="active">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a></nav>
+<nav class="nav-links"><a href="index.html" data-nk="home">Home</a><a href="features.html" data-nk="feat">Features</a><a href="pricing.html" class="active" data-nk="price">Pricing</a><a href="about.html" data-nk="about">About</a><a href="contact.html" data-nk="contact">Contact</a><a href="faq.html" data-nk="help">Help</a></nav>
 <div class="nav-right">
-<a href="features.html" class="btn btn-outline btn-sm">See features</a>
-<a href="download.html" class="btn btn-primary btn-sm">Start free trial</a>
+<a href="features.html" class="btn btn-outline btn-sm" data-nk="featcta">See features</a>
+<a href="download.html" class="btn btn-primary btn-sm" data-nk="trial">Start free trial</a>
 <button id="hamburger" onclick="toggleMenu()">&#9776;</button>
 </div></div>
 <div id="mob-menu">
-<a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a>
-<a href="download.html" class="btn btn-primary">&#8595; Download Free Trial</a>
+<a href="index.html" data-nk="home">Home</a><a href="features.html" data-nk="feat">Features</a><a href="pricing.html" data-nk="price">Pricing</a><a href="about.html" data-nk="about">About</a><a href="contact.html" data-nk="contact">Contact</a><a href="faq.html" data-nk="help">Help</a>
+<a href="download.html" class="btn btn-primary" data-nk="dltrial">&#8595; Download Free Trial</a>
 </div></div>
 
 <div class="page-hero">
@@ -318,11 +318,36 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 
 <footer><div class="wrap">
 <div class="f-links"><a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a><a href="tax-calculator.html">Tax Calculator</a><a href="download.html">Download</a></div>
-<div class="f-copy">&#169; 2016&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
+<div class="f-copy">&#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
 </div></footer>
 
 <script>
 function toggleMenu(){var m=document.getElementById("mob-menu");m.style.display=m.style.display==="flex"?"none":"flex"}
+/* Language bar — translates the nav menu site-wide (full-page translation is a separate, larger project) */
+var NAV_LANG={
+  en:{home:'Home',feat:'Features',price:'Pricing',about:'About',contact:'Contact',help:'Help',plans:'See plans',featcta:'See features',trial:'Start free trial',buyonce:'✓ Buy Once',buyoncelifetime:'✓ Buy Once (Lifetime Licence)',dltrial:'↓ Download Free Trial'},
+  af:{home:'Tuis',feat:'Kenmerke',price:'Pryse',about:'Oor ons',contact:'Kontak',help:'Hulp',plans:'Sien planne',featcta:'Sien kenmerke',trial:'Begin gratis proeftydperk',buyonce:'✓ Koop eenmalig',buyoncelifetime:'✓ Koop eenmalig (Lewenslange Lisensie)',dltrial:'↓ Laai gratis proef af'},
+  zu:{home:'Ikhaya',feat:'Izici',price:'Intengo',about:'Mayelana',contact:'Xhumana',help:'Usizo',plans:'Bona amaplani',featcta:'Bona izici',trial:'Qala ukuhlolwa kwamahhala',buyonce:'✓ Thenga kanye',buyoncelifetime:'✓ Thenga kanye (Ilayisensi Yaphakade)',dltrial:'↓ Landa ukuhlolwa kwamahhala'},
+  xh:{home:'Ikhaya',feat:'Iimpawu',price:'Ixabiso',about:'Malunga',contact:'Qhagamshelana',help:'Uncedo',plans:'Jonga amaplani',featcta:'Jonga iimpawu',trial:'Qala ukuhlolwa okusimahla',buyonce:'✓ Thenga kanye',buyoncelifetime:'✓ Thenga kanye (Ilayisenisi Yobomi)',dltrial:'↓ Khuphela uvavanyo lwasimahla'},
+  ve:{home:'Hayani',feat:'Zwibveleto',price:'Mitengo',about:'Nga rine',contact:'Dzudzanya',help:'Thuso',plans:'Vhona manwali',featcta:'Vhona zwibveleto',trial:'Thoma u linga kha mahala',buyonce:'✓ Renga lwe-thihi',buyoncelifetime:'✓ Renga lwe-thihi (Laisennisi ya Vhutshilo)',dltrial:'↓ Dzhenisa u linga mahala'},
+  st:{home:'Hae',feat:'Likarolo',price:'Theko',about:'Mabapi',contact:'Hokela',help:'Thuso',plans:'Bona manwali',featcta:'Bona likarolo',trial:'Qala ho lekola mahala',buyonce:'✓ Reka hanngwe',buyoncelifetime:'✓ Reka hanngwe (Laesense ea Bophelo)',dltrial:'↓ Download teko ya mahala'}
+};
+function setLang(lang, btn){
+  document.querySelectorAll('.lb-btn').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  try{localStorage.setItem('setwel_lang',lang)}catch(e){}
+  var t = NAV_LANG[lang] || NAV_LANG.en;
+  document.querySelectorAll('[data-nk]').forEach(function(el){
+    var k = el.getAttribute('data-nk');
+    if(t[k]) el.textContent = t[k];
+  });
+}
+document.querySelectorAll('.lb-btn').forEach(function(b){
+  b.addEventListener('click', function(){ setLang(b.dataset.lang, b); });
+});
+window.addEventListener('DOMContentLoaded', function(){
+  try{ var s=localStorage.getItem('setwel_lang'); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}
+});
 var annualOn=false;
 function toggleBilling(){
   annualOn=!annualOn;

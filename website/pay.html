@@ -26,7 +26,7 @@ p{color:var(--ink2);line-height:1.75}
 a{text-decoration:none;color:var(--orange)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
 
-#langbar{position:sticky;top:0;z-index:200;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
+#langbar{z-index:1;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
 .lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 24px;max-width:1100px;margin:0 auto;flex-wrap:wrap}
 .lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6A5A52;margin-right:4px}
 .lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:#A09088;font-family:'Inter',sans-serif;font-size:.77rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s}
@@ -42,7 +42,7 @@ a{text-decoration:none;color:var(--orange)}
 @media(max-width:640px){.lb-label{display:none}.lb-btn{font-size:.72rem;padding:4px 8px}.lb-mob{font-size:.74rem;padding:5px 10px}}
 
 /* NAV */
-.topbar{background:rgba(10,8,8,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:41px;z-index:50}
+.topbar{background:rgba(10,8,8,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tb-brand{display:flex;align-items:center;gap:9px;font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;color:var(--ink)}
 .tb-brand img{width:32px;height:32px;border-radius:7px;object-fit:contain}
 .tb-brand em{font-style:normal;color:var(--orange)}
@@ -137,7 +137,7 @@ a{text-decoration:none;color:var(--orange)}
 /* FOOTER */
 .pay-footer{background:var(--dark2);border-top:1px solid var(--line);padding:24px;text-align:center;font-size:.78rem;color:var(--ink2)}
 .pay-footer a{color:var(--orange)}
-@media(max-width:640px){.topbar{top:37px}}
+@media(max-width:640px){.topbar{top:0}}
 </style>
 </head>
 <body>
@@ -147,12 +147,12 @@ a{text-decoration:none;color:var(--orange)}
 <div id="langbar">
   <div class="lb-wrap">
     <span class="lb-label">Language</span>
-    <button class="lb-btn active" onclick="setLang('en')" data-lang="en"><span class="lb-code">EN</span> English</button>
-    <button class="lb-btn" onclick="setLang('af')" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
-    <button class="lb-btn" onclick="setLang('zu')" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
-    <button class="lb-btn" onclick="setLang('xh')" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
-    <button class="lb-btn" onclick="setLang('ve')" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
-    <button class="lb-btn" onclick="setLang('st')" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
+    <button class="lb-btn active" onclick="setLang('en',this)" data-lang="en"><span class="lb-code">EN</span> English</button>
+    <button class="lb-btn" onclick="setLang('af',this)" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
+    <button class="lb-btn" onclick="setLang('zu',this)" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
+    <button class="lb-btn" onclick="setLang('xh',this)" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
+    <button class="lb-btn" onclick="setLang('ve',this)" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
+    <button class="lb-btn" onclick="setLang('st',this)" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
     <div class="lb-right">
       <a href="mobile.html" class="lb-mob"><span class="blink">&#128241;</span> Mobile version</a>
     </div>
@@ -163,11 +163,11 @@ a{text-decoration:none;color:var(--orange)}
 <div class="topbar">
   <a href="index.html" class="tb-brand"><img src="setwel-logo.png" alt="Setwel" onerror="this.style.display='none'">Setwel <em>Biz Suite</em></a>
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-    <a href="features.html" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Features</a>
-    <a href="pricing.html" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Pricing</a>
-    <a href="faq.html" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Help</a>
-    <a href="download.html" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Free Trial</a>
-    <a href="lifetime.html" style="background:rgba(76,175,112,.1);border:1px solid rgba(76,175,112,.3);color:#4CAF70;font-size:.82rem;font-weight:700;padding:6px 12px;border-radius:7px;text-decoration:none">&#10003; Buy Once</a>
+    <a href="features.html" data-nk="feat" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Features</a>
+    <a href="pricing.html" data-nk="price" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Pricing</a>
+    <a href="faq.html" data-nk="help" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Help</a>
+    <a href="download.html" data-nk="freetrial" style="color:#A09088;font-size:.83rem;padding:6px 10px;text-decoration:none" onmouseover="this.style.color='#E8801A'" onmouseout="this.style.color='#A09088'">Free Trial</a>
+    <a href="lifetime.html" data-nk="buyonce" style="background:rgba(76,175,112,.1);border:1px solid rgba(76,175,112,.3);color:#4CAF70;font-size:.82rem;font-weight:700;padding:6px 12px;border-radius:7px;text-decoration:none">&#10003; Buy Once</a>
   </div>
 </div>
 
@@ -350,11 +350,31 @@ a{text-decoration:none;color:var(--orange)}
 
 <div class="pay-footer">
   <a href="index.html">Home</a> &nbsp;&#183;&nbsp; <a href="pricing.html">Pricing</a> &nbsp;&#183;&nbsp; <a href="contact.html">Contact</a> &nbsp;&#183;&nbsp; <a href="faq.html">Help</a>
-  &nbsp;&#183;&nbsp; Payments by <a href="https://www.payfast.co.za" target="_blank">PayFast (Pty) Ltd</a> &nbsp;&#183;&nbsp; &copy; 2016&#8211;2026 Setwel Africa (Pty) Ltd
+  &nbsp;&#183;&nbsp; Payments by <a href="https://www.payfast.co.za" target="_blank">PayFast (Pty) Ltd</a> &nbsp;&#183;&nbsp; &copy; 2023&#8211;2026 Setwel Africa (Pty) Ltd
 </div>
 
 <script>
-function setLang(lang){try{localStorage.setItem("setwel_lang",lang)}catch(e){}window.location.href="index.html"}
+var NAV_LANG={
+  en:{feat:'Features',price:'Pricing',help:'Help',freetrial:'Free Trial',buyonce:'✓ Buy Once'},
+  af:{feat:'Kenmerke',price:'Pryse',help:'Hulp',freetrial:'Gratis Proeftydperk',buyonce:'✓ Koop eenmalig'},
+  zu:{feat:'Izici',price:'Intengo',help:'Usizo',freetrial:'Ukuhlolwa Kwamahhala',buyonce:'✓ Thenga kanye'},
+  xh:{feat:'Iimpawu',price:'Ixabiso',help:'Uncedo',freetrial:'Uvavanyo Lwasimahla',buyonce:'✓ Thenga kanye'},
+  ve:{feat:'Zwibveleto',price:'Mitengo',help:'Thuso',freetrial:'U Linga Mahala',buyonce:'✓ Renga lwe-thihi'},
+  st:{feat:'Likarolo',price:'Theko',help:'Thuso',freetrial:'Teko ea Mahala',buyonce:'✓ Reka hanngwe'}
+};
+function setLang(lang,btn){
+  document.querySelectorAll(".lb-btn").forEach(function(b){b.classList.remove("active")});
+  if(btn) btn.classList.add("active");
+  try{localStorage.setItem("setwel_lang",lang)}catch(e){}
+  var t = NAV_LANG[lang] || NAV_LANG.en;
+  document.querySelectorAll('[data-nk]').forEach(function(el){
+    var k = el.getAttribute('data-nk');
+    if(t[k]) el.textContent = t[k];
+  });
+}
+window.addEventListener('DOMContentLoaded', function(){
+  try{ var s=localStorage.getItem('setwel_lang'); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}
+});
 var isAnnual = false;
 var selectedPlan = '', selectedMonthly = '', selectedAnnual = '';
 
@@ -428,7 +448,7 @@ document.getElementById('checkout-modal').addEventListener('click', function(e) 
   <a href="refund.html" style="color:#E8801A">Refund Policy</a>
   &nbsp;&#183;&nbsp;
   <a href="terms.html#s7" style="color:#E8801A">POPIA</a>
-  &nbsp;&#183;&nbsp; &#169; 2016&#8211;2026 Setwel Africa (Pty) Ltd
+  &nbsp;&#183;&nbsp; &#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd
 </div>
 </body>
 </html>

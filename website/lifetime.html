@@ -31,7 +31,7 @@ p{color:var(--ink2);line-height:1.75}
 a{text-decoration:none;color:var(--or)}
 .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
 
-#langbar{position:sticky;top:0;z-index:200;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
+#langbar{z-index:1;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
 .lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 24px;max-width:1100px;margin:0 auto;flex-wrap:wrap}
 .lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6A5A52;margin-right:4px}
 .lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:#A09088;font-family:'Inter',sans-serif;font-size:.77rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s}
@@ -47,7 +47,7 @@ a{text-decoration:none;color:var(--or)}
 @media(max-width:640px){.lb-label{display:none}.lb-btn{font-size:.72rem;padding:4px 8px}.lb-mob{font-size:.74rem;padding:5px 10px}}
 
 /* NAV */
-.topbar{background:rgba(10,8,8,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:41px;z-index:50}
+.topbar{background:rgba(10,8,8,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:13px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tb-brand{display:flex;align-items:center;gap:9px;font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;color:var(--ink)}
 .tb-brand img{width:32px;height:32px;border-radius:7px;object-fit:contain}
 .tb-brand em{font-style:normal;color:var(--or)}
@@ -203,7 +203,7 @@ footer a{color:var(--or)}
   .cta-btns{flex-direction:column;align-items:stretch}
   .btn-primary,.btn-outline{justify-content:center}
   .form-row{grid-template-columns:1fr}
-  .topbar{top:37px;padding:10px 16px;flex-wrap:wrap;row-gap:6px}
+  .topbar{top:0;padding:10px 16px;flex-wrap:wrap;row-gap:6px}
   .tb-nav{flex-wrap:wrap;justify-content:flex-end;gap:6px}
   .tb-link{padding:5px 9px;font-size:.76rem}
 }
@@ -216,12 +216,12 @@ footer a{color:var(--or)}
 <div id="langbar">
   <div class="lb-wrap">
     <span class="lb-label">Language</span>
-    <button class="lb-btn active" onclick="setLang('en')" data-lang="en"><span class="lb-code">EN</span> English</button>
-    <button class="lb-btn" onclick="setLang('af')" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
-    <button class="lb-btn" onclick="setLang('zu')" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
-    <button class="lb-btn" onclick="setLang('xh')" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
-    <button class="lb-btn" onclick="setLang('ve')" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
-    <button class="lb-btn" onclick="setLang('st')" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
+    <button class="lb-btn active" onclick="setLang('en',this)" data-lang="en"><span class="lb-code">EN</span> English</button>
+    <button class="lb-btn" onclick="setLang('af',this)" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
+    <button class="lb-btn" onclick="setLang('zu',this)" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
+    <button class="lb-btn" onclick="setLang('xh',this)" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
+    <button class="lb-btn" onclick="setLang('ve',this)" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
+    <button class="lb-btn" onclick="setLang('st',this)" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
     <div class="lb-right">
       <a href="mobile.html" class="lb-mob"><span class="blink">&#128241;</span> Mobile version</a>
     </div>
@@ -236,10 +236,10 @@ footer a{color:var(--or)}
     Setwel <em>Biz Suite</em>
   </a>
   <div class="tb-nav">
-    <a href="pricing.html" class="tb-link">Monthly plans</a>
-    <a href="faq.html" class="tb-link">Help</a>
-    <a href="pay.html" class="tb-link">Subscribe</a>
-    <a href="index.html" class="tb-link">&#8592; Home</a>
+    <a href="pricing.html" class="tb-link" data-nk="monthlyplans">Monthly plans</a>
+    <a href="faq.html" class="tb-link" data-nk="help">Help</a>
+    <a href="pay.html" class="tb-link" data-nk="subscribe">Subscribe</a>
+    <a href="index.html" class="tb-link" data-nk="home2">&#8592; Home</a>
   </div>
 </div>
 
@@ -521,12 +521,32 @@ footer a{color:var(--or)}
   <a href="contact.html">Contact</a> &nbsp;&#183;&nbsp;
   <a href="faq.html">Help</a>
   <br><br>
-  &#169; 2016&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved &nbsp;&#183;&nbsp;
+  &#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved &nbsp;&#183;&nbsp;
   Payments by <a href="https://www.payfast.co.za" target="_blank">PayFast (Pty) Ltd</a>
 </footer>
 
 <script>
-function setLang(lang){try{localStorage.setItem("setwel_lang",lang)}catch(e){}window.location.href="index.html"}
+var NAV_LANG={
+  en:{monthlyplans:'Monthly plans',help:'Help',subscribe:'Subscribe',home2:'← Home'},
+  af:{monthlyplans:'Maandelikse planne',help:'Hulp',subscribe:'Teken in',home2:'← Tuis'},
+  zu:{monthlyplans:'Amaplani ngenyanga',help:'Usizo',subscribe:'Bhalisa',home2:'← Ikhaya'},
+  xh:{monthlyplans:'Iiplani zenyanga',help:'Uncedo',subscribe:'Bhalisa',home2:'← Ikhaya'},
+  ve:{monthlyplans:'Zwiimo zwa mwedzi',help:'Thuso',subscribe:'ṅwalisa',home2:'← Hayani'},
+  st:{monthlyplans:'Merero ya khwedu',help:'Thuso',subscribe:'Ngodisa',home2:'← Hae'}
+};
+function setLang(lang,btn){
+  document.querySelectorAll(".lb-btn").forEach(function(b){b.classList.remove("active")});
+  if(btn) btn.classList.add("active");
+  try{localStorage.setItem("setwel_lang",lang)}catch(e){}
+  var t = NAV_LANG[lang] || NAV_LANG.en;
+  document.querySelectorAll('[data-nk]').forEach(function(el){
+    var k = el.getAttribute('data-nk');
+    if(t[k]) el.textContent = t[k];
+  });
+}
+window.addEventListener('DOMContentLoaded', function(){
+  try{ var s=localStorage.getItem('setwel_lang'); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}
+});
 var currentPlan = '', currentPrice = '', currentFeatures = [];
 
 function openModal(plan, price, features) {

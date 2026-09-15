@@ -27,20 +27,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
-/* LANGUAGE BAR (markup exists below but had no styles — was rendering unstyled) */
-#langbar{position:sticky;top:0;z-index:200;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
-.lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 20px;max-width:500px;margin:0 auto;flex-wrap:wrap}
-.lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6A5A52;margin-right:4px}
-.lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:#A09088;font-family:'Inter',sans-serif;font-size:.72rem;font-weight:500;padding:5px 8px;cursor:pointer;transition:all .15s;-webkit-appearance:none}
-.lb-btn:hover,.lb-btn:active{color:#F2EDE8;border-color:rgba(232,128,26,.2)}
-.lb-btn.active{background:rgba(232,128,26,.13);border-color:rgba(232,128,26,.3);color:#E8801A;font-weight:700}
-.lb-code{font-size:.62rem;font-weight:800;background:rgba(255,255,255,.08);border-radius:3px;padding:1px 5px}
-.lb-btn.active .lb-code{background:#E8801A;color:#fff}
-.lb-right{margin-left:auto}
-.lb-mob{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#E8801A,#C93050);color:#fff;font-size:.74rem;font-weight:700;border:none;border-radius:9px;padding:6px 11px;text-decoration:none;cursor:pointer}
-.lb-mob .blink{display:inline-block;animation:bounce 1.8s ease-in-out infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}45%{transform:translateY(-3px)}}
-
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);
   -webkit-font-smoothing:antialiased;overscroll-behavior:none}
@@ -462,24 +448,6 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 </head>
 <body>
 
-
-<!-- LANGUAGE BAR -->
-<div id="langbar">
-  <div class="lb-wrap">
-    <span class="lb-label">Language</span>
-    <button class="lb-btn active" onclick="setLangBar('en',this)" data-lang="en"><span class="lb-code">EN</span> English</button>
-    <button class="lb-btn" onclick="setLangBar('af',this)" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
-    <button class="lb-btn" onclick="setLangBar('zu',this)" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
-    <button class="lb-btn" onclick="setLangBar('xh',this)" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
-    <button class="lb-btn" onclick="setLangBar('ve',this)" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
-    <button class="lb-btn" onclick="setLangBar('st',this)" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
-    <div class="lb-right">
-      <a href="mobile.html" class="lb-mob"><span class="blink">&#128241;</span> Mobile version</a>
-    </div>
-  </div>
-</div>
-
-
 <!-- ══════════════════════════
   S0 — LANGUAGE SELECT
 ══════════════════════════ -->
@@ -797,7 +765,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
         <a href="terms.html">Terms &amp; Conditions</a>
         <a href="refund.html">Refund Policy</a>
       </div>
-      <div class="m-footer-copy">&#169; 2016&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
+      <div class="m-footer-copy">&#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
     </div>
 
   </div><!-- .wel-body -->
@@ -3559,12 +3527,6 @@ var TR={
     cta_sub:'Kenella le dikgwebo tsa SA tse fetang 800+ tse sebetsang le Setwel.',
     cta_btn:'↓ Kenya Mahala — Matsatsi a 30'}
 };
-function setLangBar(lang,btn){
-  document.querySelectorAll('#langbar .lb-btn').forEach(function(b){b.classList.toggle('active',b===btn)});
-  G.lang=lang;
-  applyLang(lang);
-  try{localStorage.setItem('setwel_lang',lang)}catch(e){}
-}
 function pickLang(el){
   document.querySelectorAll('.lang-opt').forEach(function(o){o.classList.remove('sel')});
   el.classList.add('sel');

@@ -49,7 +49,7 @@ img{max-width:100%;display:block}
 .btn-sm{padding:9px 18px;font-size:.84rem;border-radius:9px}
 
 /* LANG BAR */
-#langbar{position:sticky;top:0;z-index:200;background:var(--dark2);border-bottom:1px solid var(--line)}
+#langbar{z-index:1;background:var(--dark2);border-bottom:1px solid var(--line)}
 .lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 24px;max-width:1160px;margin:0 auto;flex-wrap:wrap}
 .lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-right:4px}
 .lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:var(--ink2);font-family:'Inter',sans-serif;font-size:.77rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s}
@@ -63,7 +63,7 @@ img{max-width:100%;display:block}
 @media(max-width:640px){.lb-label{display:none}.lb-btn{font-size:.72rem;padding:4px 8px}.lb-mob{font-size:.74rem;padding:5px 10px}}
 
 /* NAV */
-#nav{position:sticky;top:41px;z-index:100;background:rgba(10,8,8,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+#nav{position:sticky;top:0;z-index:100;background:rgba(10,8,8,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .nav-wrap{display:flex;align-items:center;height:66px;gap:6px;max-width:1160px;margin:0 auto;padding:0 24px}
 .nav-logo{display:flex;align-items:center;gap:9px;font-family:'DM Serif Display',Georgia,serif;font-size:1.08rem;color:var(--ink);text-decoration:none;margin-right:12px;flex-shrink:0}
 .nav-logo img{width:34px;height:34px;border-radius:8px;object-fit:contain}
@@ -81,7 +81,7 @@ img{max-width:100%;display:block}
 /* HERO */
 #hero{padding:76px 0 60px;background:radial-gradient(ellipse 80% 55% at 50% -10%,rgba(232,128,26,.14) 0%,transparent 65%);text-align:center;border-bottom:1px solid var(--line)}
 .hero-eye{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:14px;display:block}
-.hero-word{font-size:clamp(2.6rem,7vw,4.6rem);color:#fff;font-weight:400;margin-bottom:16px}
+.hero-word{font-size:clamp(2.2rem,6vw,3.8rem);color:#fff;font-weight:400;margin-bottom:16px}
 .hero-word em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub{font-size:1.08rem;max-width:36rem;margin:0 auto 30px}
 .hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
@@ -210,14 +210,14 @@ footer ul a:hover{color:var(--orange)}
   #langbar .lb-wrap{padding:6px 12px}
   .lb-btn{padding:4px 6px;font-size:.68rem}
   .lb-mob{padding:5px 9px;font-size:.72rem}
-  #nav{top:37px}
+  #nav{top:0}
   .nav-wrap{height:56px;padding:0 16px;gap:8px}
   .nav-logo{font-size:.95rem;margin-right:auto}
   .nav-logo img{width:28px;height:28px}
   .nav-right{gap:6px}
   .nav-right .btn-outline{display:none}
   .nav-right .btn-primary{padding:8px 12px;font-size:.78rem}
-  .hero-word{font-size:1.9rem}
+  .hero-word{font-size:1.7rem}
   .hero-sub{font-size:.92rem}
   .hero-btns{flex-direction:column}
   .hero-btns .btn{width:100%}
@@ -251,27 +251,27 @@ footer ul a:hover{color:var(--orange)}
   <div class="nav-wrap">
     <a href="index.html" class="nav-logo"><img src="setwel-logo.png" alt="Setwel">Setwel <em>Biz Suite</em></a>
     <nav class="nav-links">
-      <a href="index.html" class="cur">Home</a>
-      <a href="features.html">Features</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="faq.html">Help</a>
+      <a href="index.html" class="cur" data-nk="home">Home</a>
+      <a href="features.html" data-nk="feat">Features</a>
+      <a href="pricing.html" data-nk="price">Pricing</a>
+      <a href="about.html" data-nk="about">About</a>
+      <a href="contact.html" data-nk="contact">Contact</a>
+      <a href="faq.html" data-nk="help">Help</a>
     </nav>
     <div class="nav-right">
-      <a href="pricing.html" class="btn btn-outline btn-sm">See plans</a>
-      <a href="download.html" class="btn btn-primary btn-sm">Start free trial</a>
+      <a href="pricing.html" class="btn btn-outline btn-sm" data-nk="plans">See plans</a>
+      <a href="download.html" class="btn btn-primary btn-sm" data-nk="trial">Start free trial</a>
       <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
     </div>
   </div>
   <div id="mob-menu">
-    <a href="index.html">Home</a>
-    <a href="features.html">Features</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="faq.html">Help &amp; FAQ</a>
-    <a href="download.html" class="btn btn-primary">&#8595; Download Free Trial</a>
+    <a href="index.html" data-nk="home">Home</a>
+    <a href="features.html" data-nk="feat">Features</a>
+    <a href="pricing.html" data-nk="price">Pricing</a>
+    <a href="about.html" data-nk="about">About</a>
+    <a href="contact.html" data-nk="contact">Contact</a>
+    <a href="faq.html" data-nk="helpfaq">Help &amp; FAQ</a>
+    <a href="download.html" class="btn btn-primary" data-nk="dltrial">&#8595; Download Free Trial</a>
   </div>
 </div>
 
@@ -716,7 +716,7 @@ footer ul a:hover{color:var(--orange)}
       <div><h5>Legal</h5><ul><li><a href="refund.html">Refund Policy</a></li><li><a href="terms.html">Terms &amp; Conditions</a></li><li><a href="terms.html#s7">POPIA &amp; Privacy</a></li></ul></div>
     </div>
     <div class="f-bottom">
-      <span class="f-copy">&copy; 2016&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&middot;&nbsp; All rights reserved</span>
+      <span class="f-copy">&copy; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&middot;&nbsp; All rights reserved</span>
       <div class="f-badges"><span class="f-badge">POPIA</span><span class="f-badge">Made in SA</span><span class="f-badge">100% Offline</span><span class="f-badge">SARS VAT201</span></div>
     </div>
   </div>
@@ -758,26 +758,24 @@ function togglePricing(){
   });
 }
 
-/* Language bar — switches nav labels (full-page translation available on request) */
+/* Language bar — translates the nav menu site-wide (full-page translation is a separate, larger project) */
 var NAV_LANG={
-  en:{home:'Home',feat:'Features',price:'Pricing',about:'About',contact:'Contact',help:'Help',plans:'See plans',trial:'Start free trial'},
-  af:{home:'Tuis',feat:'Kenmerke',price:'Pryse',about:'Oor ons',contact:'Kontak',help:'Hulp',plans:'Sien planne',trial:'Begin gratis proeftydperk'},
-  zu:{home:'Ikhaya',feat:'Izici',price:'Intengo',about:'Mayelana',contact:'Xhumana',help:'Usizo',plans:'Bona amaplani',trial:'Qala ukuhlolwa kwamahhala'},
-  xh:{home:'Ikhaya',feat:'Iimpawu',price:'Ixabiso',about:'Malunga',contact:'Qhagamshelana',help:'Uncedo',plans:'Jonga amaplani',trial:'Qala ukuhlolwa okusimahla'},
-  ve:{home:'Hayani',feat:'Zwibveleto',price:'Mitengo',about:'Nga rine',contact:'Dzudzanya',help:'Thuso',plans:'Vhona manwali',trial:'Thoma u linga kha mahala'},
-  st:{home:'Hae',feat:'Likarolo',price:'Theko',about:'Mabapi',contact:'Hokela',help:'Thuso',plans:'Bona manwali',trial:'Qala ho lekola mahala'}
+  en:{home:'Home',feat:'Features',price:'Pricing',about:'About',contact:'Contact',help:'Help',plans:'See plans',featcta:'See features',trial:'Start free trial',buyonce:'✓ Buy Once',helpfaq:'Help & FAQ',dltrial:'↓ Download Free Trial'},
+  af:{home:'Tuis',feat:'Kenmerke',price:'Pryse',about:'Oor ons',contact:'Kontak',help:'Hulp',plans:'Sien planne',featcta:'Sien kenmerke',trial:'Begin gratis proeftydperk',buyonce:'✓ Koop eenmalig',helpfaq:'Hulp & VGV',dltrial:'↓ Laai gratis proef af'},
+  zu:{home:'Ikhaya',feat:'Izici',price:'Intengo',about:'Mayelana',contact:'Xhumana',help:'Usizo',plans:'Bona amaplani',featcta:'Bona izici',trial:'Qala ukuhlolwa kwamahhala',buyonce:'✓ Thenga kanye',helpfaq:'Usizo Nemibuzo',dltrial:'↓ Landa ukuhlolwa kwamahhala'},
+  xh:{home:'Ikhaya',feat:'Iimpawu',price:'Ixabiso',about:'Malunga',contact:'Qhagamshelana',help:'Uncedo',plans:'Jonga amaplani',featcta:'Jonga iimpawu',trial:'Qala ukuhlolwa okusimahla',buyonce:'✓ Thenga kanye',helpfaq:'Uncedo Nemibuzo',dltrial:'↓ Khuphela uvavanyo lwasimahla'},
+  ve:{home:'Hayani',feat:'Zwibveleto',price:'Mitengo',about:'Nga rine',contact:'Dzudzanya',help:'Thuso',plans:'Vhona manwali',featcta:'Vhona zwibveleto',trial:'Thoma u linga kha mahala',buyonce:'✓ Renga lwe-thihi',helpfaq:'Thuso na Mbudziso',dltrial:'↓ Dzhenisa u linga mahala'},
+  st:{home:'Hae',feat:'Likarolo',price:'Theko',about:'Mabapi',contact:'Hokela',help:'Thuso',plans:'Bona manwali',featcta:'Bona likarolo',trial:'Qala ho lekola mahala',buyonce:'✓ Reka hanngwe',helpfaq:'Thuso le Dipotso',dltrial:'↓ Download teko ya mahala'}
 };
 function setLang(lang, btn){
   document.querySelectorAll('.lb-btn').forEach(function(b){b.classList.remove('active')});
   if(btn) btn.classList.add('active');
   try{localStorage.setItem('setwel_lang',lang)}catch(e){}
   var t = NAV_LANG[lang] || NAV_LANG.en;
-  var nl = document.querySelectorAll('.nav-links a');
-  if(nl[0])nl[0].textContent=t.home; if(nl[1])nl[1].textContent=t.feat;
-  if(nl[2])nl[2].textContent=t.price; if(nl[3])nl[3].textContent=t.about;
-  if(nl[4])nl[4].textContent=t.contact; if(nl[5])nl[5].textContent=t.help;
-  var pb=document.querySelector('.nav-right .btn-outline'); if(pb)pb.textContent=t.plans;
-  var tb=document.querySelector('.nav-right .btn-primary'); if(tb)tb.textContent=t.trial;
+  document.querySelectorAll('[data-nk]').forEach(function(el){
+    var k = el.getAttribute('data-nk');
+    if(t[k]) el.textContent = t[k];
+  });
 }
 window.addEventListener("DOMContentLoaded",function(){
   try{ var s=localStorage.getItem("setwel_lang"); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}

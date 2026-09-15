@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "za.co.setwelbusiness.twa",
+      "sha256_cert_fingerprints": [
+        "B8:2A:BC:50:EF:6B:5B:81:84:0B:45:4F:BE:9A:02:8E:BB:BA:1A:9F:24:A5:3A:63:95:BF:AA:11:E3:35:8E:2D"
+      ]
+    }
+  }
+]

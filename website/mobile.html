@@ -3723,7 +3723,7 @@ function processImage(){
 /* ══ CLAUDE AI ══ */
 function callAI(){
   // ── Proxy call — API key is on the server, customers need nothing ──
-  fetch('/scan-proxy.php',{
+  fetch('api/scan-proxy.php',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({image:G.b64,media_type:'image/jpeg'})

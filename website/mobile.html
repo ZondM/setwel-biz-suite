@@ -1248,7 +1248,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" data-i18n="t_stokvelmgr">Stokvel Manager</span>
-    <button class="iv-back" onclick="ivStokvelNew()">&#43; New</button>
+    <button class="iv-back" onclick="ivStokvelNew()" data-i18n="sv_new">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-stokvel-list"></div></div>
 </div>
@@ -1261,15 +1261,15 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Stokvel name</label><input class="iv-input" id="sv-name" placeholder="e.g. Ediwazi Savings Club"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="sv_name_lbl">Stokvel name</label><input class="iv-input" id="sv-name" placeholder="e.g. Ediwazi Savings Club"></div>
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label">Contribution amount (R)</label><input class="iv-input" type="number" step="0.01" id="sv-amount" placeholder="500.00"></div>
-      <div class="iv-field"><label class="iv-label">Frequency</label>
+      <div class="iv-field"><label class="iv-label" data-i18n="sv_amount_lbl">Contribution amount (R)</label><input class="iv-input" type="number" step="0.01" id="sv-amount" placeholder="500.00"></div>
+      <div class="iv-field"><label class="iv-label" data-i18n="sv_freq_lbl">Frequency</label>
         <select class="iv-select" id="sv-frequency"><option>Weekly</option><option selected>Monthly</option></select>
       </div>
     </div>
-    <button class="iv-btn-primary" onclick="ivStokvelSave()">&#10003; Save Stokvel</button>
-    <button class="iv-btn-outline iv-btn-danger" id="sv-delete-btn" style="display:none" onclick="ivStokvelDelete()">Delete Stokvel</button>
+    <button class="iv-btn-primary" onclick="ivStokvelSave()" data-i18n="sv_save">&#10003; Save Stokvel</button>
+    <button class="iv-btn-outline iv-btn-danger" id="sv-delete-btn" style="display:none" onclick="ivStokvelDelete()" data-i18n="sv_delete">Delete Stokvel</button>
   </div>
 </div>
 
@@ -1282,31 +1282,31 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   </div>
   <div class="iv-form">
     <div class="iv-stats" style="grid-template-columns:1fr 1fr">
-      <div class="iv-stat"><span class="iv-stat-n" id="sv-total-pool">R0</span><div class="iv-stat-l">Total pool</div></div>
-      <div class="iv-stat"><span class="iv-stat-n" id="sv-member-count">0</span><div class="iv-stat-l">Members</div></div>
+      <div class="iv-stat"><span class="iv-stat-n" id="sv-total-pool">R0</span><div class="iv-stat-l" data-i18n="sv_total_pool">Total pool</div></div>
+      <div class="iv-stat"><span class="iv-stat-n" id="sv-member-count">0</span><div class="iv-stat-l" data-i18n="sv_members_lbl">Members</div></div>
     </div>
 
-    <div class="iv-section-lbl">Next payout</div>
+    <div class="iv-section-lbl" data-i18n="sv_next_payout">Next payout</div>
     <div id="sv-next-payout" class="iv-list-item" style="cursor:default"></div>
 
-    <div class="iv-section-lbl">Members</div>
+    <div class="iv-section-lbl" data-i18n="sv_members_lbl">Members</div>
     <div id="sv-members-list"></div>
-    <button class="iv-add-line" onclick="ivStokvelMemberAdd()">&#43; Add member</button>
+    <button class="iv-add-line" onclick="ivStokvelMemberAdd()" data-i18n="sv_add_member">&#43; Add member</button>
 
-    <div class="iv-section-lbl">Record a contribution</div>
+    <div class="iv-section-lbl" data-i18n="sv_record_contrib">Record a contribution</div>
     <div class="iv-field">
       <select class="iv-select" id="sv-contrib-member"><option value="">— Select member —</option></select>
     </div>
-    <button class="iv-btn-outline" style="margin-top:0" onclick="ivStokvelRecordContribution()">&#10003; Record Contribution</button>
+    <button class="iv-btn-outline" style="margin-top:0" onclick="ivStokvelRecordContribution()" data-i18n="sv_record_contribution_btn">&#10003; Record Contribution</button>
 
-    <div class="iv-section-lbl">Contribution history</div>
+    <div class="iv-section-lbl" data-i18n="sv_contrib_history">Contribution history</div>
     <div id="sv-contrib-history"></div>
 
-    <div class="iv-section-lbl">Rotation payouts</div>
+    <div class="iv-section-lbl" data-i18n="sv_rotation_payouts">Rotation payouts</div>
     <div id="sv-payout-history"></div>
-    <button class="iv-btn-outline" onclick="ivStokvelRecordPayout()">&#10003; Record Payout to Next Member</button>
+    <button class="iv-btn-outline" onclick="ivStokvelRecordPayout()" data-i18n="sv_record_payout_btn">&#10003; Record Payout to Next Member</button>
 
-    <button class="iv-btn-outline" style="margin-top:20px" onclick="ivStokvelSendStatement()">&#128172; Send Member Statement via WhatsApp</button>
+    <button class="iv-btn-outline" style="margin-top:20px" onclick="ivStokvelSendStatement()" data-i18n="sv_send_statement">&#128172; Send Member Statement via WhatsApp</button>
   </div>
 </div>
 
@@ -1318,10 +1318,10 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Full name</label><input class="iv-input" id="svm-name" placeholder="e.g. Nomsa Dlamini"></div>
-    <div class="iv-field"><label class="iv-label">Phone / WhatsApp</label><input class="iv-input" id="svm-phone" placeholder="+27 82 123 4567"></div>
-    <button class="iv-btn-primary" onclick="ivStokvelMemberSave()">&#10003; Save Member</button>
-    <button class="iv-btn-outline iv-btn-danger" id="svm-delete-btn" style="display:none" onclick="ivStokvelMemberDelete()">Remove Member</button>
+    <div class="iv-field"><label class="iv-label" data-i18n="sv_fullname_lbl">Full name</label><input class="iv-input" id="svm-name" placeholder="e.g. Nomsa Dlamini"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="sv_phone_lbl">Phone / WhatsApp</label><input class="iv-input" id="svm-phone" placeholder="+27 82 123 4567"></div>
+    <button class="iv-btn-primary" onclick="ivStokvelMemberSave()" data-i18n="sv_member_save_btn">&#10003; Save Member</button>
+    <button class="iv-btn-outline iv-btn-danger" id="svm-delete-btn" style="display:none" onclick="ivStokvelMemberDelete()" data-i18n="sv_member_remove_btn">Remove Member</button>
   </div>
 </div>
 
@@ -2413,13 +2413,14 @@ function ivRenderStokvelList(){
   ivLoad();
   var el = document.getElementById('iv-stokvel-list');
   if (!ivData.stokvels.length){
-    el.innerHTML = '<div class="iv-empty"><div class="iv-empty-ico">&#127919;</div><div class="iv-empty-t">No stokvels yet</div><button class="iv-btn-primary" onclick="ivStokvelNew()">&#43; Create your first stokvel</button></div>';
+    el.innerHTML = '<div class="iv-empty"><div class="iv-empty-ico">&#127919;</div><div class="iv-empty-t">'+ivStr('no_stokvels')+'</div><button class="iv-btn-primary" onclick="ivStokvelNew()">'+ivStr('create_first_stokvel')+'</button></div>';
     return;
   }
   el.innerHTML = ivData.stokvels.map(function(sv){
     var pool = ivStokvelPoolTotal(sv);
+    var freqLabel = sv.frequency==='Weekly' ? ivStr('freq_weekly') : ivStr('freq_monthly');
     return '<div class="iv-list-item" onclick="ivStokvelOpen(\''+sv.id+'\')">'+
-      '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(sv.name)+'</div><div class="iv-li-sub">'+sv.members.length+' member(s) &middot; '+ivMoney(sv.amount)+' '+sv.frequency.toLowerCase()+'</div></div>'+
+      '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(sv.name)+'</div><div class="iv-li-sub">'+sv.members.length+' '+ivStr('members_word')+' &middot; '+ivMoney(sv.amount)+' '+freqLabel+'</div></div>'+
       '<div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(pool)+'</div></div></div>';
   }).join('');
 }
@@ -2452,7 +2453,7 @@ function ivStokvelSave(){
   ivLoad();
   if (!ivEditingStokvelId && ivBlockIfExpired()) return;
   var name = document.getElementById('sv-name').value.trim();
-  if (!name){ alert('Please enter a stokvel name.'); return; }
+  if (!name){ alert(ivStr('alert_name_required')); return; }
   var amount = parseFloat(document.getElementById('sv-amount').value) || 0;
   var frequency = document.getElementById('sv-frequency').value;
   var sv;
@@ -2472,7 +2473,7 @@ function ivStokvelSave(){
 }
 function ivStokvelDelete(){
   if (!ivEditingStokvelId) return;
-  if (!confirm('Delete this stokvel and all its member/contribution records? This cannot be undone.')) return;
+  if (!confirm(ivStr('confirm_delete'))) return;
   ivData.stokvels = ivData.stokvels.filter(function(x){return x.id!==ivEditingStokvelId});
   ivSave();
   ivRenderStokvelList();
@@ -2490,28 +2491,28 @@ function ivStokvelOpen(id){
   // Next payout — whoever is next in rotation order
   var nextEl = document.getElementById('sv-next-payout');
   if (!sv.members.length){
-    nextEl.innerHTML = '<div class="iv-li-sub">Add members to set up the rotation order</div>';
+    nextEl.innerHTML = '<div class="iv-li-sub">'+ivStr('add_members_rotation')+'</div>';
   } else {
     var nextMember = sv.members[sv.rotationIndex % sv.members.length];
-    nextEl.innerHTML = '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(nextMember.name)+'</div><div class="iv-li-sub">Next in rotation</div></div>';
+    nextEl.innerHTML = '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(nextMember.name)+'</div><div class="iv-li-sub">'+ivStr('next_in_rotation')+'</div></div>';
   }
 
   // Members list, each with their own contribution total
   var membersEl = document.getElementById('sv-members-list');
   if (!sv.members.length){
-    membersEl.innerHTML = '<div class="iv-empty" style="padding:24px"><div class="iv-empty-t">No members yet</div></div>';
+    membersEl.innerHTML = '<div class="iv-empty" style="padding:24px"><div class="iv-empty-t">'+ivStr('no_members_yet')+'</div></div>';
   } else {
     membersEl.innerHTML = sv.members.map(function(m){
       var total = sv.contributions.filter(function(c){return c.memberId===m.id}).reduce(function(s,c){return s+c.amount},0);
       return '<div class="iv-list-item" onclick="ivStokvelMemberEdit(\''+m.id+'\')">'+
-        '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(m.name)+'</div><div class="iv-li-sub">'+ivEsc(m.phone||'No phone')+'</div></div>'+
-        '<div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(total)+'</div><span class="iv-li-sub">contributed</span></div></div>';
+        '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(m.name)+'</div><div class="iv-li-sub">'+ivEsc(m.phone||ivStr('no_phone'))+'</div></div>'+
+        '<div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(total)+'</div><span class="iv-li-sub">'+ivStr('contributed')+'</span></div></div>';
     }).join('');
   }
 
   // Contribution member picker
   var sel = document.getElementById('sv-contrib-member');
-  sel.innerHTML = '<option value="">— Select member —</option>' + sv.members.map(function(m){
+  sel.innerHTML = '<option value="">'+ivStr('select_member_opt')+'</option>' + sv.members.map(function(m){
     return '<option value="'+m.id+'">'+ivEsc(m.name)+'</option>';
   }).join('');
 
@@ -2519,11 +2520,11 @@ function ivStokvelOpen(id){
   var histEl = document.getElementById('sv-contrib-history');
   var contribs = sv.contributions.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
   if (!contribs.length){
-    histEl.innerHTML = '<div class="iv-empty" style="padding:20px"><div class="iv-empty-t">No contributions recorded yet</div></div>';
+    histEl.innerHTML = '<div class="iv-empty" style="padding:20px"><div class="iv-empty-t">'+ivStr('no_contributions_yet')+'</div></div>';
   } else {
     histEl.innerHTML = contribs.slice(0,15).map(function(c){
       var m = sv.members.find(function(x){return x.id===c.memberId});
-      return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivEsc(m?m.name:'Unknown')+'</div><div class="iv-li-sub">'+ivFormatDate(c.date)+'</div></div><div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(c.amount)+'</div></div></div>';
+      return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivEsc(m?m.name:ivStr('unknown'))+'</div><div class="iv-li-sub">'+ivFormatDate(c.date)+'</div></div><div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(c.amount)+'</div></div></div>';
     }).join('');
   }
 
@@ -2531,11 +2532,11 @@ function ivStokvelOpen(id){
   var payoutEl = document.getElementById('sv-payout-history');
   var payouts = sv.payouts.slice().sort(function(a,b){return new Date(b.date)-new Date(a.date)});
   if (!payouts.length){
-    payoutEl.innerHTML = '<div class="iv-empty" style="padding:20px"><div class="iv-empty-t">No payouts recorded yet</div></div>';
+    payoutEl.innerHTML = '<div class="iv-empty" style="padding:20px"><div class="iv-empty-t">'+ivStr('no_payouts_yet')+'</div></div>';
   } else {
     payoutEl.innerHTML = payouts.map(function(p){
       var m = sv.members.find(function(x){return x.id===p.memberId});
-      return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivEsc(m?m.name:'Unknown')+'</div><div class="iv-li-sub">'+ivFormatDate(p.date)+'</div></div><div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(p.amount)+'</div></div></div>';
+      return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivEsc(m?m.name:ivStr('unknown'))+'</div><div class="iv-li-sub">'+ivFormatDate(p.date)+'</div></div><div class="iv-li-r"><div class="iv-li-amt">'+ivMoney(p.amount)+'</div></div></div>';
     }).join('');
   }
 
@@ -2565,7 +2566,7 @@ function ivStokvelMemberSave(){
   var sv = ivData.stokvels.find(function(x){return x.id===ivViewingStokvelId});
   if (!sv) return;
   var name = document.getElementById('svm-name').value.trim();
-  if (!name){ alert('Please enter a member name.'); return; }
+  if (!name){ alert(ivStr('alert_member_name_required')); return; }
   var rec = { id: ivEditingStokvelMemberId || ivUid(), name: name, phone: document.getElementById('svm-phone').value.trim() };
   if (ivEditingStokvelMemberId){
     var idx = sv.members.findIndex(function(x){return x.id===ivEditingStokvelMemberId});
@@ -2582,10 +2583,10 @@ function ivStokvelMemberDelete(){
   var hasHistory = sv.contributions.some(function(c){return c.memberId===ivEditingStokvelMemberId}) ||
                     sv.payouts.some(function(p){return p.memberId===ivEditingStokvelMemberId});
   if (hasHistory){
-    alert('This member has contribution or payout history and cannot be removed, to keep the stokvel records accurate. You can still edit their details.');
+    alert(ivStr('alert_member_has_history'));
     return;
   }
-  if (!confirm('Remove this member from the stokvel?')) return;
+  if (!confirm(ivStr('confirm_remove_member'))) return;
   sv.members = sv.members.filter(function(x){return x.id!==ivEditingStokvelMemberId});
   ivSave();
   ivStokvelOpen(sv.id);
@@ -2596,7 +2597,7 @@ function ivStokvelRecordContribution(){
   var sv = ivData.stokvels.find(function(x){return x.id===ivViewingStokvelId});
   if (!sv) return;
   var memberId = document.getElementById('sv-contrib-member').value;
-  if (!memberId){ alert('Please select a member.'); return; }
+  if (!memberId){ alert(ivStr('alert_select_member')); return; }
   sv.contributions.push({ id: ivUid(), memberId: memberId, amount: sv.amount, date: ivToday() });
   ivSave();
   ivStokvelOpen(sv.id);
@@ -2604,10 +2605,10 @@ function ivStokvelRecordContribution(){
 function ivStokvelRecordPayout(){
   if (ivBlockIfExpired()) return;
   var sv = ivData.stokvels.find(function(x){return x.id===ivViewingStokvelId});
-  if (!sv || !sv.members.length) { alert('Add members before recording a payout.'); return; }
+  if (!sv || !sv.members.length) { alert(ivStr('alert_add_members_first')); return; }
   var member = sv.members[sv.rotationIndex % sv.members.length];
   var pool = ivStokvelPoolTotal(sv);
-  if (!confirm('Record a payout of '+ivMoney(pool)+' to '+member.name+'? This advances the rotation to the next member.')) return;
+  if (!confirm(ivStr('confirm_record_payout', {amount: ivMoney(pool), name: member.name}))) return;
   sv.payouts.push({ id: ivUid(), memberId: member.id, amount: pool, date: ivToday() });
   sv.rotationIndex = (sv.rotationIndex + 1) % sv.members.length;
   ivSave();
@@ -2616,10 +2617,10 @@ function ivStokvelRecordPayout(){
 function ivStokvelSendStatement(){
   var sv = ivData.stokvels.find(function(x){return x.id===ivViewingStokvelId});
   if (!sv) return;
-  var msg = sv.name+' — member statement\n\n'+sv.members.map(function(m){
+  var msg = ivStr('member_statement_title', {name: sv.name})+'\n\n'+sv.members.map(function(m){
     var total = sv.contributions.filter(function(c){return c.memberId===m.id}).reduce(function(s,c){return s+c.amount},0);
-    return m.name+': '+ivMoney(total)+' contributed';
-  }).join('\n')+'\n\nTotal pool: '+ivMoney(ivStokvelPoolTotal(sv));
+    return ivStr('member_contributed_line', {name: m.name, amount: ivMoney(total)});
+  }).join('\n')+'\n\n'+ivStr('total_pool_line', {amount: ivMoney(ivStokvelPoolTotal(sv))});
   window.open('https://wa.me/?text='+encodeURIComponent(msg), '_blank');
 }
 
@@ -3570,7 +3571,14 @@ var CONTENT_LANG = {
     hub_unpaidaccounts:"Onbetaalde Rekeninge", hub_salesreport:"Verkoopsverslag",
     hub_databackup:"Data &amp; rugsteun", hub_backupnow:"Rugsteun Nou", hub_restorebackup:"Herstel Rugsteun",
     hub_datanote1:"&#128274; Jou data word op twee maniere beskerm", hub_datanote2:"op hierdie toestel — niks word ooit na 'n bediener gestuur nie.",
-    hub_datanote3:"Tik", hub_datanote4:"hierbo om 'n kopie te stoor wat jy vanaf enige toestel kan herstel."
+    hub_datanote3:"Tik", hub_datanote4:"hierbo om 'n kopie te stoor wat jy vanaf enige toestel kan herstel.",
+    sv_new:"&#43; Nuwe", sv_name_lbl:"Stokvelnaam", sv_amount_lbl:"Bydraebedrag (R)", sv_freq_lbl:"Frekwensie",
+    sv_save:"&#10003; Stoor Stokvel", sv_delete:"Skrap Stokvel", sv_total_pool:"Totale poel", sv_members_lbl:"Lede",
+    sv_next_payout:"Volgende uitbetaling", sv_add_member:"&#43; Voeg lid by", sv_record_contrib:"Rekordeer 'n bydrae",
+    sv_record_contribution_btn:"&#10003; Rekordeer Bydrae", sv_contrib_history:"Bydraegeskiedenis",
+    sv_rotation_payouts:"Rotasie-uitbetalings", sv_record_payout_btn:"&#10003; Rekordeer Uitbetaling aan Volgende Lid",
+    sv_send_statement:"&#128172; Stuur Lidstaat via WhatsApp", sv_fullname_lbl:"Volle naam", sv_phone_lbl:"Foon / WhatsApp",
+    sv_member_save_btn:"&#10003; Stoor Lid", sv_member_remove_btn:"Verwyder Lid"
   },
   zu:{
     back_btn:"&#8592; Emuva",
@@ -3589,7 +3597,14 @@ var CONTENT_LANG = {
     hub_unpaidaccounts:"Ama-akhawunti Angakhokhiwe", hub_salesreport:"Umbiko Wokuthengisa",
     hub_databackup:"Idatha &amp; ukugcina", hub_backupnow:"Gcina Manje", hub_restorebackup:"Buyisela Okugciniwe",
     hub_datanote1:"&#128274; Idatha yakho ivikelwe ngezindlela ezimbili", hub_datanote2:"kule divayisi — akukho okuthunyelwa kusiphakeli.",
-    hub_datanote3:"Chofoza", hub_datanote4:"ngenhla ukugcina ikhophi ongayibuyisela kunoma iyiphi idivayisi."
+    hub_datanote3:"Chofoza", hub_datanote4:"ngenhla ukugcina ikhophi ongayibuyisela kunoma iyiphi idivayisi.",
+    sv_new:"&#43; Okusha", sv_name_lbl:"Igama lestokvela", sv_amount_lbl:"Inani lomnikelo (R)", sv_freq_lbl:"Ukuvama",
+    sv_save:"&#10003; Gcina Istokvela", sv_delete:"Susa Istokvela", sv_total_pool:"Isamba sonke", sv_members_lbl:"Amalungu",
+    sv_next_payout:"Inkokhelo elandelayo", sv_add_member:"&#43; Engeza ilungu", sv_record_contrib:"Bhala Umnikelo",
+    sv_record_contribution_btn:"&#10003; Bhala Umnikelo", sv_contrib_history:"Umlando wemnikelo",
+    sv_rotation_payouts:"Izinkokhelo zokujikeleza", sv_record_payout_btn:"&#10003; Bhala Inkokhelo Kulungu Elilandelayo",
+    sv_send_statement:"&#128172; Thumela Isitatimende Selungu nge-WhatsApp", sv_fullname_lbl:"Igama eliphelele", sv_phone_lbl:"Ucingo / WhatsApp",
+    sv_member_save_btn:"&#10003; Gcina Ilungu", sv_member_remove_btn:"Susa Ilungu"
   },
   xh:{
     back_btn:"&#8592; Emva",
@@ -3608,7 +3623,14 @@ var CONTENT_LANG = {
     hub_unpaidaccounts:"Ii-akhawunti Ezingahlawulwanga", hub_salesreport:"Ingxelo Yentengiso",
     hub_databackup:"Idatha &amp; ukugcina", hub_backupnow:"Gcina Ngoku", hub_restorebackup:"Buyisela Okugciniweyo",
     hub_datanote1:"&#128274; Idatha yakho ikhuselwe ngeendlela ezimbini", hub_datanote2:"kwesi sixhobo — akukho nto ithunyelwa kwiseva.",
-    hub_datanote3:"Cofa", hub_datanote4:"ngasentla ukugcina ikopi onokuyibuyisela kwisixhobo nasiphi na."
+    hub_datanote3:"Cofa", hub_datanote4:"ngasentla ukugcina ikopi onokuyibuyisela kwisixhobo nasiphi na.",
+    sv_new:"&#43; Okutsha", sv_name_lbl:"Igama lestokfela", sv_amount_lbl:"Isixa segalelo (R)", sv_freq_lbl:"Ukuhlala kwenzeka",
+    sv_save:"&#10003; Gcina Istokfela", sv_delete:"Cima Istokfela", sv_total_pool:"Isixa sipheleleyo", sv_members_lbl:"Amalungu",
+    sv_next_payout:"Intlawulo elandelayo", sv_add_member:"&#43; Yongeza ilungu", sv_record_contrib:"Rekhoda Igalelo",
+    sv_record_contribution_btn:"&#10003; Rekhoda Igalelo", sv_contrib_history:"Imbali yeigalelo",
+    sv_rotation_payouts:"Iintlawulo zokujikeleza", sv_record_payout_btn:"&#10003; Rekhoda Intlawulo Kulungu Elilandelayo",
+    sv_send_statement:"&#128172; Thumela Ingxelo Yelungu nge-WhatsApp", sv_fullname_lbl:"Igama elipheleleyo", sv_phone_lbl:"Ifowuni / WhatsApp",
+    sv_member_save_btn:"&#10003; Gcina Ilungu", sv_member_remove_btn:"Susa Ilungu"
   },
   ve:{
     back_btn:"&#8592; Vhuya",
@@ -3627,7 +3649,14 @@ var CONTENT_LANG = {
     hub_unpaidaccounts:"Diakhaundi dzi songo Lifhiwaho", hub_salesreport:"Muvhigo wa Thengiso",
     hub_databackup:"Data &amp; u vhulunga", hub_backupnow:"Vhulungani Zwino", hub_restorebackup:"Vhuisani zwo Vhulungiwaho",
     hub_datanote1:"&#128274; Data yaṋu yo tsireledzwa nga nḓila mbili", hub_datanote2:"kha tshishumiswa hetshi — a hu na tshine tsha rumelwa kha server.",
-    hub_datanote3:"Kwamani", hub_datanote4:"nga nṱha u vhulunga khophi ine na nga i vhuisa kha tshishumiswa tshiṅwe na tshiṅwe."
+    hub_datanote3:"Kwamani", hub_datanote4:"nga nṱha u vhulunga khophi ine na nga i vhuisa kha tshishumiswa tshiṅwe na tshiṅwe.",
+    sv_new:"&#43; Zwiswa", sv_name_lbl:"Dzina ḽa stokvel", sv_amount_lbl:"Mali ya mbadelo (R)", sv_freq_lbl:"Vhukhathihu",
+    sv_save:"&#10003; Vhulunga Stokvel", sv_delete:"Bvisani Stokvel", sv_total_pool:"Mali yoṱhe", sv_members_lbl:"Miraḓo",
+    sv_next_payout:"Mbadelo i tevhelaho", sv_add_member:"&#43; Engedzani muraḓo", sv_record_contrib:"Ṅwalani Mbadelo",
+    sv_record_contribution_btn:"&#10003; Ṅwalani Mbadelo", sv_contrib_history:"Ndivho ya mbadelo",
+    sv_rotation_payouts:"Mbadelo dza u renda", sv_record_payout_btn:"&#10003; Ṅwalani Mbadelo kha Muraḓo i Tevhelaho",
+    sv_send_statement:"&#128172; Rumela Mbiko wa Muraḓo nga WhatsApp", sv_fullname_lbl:"Dzina ḽoṱhe", sv_phone_lbl:"Luṱingo / WhatsApp",
+    sv_member_save_btn:"&#10003; Vhulungani Muraḓo", sv_member_remove_btn:"Bvisani Muraḓo"
   },
   st:{
     back_btn:"&#8592; Morao",
@@ -3646,7 +3675,14 @@ var CONTENT_LANG = {
     hub_unpaidaccounts:"Liak'haonto tse sa Lefshoang", hub_salesreport:"Tlaleho ea Thekiso",
     hub_databackup:"Data &amp; bakeap", hub_backupnow:"Etsa Bakeap Hona Joale", hub_restorebackup:"Khutlisa Bakeap",
     hub_datanote1:"&#128274; Data ea hau e sirelelitsoe ka litsela tse peli", hub_datanote2:"sesebelisoang sena — ha ho letho le romelloang seva.",
-    hub_datanote3:"Tobetsa", hub_datanote4:"ka holimo ho boloka kopi eo u ka e khutlisang ho tsoa sesebelisoang sefe kapa sefe."
+    hub_datanote3:"Tobetsa", hub_datanote4:"ka holimo ho boloka kopi eo u ka e khutlisang ho tsoa sesebelisoang sefe kapa sefe.",
+    sv_new:"&#43; E Ncha", sv_name_lbl:"Lebitso la setokofele", sv_amount_lbl:"Chelete ea monehelo (R)", sv_freq_lbl:"Makhetlo",
+    sv_save:"&#10003; Boloka Setokofele", sv_delete:"Hlakola Setokofele", sv_total_pool:"Kakaretso ea chelete", sv_members_lbl:"Litho",
+    sv_next_payout:"Tefo e latelang", sv_add_member:"&#43; Kenya setho", sv_record_contrib:"Ngola Monehelo",
+    sv_record_contribution_btn:"&#10003; Ngola Monehelo", sv_contrib_history:"Nalane ea menehelo",
+    sv_rotation_payouts:"Litefo tsa ho pota-pota", sv_record_payout_btn:"&#10003; Ngola Tefo ho Setho se Latelang",
+    sv_send_statement:"&#128172; Romela Tlaleho ea Setho ka WhatsApp", sv_fullname_lbl:"Lebitso le felletseng", sv_phone_lbl:"Mohala / WhatsApp",
+    sv_member_save_btn:"&#10003; Boloka Setho", sv_member_remove_btn:"Tlosa Setho"
   }
 };
 function applyContentLang(lang){
@@ -3661,6 +3697,93 @@ function applyContentLang(lang){
     if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
     if(c[k]) el.innerHTML = c[k];
   });
+}
+/* Strings used inside JS-rendered list/empty-state/alert content (stokvel etc.) */
+var IV_STR = {
+  en:{
+    no_stokvels:"No stokvels yet", create_first_stokvel:"&#43; Create your first stokvel", members_word:"member(s)",
+    add_members_rotation:"Add members to set up the rotation order", next_in_rotation:"Next in rotation",
+    no_members_yet:"No members yet", no_phone:"No phone", contributed:"contributed", select_member_opt:"— Select member —",
+    no_contributions_yet:"No contributions recorded yet", unknown:"Unknown", no_payouts_yet:"No payouts recorded yet",
+    alert_name_required:"Please enter a stokvel name.", confirm_delete:"Delete this stokvel and all its member/contribution records? This cannot be undone.",
+    alert_member_name_required:"Please enter a member name.", confirm_remove_member:"Remove this member from the stokvel?",
+    alert_member_has_history:"This member has contribution or payout history and cannot be removed, to keep the stokvel records accurate. You can still edit their details.",
+    alert_select_member:"Please select a member.", alert_add_members_first:"Add members before recording a payout.",
+    confirm_record_payout:"Record a payout of {amount} to {name}? This advances the rotation to the next member.",
+    member_statement_title:"{name} — member statement", member_contributed_line:"{name}: {amount} contributed", total_pool_line:"Total pool: {amount}",
+    freq_weekly:"weekly", freq_monthly:"monthly"
+  },
+  af:{
+    no_stokvels:"Nog geen stokvels nie", create_first_stokvel:"&#43; Skep jou eerste stokvel", members_word:"lede",
+    add_members_rotation:"Voeg lede by om die rotasievolgorde op te stel", next_in_rotation:"Volgende in rotasie",
+    no_members_yet:"Nog geen lede nie", no_phone:"Geen foon nie", contributed:"bygedra", select_member_opt:"— Kies lid —",
+    no_contributions_yet:"Nog geen bydraes aangeteken nie", unknown:"Onbekend", no_payouts_yet:"Nog geen uitbetalings aangeteken nie",
+    alert_name_required:"Voer asseblief 'n stokvelnaam in.", confirm_delete:"Skrap hierdie stokvel en al sy lid-/bydraerekords? Dit kan nie ontdaan word nie.",
+    alert_member_name_required:"Voer asseblief 'n lidnaam in.", confirm_remove_member:"Verwyder hierdie lid van die stokvel?",
+    alert_member_has_history:"Hierdie lid het 'n bydrae- of uitbetalingsgeskiedenis en kan nie verwyder word nie, om die stokvelrekords akkuraat te hou. Jy kan steeds hul besonderhede wysig.",
+    alert_select_member:"Kies asseblief 'n lid.", alert_add_members_first:"Voeg lede by voordat jy 'n uitbetaling aanteken.",
+    confirm_record_payout:"Rekordeer 'n uitbetaling van {amount} aan {name}? Dit skuif die rotasie na die volgende lid.",
+    member_statement_title:"{name} — lidstaat", member_contributed_line:"{name}: {amount} bygedra", total_pool_line:"Totale poel: {amount}",
+    freq_weekly:"weekliks", freq_monthly:"maandeliks"
+  },
+  zu:{
+    no_stokvels:"Azikho izitokvela okwamanje", create_first_stokvel:"&#43; Dala istokvela sakho sokuqala", members_word:"amalungu",
+    add_members_rotation:"Engeza amalungu ukuze usethe uhlelo lokujikeleza", next_in_rotation:"Olandelayo ekujikelezeni",
+    no_members_yet:"Awekho amalungu okwamanje", no_phone:"Alukho ucingo", contributed:"kunikelwe", select_member_opt:"— Khetha ilungu —",
+    no_contributions_yet:"Awekho eminikelo ebhaliwe okwamanje", unknown:"Akwaziwa", no_payouts_yet:"Azikho izinkokhelo ezibhaliwe okwamanje",
+    alert_name_required:"Sicela ufake igama lestokvela.", confirm_delete:"Susa lesi sitokvela nazo zonke izinkomba zamalungu/imnikelo? Lokhu ngeke kwenziwe kabusha.",
+    alert_member_name_required:"Sicela ufake igama lelungu.", confirm_remove_member:"Susa leli lungu kulesi sitokvela?",
+    alert_member_has_history:"Leli lungu linomlando wemnikelo noma inkokhelo futhi ngeke lisuswe, ukuze irekhodi lestokvela lihlale linembile. Usengakwazi ukuhlela imininingwane yalo.",
+    alert_select_member:"Sicela ukhethe ilungu.", alert_add_members_first:"Engeza amalungu ngaphambi kokubhala inkokhelo.",
+    confirm_record_payout:"Bhala inkokhelo ka-{amount} ku-{name}? Lokhu kuqhubekisela ukujikeleza kulungu elilandelayo.",
+    member_statement_title:"{name} — isitatimende selungu", member_contributed_line:"{name}: {amount} kunikelwe", total_pool_line:"Isamba sonke: {amount}",
+    freq_weekly:"ngeviki", freq_monthly:"ngenyanga"
+  },
+  xh:{
+    no_stokvels:"Azikho iistokfela okwangoku", create_first_stokvel:"&#43; Yenza istokfela sakho sokuqala", members_word:"amalungu",
+    add_members_rotation:"Yongeza amalungu ukuze umisele ucwangciso lokujikeleza", next_in_rotation:"Olandelayo ekujikelezeni",
+    no_members_yet:"Akekho amalungu okwangoku", no_phone:"Ayikho ifowuni", contributed:"kunikelwe", select_member_opt:"— Khetha ilungu —",
+    no_contributions_yet:"Azikho iigalelo ezirekhodiweyo okwangoku", unknown:"Akwaziwa", no_payouts_yet:"Azikho iintlawulo ezirekhodiweyo okwangoku",
+    alert_name_required:"Nceda ufake igama lestokfela.", confirm_delete:"Cima esi sitokfela nazo zonke iirekhodi zamalungu/amagalelo? Oku akunakuguqulwa.",
+    alert_member_name_required:"Nceda ufake igama lelungu.", confirm_remove_member:"Susa eli lungu kwesi sitokfela?",
+    alert_member_has_history:"Eli lungu linembali yegalelo okanye yentlawulo kwaye alinakususwa, ukugcina iirekhodi zestokfela zichanekile. Usenako ukuhlela iinkcukacha zalo.",
+    alert_select_member:"Nceda ukhethe ilungu.", alert_add_members_first:"Yongeza amalungu ngaphambi kokurekhoda intlawulo.",
+    confirm_record_payout:"Rekhoda intlawulo ka-{amount} ku-{name}? Oku kuqhubela phambili ukujikeleza kulungu elilandelayo.",
+    member_statement_title:"{name} — ingxelo yelungu", member_contributed_line:"{name}: {amount} kunikelwe", total_pool_line:"Isixa sipheleleyo: {amount}",
+    freq_weekly:"ngeveki", freq_monthly:"ngenyanga"
+  },
+  ve:{
+    no_stokvels:"A hu na stokvel zwino", create_first_stokvel:"&#43; Bveledzani stokvel yaṋu ya u thoma", members_word:"miraḓo",
+    add_members_rotation:"Engedzani miraḓo u itela u dzudzanya u renda", next_in_rotation:"I tevhelaho kha u renda",
+    no_members_yet:"A hu na miraḓo zwino", no_phone:"A hu na luṱingo", contributed:"yo ṱusiwa", select_member_opt:"— Nangani muraḓo —",
+    no_contributions_yet:"A hu na mbadelo dzo ṅwalwaho zwino", unknown:"A zwi ḓivhei", no_payouts_yet:"A hu na mbadelo dzo ṅwalwaho zwino",
+    alert_name_required:"Ni ṅwalise dzina ḽa stokvel.", confirm_delete:"Bvisani stokvel iyi na zwiṅwalwa zwoṱhe zwa miraḓo/mbadelo? Hezwi a zwi nga vhuedziwi.",
+    alert_member_name_required:"Ni ṅwalise dzina ḽa muraḓo.", confirm_remove_member:"Bvisani muraḓo uyu kha stokvel?",
+    alert_member_has_history:"Muraḓo uyu u na ndivho ya mbadelo kana u lifhiwa nahone a nga bviswi, u itela u tsireledza zwiṅwalwa zwa stokvel zwi tshi khwaṱha. Ni nga kha ḓi dzudzanya mafhungo awe.",
+    alert_select_member:"Ni khetheni muraḓo.", alert_add_members_first:"Engedzani miraḓo hu sa athu u ṅwalwa mbadelo.",
+    confirm_record_payout:"Ṅwalani mbadelo ya {amount} kha {name}? Hezwi zwi ita uri u renda hu ye kha muraḓo i tevhelaho.",
+    member_statement_title:"{name} — mbiko wa muraḓo", member_contributed_line:"{name}: {amount} yo ṱusiwa", total_pool_line:"Mali yoṱhe: {amount}",
+    freq_weekly:"vhege iṅwe na iṅwe", freq_monthly:"ṅwedzi muṅwe na muṅwe"
+  },
+  st:{
+    no_stokvels:"Ha ho na litokofele haesale", create_first_stokvel:"&#43; Theha setokofele sa hau sa pele", members_word:"litho",
+    add_members_rotation:"Kenya litho ho hlophisa tatelano ea ho pota-pota", next_in_rotation:"E latelang phetohong",
+    no_members_yet:"Ha ho na litho haesale", no_phone:"Ha ho na mohala", contributed:"e file", select_member_opt:"— Khetha setho —",
+    no_contributions_yet:"Ha ho na menehelo e ngotsoeng haesale", unknown:"Ha e tsejoe", no_payouts_yet:"Ha ho na litefo tse ngotsoeng haesale",
+    alert_name_required:"Ka kopo kenya lebitso la setokofele.", confirm_delete:"Hlakola setokofele sena le litlaleho tsohle tsa litho/menehelo? Sena ha se khone ho khutlisoa.",
+    alert_member_name_required:"Ka kopo kenya lebitso la setho.", confirm_remove_member:"Tlosa setho sena ho setokofele?",
+    alert_member_has_history:"Setho sena se na nalane ea menehelo kapa tefo mme se ke ke sa tlosoa, e le ho boloka litlaleho tsa setokofele li nepahetse. U sa ntse u ka fetola lintlha tsa sona.",
+    alert_select_member:"Ka kopo khetha setho.", alert_add_members_first:"Kenya litho pele u ngola tefo.",
+    confirm_record_payout:"Ngola tefo ea {amount} ho {name}? Sena se tsoela pele phetoho ho ea sethong se latelang.",
+    member_statement_title:"{name} — tlaleho ea setho", member_contributed_line:"{name}: {amount} e file", total_pool_line:"Kakaretso ea chelete: {amount}",
+    freq_weekly:"beke le beke", freq_monthly:"khoeli le khoeli"
+  }
+};
+function ivStr(key, vars){
+  var d = (IV_STR[G.lang] && IV_STR[G.lang][key]) ? IV_STR[G.lang] : IV_STR.en;
+  var s = d[key] || IV_STR.en[key] || key;
+  if(vars){ for(var k in vars){ s = s.split('{'+k+'}').join(vars[k]); } }
+  return s;
 }
 
 /* ══ CAMERA ══ */

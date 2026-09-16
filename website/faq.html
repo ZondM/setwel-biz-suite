@@ -136,9 +136,9 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 
 <div class="page-hero">
 <div class="wrap">
-<span class="s-label">Help Centre</span>
-<h1>Got questions? <em>We've got answers.</em></h1>
-<p>Search below or browse by topic. Still stuck? Our SA-based team is one WhatsApp message away.</p>
+<span class="s-label" data-i18n="fq_eye">Help Centre</span>
+<h1 data-i18n-html="fq_h1">Got questions? <em>We've got answers.</em></h1>
+<p data-i18n="fq_sub">Search below or browse by topic. Still stuck? Our SA-based team is one WhatsApp message away.</p>
 <div class="search-box">
 <input type="text" id="faq-search" placeholder="Search FAQs — e.g. VAT201, backup, IRP5..." onkeydown="if(event.key==='Enter')searchFaq(this.value)">
 <button onclick="searchFaq(document.getElementById('faq-search').value)">&#128269;</button>
@@ -149,30 +149,30 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 <div class="wrap">
 <div class="faq-layout">
 <div class="faq-sidebar">
-<h3>Topics</h3>
+<h3 data-i18n="fq_topics">Topics</h3>
 <ul>
-<li><a href="#install">&#128759; Installation</a></li>
-<li><a href="#account">&#128203; Your Account</a></li>
-<li><a href="#invoicing">&#129534; Invoicing</a></li>
-<li><a href="#payroll">&#128084; Payroll</a></li>
-<li><a href="#vat">&#127963; VAT &amp; SARS</a></li>
-<li><a href="#spaza">&#127978; Spaza &amp; Cash</a></li>
-<li><a href="#inventory">&#128230; Inventory</a></li>
-<li><a href="#scan">&#128247; Camera Scan</a></li>
-<li><a href="#backup">&#128190; Backup &amp; Data</a></li>
-<li><a href="#troubleshoot">&#128295; Troubleshooting</a></li>
+<li><a href="#install" data-i18n="fq_t1">&#128759; Installation</a></li>
+<li><a href="#account" data-i18n="fq_t2">&#128203; Your Account</a></li>
+<li><a href="#invoicing" data-i18n="fq_t3">&#129534; Invoicing</a></li>
+<li><a href="#payroll" data-i18n="fq_t4">&#128084; Payroll</a></li>
+<li><a href="#vat" data-i18n="fq_t5">&#127963; VAT &amp; SARS</a></li>
+<li><a href="#spaza" data-i18n="fq_t6">&#127978; Spaza &amp; Cash</a></li>
+<li><a href="#inventory" data-i18n="fq_t7">&#128230; Inventory</a></li>
+<li><a href="#scan" data-i18n="fq_t8">&#128247; Camera Scan</a></li>
+<li><a href="#backup" data-i18n="fq_t9">&#128190; Backup &amp; Data</a></li>
+<li><a href="#troubleshoot" data-i18n="fq_t10">&#128295; Troubleshooting</a></li>
 </ul>
 <div style="margin-top:24px;background:var(--dark2);border:1px solid var(--orange-border);border-radius:12px;padding:16px">
-<div style="font-size:.8rem;font-weight:700;color:var(--orange);margin-bottom:6px">&#128172; Need more help?</div>
-<div style="font-size:.8rem;color:var(--ink2)">WhatsApp us — fastest response</div>
-<a href="https://wa.me/27820829050" style="display:block;margin-top:10px;background:var(--orange);color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:.82rem;font-weight:700">Open WhatsApp &#8594;</a>
+<div style="font-size:.8rem;font-weight:700;color:var(--orange);margin-bottom:6px" data-i18n="fq_needmore">&#128172; Need more help?</div>
+<div style="font-size:.8rem;color:var(--ink2)" data-i18n="fq_fastest">WhatsApp us — fastest response</div>
+<a href="https://wa.me/27820829050" style="display:block;margin-top:10px;background:var(--orange);color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:.82rem;font-weight:700" data-i18n="fq_openwa">Open WhatsApp &#8594;</a>
 </div>
 </div>
 
 <div class="faq-main">
 
 <div class="faq-cat" id="install">
-<h2>&#128759; Installation &amp; Setup</h2>
+<h2 data-i18n="fq_h_install">&#128759; Installation &amp; Setup</h2>
 <details open class="faq-item"><summary>How do I install Setwel Biz Suite on Windows?</summary><div class="faq-ans"><strong>3 steps:</strong><ol><li>Download the installer from <a href="download.html">setwelbusiness.co.za/download</a></li><li>Double-click the <code>.exe</code> file. If Windows shows "Unknown publisher" — click More info → Run anyway. This is normal for new software.</li><li>The Setup Wizard opens. Enter your business details and your 30-day free trial begins immediately.</li></ol></div></details>
 <details class="faq-item"><summary>How do I install it on my Android phone?</summary><div class="faq-ans"><strong>No app store needed:</strong><ol><li>Open <a href="mobile.html">setwelbusiness.co.za/mobile.html</a> in Chrome on your Android</li><li>Tap the Chrome menu (three dots) → Add to Home Screen</li><li>Tap "Add" — the app icon appears on your home screen</li><li>Open it from your home screen — works offline immediately</li></ol>Works on any Android from about R500 with Chrome installed.</div></details>
 <details class="faq-item"><summary>Can I install it on multiple computers?</summary><div class="faq-ans">Yes. Your licence allows installation on all your own devices — Windows PC at the office, laptop at home, phone. Each device stores its own data. To move data between devices, use the Export → CSV feature from Settings, then Import on the new device.</div></details>
@@ -180,7 +180,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="faq-cat" id="account">
-<h2>&#128203; Account &amp; Subscription</h2>
+<h2 data-i18n="fq_h_account">&#128203; Account &amp; Subscription</h2>
 <details class="faq-item"><summary>How does the 30-day free trial work?</summary><div class="faq-ans">Download the app and start immediately — <strong>no credit card required.</strong> You have full access to all features for 30 days. On day 31, you'll see a subscription prompt. Your data is preserved regardless of whether you subscribe.</div></details>
 <details class="faq-item"><summary>What happens when my trial ends?</summary><div class="faq-ans">The app shows a subscription screen. Your data is never deleted. Subscribe to continue using all features, or export your data via CSV from the trial-ended screen at any time.</div></details>
 <details class="faq-item"><summary>Can I switch plans?</summary><div class="faq-ans">Yes, anytime. WhatsApp us at +27 82 082 9050 or email support@setwelbusiness.co.za and we'll switch your plan the same day. Upgrades apply immediately. Downgrades apply at your next billing date so you don't lose time you've already paid for.</div></details>
@@ -188,7 +188,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="faq-cat" id="invoicing">
-<h2>&#129534; Invoicing &amp; Quotes</h2>
+<h2 data-i18n="fq_h_invoicing">&#129534; Invoicing &amp; Quotes</h2>
 <details class="faq-item"><summary>How do I create my first invoice?</summary><div class="faq-ans">Go to Invoices → New Invoice. Select or create a customer, add line items, set VAT. The invoice number, date, and your business details are filled in automatically. Tap Save → Send via WhatsApp or PDF email. Done.</div></details>
 <details class="faq-item"><summary>How do I send an invoice via WhatsApp?</summary><div class="faq-ans">On any invoice, tap the WhatsApp icon. The app generates a PDF and opens WhatsApp with it attached and a pre-written message ready to send. You just select the customer's contact and hit send.</div></details>
 <details class="faq-item"><summary>How do I convert a quote to an invoice?</summary><div class="faq-ans">Open the quote → tap "Convert to Invoice". All line items, pricing, and customer details transfer automatically. The original quote is marked as Accepted. One tap — done.</div></details>
@@ -196,7 +196,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="faq-cat" id="payroll">
-<h2>&#128084; Payroll &amp; IRP5</h2>
+<h2 data-i18n="fq_h_payroll">&#128084; Payroll &amp; IRP5</h2>
 <details class="faq-item"><summary>How do I run payroll?</summary><div class="faq-ans">Go to Payroll → New Pay Run → select the month. Add employees or select existing ones. The app calculates PAYE, UIF, and SDL automatically using current SARS rates. Review the payslips → tap "Generate All Payslips". Send each payslip via WhatsApp or PDF.</div></details>
 <details class="faq-item"><summary>What tax rates does it use?</summary><div class="faq-ans">Setwel Biz Suite uses the official <strong>current SARS tax year rates</strong> — updated every February after the Budget Speech. PAYE uses the sliding scale tax tables. UIF is 2% of gross (1% employee, 1% employer). SDL is 1% of gross payroll above R500,000 per year.</div></details>
 <details class="faq-item"><summary>How do I generate IRP5 certificates?</summary><div class="faq-ans">Go to Payroll → Year-End → IRP5 Certificates. Select the tax year. The app generates an IRP5 for every employee with all year-to-date earnings and deductions. Print or save as PDF for each employee and for your SARS submission.</div></details>
@@ -204,21 +204,21 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="faq-cat" id="vat">
-<h2>&#127963; VAT &amp; SARS</h2>
+<h2 data-i18n="fq_h_vat">&#127963; VAT &amp; SARS</h2>
 <details class="faq-item"><summary>How do I prepare my VAT201 return?</summary><div class="faq-ans">Go to Reports → VAT Report → select your VAT period (usually 2 months). The app calculates your output VAT (from sales), input VAT (from supplier invoices you've captured), and your net liability or refund. Export as PDF — the format matches exactly what SARS needs for eFiling.</div></details>
 <details class="faq-item"><summary>When must I register for VAT?</summary><div class="faq-ans">You must register for VAT if your taxable turnover exceeds <strong>R1,000,000 per year.</strong> You may register voluntarily at R50,000 per year. Setwel tracks your year-to-date revenue and will alert you when you approach the threshold. Contact SARS or a tax practitioner for registration assistance.</div></details>
 <details class="faq-item"><summary>What if I make a VAT mistake?</summary><div class="faq-ans">Correct it before submission — simply edit the transaction and re-run the VAT report. If you've already submitted and need to correct it, SARS allows a VDP (Voluntary Disclosure Programme). Contact your tax practitioner for guidance on corrections.</div></details>
 </div>
 
 <div class="faq-cat" id="spaza">
-<h2>&#127978; Spaza &amp; Cash Businesses</h2>
+<h2 data-i18n="fq_h_spaza">&#127978; Spaza &amp; Cash Businesses</h2>
 <details class="faq-item"><summary>How does the cash float tracker work?</summary><div class="faq-ans">Open your app each morning → tap Cash Float → enter your opening float amount. Record each cash sale throughout the day. At closing, tap Close Day → count your till → the app shows you whether your cash balances. Any difference is flagged immediately.</div></details>
 <details class="faq-item"><summary>How do I manage a stokvel?</summary><div class="faq-ans">Go to Stokvel Manager → New Stokvel. Add all members with their names and contact numbers. Record each monthly contribution. When it is someone's turn to receive, record the payout. All members can receive a WhatsApp statement showing their full contribution history.</div></details>
 <details class="faq-item"><summary>How does layby management work?</summary><div class="faq-ans">Create a new Layby from the Sales menu. Enter the item, total price, deposit, and collection date. The app tracks outstanding balance. When the customer pays their next instalment, record it. A WhatsApp reminder is sent automatically 3 days before the collection date.</div></details>
 </div>
 
 <div class="faq-cat" id="inventory">
-<h2>&#128230; Inventory &amp; Stock</h2>
+<h2 data-i18n="fq_h_inventory">&#128230; Inventory &amp; Stock</h2>
 <details class="faq-item"><summary>How do I add stock to my inventory?</summary><div class="faq-ans">Go to Inventory → New Product. Enter a description, SKU, cost price, sale price and VAT rate, then set an opening quantity. From that point, stock updates automatically every time you invoice a sale or receive a supplier delivery — no manual recounting.</div></details>
 <details class="faq-item"><summary>How do low stock alerts work?</summary><div class="faq-ans">Set a minimum quantity per product in its settings. When stock falls at or below that number, an alert appears on your dashboard and can be sent to WhatsApp so you can reorder before you actually run out.</div></details>
 <details class="faq-item"><summary>Can I track stock across more than one location?</summary><div class="faq-ans">Yes. Builder tier and above supports multiple warehouses or storerooms, each with its own stock levels, so you always know what's on hand at each site.</div></details>
@@ -226,33 +226,33 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="faq-cat" id="scan">
-<h2>&#128247; Camera Invoice Scanning</h2>
+<h2 data-i18n="fq_h_scan">&#128247; Camera Invoice Scanning</h2>
 <details class="faq-item"><summary>How do I scan an invoice or receipt?</summary><div class="faq-ans">In the app, tap the camera icon. Point your phone's rear camera at the invoice — align it inside the orange frame. Tap the capture button. The AI reads the supplier name, invoice number, date, line items, VAT, and total automatically. Review the extracted data → tap Save.</div></details>
 <details class="faq-item"><summary>The camera won't open. What do I do?</summary><div class="faq-ans">This is usually a browser permissions issue. In Chrome on Android: tap the lock icon in the address bar → Permissions → Camera → Allow. Then tap Retry. On iPhone: Go to Settings → Safari or Chrome → Camera → Allow.</div></details>
 <details class="faq-item"><summary>The AI read the invoice incorrectly. What do I do?</summary><div class="faq-ans">Tap any field in the results to edit it manually. Common causes: poor lighting, crumpled paper, faded ink. For best results: good lighting, phone held steady, full invoice visible in the frame. The AI's confidence level (High/Medium/Low) tells you how reliable the scan was.</div></details>
 </div>
 
 <div class="faq-cat" id="backup">
-<h2>&#128190; Backup &amp; Data</h2>
+<h2 data-i18n="fq_h_backup">&#128190; Backup &amp; Data</h2>
 <details class="faq-item"><summary>How do I back up my data?</summary><div class="faq-ans">In Setwel Invoicing, go to <strong>Data &amp; Backup → Backup Now</strong>. This downloads a <code>.json</code> backup file you can save to Google Drive, WhatsApp to yourself, or copy to an external drive. Your data is also automatically saved on-device every time you make a change — the manual backup is your safety copy in case you switch devices or clear your browser.</div></details>
 <details class="faq-item"><summary>How do I restore from a backup?</summary><div class="faq-ans">Go to <strong>Data &amp; Backup → Restore Backup</strong> and select your <code>.json</code> file. This replaces the current data on the device with your backup, after showing you exactly what's in the file. Always export a current backup before restoring, in case you need to go back.</div></details>
 <details class="faq-item"><summary>Is my data safe if my phone or computer breaks?</summary><div class="faq-ans">Your data is on your device only — if the device breaks without a backup, data may be lost. This is why <strong>regular backups are critical.</strong> Email yourself a backup weekly, or save it to Google Drive. It takes 10 seconds.</div></details>
 </div>
 
 <div class="faq-cat" id="troubleshoot">
-<h2>&#128295; Troubleshooting</h2>
+<h2 data-i18n="fq_h_trouble">&#128295; Troubleshooting</h2>
 <details class="faq-item"><summary>The app won't open after Windows update</summary><div class="faq-ans">Try running as Administrator: right-click the shortcut → Run as administrator. If that doesn't work, reinstall from <a href="download.html">setwelbusiness.co.za/download</a> — your data is not affected by reinstalling. Contact support if the issue persists.</div></details>
 <details class="faq-item"><summary>The mobile app or invoicing screen looks blank or won't open</summary><div class="faq-ans">Refresh the page — hard-refresh if you can (clear the browser cache for setwelbusiness.co.za, or open in a private/incognito tab) since your browser may be showing an older cached version. If it still doesn't open, WhatsApp us at <a href="https://wa.me/27820829050">+27 82 082 9050</a> and we'll help right away.</div></details>
 <details class="faq-item"><summary>My invoice numbers look wrong or out of order</summary><div class="faq-ans">Invoice numbers are generated automatically in sequence (INV-0001, INV-0002...) and cannot currently be customised or renumbered — this keeps your numbering audit-safe for SARS. If you have a specific numbering requirement for your business, WhatsApp us and we'll look into it.</div></details>
 </div>
 
 <div class="still-stuck">
-<h3>Still stuck? Our team is here.</h3>
-<p>Our SA-based support team responds same day. WhatsApp is fastest — we usually reply within an hour.</p>
+<h3 data-i18n="fq_stuck_h3">Still stuck? Our team is here.</h3>
+<p data-i18n="fq_stuck_p">Our SA-based support team responds same day. WhatsApp is fastest — we usually reply within an hour.</p>
 <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-<a href="https://wa.me/27820829050" class="btn btn-primary">&#128172; WhatsApp Us</a>
-<a href="mailto:support@setwelbusiness.co.za" class="btn btn-outline">Email support</a>
-<a href="contact.html" class="btn btn-outline">Contact form</a>
+<a href="https://wa.me/27820829050" class="btn btn-primary" data-i18n="fq_stuck_wa">&#128172; WhatsApp Us</a>
+<a href="mailto:support@setwelbusiness.co.za" class="btn btn-outline" data-i18n="fq_stuck_email">Email support</a>
+<a href="contact.html" class="btn btn-outline" data-i18n="fq_stuck_form">Contact form</a>
 </div>
 </div>
 </div>
@@ -260,7 +260,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <footer><div class="wrap">
-<div class="f-links"><a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a><a href="tax-calculator.html">Tax Calculator</a><a href="download.html">Download</a></div>
+<div class="f-links"><a href="index.html" data-nk="home">Home</a><a href="features.html" data-nk="feat">Features</a><a href="pricing.html" data-nk="price">Pricing</a><a href="about.html" data-nk="about">About</a><a href="contact.html" data-nk="contact">Contact</a><a href="faq.html" data-nk="help">Help</a><a href="tax-calculator.html" data-i18n="foot_taxcalc">Tax Calculator</a><a href="download.html" data-i18n="foot_download">Download</a></div>
 <div class="f-copy">&#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
 </div></footer>
 <script>
@@ -282,6 +282,88 @@ function setLang(lang,btn){
   document.querySelectorAll('[data-nk]').forEach(function(el){
     var k = el.getAttribute('data-nk');
     if(t[k]) el.textContent = t[k];
+  });
+  applyContentLang(lang);
+}
+/* Full page content translation — hero, sidebar topics, category headings, "still stuck" box, footer */
+var CONTENT_LANG = {
+  af:{
+    fq_eye:"Hulpsentrum", fq_h1:"Het jy vrae? <em>Ons het antwoorde.</em>",
+    fq_sub:"Soek hieronder of blaai volgens onderwerp. Steeds vasgevang? Ons SA-gebaseerde span is een WhatsApp-boodskap weg.",
+    fq_topics:"Onderwerpe",
+    fq_t1:"&#128759; Installasie", fq_t2:"&#128203; Jou Rekening", fq_t3:"&#129534; Fakturering", fq_t4:"&#128084; Salarisse", fq_t5:"&#127963; BTW &amp; SARS", fq_t6:"&#127978; Spaza &amp; Kontant", fq_t7:"&#128230; Voorraad", fq_t8:"&#128247; Kameraskandering", fq_t9:"&#128190; Rugsteun &amp; Data", fq_t10:"&#128295; Probleemoplossing",
+    fq_needmore:"&#128172; Meer hulp nodig?", fq_fastest:"WhatsApp ons — vinnigste reaksie", fq_openwa:"Maak WhatsApp oop &#8594;",
+    fq_h_install:"&#128759; Installasie &amp; Opstelling", fq_h_account:"&#128203; Rekening &amp; Intekening", fq_h_invoicing:"&#129534; Fakturering &amp; Kwotasies",
+    fq_h_payroll:"&#128084; Salarisse &amp; IRP5", fq_h_vat:"&#127963; BTW &amp; SARS", fq_h_spaza:"&#127978; Spaza- &amp; Kontantbesighede",
+    fq_h_inventory:"&#128230; Voorraad", fq_h_scan:"&#128247; Kameraskandering van Fakture", fq_h_backup:"&#128190; Rugsteun &amp; Data", fq_h_trouble:"&#128295; Probleemoplossing",
+    fq_stuck_h3:"Steeds vasgevang? Ons span is hier.", fq_stuck_p:"Ons SA-gebaseerde ondersteuningspan reageer dieselfde dag. WhatsApp is vinnigste — ons antwoord gewoonlik binne 'n uur.",
+    fq_stuck_wa:"&#128172; WhatsApp Ons", fq_stuck_email:"E-pos ondersteuning", fq_stuck_form:"Kontakvorm",
+    foot_taxcalc:"Belastingberekenaar", foot_download:"Aflaai"
+  },
+  zu:{
+    fq_eye:"Isikhungo Sosizo", fq_h1:"Unemibuzo? <em>Sinezimpendulo.</em>",
+    fq_sub:"Sesha ngezansi noma uphequlule ngesihloko. Usalibele? Ithimba lethu elisekelwe e-SA likude nomlayezo owodwa we-WhatsApp.",
+    fq_topics:"Izihloko",
+    fq_t1:"&#128759; Ukufaka", fq_t2:"&#128203; I-Akhawunti Yakho", fq_t3:"&#129534; Ukukhishwa Kwezimali", fq_t4:"&#128084; Amaholo", fq_t5:"&#127963; I-VAT &amp; I-SARS", fq_t6:"&#127978; Isipaza &amp; Imali", fq_t7:"&#128230; Impahla", fq_t8:"&#128247; Ukuskena Ngekhamera", fq_t9:"&#128190; Ukugcina &amp; Idatha", fq_t10:"&#128295; Ukuxazulula Izinkinga",
+    fq_needmore:"&#128172; Udinga usizo oluthe xaxa?", fq_fastest:"Sithinte nge-WhatsApp — impendulo esheshayo", fq_openwa:"Vula i-WhatsApp &#8594;",
+    fq_h_install:"&#128759; Ukufaka &amp; Ukusetha", fq_h_account:"&#128203; I-Akhawunti &amp; Ukubhalisela", fq_h_invoicing:"&#129534; Ukukhishwa Kwezimali &amp; Izicelo Zentengo",
+    fq_h_payroll:"&#128084; Amaholo &amp; I-IRP5", fq_h_vat:"&#127963; I-VAT &amp; I-SARS", fq_h_spaza:"&#127978; Amabhizinisi Esipaza &amp; Emali",
+    fq_h_inventory:"&#128230; Impahla", fq_h_scan:"&#128247; Ukuskena Ama-invoyisi Ngekhamera", fq_h_backup:"&#128190; Ukugcina &amp; Idatha", fq_h_trouble:"&#128295; Ukuxazulula Izinkinga",
+    fq_stuck_h3:"Usalibele? Ithimba lethu likhona.", fq_stuck_p:"Ithimba lethu losizo elisekelwe e-SA liphendula ngosuku olufanayo. I-WhatsApp isheshayo kunazo zonke — ngokuvamile siphendula ngaphakathi kwehora.",
+    fq_stuck_wa:"&#128172; Sithinte nge-WhatsApp", fq_stuck_email:"Usizo nge-imeyili", fq_stuck_form:"Ifomu yokuxhumana",
+    foot_taxcalc:"Isibali Sentela", foot_download:"Ukulanda"
+  },
+  xh:{
+    fq_eye:"Iziko Loncedo", fq_h1:"Unemibuzo? <em>Sinazo iimpendulo.</em>",
+    fq_sub:"Khangela ngezantsi okanye ujonge ngomxholo. Usabambekile? Iqela lethu elisekwe eMzantsi Afrika likude nomyalezo omnye we-WhatsApp.",
+    fq_topics:"Imixholo",
+    fq_t1:"&#128759; Ufakelo", fq_t2:"&#128203; I-Akhawunti Yakho", fq_t3:"&#129534; Ukukhutshwa Kweetyala", fq_t4:"&#128084; Umvuzo", fq_t5:"&#127963; I-VAT &amp; I-SARS", fq_t6:"&#127978; Isipaza &amp; Imali", fq_t7:"&#128230; Izinto Ezigcinwe", fq_t8:"&#128247; Ukuskena Ngekhamera", fq_t9:"&#128190; Ukugcina &amp; Idatha", fq_t10:"&#128295; Ukusombulula Iingxaki",
+    fq_needmore:"&#128172; Ufuna uncedo olungakumbi?", fq_fastest:"Sifikelele nge-WhatsApp — impendulo ekhawulezayo", fq_openwa:"Vula i-WhatsApp &#8594;",
+    fq_h_install:"&#128759; Ufakelo &amp; Ukumiselwa", fq_h_account:"&#128203; I-Akhawunti &amp; Ubhaliso", fq_h_invoicing:"&#129534; Ukukhutshwa Kweetyala &amp; Iingcebiso",
+    fq_h_payroll:"&#128084; Umvuzo &amp; I-IRP5", fq_h_vat:"&#127963; I-VAT &amp; I-SARS", fq_h_spaza:"&#127978; Amashishini Esipaza &amp; Emali",
+    fq_h_inventory:"&#128230; Izinto Ezigcinwe", fq_h_scan:"&#128247; Ukuskena Iifektyisi Ngekhamera", fq_h_backup:"&#128190; Ukugcina &amp; Idatha", fq_h_trouble:"&#128295; Ukusombulula Iingxaki",
+    fq_stuck_h3:"Usabambekile? Iqela lethu likho.", fq_stuck_p:"Iqela lethu lenkxaso elisekwe eMzantsi Afrika liphendula ngayo loo mini. I-WhatsApp yeyona ikhawulezayo — ngokuqhelekileyo siphendula ngaphakathi kweyure.",
+    fq_stuck_wa:"&#128172; Sifikelele nge-WhatsApp", fq_stuck_email:"Inkxaso nge-imeyile", fq_stuck_form:"Ifom yoqhagamshelwano",
+    foot_taxcalc:"Isibalo Serhafu", foot_download:"Ukukhuphela"
+  },
+  ve:{
+    fq_eye:"Vhudzulo ha Thuso", fq_h1:"Ni na mbudziso? <em>Ri na dzipfindulo.</em>",
+    fq_sub:"Ṱoḓani nga fhasi kana sedzani nga thero. Ni kha di sa thoma? Thimu yashu yo ḓisendekaho Afrika Tshipembe i kule na mulaedza muthihi wa WhatsApp.",
+    fq_topics:"Thero",
+    fq_t1:"&#128759; U Dzhenisa", fq_t2:"&#128203; Akhaunthi Yaṋu", fq_t3:"&#129534; U bva Zwibammbiri", fq_t4:"&#128084; Mbadelo", fq_t5:"&#127963; VAT na SARS", fq_t6:"&#127978; Spaza na Tshelede", fq_t7:"&#128230; Thundu", fq_t8:"&#128247; U Vhala nga Khamera", fq_t9:"&#128190; U Vhulunga na Data", fq_t10:"&#128295; U Tandulula Thaidzo",
+    fq_needmore:"&#128172; Ni ṱoḓa thuso yo engedzeaho?", fq_fastest:"Ri swikeleleni nga WhatsApp — phindulo i ṱavhanyaho", fq_openwa:"Vulani WhatsApp &#8594;",
+    fq_h_install:"&#128759; U Dzhenisa na u Lugisela", fq_h_account:"&#128203; Akhaunthi na u Ṅwaliswa", fq_h_invoicing:"&#129534; U bva Zwibammbiri na Themendelo",
+    fq_h_payroll:"&#128084; Mbadelo na IRP5", fq_h_vat:"&#127963; VAT na SARS", fq_h_spaza:"&#127978; Mabindu a Spaza na Tshelede",
+    fq_h_inventory:"&#128230; Thundu", fq_h_scan:"&#128247; U Vhala Zwibammbiri nga Khamera", fq_h_backup:"&#128190; U Vhulunga na Data", fq_h_trouble:"&#128295; U Tandulula Thaidzo",
+    fq_stuck_h3:"Ni kha di sa thoma? Thimu yashu i hone.", fq_stuck_p:"Thimu yashu ya thuso yo ḓisendekaho Afrika Tshipembe i fhindula nga ḓuvha ḽitheo. WhatsApp ndi i ṱavhanyaho — kanzhi ri fhindula nga ngeno ha awara.",
+    fq_stuck_wa:"&#128172; Ri Vhudzeni nga WhatsApp", fq_stuck_email:"Thuso nga imeili", fq_stuck_form:"Fomo ya u Dzhenelela",
+    foot_taxcalc:"Tshibalo tsha Mutero", foot_download:"U Dzhenisa"
+  },
+  st:{
+    fq_eye:"Setsi sa Thuso", fq_h1:"Na u na le lipotso? <em>Re na le likarabo.</em>",
+    fq_sub:"Batla ka tlase kapa u sheba ka sehlooho. U sa tsoetse pele? Sehlopha sa rona se thehiloeng SA se hole ka molaetsa o le mong oa WhatsApp.",
+    fq_topics:"Lihlooho",
+    fq_t1:"&#128759; Ho Kenya", fq_t2:"&#128203; Ak'haonto ea Hau", fq_t3:"&#129534; Ho Ntša Lifekthara", fq_t4:"&#128084; Meputso", fq_t5:"&#127963; VAT le SARS", fq_t6:"&#127978; Spaza le Chelete", fq_t7:"&#128230; Thepa", fq_t8:"&#128247; Ho Hlahloba ka Kh'amera", fq_t9:"&#128190; Bakeap le Data", fq_t10:"&#128295; Ho Rarolla Mathata",
+    fq_needmore:"&#128172; Na u hloka thuso e eketsehileng?", fq_fastest:"Re fihlele ka WhatsApp — karabo e potlakileng", fq_openwa:"Bula WhatsApp &#8594;",
+    fq_h_install:"&#128759; Ho Kenya le Ho Hlophisa", fq_h_account:"&#128203; Ak'haonto le Boitsebiso", fq_h_invoicing:"&#129534; Ho Ntša Lifekthara le Lintlha tsa Theko",
+    fq_h_payroll:"&#128084; Meputso le IRP5", fq_h_vat:"&#127963; VAT le SARS", fq_h_spaza:"&#127978; Likhoebo tsa Spaza le Chelete",
+    fq_h_inventory:"&#128230; Thepa", fq_h_scan:"&#128247; Ho Hlahloba Lifekthara ka Kh'amera", fq_h_backup:"&#128190; Bakeap le Data", fq_h_trouble:"&#128295; Ho Rarolla Mathata",
+    fq_stuck_h3:"U sa tsoetse pele? Sehlopha sa rona se teng.", fq_stuck_p:"Sehlopha sa rona sa tšehetso se thehiloeng SA se araba letsatsi le le leng. WhatsApp ke eona e potlakileng — hangata re araba ka hare ho hora.",
+    fq_stuck_wa:"&#128172; Re Fihlele ka WhatsApp", fq_stuck_email:"Tšehetso ea imeile", fq_stuck_form:"Foromo ea Ikopano",
+    foot_taxcalc:"Sebali sa Lekhetho", foot_download:"Download"
+  }
+};
+function applyContentLang(lang){
+  if(lang==='en'){
+    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
+    return;
+  }
+  var c = CONTENT_LANG[lang];
+  if(!c) return;
+  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
+    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
+    if(c[k]) el.innerHTML = c[k];
   });
 }
 document.querySelectorAll(".lb-btn").forEach(function(b){

@@ -1383,7 +1383,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" data-i18n="t_spazafloat">Spaza Cash Float</span>
-    <button class="iv-back" onclick="ivTillNew()">&#43; Till</button>
+    <button class="iv-back" onclick="ivTillNew()" data-i18n="till_new">&#43; Till</button>
   </div>
   <div class="iv-form"><div id="iv-till-list"></div></div>
 </div>
@@ -1396,8 +1396,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Till / cashier name</label><input class="iv-input" id="tl-name" placeholder="e.g. Front Counter, or Nomsa's Till"></div>
-    <button class="iv-btn-primary" onclick="ivTillSave()">&#10003; Create Till</button>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_name_lbl">Till / cashier name</label><input class="iv-input" id="tl-name" placeholder="e.g. Front Counter, or Nomsa's Till"></div>
+    <button class="iv-btn-primary" onclick="ivTillSave()" data-i18n="till_create_btn">&#10003; Create Till</button>
   </div>
 </div>
 
@@ -1410,7 +1410,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   </div>
   <div class="iv-form">
     <div id="tl-today-panel"></div>
-    <div class="iv-section-lbl">Recent days</div>
+    <div class="iv-section-lbl" data-i18n="till_recent_days">Recent days</div>
     <div id="tl-history"></div>
   </div>
 </div>
@@ -1423,9 +1423,9 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Amount (R)</label><input class="iv-input" type="number" step="0.01" id="ts-amount" placeholder="0.00" autofocus></div>
-    <div class="iv-field"><label class="iv-label">Note (optional)</label><input class="iv-input" id="ts-note" placeholder="e.g. Airtime, Bread x5"></div>
-    <button class="iv-btn-primary" onclick="ivTillSaleSave()">&#10003; Add Sale to Till</button>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_amount_lbl">Amount (R)</label><input class="iv-input" type="number" step="0.01" id="ts-amount" placeholder="0.00" autofocus></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_note_lbl">Note (optional)</label><input class="iv-input" id="ts-note" placeholder="e.g. Airtime, Bread x5"></div>
+    <button class="iv-btn-primary" onclick="ivTillSaleSave()" data-i18n="till_add_sale_btn">&#10003; Add Sale to Till</button>
   </div>
 </div>
 
@@ -1438,15 +1438,15 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   </div>
   <div class="iv-form">
     <div class="iv-totals">
-      <div class="iv-tot-row"><span>Opening float</span><span id="tc-opening">R0.00</span></div>
-      <div class="iv-tot-row"><span>Cash sales today</span><span id="tc-sales">R0.00</span></div>
-      <div class="iv-tot-row grand"><span>Expected in till</span><span id="tc-expected">R0.00</span></div>
+      <div class="iv-tot-row"><span data-i18n="till_opening_float_lbl">Opening float</span><span id="tc-opening">R0.00</span></div>
+      <div class="iv-tot-row"><span data-i18n="till_cash_sales_today_lbl">Cash sales today</span><span id="tc-sales">R0.00</span></div>
+      <div class="iv-tot-row grand"><span data-i18n="till_expected_lbl">Expected in till</span><span id="tc-expected">R0.00</span></div>
     </div>
-    <div class="iv-field"><label class="iv-label">Actual cash counted in till (R)</label><input class="iv-input" type="number" step="0.01" id="tc-counted" placeholder="0.00" oninput="ivTillCloseRecalc()"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_actual_counted_lbl">Actual cash counted in till (R)</label><input class="iv-input" type="number" step="0.01" id="tc-counted" placeholder="0.00" oninput="ivTillCloseRecalc()"></div>
     <div class="iv-totals" id="tc-variance-box" style="display:none">
-      <div class="iv-tot-row grand"><span id="tc-variance-label">Variance</span><span id="tc-variance">R0.00</span></div>
+      <div class="iv-tot-row grand"><span id="tc-variance-label" data-i18n="till_variance_lbl">Variance</span><span id="tc-variance">R0.00</span></div>
     </div>
-    <button class="iv-btn-primary" onclick="ivTillCloseSave()">&#10003; Close Day</button>
+    <button class="iv-btn-primary" onclick="ivTillCloseSave()" data-i18n="till_close_day_btn">&#10003; Close Day</button>
   </div>
 </div>
 
@@ -2787,12 +2787,12 @@ function ivRenderTillList(){
   ivLoad();
   var el = document.getElementById('iv-till-list');
   if (!ivData.tills.length){
-    el.innerHTML = '<div class="iv-empty"><div class="iv-empty-ico">&#127978;</div><div class="iv-empty-t">No tills yet</div><button class="iv-btn-primary" onclick="ivTillNew()">&#43; Set up your first till</button></div>';
+    el.innerHTML = '<div class="iv-empty"><div class="iv-empty-ico">&#127978;</div><div class="iv-empty-t">'+ivStr('no_tills_yet')+'</div><button class="iv-btn-primary" onclick="ivTillNew()">'+ivStr('create_first_till')+'</button></div>';
     return;
   }
   el.innerHTML = ivData.tills.map(function(tl){
     var today = ivTillTodayEntry(tl, false);
-    var statusTxt = !today ? 'Not opened today' : (today.closed ? 'Closed for today' : 'Open — trading now');
+    var statusTxt = !today ? ivStr('till_not_opened_today') : (today.closed ? ivStr('till_closed_today') : ivStr('till_open_trading'));
     return '<div class="iv-list-item" onclick="ivTillOpen(\''+tl.id+'\')">'+
       '<div class="iv-li-l"><div class="iv-li-name">'+ivEsc(tl.name)+'</div><div class="iv-li-sub">'+statusTxt+'</div></div>'+
       '<div class="iv-li-r">&#8250;</div></div>';
@@ -2807,7 +2807,7 @@ function ivTillSave(){
   if (ivBlockIfExpired()) return;
   ivLoad();
   var name = document.getElementById('tl-name').value.trim();
-  if (!name){ alert('Please name this till.'); return; }
+  if (!name){ alert(ivStr('alert_name_till')); return; }
   var tl = { id: ivUid(), name: name, days: [] };
   ivData.tills.push(tl);
   ivSave();
@@ -2838,29 +2838,29 @@ function ivTillOpen(id){
   var today = ivTillTodayEntry(tl, false);
   var panel = document.getElementById('tl-today-panel');
   if (!today){
-    panel.innerHTML = '<div class="iv-section-lbl">Today — '+ivFormatDate(ivToday())+'</div>'+
-      '<div class="iv-field"><label class="iv-label">Opening float (R)</label><input class="iv-input" type="number" step="0.01" id="tl-opening-input" placeholder="e.g. 200.00"></div>'+
-      '<button class="iv-btn-primary" onclick="ivTillOpenDay()">&#10003; Open Till for Today</button>';
+    panel.innerHTML = '<div class="iv-section-lbl">'+ivStr('today_prefix')+' '+ivFormatDate(ivToday())+'</div>'+
+      '<div class="iv-field"><label class="iv-label">'+ivStr('opening_float_input_lbl')+'</label><input class="iv-input" type="number" step="0.01" id="tl-opening-input" placeholder="e.g. 200.00"></div>'+
+      '<button class="iv-btn-primary" onclick="ivTillOpenDay()">'+ivStr('open_till_today_btn')+'</button>';
   } else if (!today.closed){
-    panel.innerHTML = '<div class="iv-section-lbl">Today — '+ivFormatDate(ivToday())+' <span class="iv-status sent" style="margin-left:8px">Open</span></div>'+
+    panel.innerHTML = '<div class="iv-section-lbl">'+ivStr('today_prefix')+' '+ivFormatDate(ivToday())+' <span class="iv-status sent" style="margin-left:8px">'+ivStr('open_status')+'</span></div>'+
       '<div class="iv-stats" style="grid-template-columns:1fr 1fr 1fr">'+
-        '<div class="iv-stat"><span class="iv-stat-n">'+ivMoney(today.openingFloat)+'</span><div class="iv-stat-l">Opening</div></div>'+
-        '<div class="iv-stat"><span class="iv-stat-n">'+ivMoney(ivTillSalesTotal(today))+'</span><div class="iv-stat-l">Sales</div></div>'+
-        '<div class="iv-stat"><span class="iv-stat-n">'+ivMoney(ivTillExpected(today))+'</span><div class="iv-stat-l">Expected</div></div>'+
+        '<div class="iv-stat"><span class="iv-stat-n">'+ivMoney(today.openingFloat)+'</span><div class="iv-stat-l">'+ivStr('stat_opening')+'</div></div>'+
+        '<div class="iv-stat"><span class="iv-stat-n">'+ivMoney(ivTillSalesTotal(today))+'</span><div class="iv-stat-l">'+ivStr('stat_sales')+'</div></div>'+
+        '<div class="iv-stat"><span class="iv-stat-n">'+ivMoney(ivTillExpected(today))+'</span><div class="iv-stat-l">'+ivStr('stat_expected')+'</div></div>'+
       '</div>'+
-      '<div class="iv-section-lbl">Cash sales today ('+today.sales.length+')</div>'+
+      '<div class="iv-section-lbl">'+ivStr('cash_sales_today_count', {count: today.sales.length})+'</div>'+
       '<div>'+(today.sales.length ? today.sales.slice().reverse().map(function(s){
-        return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivMoney(s.amount)+'</div><div class="iv-li-sub">'+ivEsc(s.note||'Cash sale')+'</div></div></div>';
-      }).join('') : '<div class="iv-empty" style="padding:16px"><div class="iv-empty-t">No sales logged yet today</div></div>')+'</div>'+
-      '<button class="iv-btn-primary" onclick="show(\'s-iv-till-sale-form\')">&#43; Log Cash Sale</button>'+
-      '<button class="iv-btn-outline" onclick="show(\'s-iv-till-close-form\');ivTillCloseRecalc()">&#10003; Close Day &amp; Count Till</button>';
+        return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivMoney(s.amount)+'</div><div class="iv-li-sub">'+ivEsc(s.note||ivStr('cash_sale_default_note'))+'</div></div></div>';
+      }).join('') : '<div class="iv-empty" style="padding:16px"><div class="iv-empty-t">'+ivStr('no_sales_logged_today')+'</div></div>')+'</div>'+
+      '<button class="iv-btn-primary" onclick="show(\'s-iv-till-sale-form\')">'+ivStr('log_cash_sale_btn')+'</button>'+
+      '<button class="iv-btn-outline" onclick="show(\'s-iv-till-close-form\');ivTillCloseRecalc()">'+ivStr('close_day_count_btn')+'</button>';
   } else {
     var varClass = Math.abs(today.variance) < 0.01 ? 'paid' : 'overdue';
-    var varLabel = today.variance > 0.005 ? 'Over by' : today.variance < -0.005 ? 'Short by' : 'Balanced';
-    panel.innerHTML = '<div class="iv-section-lbl">Today — '+ivFormatDate(ivToday())+' <span class="iv-status '+varClass+'" style="margin-left:8px">Closed</span></div>'+
+    var varLabel = today.variance > 0.005 ? ivStr('over_by') : today.variance < -0.005 ? ivStr('short_by') : ivStr('balanced');
+    panel.innerHTML = '<div class="iv-section-lbl">'+ivStr('today_prefix')+' '+ivFormatDate(ivToday())+' <span class="iv-status '+varClass+'" style="margin-left:8px">'+ivStr('closed_status')+'</span></div>'+
       '<div class="iv-totals">'+
-        '<div class="iv-tot-row"><span>Expected</span><span>'+ivMoney(ivTillExpected(today))+'</span></div>'+
-        '<div class="iv-tot-row"><span>Counted</span><span>'+ivMoney(today.counted)+'</span></div>'+
+        '<div class="iv-tot-row"><span>'+ivStr('stat_expected')+'</span><span>'+ivMoney(ivTillExpected(today))+'</span></div>'+
+        '<div class="iv-tot-row"><span>'+ivStr('counted_lbl')+'</span><span>'+ivMoney(today.counted)+'</span></div>'+
         '<div class="iv-tot-row grand"><span>'+varLabel+'</span><span>'+ivMoney(Math.abs(today.variance))+'</span></div>'+
       '</div>';
   }
@@ -2868,12 +2868,12 @@ function ivTillOpen(id){
   var histEl = document.getElementById('tl-history');
   var pastDays = tl.days.filter(function(d){return d.date!==ivToday() && d.closed}).sort(function(a,b){return new Date(b.date)-new Date(a.date)});
   if (!pastDays.length){
-    histEl.innerHTML = '<div class="iv-empty" style="padding:16px"><div class="iv-empty-t">No closed days yet</div></div>';
+    histEl.innerHTML = '<div class="iv-empty" style="padding:16px"><div class="iv-empty-t">'+ivStr('no_closed_days_yet')+'</div></div>';
   } else {
     histEl.innerHTML = pastDays.slice(0,14).map(function(d){
       var varClass = Math.abs(d.variance) < 0.01 ? 'paid' : 'overdue';
-      var varTxt = d.variance > 0.005 ? '+'+ivMoney(d.variance) : d.variance < -0.005 ? '-'+ivMoney(Math.abs(d.variance)) : 'Balanced';
-      return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivFormatDate(d.date)+'</div><div class="iv-li-sub">'+ivMoney(ivTillExpected(d))+' expected</div></div><div class="iv-li-r"><span class="iv-status '+varClass+'">'+varTxt+'</span></div></div>';
+      var varTxt = d.variance > 0.005 ? '+'+ivMoney(d.variance) : d.variance < -0.005 ? '-'+ivMoney(Math.abs(d.variance)) : ivStr('balanced');
+      return '<div class="iv-list-item" style="cursor:default"><div class="iv-li-l"><div class="iv-li-name">'+ivFormatDate(d.date)+'</div><div class="iv-li-sub">'+ivMoney(ivTillExpected(d))+' '+ivStr('expected_suffix')+'</div></div><div class="iv-li-r"><span class="iv-status '+varClass+'">'+varTxt+'</span></div></div>';
     }).join('');
   }
   show('s-iv-till-detail');
@@ -2883,7 +2883,7 @@ function ivTillOpenDay(){
   var tl = ivData.tills.find(function(x){return x.id===ivViewingTillId});
   if (!tl) return;
   var opening = parseFloat(document.getElementById('tl-opening-input').value);
-  if (isNaN(opening) || opening < 0){ alert('Please enter the opening float amount.'); return; }
+  if (isNaN(opening) || opening < 0){ alert(ivStr('alert_opening_float_required')); return; }
   var today = ivTillTodayEntry(tl, true);
   today.openingFloat = opening;
   ivSave();
@@ -2893,9 +2893,9 @@ function ivTillSaleSave(){
   if (ivBlockIfExpired()) return;
   var tl = ivData.tills.find(function(x){return x.id===ivViewingTillId});
   var today = ivTillTodayEntry(tl, false);
-  if (!today || today.closed){ alert('Open the till for today before logging sales.'); return; }
+  if (!today || today.closed){ alert(ivStr('alert_open_before_sales')); return; }
   var amount = parseFloat(document.getElementById('ts-amount').value);
-  if (!amount || amount<=0){ alert('Please enter a valid sale amount.'); return; }
+  if (!amount || amount<=0){ alert(ivStr('alert_valid_sale_amount')); return; }
   today.sales.push({ id: ivUid(), amount: amount, note: document.getElementById('ts-note').value.trim(), time: new Date().toISOString() });
   ivSave();
   document.getElementById('ts-amount').value='';
@@ -2915,7 +2915,7 @@ function ivTillCloseRecalc(){
   if (isNaN(counted)){ box.style.display='none'; return; }
   var variance = counted - expected;
   box.style.display='block';
-  document.getElementById('tc-variance-label').textContent = variance > 0.005 ? 'Over by' : variance < -0.005 ? 'Short by' : 'Balanced';
+  document.getElementById('tc-variance-label').textContent = variance > 0.005 ? ivStr('over_by') : variance < -0.005 ? ivStr('short_by') : ivStr('balanced');
   document.getElementById('tc-variance').textContent = ivMoney(Math.abs(variance));
 }
 function ivTillCloseSave(){
@@ -2924,7 +2924,7 @@ function ivTillCloseSave(){
   var today = ivTillTodayEntry(tl, false);
   if (!today){ return; }
   var counted = parseFloat(document.getElementById('tc-counted').value);
-  if (isNaN(counted) || counted<0){ alert('Please enter the amount actually counted in the till.'); return; }
+  if (isNaN(counted) || counted<0){ alert(ivStr('alert_actual_counted_required')); return; }
   today.counted = counted;
   today.variance = counted - ivTillExpected(today);
   today.closed = true;
@@ -3578,7 +3578,11 @@ var CONTENT_LANG = {
     sv_record_contribution_btn:"&#10003; Rekordeer Bydrae", sv_contrib_history:"Bydraegeskiedenis",
     sv_rotation_payouts:"Rotasie-uitbetalings", sv_record_payout_btn:"&#10003; Rekordeer Uitbetaling aan Volgende Lid",
     sv_send_statement:"&#128172; Stuur Lidstaat via WhatsApp", sv_fullname_lbl:"Volle naam", sv_phone_lbl:"Foon / WhatsApp",
-    sv_member_save_btn:"&#10003; Stoor Lid", sv_member_remove_btn:"Verwyder Lid"
+    sv_member_save_btn:"&#10003; Stoor Lid", sv_member_remove_btn:"Verwyder Lid",
+    till_new:"&#43; Kassa", till_name_lbl:"Kassa-/kassiernaam", till_create_btn:"&#10003; Skep Kassa", till_recent_days:"Onlangse dae",
+    till_amount_lbl:"Bedrag (R)", till_note_lbl:"Nota (opsioneel)", till_add_sale_btn:"&#10003; Voeg Verkoop by Kassa",
+    till_opening_float_lbl:"Openingsvlotter", till_cash_sales_today_lbl:"Kontantverkope vandag", till_expected_lbl:"Verwag in kassa",
+    till_actual_counted_lbl:"Werklike kontant getel in kassa (R)", till_variance_lbl:"Verskil", till_close_day_btn:"&#10003; Sluit Dag"
   },
   zu:{
     back_btn:"&#8592; Emuva",
@@ -3604,7 +3608,11 @@ var CONTENT_LANG = {
     sv_record_contribution_btn:"&#10003; Bhala Umnikelo", sv_contrib_history:"Umlando wemnikelo",
     sv_rotation_payouts:"Izinkokhelo zokujikeleza", sv_record_payout_btn:"&#10003; Bhala Inkokhelo Kulungu Elilandelayo",
     sv_send_statement:"&#128172; Thumela Isitatimende Selungu nge-WhatsApp", sv_fullname_lbl:"Igama eliphelele", sv_phone_lbl:"Ucingo / WhatsApp",
-    sv_member_save_btn:"&#10003; Gcina Ilungu", sv_member_remove_btn:"Susa Ilungu"
+    sv_member_save_btn:"&#10003; Gcina Ilungu", sv_member_remove_btn:"Susa Ilungu",
+    till_new:"&#43; Ikhesi", till_name_lbl:"Igama lekhesi / lomsizi wekhesi", till_create_btn:"&#10003; Dala Ikhesi", till_recent_days:"Izinsuku zakamuva",
+    till_amount_lbl:"Inani (R)", till_note_lbl:"Inothi (akuphoqelekile)", till_add_sale_btn:"&#10003; Engeza Ukuthengisa Kwikhesi",
+    till_opening_float_lbl:"Imali yokuvula", till_cash_sales_today_lbl:"Ukuthengisa ngemali namuhla", till_expected_lbl:"Okulindelekile kwikhesi",
+    till_actual_counted_lbl:"Imali yangempela ebaliwe kwikhesi (R)", till_variance_lbl:"Umehluko", till_close_day_btn:"&#10003; Vala Usuku"
   },
   xh:{
     back_btn:"&#8592; Emva",
@@ -3630,7 +3638,11 @@ var CONTENT_LANG = {
     sv_record_contribution_btn:"&#10003; Rekhoda Igalelo", sv_contrib_history:"Imbali yeigalelo",
     sv_rotation_payouts:"Iintlawulo zokujikeleza", sv_record_payout_btn:"&#10003; Rekhoda Intlawulo Kulungu Elilandelayo",
     sv_send_statement:"&#128172; Thumela Ingxelo Yelungu nge-WhatsApp", sv_fullname_lbl:"Igama elipheleleyo", sv_phone_lbl:"Ifowuni / WhatsApp",
-    sv_member_save_btn:"&#10003; Gcina Ilungu", sv_member_remove_btn:"Susa Ilungu"
+    sv_member_save_btn:"&#10003; Gcina Ilungu", sv_member_remove_btn:"Susa Ilungu",
+    till_new:"&#43; Ikhesi", till_name_lbl:"Igama lekhesi / lomsebenzi wekhesi", till_create_btn:"&#10003; Yenza Ikhesi", till_recent_days:"Iintsuku zamva nje",
+    till_amount_lbl:"Isixa (R)", till_note_lbl:"Inqaku (akunyanzelekanga)", till_add_sale_btn:"&#10003; Yongeza Intengiso Kwikhesi",
+    till_opening_float_lbl:"Imali yokuvula", till_cash_sales_today_lbl:"Iintengiso zemali namhlanje", till_expected_lbl:"Okulindelekileyo kwikhesi",
+    till_actual_counted_lbl:"Imali yokwenene ebaliweyo kwikhesi (R)", till_variance_lbl:"Umahluko", till_close_day_btn:"&#10003; Vala Usuku"
   },
   ve:{
     back_btn:"&#8592; Vhuya",
@@ -3656,7 +3668,11 @@ var CONTENT_LANG = {
     sv_record_contribution_btn:"&#10003; Ṅwalani Mbadelo", sv_contrib_history:"Ndivho ya mbadelo",
     sv_rotation_payouts:"Mbadelo dza u renda", sv_record_payout_btn:"&#10003; Ṅwalani Mbadelo kha Muraḓo i Tevhelaho",
     sv_send_statement:"&#128172; Rumela Mbiko wa Muraḓo nga WhatsApp", sv_fullname_lbl:"Dzina ḽoṱhe", sv_phone_lbl:"Luṱingo / WhatsApp",
-    sv_member_save_btn:"&#10003; Vhulungani Muraḓo", sv_member_remove_btn:"Bvisani Muraḓo"
+    sv_member_save_btn:"&#10003; Vhulungani Muraḓo", sv_member_remove_btn:"Bvisani Muraḓo",
+    till_new:"&#43; Khethelo", till_name_lbl:"Dzina ḽa khethelo / mushumi wa khethelo", till_create_btn:"&#10003; Sika Khethelo", till_recent_days:"Maḓuvha a zwenezwino",
+    till_amount_lbl:"Mali (R)", till_note_lbl:"Ndaela (a si zwa vhukuma)", till_add_sale_btn:"&#10003; Engedzani Thengiso kha Khethelo",
+    till_opening_float_lbl:"Mali ya u thoma", till_cash_sales_today_lbl:"Thengiso ya tshelede ṋamusi", till_expected_lbl:"Zwo lavhelelwaho kha khethelo",
+    till_actual_counted_lbl:"Tshelede ya vhukuma yo valwaho kha khethelo (R)", till_variance_lbl:"Phambano", till_close_day_btn:"&#10003; Valani Ḓuvha"
   },
   st:{
     back_btn:"&#8592; Morao",
@@ -3682,7 +3698,11 @@ var CONTENT_LANG = {
     sv_record_contribution_btn:"&#10003; Ngola Monehelo", sv_contrib_history:"Nalane ea menehelo",
     sv_rotation_payouts:"Litefo tsa ho pota-pota", sv_record_payout_btn:"&#10003; Ngola Tefo ho Setho se Latelang",
     sv_send_statement:"&#128172; Romela Tlaleho ea Setho ka WhatsApp", sv_fullname_lbl:"Lebitso le felletseng", sv_phone_lbl:"Mohala / WhatsApp",
-    sv_member_save_btn:"&#10003; Boloka Setho", sv_member_remove_btn:"Tlosa Setho"
+    sv_member_save_btn:"&#10003; Boloka Setho", sv_member_remove_btn:"Tlosa Setho",
+    till_new:"&#43; Till", till_name_lbl:"Lebitso la till / mosebeletsi oa till", till_create_btn:"&#10003; Theha Till", till_recent_days:"Matsatsi a haufinyane",
+    till_amount_lbl:"Chelete (R)", till_note_lbl:"Tlhaloso (ha e hlokahale)", till_add_sale_btn:"&#10003; Kenya Thekiso ho Till",
+    till_opening_float_lbl:"Chelete ea ho bula", till_cash_sales_today_lbl:"Thekiso ea chelete kajeno", till_expected_lbl:"E lebelletsoeng ho till",
+    till_actual_counted_lbl:"Chelete ea sebele e balletsoeng ho till (R)", till_variance_lbl:"Phapang", till_close_day_btn:"&#10003; Koala Letsatsi"
   }
 };
 function applyContentLang(lang){
@@ -3711,7 +3731,17 @@ var IV_STR = {
     alert_select_member:"Please select a member.", alert_add_members_first:"Add members before recording a payout.",
     confirm_record_payout:"Record a payout of {amount} to {name}? This advances the rotation to the next member.",
     member_statement_title:"{name} — member statement", member_contributed_line:"{name}: {amount} contributed", total_pool_line:"Total pool: {amount}",
-    freq_weekly:"weekly", freq_monthly:"monthly"
+    freq_weekly:"weekly", freq_monthly:"monthly",
+    no_tills_yet:"No tills yet", create_first_till:"&#43; Set up your first till", till_not_opened_today:"Not opened today",
+    till_closed_today:"Closed for today", till_open_trading:"Open — trading now", alert_name_till:"Please name this till.",
+    today_prefix:"Today —", opening_float_input_lbl:"Opening float (R)", open_till_today_btn:"&#10003; Open Till for Today",
+    open_status:"Open", stat_opening:"Opening", stat_sales:"Sales", stat_expected:"Expected",
+    cash_sales_today_count:"Cash sales today ({count})", cash_sale_default_note:"Cash sale", no_sales_logged_today:"No sales logged yet today",
+    log_cash_sale_btn:"&#43; Log Cash Sale", close_day_count_btn:"&#10003; Close Day &amp; Count Till",
+    over_by:"Over by", short_by:"Short by", balanced:"Balanced", closed_status:"Closed", counted_lbl:"Counted",
+    no_closed_days_yet:"No closed days yet", expected_suffix:"expected",
+    alert_opening_float_required:"Please enter the opening float amount.", alert_open_before_sales:"Open the till for today before logging sales.",
+    alert_valid_sale_amount:"Please enter a valid sale amount.", alert_actual_counted_required:"Please enter the amount actually counted in the till."
   },
   af:{
     no_stokvels:"Nog geen stokvels nie", create_first_stokvel:"&#43; Skep jou eerste stokvel", members_word:"lede",
@@ -3724,7 +3754,17 @@ var IV_STR = {
     alert_select_member:"Kies asseblief 'n lid.", alert_add_members_first:"Voeg lede by voordat jy 'n uitbetaling aanteken.",
     confirm_record_payout:"Rekordeer 'n uitbetaling van {amount} aan {name}? Dit skuif die rotasie na die volgende lid.",
     member_statement_title:"{name} — lidstaat", member_contributed_line:"{name}: {amount} bygedra", total_pool_line:"Totale poel: {amount}",
-    freq_weekly:"weekliks", freq_monthly:"maandeliks"
+    freq_weekly:"weekliks", freq_monthly:"maandeliks",
+    no_tills_yet:"Nog geen kassas nie", create_first_till:"&#43; Stel jou eerste kassa op", till_not_opened_today:"Nie vandag geopen nie",
+    till_closed_today:"Gesluit vir vandag", till_open_trading:"Oop — tans besig", alert_name_till:"Gee asseblief hierdie kassa 'n naam.",
+    today_prefix:"Vandag —", opening_float_input_lbl:"Openingsvlotter (R)", open_till_today_btn:"&#10003; Open Kassa vir Vandag",
+    open_status:"Oop", stat_opening:"Opening", stat_sales:"Verkope", stat_expected:"Verwag",
+    cash_sales_today_count:"Kontantverkope vandag ({count})", cash_sale_default_note:"Kontantverkoop", no_sales_logged_today:"Nog geen verkope vandag aangeteken nie",
+    log_cash_sale_btn:"&#43; Teken Kontantverkoop Aan", close_day_count_btn:"&#10003; Sluit Dag &amp; Tel Kassa",
+    over_by:"Oor met", short_by:"Kort met", balanced:"Gebalanseer", closed_status:"Gesluit", counted_lbl:"Getel",
+    no_closed_days_yet:"Nog geen geslote dae nie", expected_suffix:"verwag",
+    alert_opening_float_required:"Voer asseblief die openingsvlotterbedrag in.", alert_open_before_sales:"Open die kassa vir vandag voordat jy verkope aanteken.",
+    alert_valid_sale_amount:"Voer asseblief 'n geldige verkoopsbedrag in.", alert_actual_counted_required:"Voer asseblief die bedrag in wat werklik in die kassa getel is."
   },
   zu:{
     no_stokvels:"Azikho izitokvela okwamanje", create_first_stokvel:"&#43; Dala istokvela sakho sokuqala", members_word:"amalungu",
@@ -3737,7 +3777,17 @@ var IV_STR = {
     alert_select_member:"Sicela ukhethe ilungu.", alert_add_members_first:"Engeza amalungu ngaphambi kokubhala inkokhelo.",
     confirm_record_payout:"Bhala inkokhelo ka-{amount} ku-{name}? Lokhu kuqhubekisela ukujikeleza kulungu elilandelayo.",
     member_statement_title:"{name} — isitatimende selungu", member_contributed_line:"{name}: {amount} kunikelwe", total_pool_line:"Isamba sonke: {amount}",
-    freq_weekly:"ngeviki", freq_monthly:"ngenyanga"
+    freq_weekly:"ngeviki", freq_monthly:"ngenyanga",
+    no_tills_yet:"Azikho amakhesi okwamanje", create_first_till:"&#43; Setha ikhesi lakho lokuqala", till_not_opened_today:"Alikavulwa namuhla",
+    till_closed_today:"Livaliwe namuhla", till_open_trading:"Livuliwe — liyathengisa manje", alert_name_till:"Sicela unike leli khesi igama.",
+    today_prefix:"Namuhla —", opening_float_input_lbl:"Imali yokuvula (R)", open_till_today_btn:"&#10003; Vula Ikhesi Namuhla",
+    open_status:"Livuliwe", stat_opening:"Ukuvula", stat_sales:"Ukuthengisa", stat_expected:"Okulindelekile",
+    cash_sales_today_count:"Ukuthengisa ngemali namuhla ({count})", cash_sale_default_note:"Ukuthengisa ngemali", no_sales_logged_today:"Awukho ukuthengisa okubhaliwe namuhla",
+    log_cash_sale_btn:"&#43; Bhala Ukuthengisa Ngemali", close_day_count_btn:"&#10003; Vala Usuku &amp; Bala Ikhesi",
+    over_by:"Idlulile nge", short_by:"Ishoda nge", balanced:"Kulingene", closed_status:"Livaliwe", counted_lbl:"Kubaliwe",
+    no_closed_days_yet:"Azikho izinsuku ezivaliwe okwamanje", expected_suffix:"okulindelekile",
+    alert_opening_float_required:"Sicela ufake inani lemali yokuvula.", alert_open_before_sales:"Vula ikhesi namuhla ngaphambi kokubhala ukuthengisa.",
+    alert_valid_sale_amount:"Sicela ufake inani lokuthengisa elifanele.", alert_actual_counted_required:"Sicela ufake inani ngempela elibaliwe ekhesini."
   },
   xh:{
     no_stokvels:"Azikho iistokfela okwangoku", create_first_stokvel:"&#43; Yenza istokfela sakho sokuqala", members_word:"amalungu",
@@ -3750,7 +3800,17 @@ var IV_STR = {
     alert_select_member:"Nceda ukhethe ilungu.", alert_add_members_first:"Yongeza amalungu ngaphambi kokurekhoda intlawulo.",
     confirm_record_payout:"Rekhoda intlawulo ka-{amount} ku-{name}? Oku kuqhubela phambili ukujikeleza kulungu elilandelayo.",
     member_statement_title:"{name} — ingxelo yelungu", member_contributed_line:"{name}: {amount} kunikelwe", total_pool_line:"Isixa sipheleleyo: {amount}",
-    freq_weekly:"ngeveki", freq_monthly:"ngenyanga"
+    freq_weekly:"ngeveki", freq_monthly:"ngenyanga",
+    no_tills_yet:"Azikho iikhesi okwangoku", create_first_till:"&#43; Misela ikhesi yakho yokuqala", till_not_opened_today:"Ayikavulwa namhlanje",
+    till_closed_today:"Ivaliwe namhlanje", till_open_trading:"Ivuliwe — iyathengisa ngoku", alert_name_till:"Nceda unike le khesi igama.",
+    today_prefix:"Namhlanje —", opening_float_input_lbl:"Imali yokuvula (R)", open_till_today_btn:"&#10003; Vula Ikhesi Namhlanje",
+    open_status:"Ivuliwe", stat_opening:"Ukuvula", stat_sales:"Iintengiso", stat_expected:"Okulindelekileyo",
+    cash_sales_today_count:"Iintengiso zemali namhlanje ({count})", cash_sale_default_note:"Intengiso yemali", no_sales_logged_today:"Azikho iintengiso ezirekhodiweyo namhlanje",
+    log_cash_sale_btn:"&#43; Rekhoda Intengiso Yemali", close_day_count_btn:"&#10003; Vala Usuku &amp; Bala Ikhesi",
+    over_by:"Igqithe nge", short_by:"Ishota nge", balanced:"Ilingene", closed_status:"Ivaliwe", counted_lbl:"Ibaliwe",
+    no_closed_days_yet:"Azikho iintsuku ezivaliweyo okwangoku", expected_suffix:"okulindelekileyo",
+    alert_opening_float_required:"Nceda ufake isixa semali yokuvula.", alert_open_before_sales:"Vula ikhesi namhlanje ngaphambi kokurekhoda iintengiso.",
+    alert_valid_sale_amount:"Nceda ufake isixa esisemthethweni sentengiso.", alert_actual_counted_required:"Nceda ufake isixa sokwenene esibaliweyo ekhesini."
   },
   ve:{
     no_stokvels:"A hu na stokvel zwino", create_first_stokvel:"&#43; Bveledzani stokvel yaṋu ya u thoma", members_word:"miraḓo",
@@ -3763,7 +3823,17 @@ var IV_STR = {
     alert_select_member:"Ni khetheni muraḓo.", alert_add_members_first:"Engedzani miraḓo hu sa athu u ṅwalwa mbadelo.",
     confirm_record_payout:"Ṅwalani mbadelo ya {amount} kha {name}? Hezwi zwi ita uri u renda hu ye kha muraḓo i tevhelaho.",
     member_statement_title:"{name} — mbiko wa muraḓo", member_contributed_line:"{name}: {amount} yo ṱusiwa", total_pool_line:"Mali yoṱhe: {amount}",
-    freq_weekly:"vhege iṅwe na iṅwe", freq_monthly:"ṅwedzi muṅwe na muṅwe"
+    freq_weekly:"vhege iṅwe na iṅwe", freq_monthly:"ṅwedzi muṅwe na muṅwe",
+    no_tills_yet:"A hu na dzikhethelo zwino", create_first_till:"&#43; Dzudzanyani khethelo yaṋu ya u thoma", till_not_opened_today:"A i athu u vulwa ṋamusi",
+    till_closed_today:"Yo valwa ṋamusi", till_open_trading:"Yo vulwa — i khou rengisa zwino", alert_name_till:"Ni ṋee khethelo iyi dzina.",
+    today_prefix:"Ṋamusi —", opening_float_input_lbl:"Mali ya u thoma (R)", open_till_today_btn:"&#10003; Vulani Khethelo Ṋamusi",
+    open_status:"Yo Vulwa", stat_opening:"U Thoma", stat_sales:"Thengiso", stat_expected:"Zwo Lavhelelwaho",
+    cash_sales_today_count:"Thengiso ya tshelede ṋamusi ({count})", cash_sale_default_note:"Thengiso ya tshelede", no_sales_logged_today:"A hu na thengiso yo ṅwalwaho ṋamusi",
+    log_cash_sale_btn:"&#43; Ṅwalani Thengiso ya Tshelede", close_day_count_btn:"&#10003; Valani Ḓuvha &amp; Balani Khethelo",
+    over_by:"Yo fhira nga", short_by:"I kha ḓi shaya nga", balanced:"Yo Linganea", closed_status:"Yo Valwa", counted_lbl:"Yo Balwa",
+    no_closed_days_yet:"A hu na maḓuvha o valwaho zwino", expected_suffix:"zwo lavhelelwaho",
+    alert_opening_float_required:"Ni ṅwalise mali ya u thoma.", alert_open_before_sales:"Vulani khethelo ṋamusi hu sa athu u ṅwalwa thengiso.",
+    alert_valid_sale_amount:"Ni ṅwalise mali ya thengiso yo teaho.", alert_actual_counted_required:"Ni ṅwalise mali ya vhukuma yo valwaho kha khethelo."
   },
   st:{
     no_stokvels:"Ha ho na litokofele haesale", create_first_stokvel:"&#43; Theha setokofele sa hau sa pele", members_word:"litho",
@@ -3776,7 +3846,17 @@ var IV_STR = {
     alert_select_member:"Ka kopo khetha setho.", alert_add_members_first:"Kenya litho pele u ngola tefo.",
     confirm_record_payout:"Ngola tefo ea {amount} ho {name}? Sena se tsoela pele phetoho ho ea sethong se latelang.",
     member_statement_title:"{name} — tlaleho ea setho", member_contributed_line:"{name}: {amount} e file", total_pool_line:"Kakaretso ea chelete: {amount}",
-    freq_weekly:"beke le beke", freq_monthly:"khoeli le khoeli"
+    freq_weekly:"beke le beke", freq_monthly:"khoeli le khoeli",
+    no_tills_yet:"Ha ho na li-till haesale", create_first_till:"&#43; Theha till ea hau ea pele", till_not_opened_today:"Ha ea butsoa kajeno",
+    till_closed_today:"E koetsoe kajeno", till_open_trading:"E butsoe — e rekisa hona joale", alert_name_till:"Ka kopo fa till ena lebitso.",
+    today_prefix:"Kajeno —", opening_float_input_lbl:"Chelete ea ho bula (R)", open_till_today_btn:"&#10003; Bula Till Kajeno",
+    open_status:"E Butsoe", stat_opening:"Ho Bula", stat_sales:"Thekiso", stat_expected:"E Lebelletsoeng",
+    cash_sales_today_count:"Thekiso ea chelete kajeno ({count})", cash_sale_default_note:"Thekiso ea chelete", no_sales_logged_today:"Ha ho na thekiso e ngotsoeng kajeno",
+    log_cash_sale_btn:"&#43; Ngola Thekiso ea Chelete", close_day_count_btn:"&#10003; Koala Letsatsi &amp; Bala Till",
+    over_by:"E fetile ka", short_by:"E haella ka", balanced:"E Lekana", closed_status:"E Koetsoe", counted_lbl:"E Baletsoe",
+    no_closed_days_yet:"Ha ho na matsatsi a koetsoeng haesale", expected_suffix:"e lebelletsoeng",
+    alert_opening_float_required:"Ka kopo kenya chelete ea ho bula.", alert_open_before_sales:"Bula till bakeng sa kajeno pele u ngola thekiso.",
+    alert_valid_sale_amount:"Ka kopo kenya chelete e nepahetseng ea thekiso.", alert_actual_counted_required:"Ka kopo kenya chelete ea sebele e balletsoeng ho till."
   }
 };
 function ivStr(key, vars){

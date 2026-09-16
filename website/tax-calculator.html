@@ -146,10 +146,10 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 
 <div class="page-hero">
 <div class="wrap">
-<span class="s-label">Free tool — no signup</span>
-<h1>SARS Tax Calculator — <em>know your numbers before you file.</em></h1>
-<p>Estimate your VAT201 liability and your provisional or annual income tax in seconds. Built into Setwel Biz Suite for every Grinder+ subscriber — try it free here first.</p>
-<span class="free-badge">&#10003; Free to use, no account needed</span>
+<span class="s-label" data-i18n="tc_eye">Free tool — no signup</span>
+<h1 data-i18n-html="tc_h1">SARS Tax Calculator — <em>know your numbers before you file.</em></h1>
+<p data-i18n="tc_sub">Estimate your VAT201 liability and your provisional or annual income tax in seconds. Built into Setwel Biz Suite for every Grinder+ subscriber — try it free here first.</p>
+<span class="free-badge" data-i18n="tc_freebadge">&#10003; Free to use, no account needed</span>
 </div>
 </div>
 
@@ -157,33 +157,33 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 <div class="wrap">
 
 <div class="calc-tabs">
-<button class="calc-tab active" data-panel="vat" onclick="showCalc('vat')">&#127963; VAT201 Estimate</button>
-<button class="calc-tab" data-panel="income" onclick="showCalc('income')">&#128176; Provisional &amp; Income Tax</button>
+<button class="calc-tab active" data-panel="vat" onclick="showCalc('vat')" data-i18n="tc_tab_vat">&#127963; VAT201 Estimate</button>
+<button class="calc-tab" data-panel="income" onclick="showCalc('income')" data-i18n="tc_tab_income">&#128176; Provisional &amp; Income Tax</button>
 </div>
 
 <!-- VAT201 CALCULATOR -->
 <div class="calc-panel active" id="panel-vat">
 <div class="calc-grid">
 <div class="calc-card">
-<h2>Your sales &amp; expenses this period</h2>
+<h2 data-i18n="tc_vat_h2">Your sales &amp; expenses this period</h2>
 <div class="field">
-<label>Total sales / income for the period</label>
+<label data-i18n="tc_vat_sales">Total sales / income for the period</label>
 <input type="number" id="v-sales" placeholder="e.g. 85000" oninput="calcVat()" min="0" step="0.01">
-<div class="toggle-row"><input type="checkbox" id="v-sales-incl" checked onchange="calcVat()"><label for="v-sales-incl">This amount already includes VAT</label></div>
+<div class="toggle-row"><input type="checkbox" id="v-sales-incl" checked onchange="calcVat()"><label for="v-sales-incl" data-i18n="tc_vat_inclsales">This amount already includes VAT</label></div>
 </div>
 <div class="field">
-<label>Total qualifying business expenses for the period</label>
+<label data-i18n="tc_vat_exp">Total qualifying business expenses for the period</label>
 <input type="number" id="v-exp" placeholder="e.g. 32000" oninput="calcVat()" min="0" step="0.01">
-<div class="toggle-row"><input type="checkbox" id="v-exp-incl" checked onchange="calcVat()"><label for="v-exp-incl">This amount already includes VAT</label></div>
+<div class="toggle-row"><input type="checkbox" id="v-exp-incl" checked onchange="calcVat()"><label for="v-exp-incl" data-i18n="tc_vat_inclexp">This amount already includes VAT</label></div>
 </div>
-<p style="font-size:.78rem">Only include expenses SARS allows you to claim input VAT on (standard-rated business purchases with a valid tax invoice). Zero-rated and exempt items don't carry input VAT to claim.</p>
+<p style="font-size:.78rem" data-i18n="tc_vat_note1">Only include expenses SARS allows you to claim input VAT on (standard-rated business purchases with a valid tax invoice). Zero-rated and exempt items don't carry input VAT to claim.</p>
 </div>
 <div class="result-card">
-<h3>Estimated VAT201</h3>
-<div class="res-row"><span>Output VAT (on sales)</span><span class="val" id="v-out">R 0.00</span></div>
-<div class="res-row"><span>Input VAT (on expenses)</span><span class="val" id="v-in">R 0.00</span></div>
-<div class="res-row total" id="v-total-row"><span>Net VAT payable</span><span class="val" id="v-total">R 0.00</span></div>
-<div class="res-note">Based on the standard 15% VAT rate. This is an estimate for planning purposes — your actual VAT201 depends on exactly how each transaction is coded.</div>
+<h3 data-i18n="tc_vat_result_h3">Estimated VAT201</h3>
+<div class="res-row"><span data-i18n="tc_vat_output">Output VAT (on sales)</span><span class="val" id="v-out">R 0.00</span></div>
+<div class="res-row"><span data-i18n="tc_vat_input">Input VAT (on expenses)</span><span class="val" id="v-in">R 0.00</span></div>
+<div class="res-row total" id="v-total-row"><span data-i18n="tc_vat_net">Net VAT payable</span><span class="val" id="v-total">R 0.00</span></div>
+<div class="res-note" data-i18n="tc_vat_note2">Based on the standard 15% VAT rate. This is an estimate for planning purposes — your actual VAT201 depends on exactly how each transaction is coded.</div>
 </div>
 </div>
 </div>
@@ -192,39 +192,39 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 <div class="calc-panel" id="panel-income">
 <div class="calc-grid">
 <div class="calc-card">
-<h2>Your business income this tax year</h2>
+<h2 data-i18n="tc_inc_h2">Your business income this tax year</h2>
 <div class="field">
-<label>Total annual turnover / income</label>
+<label data-i18n="tc_inc_turnover">Total annual turnover / income</label>
 <input type="number" id="i-income" placeholder="e.g. 480000" oninput="calcIncome()" min="0" step="0.01">
 </div>
 <div class="field">
-<label>Total annual deductible business expenses</label>
+<label data-i18n="tc_inc_exp">Total annual deductible business expenses</label>
 <input type="number" id="i-exp" placeholder="e.g. 120000" oninput="calcIncome()" min="0" step="0.01">
 </div>
 <div class="field">
-<label>Age</label>
+<label data-i18n="tc_inc_age">Age</label>
 <select id="i-age" onchange="calcIncome()">
-<option value="under65">Under 65</option>
-<option value="65to74">65 to 74</option>
-<option value="75plus">75 and older</option>
+<option value="under65" data-i18n="tc_age1">Under 65</option>
+<option value="65to74" data-i18n="tc_age2">65 to 74</option>
+<option value="75plus" data-i18n="tc_age3">75 and older</option>
 </select>
 </div>
-<p style="font-size:.78rem">This estimates tax as a sole proprietor / individual taxpayer using SARS's individual tax tables, after the primary/secondary/tertiary rebate. It does not account for other income, medical aid credits, retirement contributions or other deductions.</p>
+<p style="font-size:.78rem" data-i18n="tc_inc_note1">This estimates tax as a sole proprietor / individual taxpayer using SARS's individual tax tables, after the primary/secondary/tertiary rebate. It does not account for other income, medical aid credits, retirement contributions or other deductions.</p>
 </div>
 <div class="result-card">
-<h3>Estimated tax</h3>
-<div class="res-row"><span>Taxable income</span><span class="val" id="i-taxable">R 0.00</span></div>
-<div class="res-row"><span>Tax before rebate</span><span class="val" id="i-beforereb">R 0.00</span></div>
-<div class="res-row"><span>Rebate</span><span class="val" id="i-rebate">R 0.00</span></div>
-<div class="res-row total"><span>Estimated annual tax</span><span class="val" id="i-total">R 0.00</span></div>
-<div class="res-row"><span>1st provisional payment (Aug)</span><span class="val" id="i-p1">R 0.00</span></div>
-<div class="res-row"><span>2nd provisional payment (Feb)</span><span class="val" id="i-p2">R 0.00</span></div>
-<div class="res-note">Provisional tax is normally split roughly 50/50 across the two payment periods, topped up or adjusted at your final assessment.</div>
+<h3 data-i18n="tc_inc_result_h3">Estimated tax</h3>
+<div class="res-row"><span data-i18n="tc_inc_taxable">Taxable income</span><span class="val" id="i-taxable">R 0.00</span></div>
+<div class="res-row"><span data-i18n="tc_inc_beforereb">Tax before rebate</span><span class="val" id="i-beforereb">R 0.00</span></div>
+<div class="res-row"><span data-i18n="tc_inc_rebate">Rebate</span><span class="val" id="i-rebate">R 0.00</span></div>
+<div class="res-row total"><span data-i18n="tc_inc_total">Estimated annual tax</span><span class="val" id="i-total">R 0.00</span></div>
+<div class="res-row"><span data-i18n="tc_inc_p1">1st provisional payment (Aug)</span><span class="val" id="i-p1">R 0.00</span></div>
+<div class="res-row"><span data-i18n="tc_inc_p2">2nd provisional payment (Feb)</span><span class="val" id="i-p2">R 0.00</span></div>
+<div class="res-note" data-i18n="tc_inc_note2">Provisional tax is normally split roughly 50/50 across the two payment periods, topped up or adjusted at your final assessment.</div>
 </div>
 </div>
 
 <div class="calc-card" style="margin-top:24px">
-<h2>How this is calculated</h2>
+<h2 data-i18n="tc_howcalc">How this is calculated</h2>
 <table class="bracket-table" id="bracket-table">
 <thead><tr><th>Taxable income</th><th>Rate</th></tr></thead>
 <tbody id="bracket-body"></tbody>
@@ -233,17 +233,17 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="disclaimer-box">
-<h4>&#9888; This is an estimate, not tax advice</h4>
-<p>Rates shown are the most recently published SARS individual income tax brackets and the standard 15% VAT rate. SARS updates income tax brackets and rebates every year at the Budget Speech (usually February) — always confirm current rates at <a href="https://www.sars.gov.za" target="_blank" rel="noopener">sars.gov.za</a> or with a registered tax practitioner before filing or making a payment.</p>
-<p>Setwel Africa (Pty) Ltd is not a registered tax practitioner and this tool does not constitute tax advice. See our full <a href="terms.html#s12">SARS compliance disclaimer</a>.</p>
+<h4 data-i18n="tc_disc_h4">&#9888; This is an estimate, not tax advice</h4>
+<p><span data-i18n="tc_disc_p1a">Rates shown are the most recently published SARS individual income tax brackets and the standard 15% VAT rate. SARS updates income tax brackets and rebates every year at the Budget Speech (usually February) — always confirm current rates at</span> <a href="https://www.sars.gov.za" target="_blank" rel="noopener">sars.gov.za</a> <span data-i18n="tc_disc_p1b">or with a registered tax practitioner before filing or making a payment.</span></p>
+<p><span data-i18n="tc_disc_p2a">Setwel Africa (Pty) Ltd is not a registered tax practitioner and this tool does not constitute tax advice. See our full</span> <a href="terms.html#s12" data-i18n="tc_disc_p2b">SARS compliance disclaimer</a>.</p>
 </div>
 
 <div class="cta-strip">
-<h2>Want this running live against your real invoices?</h2>
-<p>Setwel Biz Suite calculates this automatically from your actual invoices and expenses — no manual entry, always up to date. Included from Grinder tier up.</p>
+<h2 data-i18n="tc_cta_h2">Want this running live against your real invoices?</h2>
+<p data-i18n="tc_cta_p">Setwel Biz Suite calculates this automatically from your actual invoices and expenses — no manual entry, always up to date. Included from Grinder tier up.</p>
 <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-<a href="download.html" class="btn btn-primary">&#8595; Start Free 30-Day Trial</a>
-<a href="pricing.html" class="btn btn-outline">See plans</a>
+<a href="download.html" class="btn btn-primary" data-i18n="hero_btn1">&#8595; Start Free 30-Day Trial</a>
+<a href="pricing.html" class="btn btn-outline" data-nk="plans">See plans</a>
 </div>
 </div>
 
@@ -251,7 +251,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </section>
 
 <footer><div class="wrap">
-<div class="f-links"><a href="index.html">Home</a><a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">Help</a><a href="tax-calculator.html">Tax Calculator</a></div>
+<div class="f-links"><a href="index.html" data-nk="home">Home</a><a href="features.html" data-nk="feat">Features</a><a href="pricing.html" data-nk="price">Pricing</a><a href="about.html" data-nk="about">About</a><a href="contact.html" data-nk="contact">Contact</a><a href="faq.html" data-nk="help">Help</a><a href="tax-calculator.html" data-i18n="foot_taxcalc">Tax Calculator</a></div>
 <div class="f-copy">&#169; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&#183;&nbsp; All rights reserved</div>
 </div></footer>
 
@@ -274,6 +274,143 @@ function setLang(lang, btn){
   document.querySelectorAll('[data-nk]').forEach(function(el){
     var k = el.getAttribute('data-nk');
     if(t[k]) el.textContent = t[k];
+  });
+  applyContentLang(lang);
+}
+/* Full page content translation — hero, VAT/income calculator labels, disclaimer, CTA */
+var CONTENT_LANG = {
+  af:{
+    tc_eye:"Gratis instrument — geen aanmelding nodig nie", tc_h1:"SARS-belastingberekenaar — <em>ken jou syfers voordat jy indien.</em>",
+    tc_sub:"Beraam jou BTW201-aanspreeklikheid en jou voorlopige of jaarlikse inkomstebelasting binne sekondes. Ingebou in Setwel Biz Suite vir elke Grinder+-intekenaar — probeer dit eers hier gratis.",
+    tc_freebadge:"&#10003; Gratis om te gebruik, geen rekening nodig nie",
+    tc_tab_vat:"&#127963; BTW201-beraming", tc_tab_income:"&#128176; Voorlopige &amp; Inkomstebelasting",
+    tc_vat_h2:"Jou verkope &amp; uitgawes hierdie tydperk", tc_vat_sales:"Totale verkope / inkomste vir die tydperk", tc_vat_inclsales:"Hierdie bedrag sluit reeds BTW in",
+    tc_vat_exp:"Totale kwalifiserende besigheidsuitgawes vir die tydperk", tc_vat_inclexp:"Hierdie bedrag sluit reeds BTW in",
+    tc_vat_note1:"Sluit slegs uitgawes in waarop SARS jou toelaat om inset-BTW te eis (standaardkoers-besigheidsaankope met 'n geldige belastingfaktuur). Nulkoers- en vrygestelde items dra geen inset-BTW om te eis nie.",
+    tc_vat_result_h3:"Beraamde BTW201", tc_vat_output:"Uitset-BTW (op verkope)", tc_vat_input:"Inset-BTW (op uitgawes)", tc_vat_net:"Netto BTW betaalbaar",
+    tc_vat_note2:"Gebaseer op die standaard 15% BTW-koers. Dit is 'n beraming vir beplanningsdoeleindes — jou werklike BTW201 hang af van presies hoe elke transaksie gekodeer word.",
+    tc_inc_h2:"Jou besigheidsinkomste hierdie belastingjaar", tc_inc_turnover:"Totale jaarlikse omset / inkomste", tc_inc_exp:"Totale jaarlikse aftrekbare besigheidsuitgawes", tc_inc_age:"Ouderdom",
+    tc_age1:"Onder 65", tc_age2:"65 tot 74", tc_age3:"75 en ouer",
+    tc_inc_note1:"Dit beraam belasting as 'n enkelmanseienaar / individuele belastingpligtige met SARS se individuele belastingtabelle, na die primêre/sekondêre/tersiêre korting. Dit neem nie ander inkomste, mediese fonds-krediete, aftreebydraes of ander aftrekkings in ag nie.",
+    tc_inc_result_h3:"Beraamde belasting", tc_inc_taxable:"Belasbare inkomste", tc_inc_beforereb:"Belasting voor korting", tc_inc_rebate:"Korting", tc_inc_total:"Beraamde jaarlikse belasting",
+    tc_inc_p1:"1ste voorlopige betaling (Aug)", tc_inc_p2:"2de voorlopige betaling (Feb)",
+    tc_inc_note2:"Voorlopige belasting word normaalweg ongeveer 50/50 tussen die twee betalingstydperke verdeel, aangevul of aangepas by jou finale aanslag.",
+    tc_howcalc:"Hoe dit bereken word", tc_disc_h4:"&#9888; Dit is 'n beraming, nie belastingadvies nie",
+    tc_disc_p1a:"Koerse getoon is die mees onlangs gepubliseerde SARS individuele inkomstebelastingskale en die standaard 15% BTW-koers. SARS werk inkomstebelastingskale en kortings elke jaar by die Begrotingsrede (gewoonlik Februarie) op — bevestig altyd huidige koerse by",
+    tc_disc_p1b:"of met 'n geregistreerde belastingpraktisyn voordat jy indien of 'n betaling maak.",
+    tc_disc_p2a:"Setwel Africa (Pty) Ltd is nie 'n geregistreerde belastingpraktisyn nie en hierdie instrument maak nie belastingadvies uit nie. Sien ons volledige", tc_disc_p2b:"SARS-voldoeningsvrywaring",
+    tc_cta_h2:"Wil jy hê dit moet lewendig teen jou werklike fakture loop?",
+    tc_cta_p:"Setwel Biz Suite bereken dit outomaties vanaf jou werklike fakture en uitgawes — geen handmatige invoer nie, altyd op datum. Ingesluit vanaf Grinder-vlak op.",
+    hero_btn1:"&#8595; Begin Gratis 30-Dae Proeftydperk", foot_taxcalc:"Belastingberekenaar"
+  },
+  zu:{
+    tc_eye:"Ithuluzi Lamahhala — akudingeki ukubhalisela", tc_h1:"Isibali Sentela se-SARS — <em>yazi izibalo zakho ngaphambi kokuthi ufayele.</em>",
+    tc_sub:"Linganisela isikweletu sakho se-VAT201 kanye nentela yakho yangaphambili noma yaminyaka yonke yemali engenayo ngemizuzwana. Yakhelwe ngaphakathi ku-Setwel Biz Suite kubo bonke ababhalisele iGrinder+ — zama mahhala lapha kuqala.",
+    tc_freebadge:"&#10003; Mahhala ukusebenzisa, akudingeki i-akhawunti",
+    tc_tab_vat:"&#127963; Isilinganiso se-VAT201", tc_tab_income:"&#128176; Intela Yangaphambili &amp; Yemali Engenayo",
+    tc_vat_h2:"Ukuthengisa kwakho &amp; izindleko kule nkathi", tc_vat_sales:"Ukuthengisa okuphelele / imali engenayo yale nkathi", tc_vat_inclsales:"Le nani selivele lifaka i-VAT",
+    tc_vat_exp:"Izindleko zebhizinisi ezifanelekile ezizele zale nkathi", tc_vat_inclexp:"Le nani selivele lifaka i-VAT",
+    tc_vat_note1:"Faka kuphela izindleko i-SARS ekuvumela ukuthi uzibize njenge-input VAT (izimpahla zebhizinisi ezizingayo ngezinga elivamile ezinephepha lentela elifanele). Izinto ezingu-zero-rated nezikhululiwe azinayo i-input VAT yokubiza.",
+    tc_vat_result_h3:"I-VAT201 Elinganiselwe", tc_vat_output:"I-Output VAT (ekuthengiseni)", tc_vat_input:"I-Input VAT (ezindlekweni)", tc_vat_net:"I-VAT Ehlanzekile Ekhokhwayo",
+    tc_vat_note2:"Kususelwa ezingeni le-15% ye-VAT evamile. Lokhu kuyisilinganiso senjongo yokuhlela — i-VAT201 yakho yangempela incike ekutheni itransaksie ngayinye ikhodwe kanjani.",
+    tc_inc_h2:"Imali engenayo yebhizinisi lakho kulo nyaka wentela", tc_inc_turnover:"Impindiselo / imali engenayo yonyaka wonke", tc_inc_exp:"Izindleko zebhizinisi ezikhishwayo zonyaka wonke", tc_inc_age:"Ubudala",
+    tc_age1:"Ngaphansi kuka-65", tc_age2:"Ku-65 kuya ku-74", tc_age3:"Ngu-75 nangaphezulu",
+    tc_inc_note1:"Lokhu kulinganisela intela njengomnikazi wodwa webhizinisi / umkhokhi wentela oyedwa kusetshenziswa amathebula entela omuntu ngamunye e-SARS, ngemva kokukhishwa okuyinhloko/okwesibili/okwesithathu. Akubali eminye imali engenayo, izikweletu zomshwalense wezempilo, iminikelo yokuthatha umhlalaphansi noma ezinye izinto ezikhishwayo.",
+    tc_inc_result_h3:"Intela Elinganiselwe", tc_inc_taxable:"Imali efanele intela", tc_inc_beforereb:"Intela ngaphambi kokukhishwa", tc_inc_rebate:"Ukukhishwa", tc_inc_total:"Intela Yonyaka Elinganiselwe",
+    tc_inc_p1:"Inkokhelo yokuqala yangaphambili (Agasti)", tc_inc_p2:"Inkokhelo yesibili yangaphambili (Febhuwari)",
+    tc_inc_note2:"Intela yangaphambili ivamise ukuhlukaniswa cishe ngo-50/50 phakathi kwezikhathi ezimbili zokukhokha, engezwe noma ilungiswe ekuhlolweni kwakho kokugcina.",
+    tc_howcalc:"Indlela lokhu okubalwa ngayo", tc_disc_h4:"&#9888; Lokhu kuyisilinganiso, akuyona iseluleko sentela",
+    tc_disc_p1a:"Amazinga aboniswayo angamazinga entela yemali engenayo yomuntu ngamunye e-SARS akhishwe muva nje kanye nezinga elivamile le-15% le-VAT. I-SARS ivuselela amazinga entela yemali engenayo nokukhishwa unyaka nonyaka eNkulumweni Yesabelomali (ngokuvamile ngoFebruwari) — qinisekisa njalo amazinga amanje ku-",
+    tc_disc_p1b:"noma nomuntu obhalisiwe wentela ngaphambi kokufayela noma ukwenza inkokhelo.",
+    tc_disc_p2a:"I-Setwel Africa (Pty) Ltd akuyona inhlangano ebhalisiwe yentela futhi leli thuluzi alikhona iseluleko sentela. Bona esethu esigcwele", tc_disc_p2b:"isexwayiso sokuhambisana ne-SARS",
+    tc_cta_h2:"Ufuna lokhu kusebenza ngqo emamama-invoyisi akho angempela?",
+    tc_cta_p:"I-Setwel Biz Suite ibala lokhu ngokuzenzakalela kusuka ema-invoyisi akho angempela nasezindlekweni — akukho ukufaka ngesandla, ihlala isesikhathini. Kufakwe kusukela ezingeni le-Grinder kuya phezulu.",
+    hero_btn1:"&#8595; Qala Uvivinyo Lwamahhala Lwezinsuku ezingu-30", foot_taxcalc:"Isibali Sentela"
+  },
+  xh:{
+    tc_eye:"Isixhobo Samahhala — akufuneki ukubhalisa", tc_h1:"Isibali Serhafu se-SARS — <em>yazi amanani akho ngaphambi kokuba ufayile.</em>",
+    tc_sub:"Linganisela ityala lakho le-VAT201 kunye nerhafu yakho yangaphambili okanye yonyaka yengeniso ngemizuzwana. Yakhelwe ngaphakathi kwi-Setwel Biz Suite kubo bonke ababhalisele iGrinder+ — zama simahla apha kuqala.",
+    tc_freebadge:"&#10003; Simahla ukusetyenziswa, akufuneki ak'haonti",
+    tc_tab_vat:"&#127963; Isilinganiselo se-VAT201", tc_tab_income:"&#128176; Irhafu Yangaphambili &amp; Yengeniso",
+    tc_vat_h2:"Ukuthengisa kwakho &amp; iindleko kweli xesha", tc_vat_sales:"Ukuthengisa okupheleleyo / ingeniso yeli xesha", tc_vat_inclsales:"Le mali sele ifaka i-VAT",
+    tc_vat_exp:"Iindleko zeshishini ezifanelekileyo ezipheleleyo zeli xesha", tc_vat_inclexp:"Le mali sele ifaka i-VAT",
+    tc_vat_note1:"Faka kuphela iindleko i-SARS ekuvumela ukuba ubize i-input VAT kuzo (izinto zeshishini ezirhafiswa ngommandla oqhelekileyo eneefektyisi zerhafu ezisemthethweni). Izinto ezingu-zero-rated nezikhululekileyo azinayo i-input VAT yokubiza.",
+    tc_vat_result_h3:"I-VAT201 Elinganiselweyo", tc_vat_output:"I-Output VAT (kwintengiso)", tc_vat_input:"I-Input VAT (kwiindleko)", tc_vat_net:"I-VAT Ecocekileyo Ehlawulwayo",
+    tc_vat_note2:"Kususelwa kwireyithi eqhelekileyo ye-15% ye-VAT. Esi sisilinganiselo senjongo yocwangciso — i-VAT201 yakho yokwenene ixhomekeke kwindlela intengiso nganye ekhowudwe ngayo.",
+    tc_inc_h2:"Ingeniso yeshishini lakho kulo nyaka werhafu", tc_inc_turnover:"Umvuzelo / ingeniso yonyaka wonke", tc_inc_exp:"Iindleko zeshishini ezikhutshwayo zonyaka wonke", tc_inc_age:"Iminyaka",
+    tc_age1:"Ngaphantsi kwe-65", tc_age2:"Ku-65 ukuya kwi-74", tc_age3:"75 nangaphezulu",
+    tc_inc_note1:"Oku kulinganisela irhafu njengomnini weshishini eyedwa / umhlawuli werhafu ngamnye kusetyenziswa iitheyibhile zerhafu zomntu nganye ze-SARS, emva kokukhutshwa okuyintloko/okwesibini/okwesithathu. Ayibali ingeniso eyongezelelweyo, iikhredithi zomshwalense wezempilo, iminikelo yesibonelelo sokuhlala okanye ezinye izinto ezikhutshwayo.",
+    tc_inc_result_h3:"Irhafu Elinganiselweyo", tc_inc_taxable:"Ingeniso erhafiswayo", tc_inc_beforereb:"Irhafu phambi kokukhutshwa", tc_inc_rebate:"Ukukhutshwa", tc_inc_total:"Irhafu Yonyaka Elinganiselweyo",
+    tc_inc_p1:"Intlawulo yokuqala yangaphambili (Agasti)", tc_inc_p2:"Intlawulo yesibini yangaphambili (Februwari)",
+    tc_inc_note2:"Irhafu yangaphambili idla ngokwahlulwa malunga ne-50/50 phakathi kwamaxesha amabini entlawulo, yongezwe okanye ilungiswe kuvavanyo lwakho lokugqibela.",
+    tc_howcalc:"Indlela oku kubalwa ngayo", tc_disc_h4:"&#9888; Esi sisilinganiselo, ayisiyongcebiso lwerhafu",
+    tc_disc_p1a:"Amazinga aboniswayo ngamazinga erhafu yengeniso yomntu ngamnye ee-SARS apapashwe kutsha kunye nereyithi eqhelekileyo ye-15% ye-VAT. I-SARS ihlaziya amazinga erhafu yengeniso kunye nokukhutshwa qho ngonyaka kwiNtetho yoHlahlo-lwabiwo-mali (ngesiqhelo ngoFebruwari) — qinisekisa amaxesha onke amazinga angoku kwi-",
+    tc_disc_p1b:"okanye nomntu obhalisiweyo werhafu ngaphambi kokufayila okanye ukwenza intlawulo.",
+    tc_disc_p2a:"I-Setwel Africa (Pty) Ltd ayisiyo nkampani ebhalisiweyo yerhafu kwaye esi sixhobo asiluncedo lwerhafu. Jonga esethu esipheleleyo", tc_disc_p2b:"isilumkiso sokuhambelana ne-SARS",
+    tc_cta_h2:"Ufuna oku kusebenze ngqo kwiifektyisi zakho zokwenene?",
+    tc_cta_p:"I-Setwel Biz Suite ibala oku ngokuzenzekelayo ukusuka kwiifektyisi zakho zokwenene needleko — akukho ukufaka ngesandla, ihlala ihamba nexesha. Kubandakanywa ukususela kwinqanaba le-Grinder ukuya phezulu.",
+    hero_btn1:"&#8595; Qalisa Uvavanyo Lwamahhala Lweentsuku ezingama-30", foot_taxcalc:"Isibalo Serhafu"
+  },
+  ve:{
+    tc_eye:"Tshishumiswa tsha Mahala — a hu ṱoḓei u ṅwaliswa", tc_h1:"Tshibalo tsha Mutero tsha SARS — <em>ḓivhani zwibalo zwaṋu ni sa athu u rumela.</em>",
+    tc_sub:"Linganyisani mukwerekwere waṋu wa VAT201 na mutero waṋu wa u thoma kana wa ṅwaha muṅwe na muṅwe wa mbuelo nga masekondo. Yo dzhenisiwa ngomu Setwel Biz Suite kha muṅwe na muṅwe wo ṅwalisaho Grinder+ — lingani hafhu nga mahala.",
+    tc_freebadge:"&#10003; Mahala u shumisa, a hu ṱoḓei akhaunthi",
+    tc_tab_vat:"&#127963; Ndugelo ya VAT201", tc_tab_income:"&#128176; Mutero wa u Thoma na wa Mbuelo",
+    tc_vat_h2:"Kurengiselano kwaṋu na mbadelo tshifhinga hetshi", tc_vat_sales:"Kurengiselano koṱhe / mbuelo ya tshifhinga", tc_vat_inclsales:"Tshimo hetshi tsho no katela VAT",
+    tc_vat_exp:"Mbadelo dza bindu dzo teaho dzoṱhe dza tshifhinga", tc_vat_inclexp:"Tshimo hetshi tsho no katela VAT",
+    tc_vat_note1:"Katelani mbadelo dzine SARS ya ni tendela u vhidza sa input VAT (kurengele kwa bindu kwa levele ya sialala kune ha vha na tshibammbiri tsho teaho tsha mutero). Zwithu zwa zero-rated na zwo bvisiwaho a zwi na input VAT ya u vhidza.",
+    tc_vat_result_h3:"VAT201 yo Linganyiswaho", tc_vat_output:"Output VAT (kha kurengiselano)", tc_vat_input:"Input VAT (kha mbadelo)", tc_vat_net:"VAT ine ya fanela u lifhiwa",
+    tc_vat_note2:"Ho ḓisendeka kha ndugelo ya sialala ya 15% ya VAT. Hei ndi ndugelo ya ndivho ya u dzudzanya — VAT201 yaṋu ya vhukuma i ḓi tsikidzela kha nḓila ine kutshelo kuṅwe na kuṅwe kwa vhumbiwa ngayo.",
+    tc_inc_h2:"Mbuelo ya bindu ḽaṋu ṅwahani hu ha mutero", tc_inc_turnover:"Mbuelo yoṱhe ya ṅwaha muṅwe na muṅwe", tc_inc_exp:"Mbadelo dza bindu dzine dza nga bviswa dza ṅwaha muṅwe na muṅwe", tc_inc_age:"Miaka",
+    tc_age1:"Nga fhasi ha 65", tc_age2:"65 u swika kha 74", tc_age3:"75 na nṱha",
+    tc_inc_note1:"Hezwi zwi linganyisa mutero sa mune wa bindu e eṱhe / muḓhini wa mutero muthihi hu tshi shumiswa dziṱheibuḽu dza mutero dza muthu muthihi dza SARS, nga murahu ha u bviswa ha phanḓa/ha vhuvhili/ha vhuraru. A zwi vhali mbuelo iṅwe, zwitendelo zwa mutakalo, mbadelo dza vhudzulapfi kana zwiṅwe zwine zwa nga bviswa.",
+    tc_inc_result_h3:"Mutero wo Linganyiswaho", tc_inc_taxable:"Mbuelo ine ya fanela mutero", tc_inc_beforereb:"Mutero nga phanḓa ha u bviswa", tc_inc_rebate:"U bviswa", tc_inc_total:"Mutero wa Ṅwaha wo Linganyiswaho",
+    tc_inc_p1:"Mbadelo ya u thoma ya u thoma (Nyendavhusiku)", tc_inc_p2:"Mbadelo ya vhuvhili ya u thoma (Luhuhi)",
+    tc_inc_note2:"Mutero wa u thoma kanzhi u fhandekanywa nga tshiimo tsha 50/50 vhukati ha zwifhinga zwivhili zwa mbadelo, wa engedzwa kana wa lugiswa kha khetho yaṋu ya u fhedza.",
+    tc_howcalc:"Nḓila ine izwi zwa vhalwa ngayo", tc_disc_h4:"&#9888; Hezwi ndi ndugelo, hu si themendelo ya mutero",
+    tc_disc_p1a:"Levele dzo sumbedzwaho ndi levele dza mutero wa mbuelo ya muthu muthihi wa SARS dzo gandiswaho zwa u fhedza na levele ya sialala ya 15% ya VAT. SARS i khwinisa levele dza mutero wa mbuelo na u bviswa ṅwaha muṅwe na muṅwe kha Nyambo ya Bajete (kanzhi Luhuhi) — konadzelani tshifhinga tshoṱhe levele dza zwino kha",
+    tc_disc_p1b:"kana na muḓhini wo ṅwaliswaho wa mutero ni sa athu u rumela kana u ita mbadelo.",
+    tc_disc_p2a:"Setwel Africa (Pty) Ltd a si khamphani yo ṅwaliswaho ya mutero nahone tshishumiswa hetshi a tshi khou ṋea themendelo ya mutero. Sedzani zwoṱhe zwashu", tc_disc_p2b:"themendelo ya u tendelana na SARS",
+    tc_cta_h2:"Ni ṱoḓa hezwi zwi tshi khou shuma nga vhukuma kha zwibammbiri zwaṋu zwa vhukuma?",
+    tc_cta_p:"Setwel Biz Suite i vhala izwi nga u ḓiitela u bva kha zwibammbiri zwaṋu zwa vhukuma na mbadelo — a hu na u dzhenisa nga tsoka, tshifhinga tshoṱhe zwo ḓadzwa. Zwo katelwa u bva kha levele ya Grinder u ya nṱha.",
+    hero_btn1:"&#8595; Thoma u Linga nga Mahala Maḓuvha a 30", foot_taxcalc:"Tshibalo tsha Mutero"
+  },
+  st:{
+    tc_eye:"Sesebelisoa sa Mahala — ha ho hlokahale ho ngolisa", tc_h1:"Sebali sa Lekhetho sa SARS — <em>tseba linomoro tsa hau pele u tlatsa foromo.</em>",
+    tc_sub:"Hakanya boikarabelo ba hau ba VAT201 le lekhetho la hau la nakoana kapa la selemo la letseno ka metsotsoana. E hahiloe ka hare ho Setwel Biz Suite bakeng sa mongoli e mong le e mong oa Grinder+ — leka mahala mona pele.",
+    tc_freebadge:"&#10003; Mahala ho sebelisa, ha ho hlokahale ak'haonto",
+    tc_tab_vat:"&#127963; Khakanyo ea VAT201", tc_tab_income:"&#128176; Lekhetho la Nakoana &amp; la Letseno",
+    tc_vat_h2:"Thekiso &amp; litšenyehelo tsa hau nakong ena", tc_vat_sales:"Thekiso eohle / letseno la nako", tc_vat_inclsales:"Chelete ena e se e kenyelletsa VAT",
+    tc_vat_exp:"Litšenyehelo tsohle tse tšoanelehang tsa khoebo tsa nako", tc_vat_inclexp:"Chelete ena e se e kenyelletsa VAT",
+    tc_vat_note1:"Kenyelletsa feela litšenyehelo tseo SARS e u lumellang ho kopa input VAT ho tsona (lireko tsa khoebo tsa boemo bo tloaelehileng tse nang le fekthara ea lekhetho e nepahetseng). Lintho tsa zero-rated le tse lokolotsoeng ha li na input VAT eo u ka e kopang.",
+    tc_vat_result_h3:"VAT201 e Hakantsoeng", tc_vat_output:"Output VAT (thekisong)", tc_vat_input:"Input VAT (litšenyehelong)", tc_vat_net:"VAT e tlamang ho lefshoa",
+    tc_vat_note2:"E thehiloe holim'a sekhahla se tloaelehileng sa VAT sa 15%. Ena ke khakanyo bakeng sa merero ea moralo — VAT201 ea hau ea sebele e itšetlehile ka hore na phapanyetsano ka 'ngoe e ngotsoe joang.",
+    tc_inc_h2:"Letseno la khoebo ea hau selemong sena sa lekhetho", tc_inc_turnover:"Chelete eohle e kenang ka selemo / letseno", tc_inc_exp:"Litšenyehelo tsohle tsa khoebo tse tlosoang ka selemo", tc_inc_age:"Lilemo",
+    tc_age1:"Ka tlase ho 65", tc_age2:"65 ho isa ho 74", tc_age3:"75 le ho feta",
+    tc_inc_note1:"Sena se hakanya lekhetho e le mong'a khoebo a le mong / motho ea lefang lekhetho a sebelisa litafole tsa lekhetho tsa motho ea le mong tsa SARS, ka mor'a phokotso ea pele/ea bobeli/ea boraro. Ha se nke letseno le leng, likhoutu tsa bongaka, menehelo ea phomolo kapa litlosoa tse ling.",
+    tc_inc_result_h3:"Lekhetho le Hakantsoeng", tc_inc_taxable:"Letseno le lefisoang lekhetho", tc_inc_beforereb:"Lekhetho pele ho phokotso", tc_inc_rebate:"Phokotso", tc_inc_total:"Lekhetho la Selemo le Hakantsoeng",
+    tc_inc_p1:"Tefo ea pele ea nakoana (Phato)", tc_inc_p2:"Tefo ea bobeli ea nakoana (Hlakola)",
+    tc_inc_note2:"Lekhetho la nakoana hangata le arotsoe hoo e ka bang 50/50 lipakeng tsa linako tse peli tsa tefo, la eketsoa kapa la lokisoa tlhahlobong ea hau ea ho qetela.",
+    tc_howcalc:"Kamoo sena se baloang kateng", tc_disc_h4:"&#9888; Ena ke khakanyo, eseng keletso ea lekhetho",
+    tc_disc_p1a:"Litekanyo tse bontšitsoeng ke litekanyo tse sa tsoa hatisoa tsa lekhetho la letseno la motho ea le mong la SARS le sekhahla se tloaelehileng sa VAT sa 15%. SARS e ntlafatsa litekanyo tsa lekhetho la letseno le liphokotso selemo se seng le se seng Puong ea Tekanyetso (hangata ka Hlakola) — kamehla netefatsa litekanyo tsa hajoale ho",
+    tc_disc_p1b:"kapa ho motho ea ngodisitsoeng oa lekhetho pele u tlatsa foromo kapa ho etsa tefo.",
+    tc_disc_p2a:"Setwel Africa (Pty) Ltd hase motho ea ngodisitsoeng oa lekhetho mme sesebelisoa sena ha se etse keletso ea lekhetho. Bona", tc_disc_p2b:"boitatolo ba rona bo felletseng ba tumellano ea SARS",
+    tc_cta_h2:"Na u batla sena se sebetsa ka botlalo khahlanong le lifekthara tsa hau tsa sebele?",
+    tc_cta_p:"Setwel Biz Suite e bala sena ka boitsebo ho tsoa lifekthareng tsa hau tsa sebele le litšenyehelo — ha ho kenya ka letsoho, kamehla e ntlafalitsoe. E kenyelelitsoe ho tloha boemong ba Grinder ho ea holimo.",
+    hero_btn1:"&#8595; Qala Teko ea Mahala ea Matsatsi a 30", foot_taxcalc:"Sebali sa Lekhetho"
+  }
+};
+function applyContentLang(lang){
+  if(lang==='en'){
+    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
+    return;
+  }
+  var c = CONTENT_LANG[lang];
+  if(!c) return;
+  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
+    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
+    if(c[k]) el.innerHTML = c[k];
   });
 }
 document.querySelectorAll('.lb-btn').forEach(function(b){

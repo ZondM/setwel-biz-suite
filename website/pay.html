@@ -173,12 +173,12 @@ a{text-decoration:none;color:var(--orange)}
 
 <div class="pay-hero">
   <div class="wrap">
-    <h1>Choose your plan — <em>start free.</em></h1>
-    <p>30-day free trial on all plans. Pay only when you're ready. Cancel anytime.</p>
+    <h1 data-i18n-html="pay_h1">Choose your plan — <em>start free.</em></h1>
+    <p data-i18n="pay_sub">30-day free trial on all plans. Pay only when you're ready. Cancel anytime.</p>
     <div class="pf-trust">
-      <span class="pf-badge">&#128274; <strong>Secured by PayFast</strong> — SA's #1 payment gateway</span>
-      <span class="pf-badge">&#128179; Instant EFT &nbsp;&#183;&nbsp; Card &nbsp;&#183;&nbsp; SnapScan</span>
-      <span class="pf-badge">&#127487;&#127462; South African Rands (ZAR)</span>
+      <span class="pf-badge" data-i18n-html="pay_badge1">&#128274; <strong>Secured by PayFast</strong> — SA's #1 payment gateway</span>
+      <span class="pf-badge" data-i18n="pay_badge2">&#128179; Instant EFT &nbsp;&#183;&nbsp; Card &nbsp;&#183;&nbsp; SnapScan</span>
+      <span class="pf-badge" data-i18n="pay_badge3">&#127487;&#127462; South African Rands (ZAR)</span>
     </div>
   </div>
 </div>
@@ -186,10 +186,10 @@ a{text-decoration:none;color:var(--orange)}
 <div class="plans-section">
   <div class="wrap">
     <div class="toggle-bar">
-      <span style="color:var(--ink2)">Monthly</span>
+      <span style="color:var(--ink2)" data-i18n="price_monthly">Monthly</span>
       <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-knob"></div></div>
-      <span style="color:var(--ink2)">Annual</span>
-      <span class="annual-save">Save 2 months FREE</span>
+      <span style="color:var(--ink2)" data-i18n="price_annual">Annual</span>
+      <span class="annual-save" data-i18n="price_save2">Save 2 months FREE</span>
     </div>
 
     <div class="plans-grid" id="plans-grid">
@@ -197,7 +197,7 @@ a{text-decoration:none;color:var(--orange)}
       <!-- HUSTLER -->
       <div class="plan-card">
         <div class="plan-name">Hustler</div>
-        <div class="plan-for">Spaza shops, hawkers &amp; home businesses</div>
+        <div class="plan-for" data-i18n="ppay1_for">Spaza shops, hawkers &amp; home businesses</div>
         <div class="plan-price-m">R59.99 <small>/mo</small></div>
         <div class="plan-price-a">R599.90 <small>/yr</small></div>
         <div class="plan-saving" id="save-hustler">&nbsp;</div>
@@ -221,7 +221,7 @@ a{text-decoration:none;color:var(--orange)}
       <div class="plan-card pop">
         <div class="pop-badge">&#11088; Most popular</div>
         <div class="plan-name">Grinder</div>
-        <div class="plan-for">Growing businesses &amp; tradespersons</div>
+        <div class="plan-for" data-i18n="ppay2_for">Growing businesses &amp; tradespersons</div>
         <div class="plan-price-m">R199 <small>/mo</small></div>
         <div class="plan-price-a">R1,990 <small>/yr</small></div>
         <div class="plan-saving" id="save-grinder">&nbsp;</div>
@@ -242,7 +242,7 @@ a{text-decoration:none;color:var(--orange)}
       <!-- BUILDER -->
       <div class="plan-card">
         <div class="plan-name">Builder</div>
-        <div class="plan-for">Established SMEs with staff &amp; inventory</div>
+        <div class="plan-for" data-i18n="ppay3_for">Established SMEs with staff &amp; inventory</div>
         <div class="plan-price-m">R399 <small>/mo</small></div>
         <div class="plan-price-a">R3,990 <small>/yr</small></div>
         <div class="plan-saving" id="save-builder">&nbsp;</div>
@@ -262,7 +262,7 @@ a{text-decoration:none;color:var(--orange)}
       <!-- ENTERPRISE -->
       <div class="plan-card">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-for">Multi-branch &amp; large SMEs</div>
+        <div class="plan-for" data-i18n="ppay4_for">Multi-branch &amp; large SMEs</div>
         <div class="plan-price-m">R999 <small>/mo</small></div>
         <div class="plan-price-a">R9,990 <small>/yr</small></div>
         <div class="plan-saving" id="save-enterprise">&nbsp;</div>
@@ -290,27 +290,27 @@ a{text-decoration:none;color:var(--orange)}
       <div class="pf-header">
         <div class="pf-logo">&#128179;</div>
         <div>
-          <h2>Secure payment by PayFast</h2>
-          <p>South Africa's most trusted payment gateway — used by over 60,000 SA businesses</p>
+          <h2 data-i18n="pay_pf_h2">Secure payment by PayFast</h2>
+          <p data-i18n="pay_pf_sub">South Africa's most trusted payment gateway — used by over 60,000 SA businesses</p>
         </div>
       </div>
 
       <div class="pf-methods">
-        <div class="pm"><div class="pm-ico">&#128179;</div><div class="pm-name">Instant EFT</div><div class="pm-desc">FNB, ABSA, Standard Bank, Capitec, Nedbank</div></div>
-        <div class="pm"><div class="pm-ico">&#128143;</div><div class="pm-name">Credit/Debit Card</div><div class="pm-desc">Visa &amp; Mastercard accepted</div></div>
-        <div class="pm"><div class="pm-ico">&#128241;</div><div class="pm-name">SnapScan &amp; Zapper</div><div class="pm-desc">Scan &amp; pay instantly</div></div>
-        <div class="pm"><div class="pm-ico">&#127968;</div><div class="pm-name">Capitec Pay</div><div class="pm-desc">Pay directly from Capitec app</div></div>
-        <div class="pm"><div class="pm-ico">&#128722;</div><div class="pm-name">Ozow</div><div class="pm-desc">Zero-fee bank transfer</div></div>
-        <div class="pm"><div class="pm-ico">&#128274;</div><div class="pm-name">SSL Secured</div><div class="pm-desc">256-bit encryption · PCI DSS Level 1</div></div>
+        <div class="pm"><div class="pm-ico">&#128179;</div><div class="pm-name" data-i18n="pm1_name">Instant EFT</div><div class="pm-desc" data-i18n="pm1_desc">FNB, ABSA, Standard Bank, Capitec, Nedbank</div></div>
+        <div class="pm"><div class="pm-ico">&#128143;</div><div class="pm-name" data-i18n="pm2_name">Credit/Debit Card</div><div class="pm-desc" data-i18n="pm2_desc">Visa &amp; Mastercard accepted</div></div>
+        <div class="pm"><div class="pm-ico">&#128241;</div><div class="pm-name" data-i18n="pm3_name">SnapScan &amp; Zapper</div><div class="pm-desc" data-i18n="pm3_desc">Scan &amp; pay instantly</div></div>
+        <div class="pm"><div class="pm-ico">&#127968;</div><div class="pm-name" data-i18n="pm4_name">Capitec Pay</div><div class="pm-desc" data-i18n="pm4_desc">Pay directly from Capitec app</div></div>
+        <div class="pm"><div class="pm-ico">&#128722;</div><div class="pm-name" data-i18n="pm5_name">Ozow</div><div class="pm-desc" data-i18n="pm5_desc">Zero-fee bank transfer</div></div>
+        <div class="pm"><div class="pm-ico">&#128274;</div><div class="pm-name" data-i18n="pm6_name">SSL Secured</div><div class="pm-desc" data-i18n="pm6_desc">256-bit encryption · PCI DSS Level 1</div></div>
       </div>
 
       <div class="pf-setup">
-        <h3>&#9881; How payment works</h3>
-        <div class="setup-step"><div class="step-n">1</div><div>Choose your plan above and click the button — your 30-day trial starts immediately, <strong style="color:#fff">no payment taken today</strong></div></div>
-        <div class="setup-step"><div class="step-n">2</div><div>On day 30, you'll receive an email with a secure PayFast payment link to activate your subscription</div></div>
-        <div class="setup-step"><div class="step-n">3</div><div>Choose your payment method — Instant EFT, card, SnapScan, Capitec Pay, or Ozow — and pay securely</div></div>
-        <div class="setup-step"><div class="step-n">4</div><div>Subscription activates instantly after payment. Cancel anytime — no penalty, no questions asked</div></div>
-        <div style="margin-top:12px;font-size:.82rem;color:var(--ink2);background:rgba(76,175,112,.08);border:1px solid rgba(76,175,112,.2);border-radius:8px;padding:10px 14px">
+        <h3 data-i18n="pay_how_h3">&#9881; How payment works</h3>
+        <div class="setup-step"><div class="step-n">1</div><div data-i18n-html="pay_step1">Choose your plan above and click the button — your 30-day trial starts immediately, <strong style="color:#fff">no payment taken today</strong></div></div>
+        <div class="setup-step"><div class="step-n">2</div><div data-i18n="pay_step2">On day 30, you'll receive an email with a secure PayFast payment link to activate your subscription</div></div>
+        <div class="setup-step"><div class="step-n">3</div><div data-i18n="pay_step3">Choose your payment method — Instant EFT, card, SnapScan, Capitec Pay, or Ozow — and pay securely</div></div>
+        <div class="setup-step"><div class="step-n">4</div><div data-i18n="pay_step4">Subscription activates instantly after payment. Cancel anytime — no penalty, no questions asked</div></div>
+        <div style="margin-top:12px;font-size:.82rem;color:var(--ink2);background:rgba(76,175,112,.08);border:1px solid rgba(76,175,112,.2);border-radius:8px;padding:10px 14px" data-i18n-html="pay_neverstore">
           &#128274; Setwel never stores your card or banking details. All payments are processed securely by <strong style="color:#fff">PayFast (Pty) Ltd</strong>, registered with FSCA.
         </div>
       </div>
@@ -322,35 +322,35 @@ a{text-decoration:none;color:var(--orange)}
 <div class="modal-bg" id="checkout-modal">
   <div class="modal">
     <button class="modal-close" onclick="closeCheckout()">&#10005;</button>
-    <h2>Start your free trial</h2>
+    <h2 data-i18n="pay_modal_h2">Start your free trial</h2>
     <div class="modal-plan" id="modal-plan-name">Grinder Plan — R199/month</div>
 
     <div class="form-row">
-      <div class="form-field"><label class="form-label">First Name *</label><input class="form-input" id="co-first" placeholder="Thabo" required></div>
-      <div class="form-field"><label class="form-label">Last Name *</label><input class="form-input" id="co-last" placeholder="Mokoena" required></div>
+      <div class="form-field"><label class="form-label" data-i18n="pay_first">First Name *</label><input class="form-input" id="co-first" placeholder="Thabo" required></div>
+      <div class="form-field"><label class="form-label" data-i18n="pay_last">Last Name *</label><input class="form-input" id="co-last" placeholder="Mokoena" required></div>
     </div>
-    <div class="form-field"><label class="form-label">Email Address *</label><input class="form-input" type="email" id="co-email" placeholder="thabo@business.co.za" required></div>
-    <div class="form-field"><label class="form-label">WhatsApp / Phone *</label><input class="form-input" type="tel" id="co-phone" placeholder="+27 82 082 9050" required></div>
-    <div class="form-field"><label class="form-label">Business Name</label><input class="form-input" id="co-biz" placeholder="Khumalo Electricals"></div>
+    <div class="form-field"><label class="form-label" data-i18n="pay_emailaddr">Email Address *</label><input class="form-input" type="email" id="co-email" placeholder="thabo@business.co.za" required></div>
+    <div class="form-field"><label class="form-label" data-i18n="pay_waphone">WhatsApp / Phone *</label><input class="form-input" type="tel" id="co-phone" placeholder="+27 82 082 9050" required></div>
+    <div class="form-field"><label class="form-label" data-i18n="pay_bizname">Business Name</label><input class="form-input" id="co-biz" placeholder="Khumalo Electricals"></div>
 
     <div class="modal-total">
-      <span>Trial period: <strong style="color:#4CAF70">30 days FREE</strong></span>
-      <div><div style="font-size:.72rem;color:var(--ink2);text-align:right;margin-bottom:2px">Then from</div><strong id="modal-price">R199/month</strong></div>
+      <span data-i18n-html="pay_trialperiod">Trial period: <strong style="color:#4CAF70">30 days FREE</strong></span>
+      <div><div style="font-size:.72rem;color:var(--ink2);text-align:right;margin-bottom:2px" data-i18n="pay_thenfrom">Then from</div><strong id="modal-price">R199/month</strong></div>
     </div>
 
-    <div style="font-size:.78rem;color:var(--ink2);background:var(--dark3);border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.65">
+    <div style="font-size:.78rem;color:var(--ink2);background:var(--dark3);border-radius:8px;padding:10px 12px;margin-bottom:14px;line-height:1.65" data-i18n="pay_trialnote">
       &#128274; Your trial begins immediately after submitting. No payment is taken today. After 30 days you'll receive a PayFast payment link by email to activate your subscription.
     </div>
 
-    <button class="modal-pay-btn" onclick="submitTrial()">&#9889; Start My 30-Day Free Trial</button>
-    <div class="modal-pf-logo">Payment after trial secured by <a href="https://www.payfast.co.za" target="_blank">PayFast</a> — South Africa's trusted gateway</div>
-    <div class="modal-secure">&#128274; SSL encrypted &nbsp;&#183;&nbsp; PCI DSS compliant &nbsp;&#183;&nbsp; Never stored by Setwel</div>
+    <button class="modal-pay-btn" onclick="submitTrial()" data-i18n="pay_startmytrial">&#9889; Start My 30-Day Free Trial</button>
+    <div class="modal-pf-logo" data-i18n-html="pay_securedby">Payment after trial secured by <a href="https://www.payfast.co.za" target="_blank">PayFast</a> — South Africa's trusted gateway</div>
+    <div class="modal-secure" data-i18n="pay_sslnote">&#128274; SSL encrypted &nbsp;&#183;&nbsp; PCI DSS compliant &nbsp;&#183;&nbsp; Never stored by Setwel</div>
   </div>
 </div>
 
 <div class="pay-footer">
-  <a href="index.html">Home</a> &nbsp;&#183;&nbsp; <a href="pricing.html">Pricing</a> &nbsp;&#183;&nbsp; <a href="contact.html">Contact</a> &nbsp;&#183;&nbsp; <a href="faq.html">Help</a>
-  &nbsp;&#183;&nbsp; Payments by <a href="https://www.payfast.co.za" target="_blank">PayFast (Pty) Ltd</a> &nbsp;&#183;&nbsp; &copy; 2023&#8211;2026 Setwel Africa (Pty) Ltd
+  <a href="index.html" data-i18n="pay_foot_home">Home</a> &nbsp;&#183;&nbsp; <a href="pricing.html" data-nk="price">Pricing</a> &nbsp;&#183;&nbsp; <a href="contact.html" data-i18n="pay_foot_contact">Contact</a> &nbsp;&#183;&nbsp; <a href="faq.html" data-nk="help">Help</a>
+  &nbsp;&#183;&nbsp; <span data-i18n="pay_paymentsby">Payments by</span> <a href="https://www.payfast.co.za" target="_blank">PayFast (Pty) Ltd</a> &nbsp;&#183;&nbsp; &copy; 2023&#8211;2026 Setwel Africa (Pty) Ltd
 </div>
 
 <script>
@@ -370,6 +370,153 @@ function setLang(lang,btn){
   document.querySelectorAll('[data-nk]').forEach(function(el){
     var k = el.getAttribute('data-nk');
     if(t[k]) el.textContent = t[k];
+  });
+  applyContentLang(lang);
+}
+/* Full page content translation — hero, plans, PayFast info, checkout modal, footer */
+var CONTENT_LANG = {
+  af:{
+    pay_h1:"Kies jou plan — <em>begin gratis.</em>", pay_sub:"30-dae gratis proeftydperk op alle planne. Betaal net wanneer jy gereed is. Kanselleer enige tyd.",
+    pay_badge1:"&#128274; <strong>Beveilig deur PayFast</strong> — SA se #1-betalingspoort", pay_badge2:"&#128179; Onmiddellike EFT &nbsp;&#183;&nbsp; Kaart &nbsp;&#183;&nbsp; SnapScan", pay_badge3:"&#127487;&#127462; Suid-Afrikaanse Rand (ZAR)",
+    price_monthly:"Maandeliks", price_annual:"Jaarliks", price_save2:"Bespaar 2 maande GRATIS",
+    ppay1_for:"Spaza-winkels, smouse &amp; tuisbesighede", ppay2_for:"Groeiende besighede &amp; ambagsmanne", ppay3_for:"Gevestigde KMO's met personeel &amp; voorraad", ppay4_for:"Multi-tak &amp; groot KMO's",
+    pay_pf_h2:"Veilige betaling deur PayFast", pay_pf_sub:"Suid-Afrika se mees vertroude betalingspoort — gebruik deur meer as 60,000 SA-besighede",
+    pm1_name:"Onmiddellike EFT", pm1_desc:"FNB, ABSA, Standard Bank, Capitec, Nedbank",
+    pm2_name:"Krediet-/Debietkaart", pm2_desc:"Visa &amp; Mastercard aanvaar",
+    pm3_name:"SnapScan &amp; Zapper", pm3_desc:"Skandeer &amp; betaal onmiddellik",
+    pm4_name:"Capitec Pay", pm4_desc:"Betaal direk vanaf Capitec-app",
+    pm5_name:"Ozow", pm5_desc:"Geen-fooi bankoorplasing",
+    pm6_name:"SSL-beveilig", pm6_desc:"256-bis enkripsie · PCI DSS Vlak 1",
+    pay_how_h3:"&#9881; Hoe betaling werk",
+    pay_step1:"Kies jou plan hierbo en klik die knoppie — jou 30-dae proeftydperk begin dadelik, <strong style=\"color:#fff\">geen betaling word vandag gevat nie</strong>",
+    pay_step2:"Op dag 30 ontvang jy 'n e-pos met 'n veilige PayFast-betalingskakel om jou intekening te aktiveer",
+    pay_step3:"Kies jou betalingsmetode — Onmiddellike EFT, kaart, SnapScan, Capitec Pay, of Ozow — en betaal veilig",
+    pay_step4:"Intekening aktiveer dadelik na betaling. Kanselleer enige tyd — geen boete, geen vrae gevra nie",
+    pay_neverstore:"&#128274; Setwel stoor nooit jou kaart- of bankbesonderhede nie. Alle betalings word veilig verwerk deur <strong style=\"color:#fff\">PayFast (Pty) Ltd</strong>, geregistreer by FSCA.",
+    pay_modal_h2:"Begin jou gratis proeftydperk", pay_first:"Voornaam *", pay_last:"Van *", pay_emailaddr:"E-posadres *", pay_waphone:"WhatsApp / Foon *", pay_bizname:"Besigheidsnaam",
+    pay_trialperiod:"Proeftydperk: <strong style=\"color:#4CAF70\">30 dae GRATIS</strong>", pay_thenfrom:"Dan vanaf",
+    pay_trialnote:"&#128274; Jou proeftydperk begin dadelik na indiening. Geen betaling word vandag gevat nie. Na 30 dae ontvang jy 'n PayFast-betalingskakel per e-pos om jou intekening te aktiveer.",
+    pay_startmytrial:"&#9889; Begin My 30-Dae Gratis Proeftydperk",
+    pay_securedby:"Betaling na proeftydperk beveilig deur <a href=\"https://www.payfast.co.za\" target=\"_blank\">PayFast</a> — Suid-Afrika se vertroude poort",
+    pay_sslnote:"&#128274; SSL-geënkripteer &nbsp;&#183;&nbsp; PCI DSS-voldoenend &nbsp;&#183;&nbsp; Nooit deur Setwel gestoor nie",
+    pay_foot_home:"Tuis", pay_foot_contact:"Kontak", pay_paymentsby:"Betalings deur"
+  },
+  zu:{
+    pay_h1:"Khetha uhlelo lwakho — <em>qala mahhala.</em>", pay_sub:"Uvivinyo lwamahhala lwezinsuku ezingu-30 kuwo wonke amaplani. Khokha kuphela lapho usukulungele. Khansela noma nini.",
+    pay_badge1:"&#128274; <strong>Kuvikelwe yi-PayFast</strong> — isango lokukhokha lika-#1 e-SA", pay_badge2:"&#128179; I-EFT eshesha kanjalo &nbsp;&#183;&nbsp; Ikhadi &nbsp;&#183;&nbsp; I-SnapScan", pay_badge3:"&#127487;&#127462; I-Rand yaseNingizimu Afrika (ZAR)",
+    price_monthly:"Ngenyanga", price_annual:"Ngonyaka", price_save2:"Onga izinyanga ezi-2 MAHHALA",
+    ppay1_for:"Izitolo zesipaza, abathengisi &amp; amabhizinisi asekhaya", ppay2_for:"Amabhizinisi akhulayo &amp; izingcweti zomsebenzi", ppay3_for:"Amabhizinisi asezimele anabasebenzi &amp; impahla", ppay4_for:"Amagatsha amaningi &amp; amabhizinisi amakhulu",
+    pay_pf_h2:"Ukukhokha okuphephile nge-PayFast", pay_pf_sub:"Isango lokukhokha elethenjwa kakhulu eNingizimu Afrika — lisetshenziswa amabhizinisi angaphezu kuka-60,000 ase-SA",
+    pm1_name:"I-EFT Eshesha Kanjalo", pm1_desc:"I-FNB, i-ABSA, i-Standard Bank, i-Capitec, i-Nedbank",
+    pm2_name:"Ikhadi Lesikweletu/Lokukhipha", pm2_desc:"I-Visa ne-Mastercard ziyamukelwa",
+    pm3_name:"I-SnapScan ne-Zapper", pm3_desc:"Skena futhi ukhokhe ngokushesha",
+    pm4_name:"I-Capitec Pay", pm4_desc:"Khokha ngqo ku-app ye-Capitec",
+    pm5_name:"I-Ozow", pm5_desc:"Ukudlulisela kwebhange okungenankokhelo",
+    pm6_name:"Kuvikelwe yi-SSL", pm6_desc:"Ukubethela kwe-256-bit · I-PCI DSS Izinga 1",
+    pay_how_h3:"&#9881; Indlela ukukhokha okusebenza ngayo",
+    pay_step1:"Khetha uhlelo lwakho ngenhla bese uchofoza inkinobho — uvivinyo lwakho lwezinsuku ezingu-30 luqala ngokushesha, <strong style=\"color:#fff\">akukho nkokhelo ethathwa namuhla</strong>",
+    pay_step2:"Ngosuku lwe-30, uzothola i-imeyili enesixhumanisi sokukhokha se-PayFast esiphephile ukuze uvivule ukubhalisela kwakho",
+    pay_step3:"Khetha indlela yakho yokukhokha — i-EFT eshesha kanjalo, ikhadi, i-SnapScan, i-Capitec Pay, noma i-Ozow — bese ukhokha ngokuphepha",
+    pay_step4:"Ukubhalisela kuvivula ngokushesha ngemva kokukhokha. Khansela noma nini — akukho inhlawulo, akukho imibuzo ebuzwayo",
+    pay_neverstore:"&#128274; I-Setwel ayikaze igcine imininingwane yekhadi lakho noma yebhange. Zonke izinkokhelo zicutshungulwa ngokuphepha yi-<strong style=\"color:#fff\">PayFast (Pty) Ltd</strong>, ebhalisiwe ne-FSCA.",
+    pay_modal_h2:"Qala uvivinyo lwakho lwamahhala", pay_first:"Igama *", pay_last:"Isibongo *", pay_emailaddr:"Ikheli le-imeyili *", pay_waphone:"I-WhatsApp / Ucingo *", pay_bizname:"Igama Lebhizinisi",
+    pay_trialperiod:"Isikhathi sovivinyo: <strong style=\"color:#4CAF70\">Izinsuku ezingu-30 ZAMAHHALA</strong>", pay_thenfrom:"Bese kusukela ku",
+    pay_trialnote:"&#128274; Uvivinyo lwakho luqala ngokushesha ngemva kokuthumela. Akukho nkokhelo ethathwa namuhla. Ngemva kwezinsuku ezingu-30 uzothola isixhumanisi sokukhokha se-PayFast nge-imeyili ukuze uvivule ukubhalisela kwakho.",
+    pay_startmytrial:"&#9889; Qala Uvivinyo Lwami Lwezinsuku ezingu-30 Lwamahhala",
+    pay_securedby:"Ukukhokha ngemva kovivinyo kuvikelwe yi-<a href=\"https://www.payfast.co.za\" target=\"_blank\">PayFast</a> — isango elethenjwa laseNingizimu Afrika",
+    pay_sslnote:"&#128274; I-SSL ibethelwe &nbsp;&#183;&nbsp; Ihambisana ne-PCI DSS &nbsp;&#183;&nbsp; Ayikaze igcinwe yi-Setwel",
+    pay_foot_home:"Ikhaya", pay_foot_contact:"Xhumana", pay_paymentsby:"Izinkokhelo zenziwa yi"
+  },
+  xh:{
+    pay_h1:"Khetha isicwangciso sakho — <em>qalisa simahla.</em>", pay_sub:"Uvavanyo lwamahhala lweentsuku ezingama-30 kuzo zonke izicwangciso. Hlawula xa nje usele ulungile. Rhoxisa nanini na.",
+    pay_badge1:"&#128274; <strong>Ikhuselwe yi-PayFast</strong> — isango lentlawulo #1 eMzantsi Afrika", pay_badge2:"&#128179; I-EFT Ekhawulezayo &nbsp;&#183;&nbsp; Ikhadi &nbsp;&#183;&nbsp; I-SnapScan", pay_badge3:"&#127487;&#127462; I-Rand yoMzantsi Afrika (ZAR)",
+    price_monthly:"Ngenyanga", price_annual:"Ngonyaka", price_save2:"Yonga iinyanga ezi-2 NGEZIMAHHALA",
+    ppay1_for:"Iivenkile zesipaza, abathengisi &amp; amashishini asekhaya", ppay2_for:"Amashishini akhulayo &amp; izingcali zomsebenzi", ppay3_for:"Amashishini asekiweyo anabasebenzi &amp; izinto ezigcinwe", ppay4_for:"Amasebe amaninzi &amp; amashishini amakhulu",
+    pay_pf_h2:"Intlawulo ekhuselekileyo nge-PayFast", pay_pf_sub:"Isango lentlawulo elithenjwe kakhulu eMzantsi Afrika — lisetyenziswa ngamashishini angaphezu kwe-60,000 oMzantsi Afrika",
+    pm1_name:"I-EFT Ekhawulezayo", pm1_desc:"I-FNB, i-ABSA, i-Standard Bank, i-Capitec, i-Nedbank",
+    pm2_name:"Ikhadi Letyala/Lokutsala", pm2_desc:"I-Visa ne-Mastercard ziyamkelwa",
+    pm3_name:"I-SnapScan ne-Zapper", pm3_desc:"Skena kwaye uhlawule ngoko nangoko",
+    pm4_name:"I-Capitec Pay", pm4_desc:"Hlawula ngqo kwi-app ye-Capitec",
+    pm5_name:"I-Ozow", pm5_desc:"Udluliselo lwebhanki olungenamrhumo",
+    pm6_name:"Ikhuselwe yi-SSL", pm6_desc:"Ukubethelelwa kwe-256-bit · I-PCI DSS Inqanaba 1",
+    pay_how_h3:"&#9881; Indlela intlawulo esebenza ngayo",
+    pay_step1:"Khetha isicwangciso sakho ngasentla kwaye ucofe iqhosha — uvavanyo lwakho lweentsuku ezingama-30 luqala ngoko nangoko, <strong style=\"color:#fff\">akukho ntlawulo ithathwayo namhlanje</strong>",
+    pay_step2:"Ngomhla wama-30, uza kufumana i-imeyile enekhonkco lentlawulo ye-PayFast ekhuselekileyo ukwenza ukubhalisa kwakho kusebenze",
+    pay_step3:"Khetha indlela yakho yokuhlawula — i-EFT Ekhawulezayo, ikhadi, i-SnapScan, i-Capitec Pay, okanye i-Ozow — kwaye uhlawule ngokukhuselekileyo",
+    pay_step4:"Ubhaliso luyasebenza ngoko nangoko emva kwentlawulo. Rhoxisa nanini na — akukho isohlwayo, akukho mibuzo ibuzwayo",
+    pay_neverstore:"&#128274; I-Setwel ayizange igcine iinkcukacha zekhadi lakho okanye zebhanki. Zonke iintlawulo ziqhutywa ngokukhuselekileyo yi-<strong style=\"color:#fff\">PayFast (Pty) Ltd</strong>, ebhalisiweyo ne-FSCA.",
+    pay_modal_h2:"Qalisa uvavanyo lwakho lwamahhala", pay_first:"Igama Lokuqala *", pay_last:"Ifani *", pay_emailaddr:"Idilesi ye-imeyile *", pay_waphone:"I-WhatsApp / Ifowuni *", pay_bizname:"Igama Leshishini",
+    pay_trialperiod:"Ixesha lovavanyo: <strong style=\"color:#4CAF70\">Iintsuku ezingama-30 ZISIMAHLA</strong>", pay_thenfrom:"Emva koko ukusukela",
+    pay_trialnote:"&#128274; Uvavanyo lwakho luqala ngoko nangoko emva kokungenisa. Akukho ntlawulo ithathwayo namhlanje. Emva kweentsuku ezingama-30 uza kufumana ikhonkco lentlawulo ye-PayFast nge-imeyile ukwenza ukubhalisa kwakho kusebenze.",
+    pay_startmytrial:"&#9889; Qalisa Uvavanyo Lwam Lweentsuku ezingama-30 Lwamahhala",
+    pay_securedby:"Intlawulo emva kovavanyo ikhuselwe yi-<a href=\"https://www.payfast.co.za\" target=\"_blank\">PayFast</a> — isango elithenjiweyo loMzantsi Afrika",
+    pay_sslnote:"&#128274; I-SSL ibethelelwe &nbsp;&#183;&nbsp; Ihambelana ne-PCI DSS &nbsp;&#183;&nbsp; Ayizange igcinwe yi-Setwel",
+    pay_foot_home:"Ikhaya", pay_foot_contact:"Qhagamshelana", pay_paymentsby:"Iintlawulo zenziwa yi"
+  },
+  ve:{
+    pay_h1:"Nangani nwali ḽaṋu — <em>thomani nga mahala.</em>", pay_sub:"U linga nga mahala maḓuvha a 30 kha manwali oṱhe. Lifhani fhedzi musi no lugela. Litshani nga tshifhinga tshiṅwe na tshiṅwe.",
+    pay_badge1:"&#128274; <strong>Yo tsireledzwa nga PayFast</strong> — muṱangano wa mbadelo wa #1 Afrika Tshipembe", pay_badge2:"&#128179; EFT ya Nga Muya &nbsp;&#183;&nbsp; Khadi &nbsp;&#183;&nbsp; SnapScan", pay_badge3:"&#127487;&#127462; Rand ya Afrika Tshipembe (ZAR)",
+    price_monthly:"Nga ṅwedzi", price_annual:"Nga ṅwaha", price_save2:"Ilani miṅwedzi mbili MAHALA",
+    ppay1_for:"Mavhengele a spaza, vhathengisi &amp; mabindu a hayani", ppay2_for:"Mabindu ane a hula &amp; vhaḓi vha mishumo", ppay3_for:"Mabindu o dziimisaho ane a vha na vhashumi &amp; thundu", ppay4_for:"Maofisi manzhi &amp; mabindu makhulu",
+    pay_pf_h2:"Mbadelo yo tsireledzeaho nga PayFast", pay_pf_sub:"Muṱangano wa mbadelo une wa fulufhedzea vhukuma Afrika Tshipembe — u shumiswa nga mabindu a fhiraho 60,000 a Afrika Tshipembe",
+    pm1_name:"EFT ya Nga Muya", pm1_desc:"FNB, ABSA, Standard Bank, Capitec, Nedbank",
+    pm2_name:"Khadi ya Tshikolodo/u Bvisa", pm2_desc:"Visa na Mastercard dzi a ṱanganedzwa",
+    pm3_name:"SnapScan na Zapper", pm3_desc:"Vhalani na u lifha nga u ṱavhanya",
+    pm4_name:"Capitec Pay", pm4_desc:"Lifhani nga ho livhaho kha app ya Capitec",
+    pm5_name:"Ozow", pm5_desc:"U rumela tshelede ha banga hu si na mbadelo",
+    pm6_name:"Yo tsireledzwa nga SSL", pm6_desc:"U vhonala ha 256-bit · PCI DSS Levele 1",
+    pay_how_h3:"&#9881; Nḓila ine mbadelo ya shuma ngayo",
+    pay_step1:"Nangani nwali ḽaṋu nga nṱha na u kwama bathini — u linga haṋu ha maḓuvha a 30 hu thoma nga u ṱavhanya, <strong style=\"color:#fff\">a hu na mbadelo ine ya dzhiwa ṋamusi</strong>",
+    pay_step2:"Nga ḓuvha ḽa 30, ni ḓo wana imeili ine ya vha na linki ya mbadelo ya PayFast yo tsireledzeaho u itela u dzhenisa u ṅwaliswa haṋu",
+    pay_step3:"Nangani nḓila yaṋu ya mbadelo — EFT ya nga muya, khadi, SnapScan, Capitec Pay, kana Ozow — nahone ni lifhe nga tshileme",
+    pay_step4:"U ṅwaliswa hu a thoma nga u ṱavhanya nga murahu ha mbadelo. Litshani nga tshifhinga tshiṅwe na tshiṅwe — a hu na tshigwevho, a hu na mbudziso",
+    pay_neverstore:"&#128274; Setwel a i athu u vhulunga mafhungo a khadi yaṋu kana ya banga. Mbadelo dzoṱhe dzi shumiswa nga tshileme nga <strong style=\"color:#fff\">PayFast (Pty) Ltd</strong>, yo ṅwaliswaho na FSCA.",
+    pay_modal_h2:"Thomani u linga haṋu nga mahala", pay_first:"Dzina ḽa Phanḓa *", pay_last:"Sabina *", pay_emailaddr:"Aḓaresi ya Imeili *", pay_waphone:"WhatsApp / Fune *", pay_bizname:"Dzina ḽa Bindu",
+    pay_trialperiod:"Tshifhinga tsha u linga: <strong style=\"color:#4CAF70\">Maḓuvha a 30 A MAHALA</strong>", pay_thenfrom:"Nahone u bva kha",
+    pay_trialnote:"&#128274; U linga haṋu hu thoma nga u ṱavhanya nga murahu ha u rumela. A hu na mbadelo ine ya dzhiwa ṋamusi. Nga murahu ha maḓuvha a 30 ni ḓo wana linki ya mbadelo ya PayFast nga imeili u itela u dzhenisa u ṅwaliswa haṋu.",
+    pay_startmytrial:"&#9889; Thomani u Linga Hanga ha Maḓuvha a 30 nga Mahala",
+    pay_securedby:"Mbadelo nga murahu ha u linga yo tsireledzwa nga <a href=\"https://www.payfast.co.za\" target=\"_blank\">PayFast</a> — muṱangano u fulufhedzeaho wa Afrika Tshipembe",
+    pay_sslnote:"&#128274; Yo tsireledzwa nga SSL &nbsp;&#183;&nbsp; I tendelana na PCI DSS &nbsp;&#183;&nbsp; A i athu u vhulungwa nga Setwel",
+    pay_foot_home:"Hayani", pay_foot_contact:"Dzudzanya", pay_paymentsby:"Mbadelo dzi itwa nga"
+  },
+  st:{
+    pay_h1:"Khetha lenaneo la hau — <em>qala mahala.</em>", pay_sub:"Teko ea mahala ea matsatsi a 30 merero eohle. Lefa feela ha u itokiselitse. Khansela neng kapa neng.",
+    pay_badge1:"&#128274; <strong>E sirelelitsoe ke PayFast</strong> — sepheo sa tefo sa #1 sa SA", pay_badge2:"&#128179; EFT e Potlakileng &nbsp;&#183;&nbsp; Khatho &nbsp;&#183;&nbsp; SnapScan", pay_badge3:"&#127487;&#127462; Rand ea Afrika Boroa (ZAR)",
+    price_monthly:"Khoeli le khoeli", price_annual:"Selemo le selemo", price_save2:"Boloka likhoeli tse 2 MAHALA",
+    ppay1_for:"Mabenkele a spaza, barekisi &amp; likhoebo tsa lapeng", ppay2_for:"Likhoebo tse holang &amp; litsebi tsa mosebetsi", ppay3_for:"Likhoebo tse tsitsitseng tse nang le basebetsi &amp; thepa", ppay4_for:"Makala a mangata &amp; likhoebo tse kholo",
+    pay_pf_h2:"Tefo e sireletsehileng ka PayFast", pay_pf_sub:"Sepheo sa tefo se tšepahalang ka ho fetisisa Afrika Boroa — se sebelisoang ke likhoebo tse fetang 60,000 tsa SA",
+    pm1_name:"EFT e Potlakileng", pm1_desc:"FNB, ABSA, Standard Bank, Capitec, Nedbank",
+    pm2_name:"Khatho ea Mokitlane/ea Ho Ntša", pm2_desc:"Visa le Mastercard li amoheloa",
+    pm3_name:"SnapScan le Zapper", pm3_desc:"Hlahloba mme u lefe hang-hang",
+    pm4_name:"Capitec Pay", pm4_desc:"Lefa ka kotloloho ho tsoa ho app ea Capitec",
+    pm5_name:"Ozow", pm5_desc:"Phetisetso ea banka e se nang tefiso",
+    pm6_name:"E Sirelelitsoe ke SSL", pm6_desc:"Ho sireletsa ha 256-bit · PCI DSS Boemo 1",
+    pay_how_h3:"&#9881; Kamoo tefo e sebetsang kateng",
+    pay_step1:"Khetha lenaneo la hau ka holimo mme u tobetse konopo — teko ea hau ea matsatsi a 30 e qala hang-hang, <strong style=\"color:#fff\">ha ho tefo e nkoang kajeno</strong>",
+    pay_step2:"Letsatsing la 30, u tla fumana imeile e nang le khokahano ea tefo ea PayFast e sireletsehileng ho kenya ts'ebetsong boitsebiso ba hau",
+    pay_step3:"Khetha mokhoa oa hau oa ho lefa — EFT e Potlakileng, khatho, SnapScan, Capitec Pay, kapa Ozow — mme u lefe ka polokeho",
+    pay_step4:"Boitsebiso bo kena tšebetsong hang-hang ka mor'a tefo. Khansela neng kapa neng — ha ho kotlo, ha ho lipotso",
+    pay_neverstore:"&#128274; Setwel ha e boloke lintlha tsa khatho ea hau kapa tsa banka. Litefo tsohle li sebetsoa ka polokeho ke <strong style=\"color:#fff\">PayFast (Pty) Ltd</strong>, e ngodisitsoeng le FSCA.",
+    pay_modal_h2:"Qala teko ea hau ea mahala", pay_first:"Lebitso la Pele *", pay_last:"Fane *", pay_emailaddr:"Aterese ea Imeile *", pay_waphone:"WhatsApp / Mohala *", pay_bizname:"Lebitso la Khoebo",
+    pay_trialperiod:"Nako ea teko: <strong style=\"color:#4CAF70\">Matsatsi a 30 A MAHALA</strong>", pay_thenfrom:"Joale ho tloha ho",
+    pay_trialnote:"&#128274; Teko ea hau e qala hang-hang ka mor'a ho romela. Ha ho tefo e nkoang kajeno. Ka mor'a matsatsi a 30 u tla fumana khokahano ea tefo ea PayFast ka imeile ho kenya ts'ebetsong boitsebiso ba hau.",
+    pay_startmytrial:"&#9889; Qala Teko ea Ka ea Matsatsi a 30 a Mahala",
+    pay_securedby:"Tefo ka mor'a teko e sirelelitsoe ke <a href=\"https://www.payfast.co.za\" target=\"_blank\">PayFast</a> — sepheo se tšepahalang sa Afrika Boroa",
+    pay_sslnote:"&#128274; E sirelelitsoe ka SSL &nbsp;&#183;&nbsp; E lumellana le PCI DSS &nbsp;&#183;&nbsp; Ha e eso ho bolokoe ke Setwel",
+    pay_foot_home:"Hae", pay_foot_contact:"Ikopanye", pay_paymentsby:"Litefo li etsoa ke"
+  }
+};
+function applyContentLang(lang){
+  if(lang==='en'){
+    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
+    return;
+  }
+  var c = CONTENT_LANG[lang];
+  if(!c) return;
+  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
+    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
+    if(c[k]) el.innerHTML = c[k];
   });
 }
 window.addEventListener('DOMContentLoaded', function(){

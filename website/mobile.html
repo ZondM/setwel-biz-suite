@@ -923,7 +923,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ TRIAL EXPIRED (locked) ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-expired">
   <div class="iv-topbar">
-    <span class="iv-topbar-title">Setwel Invoicing</span>
+    <span class="iv-topbar-title" data-i18n="t_setwelinv">Setwel Invoicing</span>
   </div>
   <div class="iv-form" style="padding-top:30px;text-align:center">
     <div style="font-size:2.6rem;margin-bottom:14px">&#128274;</div>
@@ -944,19 +944,19 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-hub">
 
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-welcome')">&#8592; Back</button>
-    <span class="iv-topbar-title">Setwel Invoicing</span>
+    <button class="iv-back" onclick="show('s-welcome')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_setwelinv">Setwel Invoicing</span>
     <button class="iv-back" onclick="ivExportBackup()" title="Backup your data">&#128190;</button>
   </div>
 
   <!-- Toolbar (Invoice / Quote / Payment / Reports / Customers / Options) -->
   <div class="iv-toolbar">
-    <div class="iv-tool" onclick="ivNewInvoice()"><span class="iv-tool-ico">&#128196;</span><span class="iv-tool-lbl">Invoice</span></div>
-    <div class="iv-tool" onclick="ivNewQuote()"><span class="iv-tool-ico">&#128203;</span><span class="iv-tool-lbl">Quote</span></div>
-    <div class="iv-tool" onclick="ivOpenPaymentPicker()"><span class="iv-tool-ico">&#128179;</span><span class="iv-tool-lbl">Payment</span></div>
-    <div class="iv-tool" onclick="show('s-iv-reports')"><span class="iv-tool-ico">&#128202;</span><span class="iv-tool-lbl">Reports</span></div>
-    <div class="iv-tool" onclick="ivRenderCustomers();show('s-iv-customers')"><span class="iv-tool-ico">&#128101;</span><span class="iv-tool-lbl">Customers</span></div>
-    <div class="iv-tool" onclick="ivOpenSetup()"><span class="iv-tool-ico">&#9881;</span><span class="iv-tool-lbl">Setup</span></div>
+    <div class="iv-tool" onclick="ivNewInvoice()"><span class="iv-tool-ico">&#128196;</span><span class="iv-tool-lbl" data-i18n="hub_invoice">Invoice</span></div>
+    <div class="iv-tool" onclick="ivNewQuote()"><span class="iv-tool-ico">&#128203;</span><span class="iv-tool-lbl" data-i18n="hub_quote">Quote</span></div>
+    <div class="iv-tool" onclick="ivOpenPaymentPicker()"><span class="iv-tool-ico">&#128179;</span><span class="iv-tool-lbl" data-i18n="hub_payment">Payment</span></div>
+    <div class="iv-tool" onclick="show('s-iv-reports')"><span class="iv-tool-ico">&#128202;</span><span class="iv-tool-lbl" data-i18n="t_reports">Reports</span></div>
+    <div class="iv-tool" onclick="ivRenderCustomers();show('s-iv-customers')"><span class="iv-tool-ico">&#128101;</span><span class="iv-tool-lbl" data-i18n="t_customers">Customers</span></div>
+    <div class="iv-tool" onclick="ivOpenSetup()"><span class="iv-tool-ico">&#9881;</span><span class="iv-tool-lbl" data-i18n="hub_setup">Setup</span></div>
   </div>
 
   <div class="iv-body">
@@ -972,8 +972,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <div id="iv-backup-reminder" class="iv-setup-banner" style="display:none;background:rgba(37,211,102,.08);border-color:rgba(37,211,102,.3)" onclick="ivExportBackup()">
       <span class="b-ico">&#128190;</span>
       <div class="b-txt">
-        <div class="b-t" style="color:#4CAF70">Time for a backup</div>
-        <div class="b-s" id="iv-backup-reminder-sub">It's been a few days — tap to save a backup file</div>
+        <div class="b-t" style="color:#4CAF70" data-i18n="hub_timeforbackup">Time for a backup</div>
+        <div class="b-s" id="iv-backup-reminder-sub" data-i18n="hub_backupsub">It's been a few days — tap to save a backup file</div>
       </div>
       <span style="color:#4CAF70">&#8594;</span>
     </div>
@@ -981,71 +981,71 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <div id="iv-setup-banner" class="iv-setup-banner" style="display:none" onclick="ivOpenSetup()">
       <span class="b-ico">&#9888;</span>
       <div class="b-txt">
-        <div class="b-t">Add your business details</div>
-        <div class="b-s">Your invoices need your company name &amp; VAT number to look professional</div>
+        <div class="b-t" data-i18n="hub_addbizdetails">Add your business details</div>
+        <div class="b-s" data-i18n="hub_addbizsub">Your invoices need your company name &amp; VAT number to look professional</div>
       </div>
       <span style="color:#E8801A">&#8594;</span>
     </div>
 
     <div class="iv-stats">
-      <div class="iv-stat"><span class="iv-stat-n" id="iv-stat-outstanding">R0</span><div class="iv-stat-l">Outstanding</div></div>
-      <div class="iv-stat"><span class="iv-stat-n" id="iv-stat-paid">R0</span><div class="iv-stat-l">Paid (30d)</div></div>
-      <div class="iv-stat"><span class="iv-stat-n" id="iv-stat-count">0</span><div class="iv-stat-l">Invoices</div></div>
+      <div class="iv-stat"><span class="iv-stat-n" id="iv-stat-outstanding">R0</span><div class="iv-stat-l" data-i18n="hub_outstanding">Outstanding</div></div>
+      <div class="iv-stat"><span class="iv-stat-n" id="iv-stat-paid">R0</span><div class="iv-stat-l" data-i18n="hub_paid30d">Paid (30d)</div></div>
+      <div class="iv-stat"><span class="iv-stat-n" id="iv-stat-count">0</span><div class="iv-stat-l" data-i18n="t_invoices">Invoices</div></div>
     </div>
 
-    <div class="iv-section-lbl">Create new</div>
+    <div class="iv-section-lbl" data-i18n="hub_createnew">Create new</div>
     <div class="iv-grid">
-      <div class="iv-card iv-card-accent" onclick="ivNewInvoice()"><span class="iv-card-ico">&#128196;</span><span class="iv-card-lbl">New Invoice</span></div>
-      <div class="iv-card" onclick="ivNewQuote()"><span class="iv-card-ico">&#128203;</span><span class="iv-card-lbl">New Quote</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderCustomers();ivCustomerNew()"><span class="iv-card-ico">&#128101;</span><span class="iv-card-lbl">Add Customer</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivOpenPaymentPicker()"><span class="iv-card-ico">&#128179;</span><span class="iv-card-lbl">Record Payment</span></div>
+      <div class="iv-card iv-card-accent" onclick="ivNewInvoice()"><span class="iv-card-ico">&#128196;</span><span class="iv-card-lbl" data-i18n="hub_newinvoice">New Invoice</span></div>
+      <div class="iv-card" onclick="ivNewQuote()"><span class="iv-card-ico">&#128203;</span><span class="iv-card-lbl" data-i18n="hub_newquote">New Quote</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderCustomers();ivCustomerNew()"><span class="iv-card-ico">&#128101;</span><span class="iv-card-lbl" data-i18n="hub_addcustomer">Add Customer</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivOpenPaymentPicker()"><span class="iv-card-ico">&#128179;</span><span class="iv-card-lbl" data-i18n="t_recordpayment">Record Payment</span></div>
     </div>
 
-    <div class="iv-section-lbl">SA Tools</div>
+    <div class="iv-section-lbl" data-i18n="hub_satools">SA Tools</div>
     <div class="iv-grid">
-      <div class="iv-card iv-card-dim" onclick="ivRenderStokvelList();show('s-iv-stokvel-list')"><span class="iv-card-ico">&#127919;</span><span class="iv-card-lbl">Stokvel Manager</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderLaybyList();show('s-iv-layby-list')"><span class="iv-card-ico">&#128717;</span><span class="iv-card-lbl">Layby Manager</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderTillList();show('s-iv-till-list')"><span class="iv-card-ico">&#127978;</span><span class="iv-card-lbl">Spaza Cash Float</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderStokvelList();show('s-iv-stokvel-list')"><span class="iv-card-ico">&#127919;</span><span class="iv-card-lbl" data-i18n="t_stokvelmgr">Stokvel Manager</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderLaybyList();show('s-iv-layby-list')"><span class="iv-card-ico">&#128717;</span><span class="iv-card-lbl" data-i18n="t_laybymgr">Layby Manager</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderTillList();show('s-iv-till-list')"><span class="iv-card-ico">&#127978;</span><span class="iv-card-lbl" data-i18n="t_spazafloat">Spaza Cash Float</span></div>
     </div>
 
-    <div class="iv-section-lbl">Business</div>
+    <div class="iv-section-lbl" data-i18n="hub_business">Business</div>
     <div class="iv-grid">
-      <div class="iv-card iv-card-dim" onclick="ivRenderPayrollHub();show('s-iv-payroll-hub')"><span class="iv-card-ico">&#128084;</span><span class="iv-card-lbl">Payroll</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderInventoryList();show('s-iv-inventory-list')"><span class="iv-card-ico">&#128230;</span><span class="iv-card-lbl">Inventory</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderPayrollHub();show('s-iv-payroll-hub')"><span class="iv-card-ico">&#128084;</span><span class="iv-card-lbl" data-i18n="t_payroll">Payroll</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderInventoryList();show('s-iv-inventory-list')"><span class="iv-card-ico">&#128230;</span><span class="iv-card-lbl" data-i18n="t_inventory">Inventory</span></div>
     </div>
 
-    <div class="iv-section-lbl">Manage</div>
+    <div class="iv-section-lbl" data-i18n="hub_manage">Manage</div>
     <div class="iv-grid">
-      <div class="iv-card iv-card-dim" onclick="ivRenderList('invoices');show('s-iv-list-invoices')"><span class="iv-card-ico">&#128194;</span><span class="iv-card-lbl">Invoices List</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderList('quotes');show('s-iv-list-quotes')"><span class="iv-card-ico">&#128196;</span><span class="iv-card-lbl">Quotes List</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderCustomers();show('s-iv-customers')"><span class="iv-card-ico">&#128100;</span><span class="iv-card-lbl">Customers List</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderList('creditnotes');show('s-iv-list-cn')"><span class="iv-card-ico">&#8617;</span><span class="iv-card-lbl">Credit Notes</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderList('invoices');show('s-iv-list-invoices')"><span class="iv-card-ico">&#128194;</span><span class="iv-card-lbl" data-i18n="hub_invoiceslist">Invoices List</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderList('quotes');show('s-iv-list-quotes')"><span class="iv-card-ico">&#128196;</span><span class="iv-card-lbl" data-i18n="hub_quoteslist">Quotes List</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderCustomers();show('s-iv-customers')"><span class="iv-card-ico">&#128100;</span><span class="iv-card-lbl" data-i18n="hub_customerslist">Customers List</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderList('creditnotes');show('s-iv-list-cn')"><span class="iv-card-ico">&#8617;</span><span class="iv-card-lbl" data-i18n="t_creditnotes">Credit Notes</span></div>
     </div>
 
-    <div class="iv-section-lbl">Reports</div>
+    <div class="iv-section-lbl" data-i18n="t_reports">Reports</div>
     <div class="iv-grid">
-      <div class="iv-card iv-card-dim" onclick="ivRenderReports();show('s-iv-reports')"><span class="iv-card-ico">&#9203;</span><span class="iv-card-lbl">Unpaid Accounts</span></div>
-      <div class="iv-card iv-card-dim" onclick="ivRenderReports();show('s-iv-reports')"><span class="iv-card-ico">&#128202;</span><span class="iv-card-lbl">Sales Report</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderReports();show('s-iv-reports')"><span class="iv-card-ico">&#9203;</span><span class="iv-card-lbl" data-i18n="hub_unpaidaccounts">Unpaid Accounts</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivRenderReports();show('s-iv-reports')"><span class="iv-card-ico">&#128202;</span><span class="iv-card-lbl" data-i18n="hub_salesreport">Sales Report</span></div>
     </div>
 
-    <div class="iv-section-lbl">Data &amp; backup</div>
+    <div class="iv-section-lbl" data-i18n="hub_databackup">Data &amp; backup</div>
     <div class="iv-grid">
-      <div class="iv-card iv-card-dim" onclick="ivExportBackup()"><span class="iv-card-ico">&#128190;</span><span class="iv-card-lbl">Backup Now</span></div>
-      <div class="iv-card iv-card-dim" onclick="document.getElementById('iv-restore-input').click()"><span class="iv-card-ico">&#128260;</span><span class="iv-card-lbl">Restore Backup</span></div>
+      <div class="iv-card iv-card-dim" onclick="ivExportBackup()"><span class="iv-card-ico">&#128190;</span><span class="iv-card-lbl" data-i18n="hub_backupnow">Backup Now</span></div>
+      <div class="iv-card iv-card-dim" onclick="document.getElementById('iv-restore-input').click()"><span class="iv-card-ico">&#128260;</span><span class="iv-card-lbl" data-i18n="hub_restorebackup">Restore Backup</span></div>
     </div>
     <input type="file" id="iv-restore-input" accept=".json" style="display:none" onchange="ivImportBackup(event)">
   </div>
 
   <div class="iv-data-note" id="iv-data-note">
-    <strong>&#128274; Your data is protected two ways</strong> on this device — nothing is ever sent to a server. <span id="iv-last-backup-line">You haven't downloaded a backup file yet.</span> Tap <strong>Backup Now</strong> above to save a copy you can restore from any device.
+    <strong data-i18n="hub_datanote1">&#128274; Your data is protected two ways</strong> <span data-i18n="hub_datanote2">on this device — nothing is ever sent to a server.</span> <span id="iv-last-backup-line">You haven't downloaded a backup file yet.</span> <span data-i18n="hub_datanote3">Tap</span> <strong data-i18n="hub_backupnow">Backup Now</strong> <span data-i18n="hub_datanote4">above to save a copy you can restore from any device.</span>
   </div>
 </div>
 
 <!-- ══════════════════ SETUP: Company details ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-setup">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Business Details</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_bizdetails">Business Details</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1084,7 +1084,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW INVOICE / QUOTE (shared form, mode-driven) ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-doc-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivCancelForm()">&#8592; Back</button>
+    <button class="iv-back" onclick="ivCancelForm()" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="iv-form-title">New Invoice</span>
     <span style="width:60px"></span>
   </div>
@@ -1122,8 +1122,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ CUSTOMERS LIST ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-customers">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Customers</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_customers">Customers</span>
     <button class="iv-back" onclick="ivCustomerNew()">&#43; Add</button>
   </div>
   <div class="iv-form">
@@ -1134,8 +1134,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW / EDIT CUSTOMER ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-customer-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivCustomerCancel()">&#8592; Back</button>
-    <span class="iv-topbar-title">Customer</span>
+    <button class="iv-back" onclick="ivCustomerCancel()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_customer">Customer</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1152,8 +1152,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ INVOICES LIST ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-list-invoices">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Invoices</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_invoices">Invoices</span>
     <button class="iv-back" onclick="ivNewInvoice()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-list-invoices"></div></div>
@@ -1162,8 +1162,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ QUOTES LIST ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-list-quotes">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Quotes</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_quotes">Quotes</span>
     <button class="iv-back" onclick="ivNewQuote()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-list-quotes"></div></div>
@@ -1172,8 +1172,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ CREDIT NOTES LIST ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-list-cn">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Credit Notes</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_creditnotes">Credit Notes</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form"><div id="iv-list-cn"></div></div>
@@ -1182,7 +1182,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ DOCUMENT VIEW (invoice/quote detail, printable) ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-view">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivBackFromView()">&#8592; Back</button>
+    <button class="iv-back" onclick="ivBackFromView()" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="iv-view-title">Invoice</span>
     <span style="width:60px"></span>
   </div>
@@ -1203,8 +1203,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ PAYMENT ENTRY ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-payment-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Record Payment</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_recordpayment">Record Payment</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1228,8 +1228,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ REPORTS ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-reports">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Reports</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_reports">Reports</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1246,8 +1246,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ STOKVEL LIST ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-stokvel-list">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Stokvel Manager</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_stokvelmgr">Stokvel Manager</span>
     <button class="iv-back" onclick="ivStokvelNew()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-stokvel-list"></div></div>
@@ -1256,8 +1256,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW / EDIT STOKVEL ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-stokvel-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-stokvel-list')">&#8592; Back</button>
-    <span class="iv-topbar-title">Stokvel</span>
+    <button class="iv-back" onclick="show('s-iv-stokvel-list')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_stokvel">Stokvel</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1276,7 +1276,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ STOKVEL DETAIL (members, contributions, rotation) ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-stokvel-detail">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-stokvel-list')">&#8592; Back</button>
+    <button class="iv-back" onclick="show('s-iv-stokvel-list')" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="sv-detail-title">Stokvel</span>
     <button class="iv-back" onclick="ivStokvelEditOpen()">&#9998;</button>
   </div>
@@ -1313,8 +1313,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ ADD/EDIT STOKVEL MEMBER ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-stokvel-member-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-stokvel-detail')">&#8592; Back</button>
-    <span class="iv-topbar-title">Member</span>
+    <button class="iv-back" onclick="show('s-iv-stokvel-detail')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_member">Member</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1328,8 +1328,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ LAYBY LIST ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-layby-list">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Layby Manager</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_laybymgr">Layby Manager</span>
     <button class="iv-back" onclick="ivLaybyNew()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-layby-list"></div></div>
@@ -1338,7 +1338,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW / EDIT LAYBY ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-layby-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-layby-list')">&#8592; Back</button>
+    <button class="iv-back" onclick="show('s-iv-layby-list')" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="lb-form-title">New Layby</span>
     <span style="width:60px"></span>
   </div>
@@ -1365,8 +1365,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ LAYBY DETAIL ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-layby-detail">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivRenderLaybyList();show('s-iv-layby-list')">&#8592; Back</button>
-    <span class="iv-topbar-title">Layby</span>
+    <button class="iv-back" onclick="ivRenderLaybyList();show('s-iv-layby-list')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_layby">Layby</span>
     <button class="iv-back" onclick="ivLaybyEditOpen()">&#9998;</button>
   </div>
   <div class="iv-form">
@@ -1381,8 +1381,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ SPAZA CASH FLOAT — till list ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-till-list">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Spaza Cash Float</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_spazafloat">Spaza Cash Float</span>
     <button class="iv-back" onclick="ivTillNew()">&#43; Till</button>
   </div>
   <div class="iv-form"><div id="iv-till-list"></div></div>
@@ -1391,8 +1391,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW TILL ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-till-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-till-list')">&#8592; Back</button>
-    <span class="iv-topbar-title">New Till</span>
+    <button class="iv-back" onclick="show('s-iv-till-list')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_newtill">New Till</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1404,7 +1404,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ TILL DETAIL — day-by-day float workflow ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-till-detail">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivRenderTillList();show('s-iv-till-list')">&#8592; Back</button>
+    <button class="iv-back" onclick="ivRenderTillList();show('s-iv-till-list')" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="tl-detail-title">Till</span>
     <span style="width:60px"></span>
   </div>
@@ -1418,8 +1418,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ RECORD CASH SALE ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-till-sale-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-till-detail')">&#8592; Back</button>
-    <span class="iv-topbar-title">Cash Sale</span>
+    <button class="iv-back" onclick="show('s-iv-till-detail')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_cashsale">Cash Sale</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1432,8 +1432,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ CLOSE DAY — count till ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-till-close-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-till-detail')">&#8592; Back</button>
-    <span class="iv-topbar-title">Close Day</span>
+    <button class="iv-back" onclick="show('s-iv-till-detail')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_closeday">Close Day</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1453,8 +1453,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ PAYROLL HUB ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-payroll-hub">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Payroll</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_payroll">Payroll</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1472,8 +1472,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW / EDIT EMPLOYEE ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-employee-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Employee</span>
+    <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_employee">Employee</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1493,8 +1493,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW PAY RUN ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-payrun-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">New Pay Run</span>
+    <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_newpayrun">New Pay Run</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1508,7 +1508,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ PAY RUN REVIEW / PAYSLIPS ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-payrun-review">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()">&#8592; Back</button>
+    <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="pr-review-title">Pay Run</span>
     <span style="width:60px"></span>
   </div>
@@ -1526,8 +1526,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ PAYSLIP VIEW (printable) ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-payslip-view">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-payrun-review')">&#8592; Back</button>
-    <span class="iv-topbar-title">Payslip</span>
+    <button class="iv-back" onclick="show('s-iv-payrun-review')" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_payslip">Payslip</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-doc" id="ps-doc-content"></div>
@@ -1539,8 +1539,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ INVENTORY — product list ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-inventory-list">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivOpenHub()">&#8592; Back</button>
-    <span class="iv-topbar-title">Inventory</span>
+    <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_inventory">Inventory</span>
     <button class="iv-back" onclick="ivProductNew()">&#43; Product</button>
   </div>
   <div class="iv-form">
@@ -1552,8 +1552,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ NEW / EDIT PRODUCT ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-product-form">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="show('s-iv-inventory-list');ivRenderInventoryList()">&#8592; Back</button>
-    <span class="iv-topbar-title">Product</span>
+    <button class="iv-back" onclick="show('s-iv-inventory-list');ivRenderInventoryList()" data-i18n="back_btn">&#8592; Back</button>
+    <span class="iv-topbar-title" data-i18n="t_product">Product</span>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1572,7 +1572,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ PRODUCT DETAIL — stock adjust ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-product-detail">
   <div class="iv-topbar">
-    <button class="iv-back" onclick="ivRenderInventoryList();show('s-iv-inventory-list')">&#8592; Back</button>
+    <button class="iv-back" onclick="ivRenderInventoryList();show('s-iv-inventory-list')" data-i18n="back_btn">&#8592; Back</button>
     <span class="iv-topbar-title" id="pd-detail-title">Product</span>
     <button class="iv-back" onclick="ivProductEditOpen()">&#9998;</button>
   </div>
@@ -3549,6 +3549,118 @@ function applyLang(lang){
   s('wc1',t.c1||TR.en.c1);s('wc2',t.c2||TR.en.c2);
   s('wc3',t.c3||TR.en.c3);s('wc4',t.c4||TR.en.c4);
   s('cta-h2',t.cta_h);s('cta-sub',t.cta_sub);s('cta-btn',t.cta_btn);  document.getElementById('cur-lang-label').textContent=lang.toUpperCase();
+  applyContentLang(lang);
+}
+/* Invoicing app content translation — hub dashboard, screen titles, back button */
+var CONTENT_LANG = {
+  af:{
+    back_btn:"&#8592; Terug",
+    t_setwelinv:"Setwel Fakturering", t_stokvelmgr:"Stokvel-bestuurder", t_stokvel:"Stokvel", t_spazafloat:"Spaza-kontantvlotter",
+    t_reports:"Verslae", t_recordpayment:"Rekordeer Betaling", t_quotes:"Kwotasies", t_product:"Produk", t_payslip:"Salarisstrokie",
+    t_payroll:"Salarisse", t_newtill:"Nuwe Kasregister", t_newpayrun:"Nuwe Betaalronde", t_member:"Lid", t_laybymgr:"Uitleg-bestuurder",
+    t_layby:"Uitleg", t_invoices:"Fakture", t_inventory:"Voorraad", t_employee:"Werknemer", t_customers:"Kliënte", t_customer:"Kliënt",
+    t_creditnotes:"Kredietnotas", t_closeday:"Sluit Dag", t_cashsale:"Kontantverkoop", t_bizdetails:"Besigheidsbesonderhede",
+    hub_invoice:"Faktuur", hub_quote:"Kwotasie", hub_payment:"Betaling", hub_setup:"Opstelling",
+    hub_timeforbackup:"Tyd vir 'n rugsteun", hub_backupsub:"Dit was 'n paar dae — tik om 'n rugsteunlêer te stoor",
+    hub_addbizdetails:"Voeg jou besigheidsbesonderhede by", hub_addbizsub:"Jou fakture benodig jou maatskappynaam &amp; BTW-nommer om professioneel te lyk",
+    hub_outstanding:"Uitstaande", hub_paid30d:"Betaal (30d)",
+    hub_createnew:"Skep nuwe", hub_newinvoice:"Nuwe Faktuur", hub_newquote:"Nuwe Kwotasie", hub_addcustomer:"Voeg Kliënt By",
+    hub_satools:"SA-gereedskap", hub_business:"Besigheid",
+    hub_manage:"Bestuur", hub_invoiceslist:"Fakturelys", hub_quoteslist:"Kwotasielys", hub_customerslist:"Kliëntelys",
+    hub_unpaidaccounts:"Onbetaalde Rekeninge", hub_salesreport:"Verkoopsverslag",
+    hub_databackup:"Data &amp; rugsteun", hub_backupnow:"Rugsteun Nou", hub_restorebackup:"Herstel Rugsteun",
+    hub_datanote1:"&#128274; Jou data word op twee maniere beskerm", hub_datanote2:"op hierdie toestel — niks word ooit na 'n bediener gestuur nie.",
+    hub_datanote3:"Tik", hub_datanote4:"hierbo om 'n kopie te stoor wat jy vanaf enige toestel kan herstel."
+  },
+  zu:{
+    back_btn:"&#8592; Emuva",
+    t_setwelinv:"I-Setwel Invoicing", t_stokvelmgr:"Umphathi Westokvela", t_stokvel:"Istokvela", t_spazafloat:"Imali Yesipaza",
+    t_reports:"Imibiko", t_recordpayment:"Bhala Inkokhelo", t_quotes:"Izicelo Zentengo", t_product:"Umkhiqizo", t_payslip:"Iphepha Leholo",
+    t_payroll:"Amaholo", t_newtill:"Ikhesi Elisha", t_newpayrun:"Ukukhokha Amaholo Okusha", t_member:"Ilungu", t_laybymgr:"Umphathi We-Layby",
+    t_layby:"I-Layby", t_invoices:"Ama-invoyisi", t_inventory:"Impahla", t_employee:"Isisebenzi", t_customers:"Amakhasimende", t_customer:"Ikhasimende",
+    t_creditnotes:"Amanothi Esikweletu", t_closeday:"Vala Usuku", t_cashsale:"Ukuthengisa Ngemali", t_bizdetails:"Imininingwane Yebhizinisi",
+    hub_invoice:"I-invoyisi", hub_quote:"Isicelo Sentengo", hub_payment:"Inkokhelo", hub_setup:"Ukusetha",
+    hub_timeforbackup:"Sekuyisikhathi sokugcina", hub_backupsub:"Sekuphele izinsuku ezimbalwa — chofoza ukugcina ifayela lokugcina",
+    hub_addbizdetails:"Engeza imininingwane yebhizinisi lakho", hub_addbizsub:"Ama-invoyisi akho adinga igama lenkampani yakho &amp; inombolo ye-VAT ukuze abukeke ngokuvumelana namazinga",
+    hub_outstanding:"Okusele", hub_paid30d:"Okukhokhiwe (30z)",
+    hub_createnew:"Yakha okusha", hub_newinvoice:"I-invoyisi Entsha", hub_newquote:"Isicelo Sentengo Esisha", hub_addcustomer:"Engeza Ikhasimende",
+    hub_satools:"Amathuluzi ase-SA", hub_business:"Ibhizinisi",
+    hub_manage:"Phatha", hub_invoiceslist:"Uhlu Lwama-invoyisi", hub_quoteslist:"Uhlu Lwezicelo Zentengo", hub_customerslist:"Uhlu Lwamakhasimende",
+    hub_unpaidaccounts:"Ama-akhawunti Angakhokhiwe", hub_salesreport:"Umbiko Wokuthengisa",
+    hub_databackup:"Idatha &amp; ukugcina", hub_backupnow:"Gcina Manje", hub_restorebackup:"Buyisela Okugciniwe",
+    hub_datanote1:"&#128274; Idatha yakho ivikelwe ngezindlela ezimbili", hub_datanote2:"kule divayisi — akukho okuthunyelwa kusiphakeli.",
+    hub_datanote3:"Chofoza", hub_datanote4:"ngenhla ukugcina ikhophi ongayibuyisela kunoma iyiphi idivayisi."
+  },
+  xh:{
+    back_btn:"&#8592; Emva",
+    t_setwelinv:"I-Setwel Invoicing", t_stokvelmgr:"Umlawuli Westokfela", t_stokvel:"Istokfela", t_spazafloat:"Imali Yesipaza",
+    t_reports:"Iingxelo", t_recordpayment:"Rekhoda Intlawulo", t_quotes:"Iingcebiso Zamaxabiso", t_product:"Imveliso", t_payslip:"Iphepha Lomvuzo",
+    t_payroll:"Umvuzo", t_newtill:"Ikhesi Entsha", t_newpayrun:"Ukuhlawula Umvuzo Okutsha", t_member:"Ilungu", t_laybymgr:"Umlawuli We-Layby",
+    t_layby:"I-Layby", t_invoices:"Iifektyisi", t_inventory:"Izinto Ezigcinwe", t_employee:"Umsebenzi", t_customers:"Abathengi", t_customer:"Umthengi",
+    t_creditnotes:"Amanqaku Etyala", t_closeday:"Vala Usuku", t_cashsale:"Intengiso Yemali", t_bizdetails:"Iinkcukacha Zeshishini",
+    hub_invoice:"Ifektyisi", hub_quote:"Ingcebiso Yexabiso", hub_payment:"Intlawulo", hub_setup:"Umiselo",
+    hub_timeforbackup:"Lixesha lokugcina", hub_backupsub:"Kudlule iintsuku ezimbalwa — cofa ukugcina ifayile yokugcina",
+    hub_addbizdetails:"Yongeza iinkcukacha zeshishini lakho", hub_addbizsub:"Iifektyisi zakho zidinga igama lenkampani yakho &amp; inombolo ye-VAT ukuze zibukeke ngokusesikweni",
+    hub_outstanding:"Okusaleyo", hub_paid30d:"Okuhlawulwe (30i)",
+    hub_createnew:"Yenza okutsha", hub_newinvoice:"Ifektyisi Entsha", hub_newquote:"Ingcebiso Yexabiso Entsha", hub_addcustomer:"Yongeza Umthengi",
+    hub_satools:"Izixhobo zase-SA", hub_business:"Ishishini",
+    hub_manage:"Lawula", hub_invoiceslist:"Uluhlu Lweefektyisi", hub_quoteslist:"Uluhlu Lweengcebiso Zamaxabiso", hub_customerslist:"Uluhlu Lwabathengi",
+    hub_unpaidaccounts:"Ii-akhawunti Ezingahlawulwanga", hub_salesreport:"Ingxelo Yentengiso",
+    hub_databackup:"Idatha &amp; ukugcina", hub_backupnow:"Gcina Ngoku", hub_restorebackup:"Buyisela Okugciniweyo",
+    hub_datanote1:"&#128274; Idatha yakho ikhuselwe ngeendlela ezimbini", hub_datanote2:"kwesi sixhobo — akukho nto ithunyelwa kwiseva.",
+    hub_datanote3:"Cofa", hub_datanote4:"ngasentla ukugcina ikopi onokuyibuyisela kwisixhobo nasiphi na."
+  },
+  ve:{
+    back_btn:"&#8592; Vhuya",
+    t_setwelinv:"Setwel Invoicing", t_stokvelmgr:"Mulanguli wa Stokvel", t_stokvel:"Stokvel", t_spazafloat:"Tshelede ya Spaza",
+    t_reports:"Mabiko", t_recordpayment:"Ṅwalani Mbadelo", t_quotes:"Themendelo", t_product:"Tshibveledzwa", t_payslip:"Mbadelo",
+    t_payroll:"Mbadelo", t_newtill:"Khethelo Ntswa", t_newpayrun:"U Lifha Ntswa", t_member:"Muraḓo", t_laybymgr:"Mulanguli wa Layby",
+    t_layby:"Layby", t_invoices:"Zwibammbiri", t_inventory:"Thundu", t_employee:"Mushumi", t_customers:"Vhathengi", t_customer:"Muthengi",
+    t_creditnotes:"Zwibammbiri zwa Tshikolodo", t_closeday:"Valani Ḓuvha", t_cashsale:"Thengiso ya Tshelede", t_bizdetails:"Mafhungo a Bindu",
+    hub_invoice:"Tshibammbiri", hub_quote:"Themendelo", hub_payment:"Mbadelo", hub_setup:"U Lugisela",
+    hub_timeforbackup:"Tshifhinga tsha u vhulunga", hub_backupsub:"Ho no fhira maḓuvha manzhi — kwamani u vhulunga faela",
+    hub_addbizdetails:"Engedzani mafhungo a bindu ḽaṋu", hub_addbizsub:"Zwibammbiri zwaṋu zwi ṱoḓa dzina ḽa khamphani yaṋu &amp; nomboro ya VAT uri zwi vhonale zwavhuḓi",
+    hub_outstanding:"Zwi Salaho", hub_paid30d:"Zwo Lifhiwaho (30ḓ)",
+    hub_createnew:"Bveledzani zwiswa", hub_newinvoice:"Tshibammbiri Tshiswa", hub_newquote:"Themendelo Ntswa", hub_addcustomer:"Engedzani Muthengi",
+    hub_satools:"Zwishumiswa zwa SA", hub_business:"Bindu",
+    hub_manage:"Langulani", hub_invoiceslist:"Luvhalo lwa Zwibammbiri", hub_quoteslist:"Luvhalo lwa Themendelo", hub_customerslist:"Luvhalo lwa Vhathengi",
+    hub_unpaidaccounts:"Diakhaundi dzi songo Lifhiwaho", hub_salesreport:"Muvhigo wa Thengiso",
+    hub_databackup:"Data &amp; u vhulunga", hub_backupnow:"Vhulungani Zwino", hub_restorebackup:"Vhuisani zwo Vhulungiwaho",
+    hub_datanote1:"&#128274; Data yaṋu yo tsireledzwa nga nḓila mbili", hub_datanote2:"kha tshishumiswa hetshi — a hu na tshine tsha rumelwa kha server.",
+    hub_datanote3:"Kwamani", hub_datanote4:"nga nṱha u vhulunga khophi ine na nga i vhuisa kha tshishumiswa tshiṅwe na tshiṅwe."
+  },
+  st:{
+    back_btn:"&#8592; Morao",
+    t_setwelinv:"Setwel Invoicing", t_stokvelmgr:"Molaoli oa Setokofele", t_stokvel:"Setokofele", t_spazafloat:"Chelete ea Spaza",
+    t_reports:"Litlaleho", t_recordpayment:"Ngola Tefo", t_quotes:"Lintlha tsa Theko", t_product:"Sehlahisoa", t_payslip:"Phampitšana ea Moputso",
+    t_payroll:"Moputso", t_newtill:"Till e Ncha", t_newpayrun:"Ho Lefa Moputso o Motjha", t_member:"Setho", t_laybymgr:"Molaoli oa Layby",
+    t_layby:"Layby", t_invoices:"Lifekthara", t_inventory:"Thepa", t_employee:"Mosebetsi", t_customers:"Bareki", t_customer:"Moreki",
+    t_creditnotes:"Litlaleho tsa Mokitlane", t_closeday:"Koala Letsatsi", t_cashsale:"Thekiso ea Chelete", t_bizdetails:"Lintlha tsa Khoebo",
+    hub_invoice:"Fekthara", hub_quote:"Ntlha ea Theko", hub_payment:"Tefo", hub_setup:"Sethaelo",
+    hub_timeforbackup:"Ke nako ea bakeap", hub_backupsub:"Ho fetile matsatsi a seng makae — tobetsa ho boloka faele ea bakeap",
+    hub_addbizdetails:"Kenya lintlha tsa khoebo ea hau", hub_addbizsub:"Lifekthara tsa hau li hloka lebitso la k'hamphani ea hau &amp; nomoro ea VAT hore li bonahale hantle",
+    hub_outstanding:"E Sa Lefshoang", hub_paid30d:"E Lefiloeng (30m)",
+    hub_createnew:"Etsa e ncha", hub_newinvoice:"Fekthara e Ncha", hub_newquote:"Ntlha e Ncha ea Theko", hub_addcustomer:"Kenya Moreki",
+    hub_satools:"Lisebelisoa tsa SA", hub_business:"Khoebo",
+    hub_manage:"Laola", hub_invoiceslist:"Lethathamo la Lifekthara", hub_quoteslist:"Lethathamo la Lintlha tsa Theko", hub_customerslist:"Lethathamo la Bareki",
+    hub_unpaidaccounts:"Liak'haonto tse sa Lefshoang", hub_salesreport:"Tlaleho ea Thekiso",
+    hub_databackup:"Data &amp; bakeap", hub_backupnow:"Etsa Bakeap Hona Joale", hub_restorebackup:"Khutlisa Bakeap",
+    hub_datanote1:"&#128274; Data ea hau e sirelelitsoe ka litsela tse peli", hub_datanote2:"sesebelisoang sena — ha ho letho le romelloang seva.",
+    hub_datanote3:"Tobetsa", hub_datanote4:"ka holimo ho boloka kopi eo u ka e khutlisang ho tsoa sesebelisoang sefe kapa sefe."
+  }
+};
+function applyContentLang(lang){
+  if(lang==='en'){
+    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
+    return;
+  }
+  var c = CONTENT_LANG[lang];
+  if(!c) return;
+  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
+    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
+    if(c[k]) el.innerHTML = c[k];
+  });
 }
 
 /* ══ CAMERA ══ */

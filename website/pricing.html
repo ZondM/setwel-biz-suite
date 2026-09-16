@@ -147,14 +147,14 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 
 <div class="page-hero">
 <div class="wrap">
-<span class="s-label">Transparent Pricing</span>
-<h1>Simple, honest pricing — <em>no surprises.</em></h1>
-<p>All plans include a full 30-day free trial. No credit card required. Cancel anytime.</p>
+<span class="s-label" data-i18n="price_eye">Transparent Pricing</span>
+<h1 data-i18n-html="price_h2">Simple, honest pricing — <em>no surprises.</em></h1>
+<p data-i18n="price_sub">All plans include a full 30-day free trial. No credit card required. Cancel anytime.</p>
 <div class="toggle-wrap">
-  <span style="color:var(--ink2)" id="bl-m">Monthly</span>
+  <span style="color:var(--ink2)" id="bl-m" data-i18n="price_monthly">Monthly</span>
   <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-knob"></div></div>
-  <span style="color:var(--ink2)" id="bl-a">Annual</span>
-  <span class="save-badge">Save 2 months FREE</span>
+  <span style="color:var(--ink2)" id="bl-a" data-i18n="price_annual">Annual</span>
+  <span class="save-badge" data-i18n="price_save2">Save 2 months FREE</span>
 </div>
 </div>
 </div>
@@ -163,13 +163,13 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 <div class="wrap">
 
 <div class="lifetime-banner">
-<span>&#10003; Prefer to pay once and own it? </span><a href="lifetime.html">View Lifetime Licence packages &#8594;</a>
+<span data-i18n="price_preferonce2">&#10003; Prefer to pay once and own it? </span><a href="lifetime.html" data-i18n="price_viewlifetime">View Lifetime Licence packages &#8594;</a>
 </div>
 
 <div class="plans-grid" id="plans-grid">
   <div class="plan">
     <div class="plan-name">Hustler</div>
-    <div class="plan-tagline">Spaza shops, hawkers, home businesses &amp; side hustles</div>
+    <div class="plan-tagline" data-i18n="plan1_for">Spaza shops, hawkers, home businesses &amp; side hustles</div>
     <div class="plan-price-monthly">R59.99 <small>/mo</small></div>
     <div class="plan-price-annual">R599.90/yr — save R119.98</div>
     <hr class="plan-divider">
@@ -194,7 +194,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
   <div class="plan featured">
     <div class="plan-pop">&#11088; Most popular</div>
     <div class="plan-name">Grinder</div>
-    <div class="plan-tagline">Growing businesses, freelancers &amp; tradespersons</div>
+    <div class="plan-tagline" data-i18n="plan2_for">Growing businesses, freelancers &amp; tradespersons</div>
     <div class="plan-price-monthly">R199 <small>/mo</small></div>
     <div class="plan-price-annual">R1,990/yr — save R398</div>
     <hr class="plan-divider">
@@ -216,7 +216,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
   </div>
   <div class="plan">
     <div class="plan-name">Builder</div>
-    <div class="plan-tagline">Established SMEs with staff, stock &amp; multiple needs</div>
+    <div class="plan-tagline" data-i18n="plan3_for">Established SMEs with staff, stock &amp; multiple needs</div>
     <div class="plan-price-monthly">R399 <small>/mo</small></div>
     <div class="plan-price-annual">R3,990/yr — save R798</div>
     <hr class="plan-divider">
@@ -237,7 +237,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
   </div>
   <div class="plan">
     <div class="plan-name">Enterprise</div>
-    <div class="plan-tagline">Multi-branch companies &amp; large SMEs with complex needs</div>
+    <div class="plan-tagline" data-i18n="plan4_for">Multi-branch companies &amp; large SMEs with complex needs</div>
     <div class="plan-price-monthly">R999 <small>/mo</small></div>
     <div class="plan-price-annual">R9,990/yr — save R1,998</div>
     <hr class="plan-divider">
@@ -258,16 +258,16 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 
 <div class="partner-box">
   <div>
-    <h3>&#128203; Accountant &amp; Bookkeeper Partner Plan</h3>
-    <p style="font-size:.92rem;margin-top:4px">Unlimited client company files, white-label branding, bulk client SARS tracking, and a dedicated partner support line. Built for accounting practices managing multiple clients on Setwel.</p>
+    <h3 data-i18n="pp_h3">&#128203; Accountant &amp; Bookkeeper Partner Plan</h3>
+    <p style="font-size:.92rem;margin-top:4px" data-i18n="pp_p">Unlimited client company files, white-label branding, bulk client SARS tracking, and a dedicated partner support line. Built for accounting practices managing multiple clients on Setwel.</p>
   </div>
   <div style="text-align:center;flex-shrink:0">
     <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.8rem;color:#fff;margin-bottom:4px">R1,499<small style="font-size:.8rem;color:var(--ink2);font-family:'Inter'">/mo</small></div>
-    <a href="contact.html" class="btn btn-primary" style="margin-top:8px">Contact us</a>
+    <a href="contact.html" class="btn btn-primary" style="margin-top:8px" data-i18n="price_contactus">Contact us</a>
   </div>
 </div>
 
-<h2 style="font-size:1.6rem;color:#fff;text-align:center;margin:56px 0 24px">Compare all plans</h2>
+<h2 style="font-size:1.6rem;color:#fff;text-align:center;margin:56px 0 24px" data-i18n="cmp_h2">Compare all plans</h2>
 <div class="comp-table-wrap">
 <table class="comp-table">
 <thead><tr><th style="width:35%">Feature</th><th>Hustler</th><th>Grinder</th><th class="hl">Builder</th><th>Enterprise</th></tr></thead>
@@ -294,7 +294,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </table>
 </div>
 
-<h2 style="font-size:1.6rem;color:#fff;text-align:center;margin:48px 0 24px">Pricing questions</h2>
+<h2 style="font-size:1.6rem;color:#fff;text-align:center;margin:48px 0 24px" data-i18n="pq_h2">Pricing questions</h2>
 <div style="max-width:760px;margin:0 auto">
 <details><summary>Is there a free trial?</summary><div class="faq-ans">Yes — every plan includes a <strong>full 30-day free trial</strong> with complete access to all features. No credit card required. After 30 days, choose a plan or your data is preserved until you're ready to subscribe.</div></details>
 <details><summary>Can I switch plans later?</summary><div class="faq-ans">Yes, anytime. Upgrading takes effect immediately. Downgrading takes effect at your next billing date so you keep access you've already paid for.</div></details>
@@ -305,11 +305,11 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </div>
 
 <div class="cta-strip">
-<h2>Start your free trial today</h2>
-<p>No credit card. Full access. 30 days free on any plan.</p>
+<h2 data-i18n="pcta_h2">Start your free trial today</h2>
+<p data-i18n="pcta_p">No credit card. Full access. 30 days free on any plan.</p>
 <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-<a href="download.html" class="btn btn-primary btn-lg">&#8595; Download Free Trial</a>
-<a href="contact.html" class="btn btn-outline btn-lg">Talk to sales</a>
+<a href="download.html" class="btn btn-primary btn-lg" data-i18n="dltrial">&#8595; Download Free Trial</a>
+<a href="contact.html" class="btn btn-outline btn-lg" data-i18n="pcta_talk">Talk to sales</a>
 </div>
 </div>
 
@@ -340,6 +340,98 @@ function setLang(lang, btn){
   document.querySelectorAll('[data-nk]').forEach(function(el){
     var k = el.getAttribute('data-nk');
     if(t[k]) el.textContent = t[k];
+  });
+  applyContentLang(lang);
+}
+/* Full page content translation — hero, plans, partner box, section headings, CTA */
+var CONTENT_LANG = {
+  af:{
+    price_eye:"Deursigtige pryse", price_h2:"Eenvoudige, eerlike pryse — <em>geen verrassings nie.</em>",
+    price_sub:"Alle planne sluit 'n volle 30-dae gratis proeftydperk in. Geen kredietkaart nodig nie. Kanselleer enige tyd.",
+    price_monthly:"Maandeliks", price_annual:"Jaarliks", price_save2:"Bespaar 2 maande GRATIS",
+    price_preferonce2:"&#10003; Verkies om net een keer te betaal en dit te besit? ", price_viewlifetime:"Bekyk Lewenslange Lisensie-pakkette &#8594;",
+    plan1_for:"Spaza-winkels, smouse, tuisbesighede &amp; newe-bedrywighede",
+    plan2_for:"Groeiende besighede, vryskutwerkers &amp; ambagsmanne",
+    plan3_for:"Gevestigde KMO's met personeel, voorraad &amp; veelvuldige behoeftes",
+    plan4_for:"Multi-tak-maatskappye &amp; groot KMO's met komplekse behoeftes",
+    pp_h3:"&#128203; Rekenmeester- en Boekhouer-vennootplan",
+    pp_p:"Onbeperkte kliëntmaatskappylêers, witetiket-handelsmerk, groepkliënt-SARS-opsporing, en 'n toegewyde vennootondersteuningslyn. Gebou vir rekeningkundige praktyke wat veelvuldige kliënte op Setwel bestuur.",
+    price_contactus:"Kontak ons", cmp_h2:"Vergelyk alle planne", pq_h2:"Prysvrae",
+    pcta_h2:"Begin jou gratis proeftydperk vandag", pcta_p:"Geen kredietkaart nie. Volle toegang. 30 dae gratis op enige plan.", pcta_talk:"Praat met verkope",
+    dltrial:"↓ Laai gratis proef af"
+  },
+  zu:{
+    price_eye:"Amanani asobala", price_h2:"Amanani alula, aqotho — <em>akukho okumangazayo.</em>",
+    price_sub:"Wonke amaplani afaka uvivinyo lwamahhala oluphelele lwezinsuku ezingu-30. Akudingeki ikhadi lesikweletu. Khansela noma nini.",
+    price_monthly:"Ngenyanga", price_annual:"Ngonyaka", price_save2:"Onga izinyanga ezi-2 MAHHALA",
+    price_preferonce2:"&#10003; Ukhetha ukukhokha kanye futhi ukube ngokwakho? ", price_viewlifetime:"Bheka amaphakheji Elayisensi Yaphakade &#8594;",
+    plan1_for:"Izitolo zesipaza, abathengisi, amabhizinisi asekhaya &amp; imisebenzi yaseceleni",
+    plan2_for:"Amabhizinisi akhulayo, abazisebenzeli kanye nezingcweti zomsebenzi",
+    plan3_for:"Amabhizinisi asezimele anabasebenzi, impahla &amp; izidingo eziningi",
+    plan4_for:"Izinkampani ezinamagatsha amaningi &amp; amabhizinisi amakhulu anezidingo eziyinkimbinkimbi",
+    pp_h3:"&#128203; Uhlelo Lomlingani Wabamabhalane Nabagcini Bamabhuku",
+    pp_p:"Amafayela enkampani yekhasimende angenamkhawulo, uphawu lwebhrendi elimhlophe, ukulandelela kwe-SARS kwamakhasimende ngobuningi, kanye nomugqa wosizo womlingani ozinikele. Kwakhelwe izinhlelo zokubalwa kwezimali eziphatha amakhasimende amaningi ku-Setwel.",
+    price_contactus:"Xhumana nathi", cmp_h2:"Qhathanisa wonke amaplani", pq_h2:"Imibuzo Yamanani",
+    pcta_h2:"Qala uvivinyo lwakho lwamahhala namuhla", pcta_p:"Alikho ikhadi lesikweletu. Ukufinyelela okugcwele. Izinsuku ezingu-30 zamahhala kunoma yiliphi iplani.", pcta_talk:"Khuluma Nokuthengisa",
+    dltrial:"↓ Landa ukuhlolwa kwamahhala"
+  },
+  xh:{
+    price_eye:"Amaxabiso acacileyo", price_h2:"Amaxabiso alula, anyanisekileyo — <em>akukho zothusayo.</em>",
+    price_sub:"Zonke izicwangciso ziquka uvavanyo lwamahhala olupheleleyo lweentsuku ezingama-30. Akufunwa khadi letyala. Rhoxisa nanini na.",
+    price_monthly:"Ngenyanga", price_annual:"Ngonyaka", price_save2:"Yonga iinyanga ezi-2 NGEZIMAHHALA",
+    price_preferonce2:"&#10003; Ukhetha ukubhatala kanye kwaye ube ngowakho? ", price_viewlifetime:"Jonga iipakethi Zelayisenisi Yobomi Bonke &#8594;",
+    plan1_for:"Iivenkile zesipaza, abathengisi, amashishini asekhaya &amp; imisebenzi yangaphandle",
+    plan2_for:"Amashishini akhulayo, abaziqhubi kunye nezingcali zomsebenzi",
+    plan3_for:"Amashishini asekiweyo anabasebenzi, izinto ezigcinwe &amp; iimfuno ezininzi",
+    plan4_for:"Iinkampani ezinamasebe amaninzi &amp; amashishini amakhulu aneemfuno ezintsonkothileyo",
+    pp_h3:"&#128203; Isicwangciso Seqabane Labaphathi-mali Nabagcini-zincwadi",
+    pp_p:"Iifayile zeenkampani zabathengi ezingenamda, uphawu lomqondiso omhlophe, ulandelelo lwe-SARS lwabathengi ngobuninzi, kunye nomgca wenkxaso yeqabane ozinikeleyo. Yakhelwe iindlela zokubala-mali ezilawula abathengi abaninzi kwi-Setwel.",
+    price_contactus:"Qhagamshelana nathi", cmp_h2:"Thelekisa zonke izicwangciso", pq_h2:"Imibuzo Yamaxabiso",
+    pcta_h2:"Qalisa uvavanyo lwakho lwamahhala namhlanje", pcta_p:"Akukho khadi letyala. Ufikelelo olupheleleyo. Iintsuku ezingama-30 zamahhala nakweliphi na icebo.", pcta_talk:"Thetha Nokuthengisa",
+    dltrial:"↓ Khuphela uvavanyo lwasimahla"
+  },
+  ve:{
+    price_eye:"Mitengo yo Vhonalaho", price_h2:"Mitengo yo leluwaho, ya vhukuma — <em>a hu na zwi mangadzaho.</em>",
+    price_sub:"Manwali oṱhe a katela u linga nga mahala ho ḓalaho ha maḓuvha a 30. A hu ṱoḓei khadi ya tshikolodo. Litshani nga tshifhinga tshiṅwe na tshiṅwe.",
+    price_monthly:"Nga ṅwedzi", price_annual:"Nga ṅwaha", price_save2:"Ilani miṅwedzi mbili MAHALA",
+    price_preferonce2:"&#10003; Ni khou takalela u lifha lwo engedzeaho lwoṱhe na u vha naho? ", price_viewlifetime:"Vhonani zwipakiwa zwa Layisennisi ya Vhutshilo &#8594;",
+    plan1_for:"Mavhengele a spaza, vhathengisi, mabindu a hayani &amp; mishumo ya tsini",
+    plan2_for:"Mabindu ane a hula, vhashumeli vhaṱuku na vhaḓi vha mishumo",
+    plan3_for:"Mabindu o dziimisaho ane a vha na vhashumi, thundu &amp; ṱhoḓea nnzhi",
+    plan4_for:"Makhamphani ane a vha na maofisi manzhi &amp; mabindu makhulu ane a vha na ṱhoḓea dzo raraho",
+    pp_h3:"&#128203; Muvhambadzano wa Vhaṅwali vha Mbalo na Vhavhulungi vha Mabugu",
+    pp_p:"Mafaela a khamphani dza vhathengi a si na mikano, luswayo lwa white-label, u tevhedza SARS ya vhathengi nga vhunzhi, na murara wa thuso wa muvhambadzano wo ḓinekedzaho. Ho fhaṱelwa maitele a mbalo ane a langula vhathengi vhanzhi kha Setwel.",
+    price_contactus:"Ri dzhenelele", cmp_h2:"Vhambedzani manwali oṱhe", pq_h2:"Mbudziso dza Mitengo",
+    pcta_h2:"Thomani u linga haṋu nga mahala ṋamusi", pcta_p:"A hu na khadi ya tshikolodo. Mbuelo yoṱhe. Maḓuvha a 30 a mahala kha naho ndi ifhio nwali.", pcta_talk:"Ambedzanani na Vhathengisi",
+    dltrial:"↓ Dzhenisa u linga mahala"
+  },
+  st:{
+    price_eye:"Litheko tse hlakileng", price_h2:"Litheko tse bonolo, tse tšepahalang — <em>ha ho tse makatsang.</em>",
+    price_sub:"Merero eohle e kenyelletsa teko ea mahala e felletseng ea matsatsi a 30. Ha ho hlokahale khatho ea mokitlane. Khansela neng kapa neng.",
+    price_monthly:"Khoeli le khoeli", price_annual:"Selemo le selemo", price_save2:"Boloka likhoeli tse 2 MAHALA",
+    price_preferonce2:"&#10003; Na u rata ho lefa hanngoe feela mme e be ea hau? ", price_viewlifetime:"Bona liphutheloana tsa Laesense ea Bophelo Bohle &#8594;",
+    plan1_for:"Mabenkele a spaza, barekisi, likhoebo tsa lapeng &amp; mesebetsi e eketsehileng",
+    plan2_for:"Likhoebo tse holang, basebetsi ba ikemetseng le litsebi tsa mosebetsi",
+    plan3_for:"Likhoebo tse tsitsitseng tse nang le basebetsi, thepa &amp; litlhoko tse ngata",
+    plan4_for:"Lik'hamphani tse nang le makala a mangata &amp; likhoebo tse kholo tse nang le litlhoko tse rarahaneng",
+    pp_h3:"&#128203; Lenaneo la Molekane oa Mohlokomeli oa Lichelete le Mongoli oa Libuka",
+    pp_p:"Lifaele tsa lik'hamphani tsa bareki tse se nang moeli, lets'oao la white-label, ho latela SARS ea bareki ka bongata, le mola o ikemiselitseng oa tšehetso ea molekane. E entsoeng bakeng sa mekhoa ea boitsebiso e laolang bareki ba bangata ho Setwel.",
+    price_contactus:"Ikopanye le rona", cmp_h2:"Bapisa merero eohle", pq_h2:"Lipotso tsa Litheko",
+    pcta_h2:"Qala teko ea hau ea mahala kajeno", pcta_p:"Ha ho khatho ea mokitlane. Phihlello e felletseng. Matsatsi a 30 a mahala moreroong ofe kapa ofe.", pcta_talk:"Bua le Thekiso",
+    dltrial:"↓ Download teko ya mahala"
+  }
+};
+function applyContentLang(lang){
+  if(lang==='en'){
+    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
+    return;
+  }
+  var c = CONTENT_LANG[lang];
+  if(!c) return;
+  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
+    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
+    if(c[k]) el.innerHTML = c[k];
   });
 }
 document.querySelectorAll('.lb-btn').forEach(function(b){

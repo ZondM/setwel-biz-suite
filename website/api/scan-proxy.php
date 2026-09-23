@@ -10,11 +10,47 @@
  * response verbatim — the client's existing parsing code
  * (d.content[0].text, e.error.message) already matches the Anthropic
  * Messages API's response shape exactly, on both success and error.
+ *
+ * Every exit path below returns JSON, even ones PHP itself would normally
+ * turn into a blank page or an HTML error (missing config.php, a PHP
+ * error, missing curl). The client always calls r.json() on the response —
+ * if this file ever answers with anything else, that .json() call throws,
+ * and the customer sees a generic "Scan failed" with no real explanation.
  */
 
-require __DIR__ . '/config.php';
-
+// Never let a stray PHP notice/warning print ahead of our JSON and corrupt
+// the response body — the client's r.json() would then fail to parse it.
+ini_set('display_errors', '0');
 header('Content-Type: application/json; charset=utf-8');
+
+set_exception_handler(function ($e) {
+    http_response_code(500);
+    echo json_encode(['error' => ['message' => 'server error: ' . $e->getMessage()]]);
+    exit;
+});
+// Only real warnings (mkdir/file_put_contents failing, etc.) become errors —
+// deprecation notices and the like are left alone so a routine PHP version
+// bump on the host can't turn into a false "scan failed".
+set_error_handler(function ($severity, $message) {
+    throw new ErrorException($message, 0, $severity);
+}, E_WARNING | E_USER_WARNING | E_USER_ERROR);
+register_shutdown_function(function () {
+    $err = error_get_last();
+    if ($err && in_array($err['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        http_response_code(500);
+        echo json_encode(['error' => ['message' => 'server error: ' . $err['message']]]);
+    }
+});
+
+if (!file_exists(__DIR__ . '/config.php')) {
+    http_response_code(500);
+    // Deliberately includes "authentication" so the client's existing
+    // "Scanning service needs attention" message (see mobile.html callAI())
+    // fires instead of a confusing generic error.
+    echo json_encode(['error' => ['message' => 'authentication: scanning service is not configured (api/config.php is missing — copy api/config.example.php to api/config.php and add your Anthropic API key)']]);
+    exit;
+}
+require __DIR__ . '/config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -24,10 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 if (!defined('ANTHROPIC_API_KEY') || ANTHROPIC_API_KEY === '') {
     http_response_code(500);
-    // Deliberately includes "authentication" so the client's existing
-    // "Scanning service needs attention" message (see mobile.html callAI())
-    // fires instead of a confusing generic error.
-    echo json_encode(['error' => ['message' => 'authentication: scanning service is not configured']]);
+    echo json_encode(['error' => ['message' => 'authentication: scanning service is not configured (ANTHROPIC_API_KEY is empty in api/config.php)']]);
+    exit;
+}
+
+if (!function_exists('curl_init')) {
+    http_response_code(500);
+    echo json_encode(['error' => ['message' => 'server error: the PHP curl extension is not enabled on this server']]);
     exit;
 }
 

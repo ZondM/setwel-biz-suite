@@ -3926,10 +3926,15 @@ function capturePhoto(){
   var c=document.getElementById('scan-canvas');
   c.width=v.videoWidth||1280;c.height=v.videoHeight||720;
   c.getContext('2d').drawImage(v,0,0);
-  G.dataUrl=c.toDataURL('image/jpeg',0.88);
-  G.b64=G.dataUrl.split(',')[1];
   stopStream();
-  processImage();
+  // Camera frames can come in at up to 4096x3072 — same resize/compress
+  // pass gallery uploads already get, so a live capture never ships an
+  // oversized image that times out or gets rejected before it's scanned.
+  compressImage(c, function(dataUrl, b64){
+    G.dataUrl=dataUrl;
+    G.b64=b64;
+    processImage();
+  });
 }
 document.getElementById('file-input').addEventListener('change',function(e){
   var f=e.target.files[0];if(!f)return;

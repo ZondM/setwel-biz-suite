@@ -4040,6 +4040,11 @@ function callAI(){
     if(msg.includes('rate')||msg.includes('429')){
       showErr('Slow down a bit',
         'You have scanned too many invoices in a short time. Please wait a minute and try again.','&#9203;',retryScan);
+    } else if(msg.toLowerCase().includes('overloaded')||msg.includes('529')||msg.includes('503')){
+      // The AI scanning service is briefly busy — the server already retries
+      // a few times automatically, this only shows if all of those missed too.
+      showErr('Scanning service is busy',
+        'The AI scanning service is handling a lot of requests right now. Your photo is saved — please wait a few seconds and tap Try again.','&#9203;',retryScan);
     } else if(actuallyOffline){
       // Only blame "no internet" when the device confirms it is actually offline
       showErr('No internet connection',

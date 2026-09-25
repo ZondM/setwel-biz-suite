@@ -159,22 +159,37 @@ $payload = [
     ]],
 ];
 
-$ch = curl_init('https://api.anthropic.com/v1/messages');
-curl_setopt_array($ch, [
-    CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => json_encode($payload),
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT => 45,
-    CURLOPT_HTTPHEADER => [
-        'Content-Type: application/json',
-        'x-api-key: ' . ANTHROPIC_API_KEY,
-        'anthropic-version: 2023-06-01',
-    ],
-]);
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$curlError = curl_error($ch);
-curl_close($ch);
+// Claude's API occasionally returns a transient error (529 "overloaded",
+// or a 500/503) under load — retrying a moment later almost always
+// succeeds. Without this, that transient error reached the customer
+// verbatim as "Overloaded", which matched none of the client's specific
+// error messages and showed as a plain, unhelpful "Scan failed".
+$maxAttempts = 3;
+$response = false;
+$httpCode = 0;
+$curlError = '';
+for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+    $ch = curl_init('https://api.anthropic.com/v1/messages');
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 45,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            'x-api-key: ' . ANTHROPIC_API_KEY,
+            'anthropic-version: 2023-06-01',
+        ],
+    ]);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    $isTransient = ($response === false) || in_array($httpCode, [408, 429, 500, 502, 503, 529], true);
+    if (!$isTransient || $attempt === $maxAttempts) break;
+    usleep(500000 * $attempt); // 0.5s, then 1s before the next attempt
+}
 
 if ($response === false) {
     http_response_code(502);

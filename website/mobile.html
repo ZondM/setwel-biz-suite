@@ -11,6 +11,10 @@
 <link rel="icon" href="setwel-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Free, on-device receipt scanner (no API key, no per-scan cost, works offline
+     after its first load). Tried first on every scan; only falls back to the
+     cloud AI below when it can't read a receipt confidently. -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 /* ═══════════════════════════════════════
    TOKENS
@@ -3990,24 +3994,147 @@ function processImage(){
   var thumb=document.getElementById('proc-thumb');
   if(G.dataUrl){thumb.src=G.dataUrl;thumb.style.display='block'}
   [1,2,3,4,5].forEach(function(i){document.getElementById('psi'+i).classList.remove('done')});
-  var steps=[
-    {id:'psi1',txt:'Image captured & optimised',t:300},
-    {id:'psi2',txt:'Invoice detected',t:1000},
-    {id:'psi3',txt:'Reading supplier & date…',t:1800},
-    {id:'psi4',txt:'Extracting line items…',t:2600},
-    {id:'psi5',txt:'Calculating VAT & totals…',t:3400}
-  ];
-  steps.forEach(function(s){
-    setTimeout(function(){
-      document.getElementById(s.id).classList.add('done');
-      document.getElementById('proc-sub').textContent=s.txt;
-    },s.t);
-  });
-  // Always scan via server proxy - no API key needed by customer
-  setTimeout(function(){callAI()},500);
+  document.getElementById('psi1').classList.add('done');
+  document.getElementById('proc-sub').textContent='Image captured & optimised';
+  setTimeout(function(){ runLocalOCR(); }, 300);
 }
 
-/* ══ CLAUDE AI ══ */
+/* ══ FREE ON-DEVICE SCANNER (tried first, no cost, works offline) ══
+   Runs Tesseract.js OCR in the browser, then guesses fields from the raw
+   text with SA-receipt-shaped patterns (VAT number, totals, dates). This
+   only extracts what it can confidently find — it deliberately never
+   claims "high" confidence, and it does not attempt to read a line-item
+   table from raw OCR text (that needs the cloud AI's real understanding
+   of the receipt's layout). When it can't find a plausible total, or the
+   photo produced almost no readable text, it hands off to the existing
+   Claude Vision proxy — same as before this feature existed. */
+function parseReceiptText(text){
+  var lines=(text||'').split(/\r?\n/).map(function(l){return l.trim()}).filter(Boolean);
+  var joined=lines.join('\n');
+
+  function firstMatch(str,regexes){
+    for(var i=0;i<regexes.length;i++){
+      var m=str.match(regexes[i]);
+      if(m) return m;
+    }
+    return null;
+  }
+  function toAmount(str){
+    var m=str.match(/R?\s*([\d,]+\.\d{2})/);
+    return m?parseFloat(m[1].replace(/,/g,'')):null;
+  }
+
+  var vatNumber=null;
+  var vm=joined.match(/VAT\s*(?:REG(?:ISTRATION)?)?\s*(?:NO\.?|NUMBER|#)?\s*:?\s*(\d{10})\b/i);
+  if(vm) vatNumber=vm[1];
+
+  var subtotal=null;
+  var sm=joined.match(/SUB[\s\-]?TOTAL\s*:?\s*(?:INCL\.?)?\s*R?\s*([\d,]+\.\d{2})/i);
+  if(sm) subtotal=parseFloat(sm[1].replace(/,/g,''));
+
+  var vatAmount=null;
+  for(var vi=0;vi<lines.length;vi++){
+    // A VAT amount line, not the VAT registration number line — and take
+    // the LAST decimal amount on it, since a rate like "15.00%" often
+    // appears before the actual rand amount ("VAT 15.00% 36.18").
+    if(/VAT/i.test(lines[vi])&&!/REG|NO\.|NUMBER|#/i.test(lines[vi])){
+      var amounts=lines[vi].match(/[\d,]+\.\d{2}/g);
+      if(amounts&&amounts.length){ vatAmount=parseFloat(amounts[amounts.length-1].replace(/,/g,'')); break; }
+    }
+  }
+
+  var total=null;
+  var priorityLabels=[/GRAND\s*TOTAL/i,/BALANCE\s*DUE/i,/AMOUNT\s*DUE/i];
+  for(var p=0;p<priorityLabels.length&&total===null;p++){
+    for(var i=0;i<lines.length;i++){
+      if(priorityLabels[p].test(lines[i])){ var a=toAmount(lines[i]); if(a!=null){total=a;break;} }
+    }
+  }
+  if(total===null){
+    for(var i=lines.length-1;i>=0;i--){
+      if(/\bTOTAL\b/i.test(lines[i])&&!/SUB[\s\-]?TOTAL/i.test(lines[i])){
+        var a=toAmount(lines[i]); if(a!=null){total=a;break;}
+      }
+    }
+  }
+
+  var date=null;
+  var dm=firstMatch(joined,[
+    /\b(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\b/,
+    /\b(\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2})\b/,
+    /\b(\d{1,2}\s+[A-Z]{3,9}\s+\d{4})\b/i
+  ]);
+  if(dm) date=dm[1];
+
+  var invoiceNumber=null;
+  // Requires at least one digit in the captured token, so a plain word
+  // right after "Invoice"/"Inv" on the next OCR line ("Bill", "Incl", the
+  // document's own title) can never be mistaken for an invoice number.
+  var im=joined.match(/(?:TAX\s+)?INV(?:OICE)?\.?\s*(?:NO\.?|NUMBER|#)?\s*:?[ \t]*([A-Z0-9\-\/]*\d[A-Z0-9\-\/]*)/i);
+  if(im) invoiceNumber=im[1];
+
+  var paymentMethod='Unknown';
+  if(/\bCASH\b/i.test(joined)) paymentMethod='Cash';
+  else if(/\bCARD\b/i.test(joined)) paymentMethod='Card';
+  else if(/\bEFT\b/i.test(joined)) paymentMethod='EFT';
+
+  var supplier=null;
+  for(var i=0;i<Math.min(lines.length,6);i++){
+    var l=lines[i];
+    var letters=(l.match(/[A-Za-z]/g)||[]).length;
+    if(letters>=4&&!/^\d+$/.test(l)){ supplier=l; break; }
+  }
+
+  var fieldsFound=[supplier,invoiceNumber,date,vatNumber,total].filter(function(v){return v!=null}).length;
+  var sufficient=(total!==null)&&fieldsFound>=2&&joined.length>20;
+
+  return {
+    supplier:supplier, invoiceNumber:invoiceNumber, invoiceDate:date, vatNumber:vatNumber,
+    subtotal:subtotal, vatAmount:vatAmount, total:total, paymentMethod:paymentMethod,
+    confidence:sufficient?'medium':'low', lineItems:[],
+    _sufficient:sufficient
+  };
+}
+function runLocalOCR(){
+  document.getElementById('proc-sub').textContent='Reading with free on-device scanner…';
+  if(typeof Tesseract==='undefined'){
+    // Engine script never loaded (e.g. very first visit with no internet
+    // yet to cache it) — go straight to the cloud AI, same as before.
+    return callAI();
+  }
+  Tesseract.recognize(G.dataUrl,'eng')
+    .then(function(result){
+      document.getElementById('psi2').classList.add('done');
+      document.getElementById('psi3').classList.add('done');
+      document.getElementById('proc-sub').textContent='Understanding the receipt…';
+      var text=(result&&result.data&&result.data.text)||'';
+      var parsed=parseReceiptText(text);
+      if(parsed._sufficient){
+        document.getElementById('psi4').classList.add('done');
+        document.getElementById('psi5').classList.add('done');
+        showResult(parsed,false,'ocr');
+      } else if(navigator.onLine===false){
+        showErr('Needs the online scanner',
+          'The free on-device scanner could not read this receipt clearly enough, and you\'re currently offline. Connect to WiFi or mobile data and tap Try again, or enter it manually below.',
+          '&#128246;',retryScan);
+      } else {
+        document.getElementById('proc-sub').textContent='Using cloud AI for a clearer read…';
+        callAI();
+      }
+    })
+    .catch(function(err){
+      console.error('Local OCR error:',err);
+      if(navigator.onLine===false){
+        showErr('Needs the online scanner',
+          'The free on-device scanner could not read this photo, and you\'re currently offline. Connect and tap Try again, or enter it manually below.',
+          '&#128246;',retryScan);
+      } else {
+        callAI();
+      }
+    });
+}
+
+/* ══ CLAUDE AI (fallback when the free on-device scanner isn't confident) ══ */
 function callAI(){
   // ── Proxy call — API key is on the server, customers need nothing ──
   fetch('api/scan-proxy.php',{
@@ -4030,7 +4157,7 @@ function callAI(){
     txt=txt.replace(/```json\s*/g,'').replace(/```\s*/g,'').trim();
     var m=txt.match(/\{[\s\S]*\}/);
     if(!m)throw new Error('Could not parse AI response');
-    showResult(JSON.parse(m[0]),false);
+    showResult(JSON.parse(m[0]),false,'ai');
   })
   .catch(function(e){
     console.error('Scan error:',e.message, e.name);
@@ -4075,7 +4202,7 @@ function showDemo(){
 }
 
 /* ══ RESULTS ══ */
-function showResult(d,isDemo){
+function showResult(d,isDemo,source){
   var f=function(v){return (v!=null&&v!=='')?v:'—'};
   var fR=function(v){
     if(v==null||v==='')return '—';
@@ -4089,7 +4216,8 @@ function showResult(d,isDemo){
   document.getElementById('r-sub').textContent=fR(d.subtotal);
   document.getElementById('r-vat').textContent=fR(d.vatAmount);
   document.getElementById('r-tot').textContent=fR(d.total);
-  document.getElementById('res-mode').textContent=isDemo?'★ Demo mode — try with real invoice':('Claude AI Vision'+(d.paymentMethod&&d.paymentMethod!=='Unknown'?' · Payment: '+d.paymentMethod:''));
+  var modeLabel=isDemo?'★ Demo mode — try with real invoice':(source==='ocr'?'On-device scanner — free & offline':'Claude AI Vision');
+  document.getElementById('res-mode').textContent=modeLabel+(d.paymentMethod&&d.paymentMethod!=='Unknown'?' · Payment: '+d.paymentMethod:'');
   var img=document.getElementById('res-img');
   if(G.dataUrl){img.src=G.dataUrl;img.style.display='block'}
   var conf=(d.confidence||'medium').toLowerCase();
@@ -4155,9 +4283,10 @@ function showErr(h,p,ico,retryFn){
   }
   show('s-error');
 }
-// Re-attempt the AI scan using the image already captured — no need to reopen camera
+// Re-attempt the scan using the image already captured — no need to reopen
+// camera. Restarts from the free on-device scanner, same as a first try.
 function retryScan(){
-  if(G.b64){ show('s-processing'); callAI(); }
+  if(G.b64){ processImage(); }
   else { openCamera(); }
 }
 

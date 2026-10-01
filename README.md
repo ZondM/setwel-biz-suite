@@ -1,3 +1,21 @@
+# Setwel Africa — online store + business suite
+
+## 🛒 Online store (setwelafrica.com) — `store/`
+
+A complete online store for Setwel Africa: shop, search, cart, PayFast and EFT checkout, quotes, an admin area for products, Excel price imports, orders, banners, certificates, and SEO.
+
+**Start here (plain-language guides):**
+1. [Install on registerdomain hosting](docs/1-INSTALL-ON-REGISTERDOMAIN.md)
+2. [Monthly update guide — prices, products, specials](docs/2-MONTHLY-UPDATE-GUIDE.md)
+3. [Launch checklist](docs/3-LAUNCH-CHECKLIST.md)
+4. [Running costs, why this setup, honest limits](docs/4-COSTS-AND-LIMITS.md)
+
+**File to upload to cPanel:** `dist/setwel-store-upload.zip`. Rebuild it with `php build-store-zip.php`.
+
+---
+
+## 🖥️ Business Suite (desktop app) — installation
+
 ╔══════════════════════════════════════════════════════════════╗
 ║         SETWEL AFRICA BUSINESS SUITE — HOW TO INSTALL       ║
 ╚══════════════════════════════════════════════════════════════╝

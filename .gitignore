@@ -1,0 +1,13 @@
+# Store: private/runtime files that must never be committed
+store/app/config.php
+store/storage/db/*
+store/storage/pop/*
+store/storage/docs/*
+store/storage/tmp/*
+store/storage/logs/*
+store/uploads/products/*
+store/uploads/banners/*
+store/uploads/brands/*
+!store/storage/**/.gitkeep
+!store/uploads/**/.gitkeep
+.DS_Store

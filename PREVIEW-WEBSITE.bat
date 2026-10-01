@@ -7,6 +7,18 @@ echo   SETWEL AFRICA - preview the website locally
 echo  ============================================
 echo.
 
+rem 0. This file must sit next to the "store" folder
+if not exist "%~dp0store\index.php" (
+  echo  PROBLEM: the "store" folder was not found next to this file.
+  echo.
+  echo  This file is in:  %~dp0
+  echo  Move PREVIEW-WEBSITE.bat into the project folder - the one that contains
+  echo  the folders  store, dist  and  docs  - and double-click it there.
+  echo.
+  pause
+  exit /b 1
+)
+
 rem 1. Find PHP: already installed, or a portable copy in this folder
 set "PHPEXE="
 where php >nul 2>nul && set "PHPEXE=php"
@@ -44,6 +56,10 @@ echo  - Admin:  http://127.0.0.1:8080/admin
 echo  - To STOP the preview, close this black window.
 echo  - Nothing here goes onto the internet. It is only on your computer.
 echo.
-start "" "http://127.0.0.1:8080"
+rem Open the browser a few seconds AFTER the server has started
+start "" /min powershell -NoProfile -WindowStyle Hidden -Command "Start-Sleep -Seconds 4; Start-Process 'http://127.0.0.1:8080'"
 "%PHPEXE%" -n -d "extension_dir=%PHPDIR%ext" -d extension=pdo_sqlite -d extension=sqlite3 -d extension=gd -d extension=zip -d extension=fileinfo -d extension=mbstring -d extension=curl -d extension=openssl -d upload_max_filesize=20M -d post_max_size=40M -S 127.0.0.1:8080 -t store store\index.php
+echo.
+echo  The preview has stopped. If you see an error message above, take a screenshot
+echo  of this window and send it to Claude Code.
 pause

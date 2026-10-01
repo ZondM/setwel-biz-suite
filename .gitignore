@@ -11,3 +11,6 @@ store/uploads/brands/*
 !store/storage/**/.gitkeep
 !store/uploads/**/.gitkeep
 .DS_Store
+
+# Local preview
+php-portable/

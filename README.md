@@ -4,7 +4,9 @@
 
 A complete online store for Setwel Africa: shop, search, cart, PayFast and EFT checkout, quotes, an admin area for products, Excel price imports, orders, banners, certificates, and SEO.
 
-**Start here (plain-language guides):**
+**Start here:** double-click **START-HERE.html** (all guides on one page) and **PREVIEW-WEBSITE.bat** (see the shop on your own Windows computer).
+
+**Guides (also inside START-HERE.html):**
 1. [Install on registerdomain hosting](docs/1-INSTALL-ON-REGISTERDOMAIN.md)
 2. [Monthly update guide — prices, products, specials](docs/2-MONTHLY-UPDATE-GUIDE.md)
 3. [Launch checklist](docs/3-LAUNCH-CHECKLIST.md)

@@ -1,0 +1,468 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Setwel Africa store — guides</title><style>:root{--navy:#1a2f45;--gold:#c9a84c}*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,'Segoe UI',Arial,sans-serif;line-height:1.6;color:#1d2733;background:#f3f5f8}
+header{background:var(--navy);padding:16px;position:sticky;top:0;z-index:2}
+header .t{margin:0 0 8px;font-size:1.3rem;font-weight:800;color:#fff}header .t span{color:var(--gold)}
+nav{display:flex;flex-wrap:wrap;gap:6px}nav a{color:#fff;background:rgba(255,255,255,.1);padding:5px 10px;border-radius:6px;text-decoration:none;font-size:.9rem}nav a:hover{background:var(--gold);color:var(--navy)}
+main{max-width:880px;margin:0 auto;padding:16px}
+section{background:#fff;border:1px solid #e3e7ec;border-radius:10px;padding:8px 26px 18px;margin:20px 0;scroll-margin-top:120px}
+h1,h2,h3{color:var(--navy)}section h1{border-bottom:3px solid var(--gold);padding-bottom:6px}
+table{border-collapse:collapse;width:100%;font-size:.93rem}th,td{border:1px solid #e3e7ec;padding:7px 9px;text-align:left;vertical-align:top}th{background:#f7f5f0}
+code{background:#f0f2f5;padding:1px 5px;border-radius:4px}blockquote{border-left:4px solid var(--gold);margin:0;padding:4px 14px;background:#fbf7ec}
+li{margin:4px 0}.top{text-align:right;font-size:.85rem}a{color:#2c4a6e}
+@media print{header{position:static}}</style></head><body>
+<header><p class="t">SETWEL AFRICA <span>online store — guides</span></p><nav><a href="#start">Start here</a><a href="#install">1. Install on registerdomain</a><a href="#monthly">2. Monthly updates</a><a href="#launch">3. Launch checklist</a><a href="#costs">4. Costs & limits</a></nav></header><main><section id="start"><h1>Start here</h1>
+<h2>What is in this folder</h2>
+<table>
+<thead>
+<tr>
+<th>File / folder</th>
+<th>What it is</th>
+<th>What you do with it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>START-HERE.html</strong></td>
+<td>This guide (all guides on one page)</td>
+<td>Double-click to read it in Chrome</td>
+</tr>
+<tr>
+<td><strong>PREVIEW-WEBSITE.bat</strong></td>
+<td>Shows the website on your own computer</td>
+<td>Double-click to try the shop before uploading</td>
+</tr>
+<tr>
+<td><strong>dist\setwel-store-upload.zip</strong></td>
+<td>The finished website, packed for your hosting</td>
+<td>The <strong>only</strong> file you upload to cPanel (install guide below)</td>
+</tr>
+<tr>
+<td>store</td>
+<td>The website's working files</td>
+<td>Leave it alone — the zip above is made from it</td>
+</tr>
+<tr>
+<td>docs</td>
+<td>The same guides as plain-text (.md) files</td>
+<td>For Claude Code — you can ignore them</td>
+</tr>
+<tr>
+<td>build-store-zip.php, README.md, .gitignore</td>
+<td>Technical files</td>
+<td>Ignore</td>
+</tr>
+<tr>
+<td>Setwel-Africa-BusinessSuite-PORTABLE.zip</td>
+<td>Your older Business Suite app</td>
+<td>Not part of the website</td>
+</tr>
+</tbody>
+</table>
+<p>Why is there no <code>.html</code> page to open for the shop? The shop is a <strong>PHP</strong> website. Its pages are created by your hosting's server when someone visits, so they can't be opened by double-clicking. To see the shop on your computer, use <strong>PREVIEW-WEBSITE.bat</strong>.</p>
+<h2>Preview the website on your computer</h2>
+<ol>
+<li>Open the folder and double-click <strong>PREVIEW-WEBSITE.bat</strong>.<ul>
+<li>If Windows shows "Windows protected your PC", click <strong>More info → Run anyway</strong>. The file is in your own project folder.</li>
+</ul>
+</li>
+<li>A black window opens. The first time, it downloads a free program called PHP (about 30 MB, one time only).</li>
+<li>Chrome opens at <strong>http://127.0.0.1:8080</strong> with the <strong>Set up your store</strong> page:<ul>
+<li>Database: choose <strong>SQLite</strong></li>
+<li>Type any name, email and password (only for this preview)</li>
+<li>Leave <strong>Add the 10 sample products</strong> ticked → <strong>Install</strong></li>
+</ul>
+</li>
+<li>Log in. The admin area is at <strong>http://127.0.0.1:8080/admin</strong> and the shop is at <strong>http://127.0.0.1:8080</strong>.</li>
+<li>To stop the preview, close the black window. Double-click the .bat file again to restart it; your preview products are kept.</li>
+</ol>
+<p>Notes:</p>
+<ul>
+<li>The preview is only on your computer. Nobody else can see it.</li>
+<li>Emails and PayFast won't work in the preview. They work once the site is on your hosting.</li>
+<li>To start the preview from scratch, delete the file <code>store\app\config.php</code> and everything inside <code>store\storage\db</code>, then run the .bat again.</li>
+<li>If the download fails, the black window tells you how to get PHP by hand (about 2 minutes).</li>
+</ul><p class="top"><a href="#">↑ Back to top</a></p></section>
+<section id="install"><h1>Install the Setwel Africa store on your registerdomain hosting</h1>
+<p>Time needed: about 1 hour. You only do this once.
+You need: your registerdomain cPanel login, your PayFast login, and the file <strong><code>setwel-store-upload.zip</code></strong> (in the <code>dist</code> folder of this project).</p>
+<blockquote>
+<p>Menu names in cPanel can differ slightly between hosting plans. If you can't find something, use the <strong>search box at the top of cPanel</strong> and type the name.</p>
+</blockquote>
+<hr />
+<h2>Step 1 — Buy the domain and add it to your hosting</h2>
+<ol>
+<li>Log in to registerdomain and buy <strong>setwelafrica.com</strong>.</li>
+<li>Make sure the domain uses your hosting's nameservers (registerdomain normally does this for you when you buy the domain on the same account).</li>
+<li>Log in to <strong>cPanel</strong> (the one for setwelbusiness.co.za).</li>
+<li>Search <strong>Domains</strong> (newer cPanel) or <strong>Addon Domains</strong> (older cPanel).</li>
+<li>Click <strong>Create A New Domain</strong> / <strong>Add Domain</strong> and type <code>setwelafrica.com</code>.<ul>
+<li><strong>Untick</strong> "Share document root" if you see it.</li>
+<li>Document root: leave the suggestion, e.g. <code>setwelafrica.com</code> (a folder in your home directory).</li>
+</ul>
+</li>
+<li>Click <strong>Submit</strong>. Write down the folder name.</li>
+</ol>
+<p>It can take a few hours for a new domain to start working.</p>
+<h2>Step 2 — Turn on the free SSL certificate (the padlock / https)</h2>
+<ol>
+<li>cPanel → search <strong>SSL/TLS Status</strong>.</li>
+<li>Tick <code>setwelafrica.com</code> and <code>www.setwelafrica.com</code> → <strong>Run AutoSSL</strong>.</li>
+<li>Wait until both show a green padlock. (This needs the domain to be working, so you may have to come back later.)</li>
+</ol>
+<p>The store forces <code>https://</code>. PayFast also needs https.</p>
+<h2>Step 3 — Choose PHP 8.2 or 8.3</h2>
+<ol>
+<li>cPanel → search <strong>Select PHP Version</strong> (or <strong>MultiPHP Manager</strong>).</li>
+<li>For setwelafrica.com choose <strong>PHP 8.2</strong> or <strong>8.3</strong>.</li>
+<li>If there is an <strong>Extensions</strong> tab, make sure these are ticked: <code>pdo_mysql</code>, <code>gd</code>, <code>zip</code>, <code>curl</code>, <code>fileinfo</code>, <code>mbstring</code>. Click <strong>Save</strong>.</li>
+</ol>
+<h2>Step 4 — Create the database</h2>
+<ol>
+<li>cPanel → search <strong>MySQL Database Wizard</strong>.</li>
+<li>Database name: <code>setwel</code> → Next. cPanel adds a prefix, so the full name looks like <code>cpuser_setwel</code>. <strong>Write down the full name.</strong></li>
+<li>Username: <code>setwel</code>, and click <strong>Password Generator</strong> for a strong password. <strong>Write down the full username and the password.</strong></li>
+<li>Tick <strong>ALL PRIVILEGES</strong> → <strong>Next Step</strong>.</li>
+</ol>
+<h2>Step 5 — Upload the store files</h2>
+<ol>
+<li>cPanel → <strong>File Manager</strong>.</li>
+<li>Top right → <strong>Settings</strong> → tick <strong>Show Hidden Files (dotfiles)</strong> → Save. (The <code>.htaccess</code> files are hidden and very important.)</li>
+<li>Open the folder from Step 1 (e.g. <code>setwelafrica.com</code>). If there is a default <code>index.html</code> or <code>default.html</code> in it, delete it.</li>
+<li>Click <strong>Upload</strong> → choose <code>setwel-store-upload.zip</code> → wait for 100% → go back.</li>
+<li>Right-click the zip → <strong>Extract</strong> → into the same folder.</li>
+<li>Check the folder now shows <code>index.php</code>, <code>.htaccess</code>, and the folders <code>app</code>, <code>assets</code>, <code>storage</code>, <code>uploads</code> <strong>directly</strong> in it (not inside another folder). If they ended up inside a sub-folder, select everything in that sub-folder → <strong>Move</strong> → up one level.</li>
+<li>Delete the zip file.</li>
+</ol>
+<h2>Step 6 — Run the setup wizard</h2>
+<ol>
+<li>Open <strong>https://setwelafrica.com</strong> in your browser. The <strong>Set up your store</strong> page appears.</li>
+<li>All server checks should show ✔. If one shows ✘, see <em>Problems</em> below.</li>
+<li>Choose <strong>MySQL</strong> and fill in the database name, user and password from Step 4 (host stays <code>localhost</code>).</li>
+<li>Site URL: <code>https://setwelafrica.com</code></li>
+<li>Type your name, email and a strong password for your admin login.</li>
+<li>Leave <strong>Add the 10 sample products</strong> ticked (you can delete them later).</li>
+<li>Click <strong>Install</strong>. You will land on the admin login page.</li>
+</ol>
+<p>⚠️ Do Step 6 right after Step 5. Until the wizard has been completed, anyone who opens the site could run it.</p>
+<h2>Step 7 — Log in and fill in Settings</h2>
+<p>Go to <strong>https://setwelafrica.com/admin</strong> and log in. The dashboard shows a yellow <strong>Before you launch</strong> list. Work through it in <strong>Settings</strong>:</p>
+<ul>
+<li><strong>Business details:</strong> registration number, POPIA Information Officer, address, phone numbers.</li>
+<li><strong>Payments:</strong> bank details for EFT.</li>
+<li><strong>Email:</strong> see Step 8.</li>
+<li><strong>PayFast:</strong> see Step 9.</li>
+</ul>
+<h2>Step 8 — Email (so order emails don't land in spam)</h2>
+<ol>
+<li>cPanel → <strong>Email Accounts</strong> → create <code>sa@setwelafrica.com</code> (or use one you already have).</li>
+<li>Click <strong>Connect Devices</strong> next to it and note the <strong>Outgoing server</strong> (usually <code>mail.setwelafrica.com</code>, port <strong>465</strong>, SSL).</li>
+<li>Store admin → <strong>Settings → Email</strong>:<ul>
+<li>SMTP server: <code>mail.setwelafrica.com</code></li>
+<li>Port: <code>465</code></li>
+<li>Encryption: SSL</li>
+<li>Username: <code>sa@setwelafrica.com</code></li>
+<li>Password: the mailbox password</li>
+</ul>
+</li>
+<li><strong>Save</strong>, then click <strong>Send test email</strong> and check your inbox.</li>
+</ol>
+<h2>Step 9 — PayFast</h2>
+<ol>
+<li>Log in to PayFast → <strong>Settings → Developer Settings</strong>. Copy your <strong>Merchant ID</strong> and <strong>Merchant Key</strong>. Set a <strong>Passphrase</strong> there if you don't have one.</li>
+<li>Store admin → <strong>Settings → Payments</strong>: paste the Merchant ID, Merchant Key and Passphrase. The passphrase must match <strong>exactly</strong>.</li>
+<li><strong>Test first.</strong> Create a free account at https://sandbox.payfast.co.za. Put the sandbox Merchant ID, Key and Passphrase in Settings with mode <strong>Sandbox</strong>. Place a test order on your site and pay with the sandbox. The order must turn <strong>Paid</strong> by itself within a minute.</li>
+<li>When the test works, change the settings to your <strong>real</strong> details with mode <strong>Live</strong>, and do one real small order (e.g. a R5 test product, then refund it in PayFast).</li>
+</ol>
+<p>You do <strong>not</strong> need to type a notify URL in PayFast. The store sends it with every payment.</p>
+<h2>Step 10 — Google (free)</h2>
+<ul>
+<li><strong>Google Search Console</strong> (search.google.com/search-console): add <code>setwelafrica.com</code>, then submit the sitemap <code>https://setwelafrica.com/sitemap.xml</code>.</li>
+<li><strong>Google Analytics 4</strong>: create a property and copy the <code>G-XXXXXXX</code> ID into Settings → Marketing.</li>
+<li><strong>Meta Pixel</strong> (optional): copy the Pixel ID into Settings → Marketing.</li>
+<li><strong>Google Merchant Center</strong> (free product listings): Products → Feeds → add a <strong>scheduled fetch</strong> with the URL <code>https://setwelafrica.com/feeds/google-merchant.xml</code>.</li>
+</ul>
+<p>Analytics and Pixel only load after a visitor clicks <strong>Accept all</strong> in the cookie notice (POPIA).</p>
+<h2>Step 11 — Backups (important)</h2>
+<ul>
+<li>cPanel → <strong>Backup</strong> (or <strong>JetBackup</strong> if your plan has it). Once a month, download a <strong>Home Directory</strong> backup and a <strong>MySQL database</strong> backup of <code>cpuser_setwel</code>.</li>
+<li>Keep the backups on your computer or Google Drive.</li>
+</ul>
+<hr />
+<h2>Problems?</h2>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A list of files instead of the shop</td>
+<td>The <code>.htaccess</code> file is missing. Show hidden files (Step 5.2) and extract the zip again.</td>
+</tr>
+<tr>
+<td>"This store needs PHP 8.1 or newer"</td>
+<td>Do Step 3.</td>
+</tr>
+<tr>
+<td>A setup check shows ✘ "folder writable"</td>
+<td>File Manager → right-click the folder → <strong>Change Permissions</strong> → <code>755</code>.</td>
+</tr>
+<tr>
+<td>"Could not connect to the database"</td>
+<td>Use the <strong>full</strong> database name and username with the <code>cpuser_</code> prefix. Check the user was added to the database with ALL PRIVILEGES.</td>
+</tr>
+<tr>
+<td>The site keeps redirecting / "too many redirects"</td>
+<td>SSL isn't ready yet. Wait for AutoSSL (Step 2).</td>
+</tr>
+<tr>
+<td>Emails not arriving</td>
+<td>Settings → Email → <strong>Send test email</strong>. The technical reason is in <code>storage/logs/mail.log</code> (open it in File Manager).</td>
+</tr>
+<tr>
+<td>PayFast order stays "Awaiting payment"</td>
+<td>Check that the passphrase matches. Open <code>storage/logs/payfast.log</code> in File Manager — it says why.</td>
+</tr>
+</tbody>
+</table>
+<p>You can also open this project in Claude Code and say: <em>"My store shows <the problem>, here is the log: …"</em>.</p><p class="top"><a href="#">↑ Back to top</a></p></section>
+<section id="monthly"><h1>Monthly update guide — prices, products and specials</h1>
+<p>No coding needed. Everything is done at <strong>https://setwelafrica.com/admin</strong>.</p>
+<h2>How prices work</h2>
+<ul>
+<li>You enter the <strong>supplier cost excl. VAT</strong> (the price on the distributor sheet or flyer).</li>
+<li>
+<p>The store adds your markup (<strong>55%</strong>, change it in Settings → Pricing) and rounds <strong>up</strong> to the nearest rand.
+  Example: R299.00 × 1.55 = R463.45 → <strong>R464</strong>.</p>
+</li>
+<li>
+<p>Setwel Africa is not VAT registered, so the store adds no VAT. Your 55% already covers the VAT you pay the supplier.</p>
+</li>
+<li>Customers never see your cost price or your supplier's name.</li>
+</ul>
+<hr />
+<h2>A. Update prices from the supplier's price sheet (most months)</h2>
+<ol>
+<li>Fill in the supplier's blank price sheet in Excel as usual. Save it as <strong>.xlsx</strong> (Excel Workbook).</li>
+<li>Admin → <strong>Import / update prices</strong> → choose the file.<ul>
+<li>Did you save a column matching last month? Pick it under <strong>Use saved column matching</strong>.</li>
+</ul>
+</li>
+<li>Click <strong>Upload &amp; continue</strong>.</li>
+<li><strong>Match columns:</strong> check that the supplier's code column says <em>SKU</em>, their price column says <em>Supplier cost (excl. VAT)</em>, and so on.<ul>
+<li>The first time, type a name such as <code>Supplier price sheet</code> in <strong>Save this matching</strong> so next month is automatic.</li>
+<li>Choose <strong>Only update prices &amp; stock</strong> if you only want to change prices of products already in your shop.</li>
+<li>Leave <strong>Keep the product names already in my store</strong> ticked.</li>
+</ul>
+</li>
+<li>Click <strong>Preview changes</strong>. Nothing is saved yet. You see:<ul>
+<li><strong>New</strong> — products that will be added</li>
+<li><strong>Update</strong> — old price → new price, shown in red and green</li>
+<li><strong>Error</strong> — rows that will be skipped, with the reason (e.g. "price abc is not a number")</li>
+</ul>
+</li>
+<li>If it looks right, click <strong>Import</strong>. Done.</li>
+</ol>
+<p>Tips:</p>
+<ul>
+<li>Empty cells never delete anything.</li>
+<li>To end a sale through Excel, type <code>CLEAR</code> in the Sale price column.</li>
+<li>A stock quantity works too: 0 = out of stock, 1–5 = low stock, more = in stock.</li>
+</ul>
+<h2>B. Change many products in Excel (your own sheet)</h2>
+<ol>
+<li>Admin → <strong>Products</strong> → <strong>Export Excel</strong>. You get every product with all its details.</li>
+<li>Change what you want in Excel: prices, stock, descriptions, Visible yes/no.</li>
+<li>Save, then import it (section A). The columns match automatically.</li>
+</ol>
+<h2>C. Add, change or remove one product</h2>
+<ul>
+<li><strong>Add:</strong> Products → <strong>+ Add product</strong>. Fill in the name, SKU, brand, category and supplier cost (the selling price is calculated for you), add photos, then <strong>Save</strong>.</li>
+<li><strong>Change:</strong> click the product name, edit, <strong>Save</strong>.</li>
+<li><strong>Hide</strong> (e.g. discontinued): untick <strong>Visible on website</strong>. Hiding is safer than deleting.</li>
+<li><strong>Delete:</strong> open the product → <strong>Delete product</strong> at the bottom.</li>
+</ul>
+<h2>D. Many products at once</h2>
+<p>Products list → tick the products (the top box ticks all) → <strong>With ticked products</strong> → choose an action → <strong>Apply</strong>. Actions:</p>
+<ul>
+<li>Show on website / Hide from website</li>
+<li>Mark as popular (shows on the home page)</li>
+<li>End sale price</li>
+<li>Recalculate selling price from cost (use after changing the markup %)</li>
+<li>Set stock status</li>
+<li>Delete</li>
+</ul>
+<h2>E. Product photos</h2>
+<ul>
+<li><strong>One product:</strong> edit the product → <strong>Add photos</strong>.</li>
+<li><strong>Many products:</strong> name each photo with its SKU, e.g. <code>CMF3010.jpg</code> (extra photos: <code>CMF3010-2.jpg</code>). Then Admin → <strong>Bulk images</strong> → choose all the files → <strong>Upload</strong>.</li>
+<li>Use photos from the distributor's white-label flyers or the manufacturer's reseller material. Your distributors have confirmed you may advertise their products.</li>
+</ul>
+<h2>F. Monthly specials (e.g. "October specials")</h2>
+<ol>
+<li>Give products a <strong>Sale price</strong> and a <strong>Sale ends</strong> date, either by editing each product or with the <em>Sale price</em> and <em>Sale ends</em> columns in your import file.</li>
+<li>Admin → <strong>Banners &amp; specials</strong> → edit the banner:<ul>
+<li>Headline: <code>October specials</code></li>
+<li>Button link: <code>/specials</code></li>
+<li><strong>Show until:</strong> the last day of the month</li>
+</ul>
+</li>
+<li>Check <strong>https://setwelafrica.com/specials</strong>. It is your Setwel-branded catalogue. Click <strong>Print / save as PDF catalogue</strong> to get a PDF you can WhatsApp or email to customers.</li>
+<li>On the end date, sale prices and banners switch off by themselves.</li>
+</ol>
+<h2>G. Orders</h2>
+<ol>
+<li>You get an email for every new order. Admin → <strong>Orders</strong> → open the order.</li>
+<li><strong>EFT orders:</strong> when the money is <strong>in your bank account</strong>, click <strong>Mark as paid</strong>. The customer gets a receipt automatically. A proof of payment alone is not proof — check your bank.</li>
+<li><strong>PayFast orders</strong> turn <strong>Paid</strong> by themselves.</li>
+<li>When you send the parcel: change the status to <strong>Shipped with courier</strong>, type the courier and tracking number, and keep <strong>Email the customer</strong> ticked.</li>
+<li>For collections: set <strong>Ready for collection</strong>. Later, set <strong>Completed</strong>.</li>
+<li>Invoice / receipt PDF: the button at the top of the order.</li>
+</ol>
+<h2>H. Quote requests</h2>
+<p>Admin → <strong>Quote requests</strong> → open one → <strong>Reply by email</strong>. Set the status (Quote sent / Won / Lost) so you can track them.</p>
+<h2>I. Monthly 10-minute checklist</h2>
+<ul>
+<li>☐ Import the new supplier price sheet (A)</li>
+<li>☐ Set this month's specials and banner (F)</li>
+<li>☐ Dashboard: fix "products without a photo" and "without a price"</li>
+<li>☐ Download a backup in cPanel (see the install guide, Step 11)</li>
+<li>☐ Newsletter: Admin → Newsletter → download the list and send your specials using Mailchimp or Brevo (both have free plans)</li>
+</ul>
+<h2>Getting help from Claude Code</h2>
+<p>Open this project in Claude Code and describe what you want in plain words, for example:</p>
+<ul>
+<li>"Add a new category called Riso Ink and Masters"</li>
+<li>"My supplier sent a new price list, here it is — set up the import"</li>
+<li>"Change the home page headline to …"</li>
+</ul>
+<p>Claude Code changes the files. Then you upload the changed files to cPanel File Manager. Or ask Claude Code for a fresh zip, and say <strong>"don't overwrite my app/config.php, storage or uploads"</strong>.</p><p class="top"><a href="#">↑ Back to top</a></p></section>
+<section id="launch"><h1>Launch checklist</h1>
+<p>Tick everything before you tell customers about the site.</p>
+<h2>Accounts and setup (only you can do these)</h2>
+<ul>
+<li>☐ setwelafrica.com bought and added to cPanel (install guide, Step 1)</li>
+<li>☐ SSL padlock working on https://setwelafrica.com and https://www.setwelafrica.com</li>
+<li>☐ Store installed and admin login works</li>
+<li>☐ Strong admin password; each staff member has their own login (Admin → My account)</li>
+<li>☐ Mailbox sa@setwelafrica.com created, SMTP filled in, <strong>test email received</strong></li>
+<li>☐ PayFast account approved for live payments (PayFast may ask for FICA/company documents)</li>
+<li>☐ PayFast <strong>sandbox</strong> test order turned "Paid" by itself</li>
+<li>☐ PayFast switched to <strong>Live</strong>, and one real low-value order paid and refunded</li>
+<li>☐ Bank details filled in; one EFT test order placed, proof of payment uploaded, marked paid</li>
+</ul>
+<h2>Business details and legal</h2>
+<ul>
+<li>☐ Company registration number in Settings (ECT Act requires it on the website)</li>
+<li>☐ POPIA Information Officer name in Settings, and registered with the Information Regulator (https://inforegulator.org.za)</li>
+<li>☐ Privacy, Terms, Delivery &amp; Returns and Warranty pages read and <strong>checked by a lawyer</strong> (I wrote sensible South African drafts, but I am not a lawyer)</li>
+<li>☐ "Authorised Reseller" wording (Settings → Trust) matches <strong>exactly</strong> what your letters from the manufacturers/distributors say</li>
+<li>☐ Authorisation letters/certificates uploaded under <strong>Certificates &amp; letters</strong> and set to "Show on website"</li>
+<li>☐ "100% Black-owned" line only shown if you have a valid B-BBEE affidavit/certificate (upload it too)</li>
+<li>☐ Brand logos: keep "Show brand logos" <strong>off</strong> unless you have written permission</li>
+<li>☐ Your logo: the store uses the Setwel "S" logo from your current website. If you have a newer/higher-quality file, send it and Claude Code will swap it in.</li>
+</ul>
+<h2>Products</h2>
+<ul>
+<li>☐ Sample products checked: keep, fix or delete them. The sample sale on the MF3010 is only a demo — change it or end it.</li>
+<li>☐ Canon 725 toner: no real price yet (shows "Price on request"). Add the cost price or hide it.</li>
+<li>☐ Real products imported from your supplier price sheets</li>
+<li>☐ Every visible product has a photo, a price, a brand and a category</li>
+<li>☐ Delivery fee checked (default <strong>R150</strong> — you didn't give me a figure, so change it if needed). Free over <strong>R2 500</strong>.</li>
+</ul>
+<h2>Test as a customer (on your phone)</h2>
+<ul>
+<li>☐ Home page, search (type a model number), filters, product page</li>
+<li>☐ Add to cart → checkout → order confirmation email received</li>
+<li>☐ Invoice PDF opens</li>
+<li>☐ Quote request → you receive the email and it shows under Admin → Quote requests</li>
+<li>☐ Contact form and WhatsApp button work</li>
+<li>☐ Cookie notice shows on the first visit</li>
+</ul>
+<h2>Marketing</h2>
+<ul>
+<li>☐ Google Search Console: sitemap submitted</li>
+<li>☐ Google Analytics ID and Meta Pixel ID added (optional)</li>
+<li>☐ Google Merchant Center feed added (optional, free listings)</li>
+<li>☐ Google Business Profile updated with the new website address</li>
+<li>☐ Old website / social media links point to setwelafrica.com</li>
+</ul>
+<h2>After launch</h2>
+<ul>
+<li>☐ Monthly backup (install guide, Step 11)</li>
+<li>☐ Monthly price update (Monthly update guide)</li>
+</ul><p class="top"><a href="#">↑ Back to top</a></p></section>
+<section id="costs"><h1>Running costs, why this setup, and honest limits</h1>
+<h2>Why PHP + MySQL on your own hosting (and not Next.js / Vercel / Supabase)</h2>
+<p>You already pay for registerdomain cPanel hosting, which runs PHP and MySQL. A Next.js store would need:</p>
+<ul>
+<li>Vercel (its free plan is for non-commercial use only — a shop needs the paid Pro plan, about US$20/month)</li>
+<li>Supabase (the free plan pauses inactive projects — a shop needs the paid plan, about US$25/month)</li>
+</ul>
+<p>That is roughly R800+ a month for no benefit to you. The PHP store has the same features, is fast, and costs nothing extra to host. It uses no outside code libraries, so there is nothing to "update" or break.</p>
+<h2>Running costs (approximate — check current prices)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hosting</td>
+<td>Already paid (your setwelbusiness.co.za plan, add-on domain)</td>
+</tr>
+<tr>
+<td>setwelafrica.com domain</td>
+<td>About R200–R300 per year at registerdomain</td>
+</tr>
+<tr>
+<td>SSL certificate</td>
+<td>Free (AutoSSL)</td>
+</tr>
+<tr>
+<td>Email (sa@setwelafrica.com)</td>
+<td>Free with your hosting</td>
+</tr>
+<tr>
+<td>PayFast</td>
+<td>No monthly fee on the standard account. A fee per payment, roughly 3–3.5% + about R2 for cards and about 2% for Instant EFT. See payfast.io/fees</td>
+</tr>
+<tr>
+<td>Manual EFT</td>
+<td>Your normal bank fees only</td>
+</tr>
+<tr>
+<td>Google Analytics, Search Console, Merchant Center</td>
+<td>Free</td>
+</tr>
+<tr>
+<td>Newsletter sending (Mailchimp / Brevo)</td>
+<td>Free plans for small lists</td>
+</tr>
+<tr>
+<td><strong>Total extra per month</strong></td>
+<td><strong>About R20 (domain) + PayFast fees per sale</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>Honest limits — what I could not do or test</h2>
+<ul>
+<li><strong>PayFast live test:</strong> the sandbox I built in has no internet access to PayFast, so I could not run a real payment. The code follows PayFast's official method (signature, server check, amount check). <strong>You must do the sandbox test</strong> (install guide, Step 9) before going live.</li>
+<li><strong>Email sending:</strong> tested that emails are created correctly, but this sandbox has no mail server. Use <strong>Send test email</strong> after setup.</li>
+<li><strong>Accounts:</strong> I cannot buy the domain, set up cPanel, open or approve PayFast, register you with the Information Regulator, or get you authorisation letters. Those are yours to do.</li>
+<li><strong>Legal pages:</strong> sensible South African drafts (CPA, ECTA, POPIA), but <strong>not legal advice</strong>. Have them checked.</li>
+<li><strong>"Authorised Reseller" claim:</strong> the store shows the wording you set. It is your responsibility that it matches your letters.</li>
+<li><strong>Product photos:</strong> the 9 sample photos are cropped from the distributor flyers you sent (including the blank Canon white-label flyer). Replace them with better photos when you can.</li>
+<li><strong>Stock levels:</strong> the store tracks stock <em>status</em> (in stock / low / on order / out), not exact quantities. It does not sync automatically with the distributor's stock. You update it through the monthly import.</li>
+<li><strong>Distributor catalogue import:</strong> the importer accepts any Excel/CSV layout through the column-matching screen, and saves the matching for next time. When you send the actual distributor catalogue file, I can pre-set the matching and test it.</li>
+<li><strong>Old .xls files:</strong> these must be saved as .xlsx first (one click in Excel).</li>
+<li><strong>Newsletter:</strong> the store collects sign-ups and exports the list. Sending the emails is done in Mailchimp/Brevo.</li>
+<li><strong>Courier:</strong> a flat rate plus free delivery over a threshold. No live courier quotes or automatic waybills.</li>
+<li><strong>Tested on:</strong> PHP 8.3 with both SQLite and MariaDB (the MySQL type cPanel uses), on desktop and mobile screen sizes.</li>
+</ul><p class="top"><a href="#">↑ Back to top</a></p></section>
+</main></body></html>

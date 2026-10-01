@@ -12,6 +12,7 @@ function install_controller(): void
         'PDO database support' => extension_loaded('pdo'),
         'SQLite or MySQL driver' => extension_loaded('pdo_sqlite') || extension_loaded('pdo_mysql'),
         'ZIP support (Excel import)' => class_exists('ZipArchive'),
+        'XML support (Excel import)' => function_exists('simplexml_load_string'),
         'GD images (photo resizing)' => function_exists('imagecreatefromstring'),
         'cURL (PayFast checks)' => function_exists('curl_init'),
         'app/ folder writable' => is_writable(APP_DIR),

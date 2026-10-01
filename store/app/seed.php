@@ -208,48 +208,143 @@ You may ask to see, correct or delete your personal information, object to its u
 
 We use HTTPS encryption, secure password storage and restricted access to protect your information.
 TXT],
-        'terms' => ['Terms & Conditions', 'Terms and conditions for buying from the Setwel Africa online store.', <<<TXT
-## About us (ECTA section 43)
+        'terms' => ['Terms & Conditions', 'Terms and conditions for buying printers, ink, toner and office technology from the Setwel Africa online store.', <<<TXT
+**Please read these Terms carefully.** By using this website, requesting a quote or placing an order with Setwel Africa, you agree to these Terms and Conditions. If you do not agree, please do not use the website or place an order. These Terms form a legally binding agreement between you and {legal_name}.
 
-- Full name: **{legal_name}**
-- Registration number: **{registration_number}**
-- Physical address: {address}
-- Phone: {phone} · Email: {email}
-- Website: {site_url}
+## 1. Definitions
 
-## Prices
+- **"Setwel Africa", "we", "us", "our"** means {legal_name}, registration number {registration_number}, a company incorporated in South Africa.
+- **"Website"** means {site_url} and all its pages, forms and services.
+- **"Customer", "you", "your"** means any person, business, school, government body or other organisation that uses the Website, requests a quote or places an order.
+- **"Products"** means the printers, ink and toner cartridges, scanners, storage, laptop bags, accessories and other goods we sell.
+- **"Order"** means a purchase placed through the Website, or a quote you have accepted in writing.
+
+## 2. Who we are
+
+Setwel Africa is a South African, 100% Black-owned company established in 2016. We supply genuine printers, ink, toner and office technology to businesses, schools, government and individuals across South Africa, and are an authorised reseller of the brands shown on our [Credentials page](/credentials).
+
+- **Registered name:** {legal_name}
+- **Registration number:** {registration_number}
+- **Cape Town:** {address}
+- **KwaZulu-Natal:** 570807 Snathing, Edendale, Pietermaritzburg, 3201
+- **Email:** {email}
+- **Phone:** {phone}
+- **WhatsApp:** {whatsapp}
+
+## 3. Products and information
+
+- We sell only new, genuine products.
+- Product photos are for illustration. Packaging and colours may differ slightly from the photo.
+- Specifications and compatibility lists come from the manufacturer. Please check that a cartridge matches your printer model before ordering. If unsure, WhatsApp us your printer model and we will confirm.
+- Brand names and logos belong to their owners and are used only to identify the products we sell.
+
+## 4. Orders
+
+- An Order is a request to buy. It is accepted only once **payment has been received and confirmed** by us.
+- We may decline or cancel an Order if a product is out of stock, if a price was clearly wrong, or if we suspect fraud. If we cancel after you have paid, we refund you in full.
+- You will receive an order confirmation email and can follow your order with the link in that email.
+
+## 5. Prices
 
 - All prices are in South African Rand (ZAR).
-- {legal_name} is **not registered for VAT**; no VAT is added to our prices.
-- Prices and stock may change without notice. Specials are valid until the date shown or while stocks last. Errors and omissions excepted (E&OE). If a price is clearly wrong, we will contact you before processing your order and you may cancel for a full refund.
+- {legal_name} is **not registered for VAT**. No VAT is added to our prices, and our invoices are not tax invoices.
+- Prices and stock can change without notice. Specials are valid until the date shown or while stocks last.
+- Errors and omissions excepted (E&OE). If a price on the Website is clearly wrong, we will contact you before processing the Order, and you may cancel for a full refund.
+- Delivery costs are shown at checkout before you pay.
 
-## Orders
+## 6. Payment
 
-An order is accepted once payment has been received and confirmed. We may cancel an order (and refund you in full) if the product is no longer available.
+### 6.1 Payment methods
 
-## Payment
+We accept payment through **PayFast**: credit and debit cards (Visa and Mastercard), Instant EFT and other methods offered by PayFast at checkout. You may also pay by **manual EFT** into our bank account, using your order number as the reference.
 
-You can pay with PayFast (card, Instant EFT and other methods) or by manual EFT into our bank account. EFT orders are held for 3 working days; unpaid orders may be cancelled.
+### 6.2 Payment security
 
-## Delivery, returns and warranty
+Card payments are processed securely by PayFast. We never see or store your card details.
 
-See our [Delivery & Returns](/page/delivery-returns) and [Warranty](/page/warranty) pages.
+### 6.3 EFT orders
 
-## Quotes
+- Please upload your proof of payment on your order page.
+- Orders are dispatched only once the money reflects in our bank account.
+- Unpaid EFT orders may be cancelled after 3 working days.
 
-Quotes are valid for 7 days unless stated otherwise, and are subject to stock availability.
+### 6.4 Business and government orders
 
-## Liability
+Formal quotes are available through our [quote form](/quote). Quotes are valid for 7 days unless stated otherwise, and are subject to stock availability.
 
-We are not liable for indirect or consequential losses, to the extent allowed by law. Nothing in these terms limits your rights under the Consumer Protection Act.
+## 7. Delivery and collection
 
-## Privacy
+- We deliver **nationwide** by courier. Delivery costs {delivery_fee} per order and is **free on orders of {free_delivery_threshold} or more**.
+- Delivery usually takes 2–5 working days after payment to main centres, and longer to outlying areas. Delivery times are estimates, not guarantees.
+- Someone must be available to sign for the parcel. Please check it before signing and note any visible damage on the courier's delivery note.
+- You may collect your Order free of charge from {collection_address} ({hours}) after you receive our "Ready for collection" email.
 
-See our [Privacy Policy](/page/privacy).
+Full details: [Delivery & Returns](/page/delivery-returns).
 
-## Law
+## 8. Returns, cancellations and refunds
 
-These terms are governed by the laws of the Republic of South Africa.
+- **Cooling-off for online purchases:** under section 44 of the Electronic Communications and Transactions Act, 25 of 2002 (ECTA), you may cancel an online purchase within **7 days** of receiving the goods, without giving a reason. Goods must be unused and in their original, sealed packaging. You pay the cost of returning the goods.
+- **Defective goods:** under section 56 of the Consumer Protection Act, 68 of 2008 (CPA), you may return defective goods within **6 months** of delivery and choose a repair, replacement or refund.
+- Opened consumables (ink, toner, ribbons) can only be returned if defective.
+- Refunds are paid within 10 working days after we receive and check the returned goods.
+
+To arrange a return, email {email} with your order number.
+
+## 9. Warranty
+
+Products carry the **manufacturer's warranty**. Where a warranty period is known, it is shown on the product page. See our [Warranty page](/page/warranty) for how to claim. Warranty does not cover damage from misuse, power surges, liquids, or non-genuine consumables where the manufacturer excludes this.
+
+## 10. Your information and privacy
+
+We process your personal information (name, contact details, delivery address and order history) in line with the Protection of Personal Information Act, 4 of 2013 (POPIA). We use it only to process your orders and quotes, deliver your goods, communicate with you and meet our legal obligations. We do not sell your information. Read our [Privacy Policy](/page/privacy).
+
+## 11. Acceptable use of the Website
+
+You may not use the Website to:
+
+- place false or fraudulent orders, or pay with a card or account you are not authorised to use
+- try to gain unauthorised access to the Website, our systems or other customers' information
+- copy, scrape or reproduce our content, prices or photos for commercial use without permission
+- break any law
+
+We may block access or cancel orders where we reasonably believe the Website is being misused.
+
+## 12. Intellectual property
+
+The Website design, text, Setwel Africa name and logo belong to {legal_name} and are protected by South African and international copyright and trademark law. Manufacturer names, logos and product photos belong to their respective owners.
+
+## 13. Limitation of liability
+
+- We take care to keep the Website accurate and available, but cannot guarantee that it will always be error-free or uninterrupted.
+- To the extent allowed by South African law, our total liability for any claim relating to an Order is limited to the amount you paid for that Order.
+- We are not liable for indirect or consequential losses, such as loss of profit, loss of data or business interruption.
+- Nothing in this clause limits your rights under the CPA.
+
+## 14. Consumer Protection Act rights
+
+Nothing in these Terms limits or waives your rights under the Consumer Protection Act, 68 of 2008. Where these Terms conflict with the CPA, the CPA applies. Your rights include:
+
+- the right to fair, honest and transparent dealing
+- the right to receive goods of good quality that are safe and fit for purpose
+- the right to return defective goods within 6 months of delivery
+- the right to a 5-business-day cooling-off period for purchases resulting from direct marketing (in addition to the 7-day ECTA cooling-off for online purchases)
+
+## 15. Governing law and disputes
+
+These Terms are governed by the laws of the Republic of South Africa. Before taking legal steps, please contact us first at {email} or on WhatsApp {whatsapp}. We will respond within 5 business days and try to resolve the matter fairly. Unresolved disputes may be referred to the **Consumer Goods and Services Ombud (CGSO)**, to mediation, or to the South African courts.
+
+## 16. Changes to these Terms
+
+We may update these Terms from time to time. The "Last updated" date at the bottom of this page shows when they last changed. The Terms that applied when you placed your Order apply to that Order.
+
+## 17. Contact us
+
+- **Email:** {email}
+- **Phone:** {phone}
+- **WhatsApp:** {whatsapp}
+- **Cape Town:** {address}
+- **KwaZulu-Natal:** 570807 Snathing, Edendale, Pietermaritzburg, 3201
+- **Hours:** {hours}
 TXT],
     ];
 }

@@ -146,7 +146,7 @@ function settings_groups(): array
             'show_brand_logos' => ['Show brand logos (only if you have written permission)', 'bool'],
         ],
         'Pricing & delivery' => [
-            'markup_percent' => ['Markup on supplier cost (%)', 'number', 'Selling price = supplier cost (excl. VAT) × (1 + markup). Example 55%: R299 → R463.45 → rounded R464.'],
+            'markup_percent' => ['Markup on supplier cost (%)', 'number', 'Added on top of the supplier\'s price excl. VAT. The 55% already includes the 15% VAT you pay the supplier. Example: R299 + 55% = R463.45 → rounded R464.'],
             'price_rounding' => ['Round selling prices UP to the nearest (R)', 'select', '', ['0' => 'No rounding (cents)', '1' => 'R1', '5' => 'R5', '10' => 'R10']],
             'vat_registered' => ['We are VAT registered', 'bool', 'Leave OFF — you told us Setwel Africa is not VAT registered. Invoices then say "Invoice" (not "Tax invoice").'],
             'delivery_fee' => ['Courier delivery fee (R)', 'number'],

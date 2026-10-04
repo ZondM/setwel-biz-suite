@@ -572,11 +572,11 @@ function submitTrial() {
   var last = document.getElementById('co-last').value.trim();
   var biz = document.getElementById('co-biz').value.trim();
 
-  // The actual PayFast signing happens server-side in api/create-payment.php —
-  // this page never sees the merchant key or passphrase. We just navigate
-  // there with the checkout details; it redirects on to PayFast.
+  // This does NOT go to PayFast — no card is collected and nothing is
+  // charged today, matching the promise above. api/start-trial.php just
+  // records the signup and emails a confirmation; a payment link is
+  // emailed separately once the 30-day trial actually ends.
   var params = new URLSearchParams({
-    type: 'subscription',
     plan: selectedPlan,
     billing: billing,
     price: price,
@@ -586,7 +586,7 @@ function submitTrial() {
     phone: phone,
     biz: biz
   });
-  window.location.href = 'api/create-payment.php?' + params.toString();
+  window.location.href = 'api/start-trial.php?' + params.toString();
 }
 
 // Close modal on background click

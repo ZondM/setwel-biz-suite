@@ -24,12 +24,19 @@ footer a,p a,li a{text-decoration:underline}
 <body>
 <main>
 <div class="box">
-<div class="ico">&#10003;</div>
-<h1>Thank you!</h1>
-<p>Your payment request has been received. Once PayFast confirms the transaction, our team will email your download link (or licence key) and be in touch on WhatsApp.</p>
+<div class="ico" id="ty-ico">&#10003;</div>
+<h1 id="ty-h1">Thank you!</h1>
+<p id="ty-p">Your payment request has been received. Once PayFast confirms the transaction, our team will email your download link (or licence key) and be in touch on WhatsApp.</p>
 <p class="fine">Questions in the meantime? WhatsApp us at <a href="https://wa.me/27820829050">+27 82 082 9050</a> or email <a href="mailto:support@setwelbusiness.co.za">support@setwelbusiness.co.za</a>.</p>
 <a href="index.html" class="btn">&#8592; Back to Setwel Biz Suite</a>
 </div>
 </main>
+<script>
+if (new URLSearchParams(location.search).get('type') === 'trial') {
+  document.getElementById('ty-ico').textContent = '\u{1F389}';
+  document.getElementById('ty-h1').textContent = 'Your free trial has started!';
+  document.getElementById('ty-p').textContent = 'No payment was taken today and no card was charged. Download the app to get going right away — we’ve also emailed you a confirmation. In 30 days we’ll email you a secure PayFast payment link to activate your subscription; nothing is charged before then.';
+}
+</script>
 </body>
 </html>

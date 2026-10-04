@@ -136,8 +136,6 @@ img{max-width:100%;display:block}
 .vc.tr{top:-1px;right:-1px;border-width:2.5px 2.5px 0 0;border-radius:0 3px 0 0}
 .vc.bl{bottom:-1px;left:-1px;border-width:0 0 2.5px 2.5px;border-radius:0 0 0 3px}
 .vc.br{bottom:-1px;right:-1px;border-width:0 2.5px 2.5px 0;border-radius:0 0 3px 0}
-.vf-beam{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--or),transparent);animation:vfbeam 2s ease-in-out infinite;box-shadow:0 0 10px 3px rgba(232,128,26,.5)}
-@keyframes vfbeam{0%{top:5%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:95%;opacity:0}}
 .vf-tap-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);border-radius:12px;padding:4px 12px;font-size:.7rem;color:rgba(255,255,255,.8);white-space:nowrap}
 .si-btn-row{display:flex;gap:8px}
 .si-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;border-radius:11px;font-family:'Inter',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:none;transition:all .15s;-webkit-appearance:none}
@@ -230,39 +228,12 @@ img{max-width:100%;display:block}
 /* ═══════════════════════════════════════
    SCREEN 2 — CAMERA
 ═══════════════════════════════════════ */
-#s-camera{background:#000;position:fixed;inset:0;z-index:200}
-.cam-topbar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:env(safe-area-inset-top,14px) 16px 12px;background:linear-gradient(180deg,rgba(0,0,0,.8),transparent)}
-.cam-close{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:38px;height:38px;color:#fff;font-size:1.2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-appearance:none}
-.cam-title{color:#fff;font-family:'DM Serif Display',Georgia,serif;font-size:.95rem;text-align:center}
-.cam-flash-btn{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:38px;height:38px;color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-appearance:none}
-video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cam-overlay{position:absolute;inset:0;pointer-events:none}
-.cam-overlay::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 50%,transparent 35%,rgba(0,0,0,.55) 100%)}
-.scan-win{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:95%;max-width:420px}
-.sw-ratio{padding-bottom:72%;position:relative}
-.sw-inner{position:absolute;inset:0;border:1.5px solid rgba(232,128,26,.55);border-radius:10px}
-.sc{position:absolute;width:20px;height:20px;border-color:var(--or);border-style:solid}
-.sc.tl{top:-1px;left:-1px;border-width:3px 0 0 3px;border-radius:3px 0 0 0}
-.sc.tr{top:-1px;right:-1px;border-width:3px 3px 0 0;border-radius:0 3px 0 0}
-.sc.bl{bottom:-1px;left:-1px;border-width:0 0 3px 3px;border-radius:0 0 0 3px}
-.sc.br{bottom:-1px;right:-1px;border-width:0 3px 3px 0;border-radius:0 0 3px 0}
-.scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--or),transparent);box-shadow:0 0 14px 4px rgba(232,128,26,.55);animation:scanline 2.2s ease-in-out infinite}
-.cam-guide-label{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:.62rem;font-weight:700;color:rgba(232,128,26,.9);white-space:nowrap;letter-spacing:.05em;text-transform:uppercase;text-shadow:0 0 8px rgba(0,0,0,.8)}
-@keyframes scanline{0%{top:4%;opacity:0}12%{opacity:1}88%{opacity:1}100%{top:96%;opacity:0}}
-.cam-tips{position:absolute;top:58px;left:12px;right:12px;z-index:5;pointer-events:none}
-.tip-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(10,8,8,.78);backdrop-filter:blur(6px);border:1px solid rgba(232,128,26,.3);border-radius:8px;padding:5px 11px;font-size:.7rem;color:rgba(255,255,255,.85);animation:tipfade 3s ease-in-out forwards}
-@keyframes tipfade{0%{opacity:0;transform:translateY(-4px)}10%{opacity:1;transform:none}80%{opacity:1}100%{opacity:0}}
-.tip-dot{width:6px;height:6px;border-radius:50%;background:#4CAF70;flex-shrink:0}
-.cam-hint{position:absolute;bottom:calc(140px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:rgba(0,0,0,.65);backdrop-filter:blur(8px);border:1px solid rgba(232,128,26,.25);border-radius:16px;padding:6px 16px;font-size:.78rem;color:rgba(255,255,255,.85);white-space:nowrap}
-.cam-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(10,8,8,.9);backdrop-filter:blur(14px);padding:16px 20px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:space-between}
-.cam-side{display:flex;flex-direction:column;align-items:center;gap:5px;width:60px}
-.cam-side-btn{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;color:#fff;-webkit-appearance:none;transition:all .15s}
-.cam-side-btn:active{background:rgba(232,128,26,.25);border-color:var(--or)}
-.cam-side-lbl{font-size:.62rem;color:rgba(255,255,255,.55);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
-.capture-ring{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--or),var(--rd));border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-appearance:none;box-shadow:0 0 0 5px rgba(232,128,26,.2),0 0 0 10px rgba(232,128,26,.08);transition:all .15s;position:relative}
-.capture-ring::after{content:'';position:absolute;inset:5px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3)}
-.capture-ring:active{transform:scale(.92);box-shadow:0 0 0 3px rgba(232,128,26,.3)}
-.capture-icon{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.6)}
+.scan-launch{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px;max-width:420px;margin:0 auto;width:100%}
+.scan-launch-ico{font-size:2.6rem;margin-bottom:14px}
+.scan-launch-h{font-family:'DM Serif Display',Georgia,serif;font-size:1.3rem;color:var(--ink);margin-bottom:18px}
+.scan-launch-steps{text-align:left;color:var(--ink2);font-size:.9rem;line-height:1.7;margin:0 0 24px;padding-left:22px;width:100%}
+.scan-launch-steps li{margin-bottom:10px}
+.scan-launch-tip{font-size:.74rem;color:var(--ink3);margin-top:16px;line-height:1.6}
 
 /* ═══════════════════════════════════════
    SCREEN 3 — PROCESSING
@@ -447,7 +418,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 }
 
 /* HIDDEN */
-#file-input,#scan-canvas{display:none}
+#file-input{display:none}
 </style>
 </head>
 <body>
@@ -583,25 +554,20 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <div class="scan-invite" style="margin-top:14px" id="scanner-card">
       <div class="si-top">
         <span class="si-label">&#128247; AI Invoice Scanner</span>
-        <span class="si-live" id="scanner-status"><span class="si-live-dot"></span>Camera ready</span>
+        <span class="si-live" id="scanner-status"><span class="si-live-dot"></span>Ready to scan</span>
       </div>
-      <!-- Live viewfinder (camera devices only — hidden on desktop, see setDeviceMode()) -->
       <div class="vf-mock" onclick="openCamera()" id="vf-preview">
         <div class="vf-frame">
           <div class="vf-box">
             <div class="vc tl"></div><div class="vc tr"></div>
             <div class="vc bl"></div><div class="vc br"></div>
-            <div class="vf-beam"></div>
           </div>
         </div>
-        <div class="vf-tap-hint">Tap to open camera</div>
-      </div>
-      <div id="scanner-desktop-note" style="display:none;background:rgba(232,128,26,.08);border:1px solid rgba(232,128,26,.25);border-radius:12px;padding:14px;margin-bottom:14px;font-size:.82rem;color:#A09088;line-height:1.6">
-        On a computer, upload a photo of the invoice instead — take it with your phone, then upload it here or on your phone directly.
+        <div class="vf-tap-hint">Tap to scan an invoice</div>
       </div>
       <div class="si-btn-row">
         <button class="si-btn si-btn-scan" onclick="openCamera()" id="scan-camera-btn">&#128247; Scan Invoice</button>
-        <button class="si-btn si-btn-upload" onclick="document.getElementById('file-input').click()">&#128444; Upload Photo</button>
+        <button class="si-btn si-btn-upload" onclick="pickPhoto()">&#128444; Upload Photo</button>
       </div>
     </div>
 
@@ -777,52 +743,23 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 </div><!-- #s-welcome -->
 
 <!-- ══════════════════════════
-  S2 — CAMERA
-══════════════════════════ -->
+  S2 — SCAN LAUNCH (take the photo with the phone's own camera app first,
+  then pick it here — no in-browser live camera, so nothing to fail) ══════ -->
 <div class="screen" id="s-camera">
-  <div class="cam-topbar">
-    <button class="cam-close" onclick="closeCamera()">&#10005;</button>
-    <span class="cam-title">&#128247; Scan Invoice</span>
-    <button class="cam-flash-btn" onclick="flipCamera()" title="Flip camera">&#8635;</button>
+  <div class="iv-topbar">
+    <button class="iv-back" onclick="closeCamera()" aria-label="Close">&#8592; Back</button>
+    <h1 class="iv-topbar-title">Scan Invoice</h1>
+    <span style="width:60px"></span>
   </div>
-  <video id="cam-video" autoplay playsinline muted></video>
-  <div class="cam-overlay">
-    <div class="scan-win">
-      <div class="sw-ratio">
-        <div class="sw-inner">
-          <div class="sc tl"></div><div class="sc tr"></div>
-          <div class="sc bl"></div><div class="sc br"></div>
-          <div class="scan-line"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="cam-tips"><span class="tip-pill" id="cam-tip-el"></span></div>
-  <div class="cam-hint" id="cam-hint-text">Move CLOSER — fill the frame with invoice</div>
-  <div id="cam-proximity" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(232,128,26,.85);border-radius:10px;padding:6px 16px;font-size:.78rem;font-weight:700;color:#fff;white-space:nowrap;display:none">
-    ⚠️ Too far away — move closer
-  </div>
-  <div id="quality-pulse" style="position:absolute;bottom:145px;left:0;right:0;text-align:center;pointer-events:none">
-    <span style="background:rgba(10,8,8,.75);backdrop-filter:blur(6px);border:1px solid rgba(232,128,26,.4);border-radius:20px;padding:5px 14px;font-size:.72rem;font-weight:600;color:#F2EDE8;display:inline-block">
-      &#128247; Get as close as possible — invoice should fill screen
-    </span>
-  </div>
-  <div style="text-align:center;padding:5px 16px 0;font-size:.72rem;color:#A09088">
-    No internet for camera scan? &#128444; <strong style="color:#E8801A">Gallery</strong> → take photo first, then upload
-  </div>
-  <div class="cam-bar">
-    <div class="cam-side">
-      <button class="cam-side-btn" onclick="document.getElementById('file-input').click()"
-        style="background:rgba(232,128,26,.18);border:1.5px solid rgba(232,128,26,.5)">&#128444;</button>
-      <span class="cam-side-lbl" style="color:#E8801A;font-weight:700">Gallery</span>
-    </div>
-    <button class="capture-ring" onclick="capturePhoto()" aria-label="Capture">
-      <div class="capture-icon"></div>
-    </button>
-    <div class="cam-side">
-      <button class="cam-side-btn" onclick="flipCamera()">&#8635;</button>
-      <span class="cam-side-lbl">Flip</span>
-    </div>
+  <div class="scan-launch">
+    <div class="scan-launch-ico">&#128247;</div>
+    <h2 class="scan-launch-h">Scan a receipt or invoice</h2>
+    <ol class="scan-launch-steps">
+      <li>Take a clear, well-lit photo of the invoice with your phone's own camera app.</li>
+      <li>Come back here and tap the button below to choose that photo.</li>
+    </ol>
+    <button class="btn btn-primary" onclick="pickPhoto()" style="margin-top:8px">&#128444; Choose Photo</button>
+    <div class="scan-launch-tip">Tip: fill the frame with the invoice, avoid shadows, and make sure all the text is in focus and readable.</div>
   </div>
 </div>
 
@@ -899,19 +836,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   <div class="err-ico" id="err-ico">&#128247;</div>
   <h2 class="err-h" id="err-h">Scan failed</h2>
   <p class="err-p" id="err-p">Something went wrong. Use one of the options below.</p>
-  <button class="btn-retry" id="err-retry-btn" onclick="openCamera()" style="margin-bottom:10px">
-    &#8635; Try camera again
-  </button>
-  <div style="background:rgba(232,128,26,.09);border:1px solid rgba(232,128,26,.25);border-radius:12px;padding:14px 16px;margin:4px 0 14px;max-width:300px;width:100%;text-align:left">
-    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#E8801A;margin-bottom:7px">&#128161; Gallery often works better</div>
-    <div style="font-size:.82rem;color:#A09088;line-height:1.65">
-      <strong style="color:#F2EDE8">Step 1:</strong> Open your camera app and photograph the invoice clearly.<br><br>
-      <strong style="color:#F2EDE8">Step 2:</strong> Tap <em style="color:#4CAF70">Upload from Gallery</em> below to select that photo and scan it.
-    </div>
-  </div>
-  <button class="btn-err2" onclick="document.getElementById('file-input').click()"
-    style="background:rgba(76,175,112,.12);border:1.5px solid rgba(76,175,112,.4);color:#4CAF70;font-weight:700;font-size:.92rem;margin-bottom:9px">
-    &#128444; Upload from Gallery
+  <button class="btn-retry" id="err-retry-btn" onclick="pickPhoto()" style="margin-bottom:10px">
+    &#128444; Choose another photo
   </button>
   <button class="btn-err2" onclick="ivNewInvoice()"
     style="background:rgba(232,128,26,.1);border:1.5px solid rgba(232,128,26,.35);color:#E8801A;font-weight:700;font-size:.92rem;margin-bottom:9px">
@@ -1609,12 +1535,11 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 
 <!-- Hidden -->
 <input type="file" id="file-input" accept="image/*">
-<canvas id="scan-canvas"></canvas>
 </main>
 
 <script>
 /* ══ STATE ══ */
-var G={lang:'en',stream:null,facing:'environment',b64:null,dataUrl:null,demo:false};
+var G={lang:'en',b64:null,dataUrl:null,demo:false};
 
 /* ══════════════════ SETWEL EXPRESS INVOICE — offline localStorage module ══════════════════ */
 var IV_KEY = 'setwel_inv_data_v1';
@@ -3876,93 +3801,43 @@ function ivStr(key, vars){
   return s;
 }
 
-/* ══ CAMERA ══ */
+/* ══ SCAN LAUNCH ══
+   No in-browser live camera — getUserMedia across different Android/iOS
+   browser+device combinations was the single biggest source of scan
+   failures in the field (permission prompts, frozen streams, frames that
+   never matched what the phone's own camera app would have produced).
+   The client takes the photo with their phone's own camera app — rock
+   solid on every device — then picks it from their gallery here, going
+   straight through the same tested compress → scan pipeline below. */
 function openCamera(){
   show('s-camera');
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    showErr('Browser not supported','Open in Chrome on Android or Safari on iPhone for camera access.','&#128242;');
-    return;
-  }
-  startStream();
-}
-function startStream(){setTimeout(startTips,600);
-
-  stopStream();
-  navigator.mediaDevices.getUserMedia({
-    video:{
-      facingMode:{ideal:G.facing},
-      width:{ideal:4096, min:1280},
-      height:{ideal:3072, min:720},
-      focusMode:{ideal:'continuous'},
-      zoom:{ideal:1}
-    },
-    audio:false
-  }).then(function(s){
-    G.stream=s;
-    var v=document.getElementById('cam-video');
-    v.srcObject=s;v.play();
-  }).catch(function(e){
-    console.error(e);
-    if(e.name==='NotAllowedError'||e.name==='PermissionDeniedError'){
-      showErr('Camera access denied',
-        'Setwel needs camera permission.\n\nIn Chrome: tap the lock icon in the address bar → Camera → Allow.\n\nOr use "Upload Photo" to scan from your gallery.','&#128274;');
-    } else if(e.name==='NotFoundError'){
-      showErr('No camera found','No camera detected. Tap "Upload Photo" to scan from your gallery.','&#128242;');
-    } else {
-      showErr('Camera error',e.message||'Could not start camera.','&#9888;');
-    }
-  });
-}
-function stopStream(){stopTips();
-
-  if(G.stream){G.stream.getTracks().forEach(function(t){t.stop()});G.stream=null}
-}
-function flipCamera(){
-  G.facing=G.facing==='environment'?'user':'environment';
-  startStream();
 }
 function closeCamera(){
-  stopStream();
   showMain();
 }
-
-/* ══ CAPTURE ══ */
-function capturePhoto(){
-  var v=document.getElementById('cam-video');
-  var c=document.getElementById('scan-canvas');
-  c.width=v.videoWidth||1280;c.height=v.videoHeight||720;
-  c.getContext('2d').drawImage(v,0,0);
-  stopStream();
-  // Camera frames can come in at up to 4096x3072 — same resize/compress
-  // pass gallery uploads already get, so a live capture never ships an
-  // oversized image that times out or gets rejected before it's scanned.
-  compressImage(c, function(dataUrl, b64){
-    G.dataUrl=dataUrl;
-    G.b64=b64;
-    processImage();
-  });
+function pickPhoto(){
+  document.getElementById('file-input').click();
 }
 document.getElementById('file-input').addEventListener('change',function(e){
   var f=e.target.files[0];if(!f)return;
   var r=new FileReader();
   r.onload=function(ev){
-    // Resize gallery images too - they can be very large
     var img=new Image();
     img.onload=function(){
-      var MAX=1600;
-      var ratio=Math.min(MAX/img.width,MAX/img.height,1);
-      var w=Math.round(img.width*ratio);
-      var h=Math.round(img.height*ratio);
-      var rc2=document.createElement('canvas');
-      rc2.width=w;rc2.height=h;
-      var cx=rc2.getContext('2d');
-      cx.filter='contrast(1.15) brightness(1.05)';
-      cx.drawImage(img,0,0,w,h);
-      cx.filter='none';
-      G.dataUrl=rc2.toDataURL('image/jpeg',0.82);
-      G.b64=G.dataUrl.split(',')[1];
-      console.log('Gallery img size:',G.b64.length,'Dims:',w+'x'+h);
-      stopStream();processImage();
+      // Phone photos can come in at 12MP+ — route through the same
+      // adaptive resize/compress pass so a huge gallery photo never ships
+      // oversized and times out or gets rejected before it's scanned.
+      var c=document.createElement('canvas');
+      c.width=img.width;c.height=img.height;
+      c.getContext('2d').drawImage(img,0,0);
+      compressImage(c, function(dataUrl, b64){
+        G.dataUrl=dataUrl;
+        G.b64=b64;
+        processImage();
+      });
+    };
+    img.onerror=function(){
+      showErr('Image could not be read','That file could not be opened as a photo. Please choose a JPG or PNG image from your gallery.','&#128247;',pickPhoto);
     };
     img.src=ev.target.result;
   };
@@ -4271,34 +4146,26 @@ function showErr(h,p,ico,retryFn){
   if(eh) eh.textContent=h;
   var ep=document.getElementById('err-p');
   if(ep) ep.textContent=p;
-  // Context-correct retry button: re-run the scan (not restart camera) when we
-  // already have a captured image — only fall back to camera retry if we don't.
+  // Context-correct retry button: re-run the scan on the same photo when we
+  // already have one — only fall back to choosing a new photo if we don't.
   var retryBtn=document.getElementById('err-retry-btn');
   if(retryBtn){
     if(typeof retryFn==='function'){
       retryBtn.textContent='\u21BB Try again';
       retryBtn.onclick=retryFn;
     } else {
-      retryBtn.textContent='\u21BB Retry camera';
-      retryBtn.onclick=openCamera;
+      retryBtn.textContent='\u{1F4C4} Choose another photo';
+      retryBtn.onclick=pickPhoto;
     }
   }
   show('s-error');
 }
-// Re-attempt the scan using the image already captured — no need to reopen
-// camera. Restarts from the free on-device scanner, same as a first try.
+// Re-attempt the scan using the photo already picked — no need to choose it
+// again. Restarts from the free on-device scanner, same as a first try.
 function retryScan(){
   if(G.b64){ processImage(); }
-  else { openCamera(); }
+  else { pickPhoto(); }
 }
-
-// Camera quality tips cycling
-var _camTips=['Good lighting = better accuracy','Hold phone steady','Fill frame with invoice','Ensure text is in focus','Avoid shadows across text'];
-var _ti=0,_tt=null;
-function startTips(){_ti=0;if(_tt)clearTimeout(_tt);showTip()}
-function stopTips(){if(_tt)clearTimeout(_tt)}
-function showTip(){var e=document.getElementById('cam-tip-el');if(!e)return;e.innerHTML='<span class="tip-dot"></span>'+_camTips[_ti%_camTips.length];e.style.animation='none';e.offsetHeight;e.style.animation='tipfade 3s ease-in-out forwards';_ti++;_tt=setTimeout(showTip,3500)}
-
 
 // Show install banner on mobile browsers
 function showInstallBanner(){
@@ -4326,43 +4193,6 @@ function showInstallBanner(){
   }
 }
 
-/* ── Desktop vs mobile scanner adaptation ──
-   The install banner already tells us phone vs not via user-agent, but for the
-   scanner specifically we want the more honest signal: does this browser
-   actually expose a camera device at all? A desktop with no webcam should never
-   be invited to "tap to open camera" — that's exactly the confusing dead-end
-   flow that was reported. We show the camera UI by default (mobile is the
-   common case) and only switch to the upload-only desktop layout once we've
-   positively confirmed there's no camera, so we never wrongly hide the camera
-   button on a phone just because detection was inconclusive. */
-function setScannerDeviceMode(){
-  var isMobileUA = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  if (isMobileUA) return; // trust the UA for phones — camera UI stays as-is
-
-  // Likely a desktop/laptop. Confirm before hiding anything: some laptops do
-  // have a usable webcam, so don't assume — check for real video input devices.
-  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices){
-    applyDesktopScannerMode();
-    return;
-  }
-  navigator.mediaDevices.enumerateDevices().then(function(devices){
-    var hasCamera = devices.some(function(d){ return d.kind === 'videoinput'; });
-    if (!hasCamera) applyDesktopScannerMode();
-    // If a webcam IS present, leave the camera flow available — it will work.
-  }).catch(function(){
-    applyDesktopScannerMode(); // can't confirm either way — safer to steer to upload
-  });
-}
-function applyDesktopScannerMode(){
-  var camBtn = document.getElementById('scan-camera-btn');
-  var viewfinder = document.getElementById('vf-preview');
-  var note = document.getElementById('scanner-desktop-note');
-  var status = document.getElementById('scanner-status');
-  if (camBtn) camBtn.style.display = 'none';
-  if (viewfinder) viewfinder.style.display = 'none';
-  if (note) note.style.display = 'block';
-  if (status) status.innerHTML = '<span class="si-live-dot" style="background:#A09088"></span>No camera detected';
-}
 window.ivDeferredInstallPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){
   e.preventDefault();
@@ -4407,11 +4237,7 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ══ INIT ══ */
-document.addEventListener('visibilitychange',function(){
-  if(document.hidden)stopStream();
-  else if(document.getElementById('s-camera').classList.contains('on'))startStream();
-});
-window.addEventListener('DOMContentLoaded',function(){showInstallBanner();setScannerDeviceMode();
+window.addEventListener('DOMContentLoaded',function(){showInstallBanner();
   try{
     var sl=localStorage.getItem('setwel_lang');
     if(sl&&TR[sl]){

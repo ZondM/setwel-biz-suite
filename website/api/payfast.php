@@ -171,3 +171,173 @@ function pf_notify_team(?array $order, array $itnData): void
         . "Action: send download link / licence key as appropriate.";
     @mail(NOTIFY_EMAIL, $subject, $body, 'From: no-reply@setwelbusiness.co.za');
 }
+
+/**
+ * Sign a PayFast payment data array and output the auto-submitting redirect
+ * page that sends the browser on to PayFast's hosted checkout. Shared by
+ * create-payment.php (once-off purchases, charged immediately) and
+ * activate-subscription.php (subscriptions, charged only once a trial has
+ * actually ended — never at trial signup).
+ */
+function pf_redirect_to_payfast(array $data, string $passphrase, bool $sandbox): void
+{
+    $data['signature'] = pf_generate_signature($data, $passphrase);
+    $action = $sandbox
+        ? 'https://sandbox.payfast.co.za/eng/process'
+        : 'https://www.payfast.co.za/eng/process';
+    ?>
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+<meta charset="UTF-8">
+<title>Redirecting to secure payment…</title>
+<style>
+body{font-family:Inter,system-ui,sans-serif;background:#0A0808;color:#F2EDE8;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center}
+.box{padding:24px}
+p{color:#A09088}
+</style>
+</head>
+<body>
+<div class="box">
+<p>Redirecting you to PayFast's secure payment page&hellip;</p>
+<noscript><p>JavaScript is required. <a href="#" onclick="document.getElementById('pf-form').submit();return false;" style="color:#E8801A">Click here to continue</a>.</p></noscript>
+</div>
+<form id="pf-form" action="<?= htmlspecialchars($action, ENT_QUOTES) ?>" method="POST">
+<?php foreach ($data as $k => $v): ?>
+<input type="hidden" name="<?= htmlspecialchars($k, ENT_QUOTES) ?>" value="<?= htmlspecialchars($v, ENT_QUOTES) ?>">
+<?php endforeach; ?>
+</form>
+<script>document.getElementById('pf-form').submit();</script>
+</body>
+</html>
+<?php
+    exit;
+}
+
+/* ══════════════ FREE TRIALS (no payment taken at signup) ══════════════
+   A trial signup never reaches PayFast at all — it just records who
+   signed up for what, exactly matching pay.html's promise of "no card
+   required, no payment taken today". 30 days later,
+   send-trial-reminders.php (run from a server cron job) emails a
+   PayFast activation link; activate-subscription.php is the only place
+   a subscription customer is ever actually charged. */
+
+function pf_store_trial(array $details): array
+{
+    $id = 'TRIAL-' . date('YmdHis') . '-' . substr(bin2hex(random_bytes(3)), 0, 6);
+    $record = array_merge($details, [
+        'token' => bin2hex(random_bytes(16)),
+        'created_at' => date('c'),
+        'trial_ends_at' => date('Y-m-d', strtotime('+30 days')),
+        'reminder_sent_at' => null,
+        'activated_at' => null,
+    ]);
+    $file = pf_data_dir() . '/trials.json';
+    $fh = fopen($file, 'c+');
+    if ($fh) {
+        flock($fh, LOCK_EX);
+        $size = filesize($file);
+        $all = $size > 0 ? json_decode(fread($fh, $size), true) : [];
+        if (!is_array($all)) $all = [];
+        $all[$id] = $record;
+        ftruncate($fh, 0);
+        rewind($fh);
+        fwrite($fh, json_encode($all, JSON_PRETTY_PRINT));
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+    return ['id' => $id] + $record;
+}
+
+function pf_get_trial(string $id): ?array
+{
+    $file = pf_data_dir() . '/trials.json';
+    if (!file_exists($file)) return null;
+    $all = json_decode(file_get_contents($file), true);
+    return is_array($all) && isset($all[$id]) ? $all[$id] : null;
+}
+
+function pf_update_trial(string $id, array $fields): void
+{
+    $file = pf_data_dir() . '/trials.json';
+    $fh = fopen($file, 'c+');
+    if (!$fh) return;
+    flock($fh, LOCK_EX);
+    $size = filesize($file);
+    $all = $size > 0 ? json_decode(fread($fh, $size), true) : [];
+    if (!is_array($all)) $all = [];
+    if (isset($all[$id])) $all[$id] = array_merge($all[$id], $fields);
+    ftruncate($fh, 0);
+    rewind($fh);
+    fwrite($fh, json_encode($all, JSON_PRETTY_PRINT));
+    flock($fh, LOCK_UN);
+    fclose($fh);
+}
+
+/** Trials whose 30-day period has ended, not yet reminded, not yet activated. */
+function pf_trials_due_for_reminder(): array
+{
+    $file = pf_data_dir() . '/trials.json';
+    if (!file_exists($file)) return [];
+    $all = json_decode(file_get_contents($file), true);
+    if (!is_array($all)) return [];
+    $today = date('Y-m-d');
+    $due = [];
+    foreach ($all as $id => $t) {
+        if (empty($t['activated_at']) && empty($t['reminder_sent_at']) && ($t['trial_ends_at'] ?? '9999-99-99') <= $today) {
+            $due[$id] = $t;
+        }
+    }
+    return $due;
+}
+
+function pf_email_trial_started(array $trial): void
+{
+    $to = $trial['email'] ?? '';
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) return;
+    $name = $trial['first'] ?? 'there';
+    $plan = $trial['plan'] ?? 'Setwel Biz Suite';
+    $endsAt = isset($trial['trial_ends_at']) ? date('j F Y', strtotime($trial['trial_ends_at'])) : '';
+    $subject = 'Your Setwel Biz Suite free trial has started';
+    $body = "Hi {$name},\n\n"
+        . "Your 30-day free trial of the {$plan} plan has started. No payment was taken today and no card was charged.\n\n"
+        . "Get started here: https://setwelbusiness.co.za/download.html\n\n"
+        . "Your trial ends on {$endsAt}. We'll email you a secure PayFast payment link on that date to activate your subscription — nothing happens automatically before then, and nothing is ever charged until you complete that payment yourself.\n\n"
+        . "Questions? WhatsApp us any time at +27 82 082 9050.\n\n"
+        . "— The Setwel team";
+    @mail($to, $subject, $body, 'From: no-reply@setwelbusiness.co.za');
+}
+
+function pf_email_trial_activation_link(array $trial, string $id): void
+{
+    $to = $trial['email'] ?? '';
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) return;
+    $name = $trial['first'] ?? 'there';
+    $plan = $trial['plan'] ?? 'Setwel Biz Suite';
+    $price = $trial['price'] ?? '';
+    $billing = strtolower($trial['billing'] ?? 'monthly');
+    $link = (defined('SITE_URL') ? SITE_URL : '') . '/api/activate-subscription.php?id=' . urlencode($id) . '&token=' . urlencode($trial['token'] ?? '');
+    $subject = 'Your Setwel Biz Suite trial has ended — activate your subscription';
+    $body = "Hi {$name},\n\n"
+        . "Your 30-day free trial of the {$plan} plan has ended. To keep using Setwel Biz Suite without interruption, activate your R{$price} {$billing} subscription here:\n\n"
+        . "{$link}\n\n"
+        . "That link takes you to PayFast's secure payment page. Nothing is charged until you complete that payment yourself.\n\n"
+        . "Not ready yet, or have questions? WhatsApp us at +27 82 082 9050 and we'll help.\n\n"
+        . "— The Setwel team";
+    @mail($to, $subject, $body, 'From: no-reply@setwelbusiness.co.za');
+}
+
+function pf_notify_team_trial_started(array $trial, string $id): void
+{
+    if (!defined('NOTIFY_EMAIL') || NOTIFY_EMAIL === '') return;
+    $subject = 'New free trial started: ' . ($trial['plan'] ?? '?');
+    $body = "A new free trial has started — no payment taken.\n\n"
+        . "Trial ID: {$id}\n"
+        . "Plan: " . ($trial['plan'] ?? '?') . ' (' . ($trial['billing'] ?? '?') . ")\n"
+        . "Name: " . ($trial['first'] ?? '') . ' ' . ($trial['last'] ?? '') . "\n"
+        . "Business: " . ($trial['biz'] ?? '') . "\n"
+        . "Email: " . ($trial['email'] ?? '') . "\n"
+        . "Phone: " . ($trial['phone'] ?? '') . "\n"
+        . "Trial ends: " . ($trial['trial_ends_at'] ?? '?') . "\n";
+    @mail(NOTIFY_EMAIL, $subject, $body, 'From: no-reply@setwelbusiness.co.za');
+}

@@ -1,10 +1,15 @@
 <?php
 /**
  * Builds a signed PayFast payment request server-side and redirects the
- * browser to PayFast's hosted checkout.
+ * browser to PayFast's hosted checkout — charging the customer immediately.
  *
- * Called from pay.html / lifetime.html as a plain navigation:
- *   window.location.href = 'api/create-payment.php?' + params
+ * Called from lifetime.html (once-off purchases, where "pay now" is
+ * correct and promised). pay.html's free-trial signup does NOT use this —
+ * it posts to start-trial.php instead, which takes no payment at all;
+ * see activate-subscription.php for where a subscription is actually
+ * charged, once its trial has ended.
+ *
+ * Called as a plain navigation: window.location.href = 'api/create-payment.php?' + params
  * (not fetch/AJAX — PayFast's checkout is itself a full-page redirect,
  * so there's nothing to gain from doing this as an async call.)
  *
@@ -85,8 +90,6 @@ if ($type === 'subscription') {
     $data['billing_date']      = date('Y-m-d', strtotime('+30 days')); // first charge after the free trial
 }
 
-$data['signature'] = pf_generate_signature($data, PAYFAST_PASSPHRASE);
-
 pf_store_pending_payment($paymentId, [
     'plan' => $plan,
     'amount' => $amount,
@@ -99,31 +102,4 @@ pf_store_pending_payment($paymentId, [
     'created_at' => date('c'),
 ]);
 
-$action = PAYFAST_SANDBOX
-    ? 'https://sandbox.payfast.co.za/eng/process'
-    : 'https://www.payfast.co.za/eng/process';
-?>
-<!DOCTYPE html>
-<html lang="en-ZA">
-<head>
-<meta charset="UTF-8">
-<title>Redirecting to secure payment…</title>
-<style>
-body{font-family:Inter,system-ui,sans-serif;background:#0A0808;color:#F2EDE8;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center}
-.box{padding:24px}
-p{color:#A09088}
-</style>
-</head>
-<body>
-<div class="box">
-<p>Redirecting you to PayFast's secure payment page&hellip;</p>
-<noscript><p>JavaScript is required. <a href="#" onclick="document.getElementById('pf-form').submit();return false;" style="color:#E8801A">Click here to continue</a>.</p></noscript>
-</div>
-<form id="pf-form" action="<?= htmlspecialchars($action, ENT_QUOTES) ?>" method="POST">
-<?php foreach ($data as $k => $v): ?>
-<input type="hidden" name="<?= htmlspecialchars($k, ENT_QUOTES) ?>" value="<?= htmlspecialchars($v, ENT_QUOTES) ?>">
-<?php endforeach; ?>
-</form>
-<script>document.getElementById('pf-form').submit();</script>
-</body>
-</html>
+pf_redirect_to_payfast($data, PAYFAST_PASSPHRASE, PAYFAST_SANDBOX);

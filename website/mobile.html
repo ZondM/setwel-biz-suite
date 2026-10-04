@@ -2,7 +2,7 @@
 <html lang="en-ZA">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#0A0808">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -113,7 +113,7 @@ img{max-width:100%;display:block}
 .avs span{width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);margin-left:-6px;display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:700;color:#fff;flex-shrink:0}
 .avs span:first-child{margin-left:0;background:#2E3946}
 .avs span:nth-child(2){background:var(--rd)}
-.avs span:nth-child(3){background:var(--or)}
+.avs span:nth-child(3){background:#B35A00}
 .avs span:nth-child(4){background:#4A6278}
 .proof-txt{font-size:.8rem;color:var(--ink2)}
 .proof-txt strong{color:var(--ink)}
@@ -178,7 +178,7 @@ img{max-width:100%;display:block}
 .steps{display:grid;gap:16px;margin-top:16px}
 .step{display:flex;gap:12px}
 .step-n{flex:none;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--rd),var(--or));color:#fff;font-family:'DM Serif Display',Georgia,serif;font-size:.95rem;display:flex;align-items:center;justify-content:center}
-.step h4{font-family:'DM Serif Display',Georgia,serif;font-size:.93rem;color:#fff;margin-bottom:3px}
+.step h3{font-family:'DM Serif Display',Georgia,serif;font-size:.93rem;color:#fff;margin-bottom:3px}
 .step p{font-size:.84rem}
 
 /* REVIEWS */
@@ -202,7 +202,7 @@ img{max-width:100%;display:block}
 .plan-ul{list-style:none;display:grid;gap:6px;margin:12px 0 16px;font-size:.82rem;color:var(--ink2)}
 .plan-ul li{display:flex;align-items:flex-start;gap:7px}
 .plan-ul li::before{content:'✓';color:var(--or);font-weight:700;flex:none}
-.plan-ul li.na{opacity:.38}
+.plan-ul li.na{color:var(--ink3)}
 .plan-ul li.na::before{content:'—';color:var(--ink2)}
 
 /* FAQ */
@@ -276,7 +276,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .proc-sub{font-size:.88rem;color:var(--or);min-height:1.5em;font-weight:600}
 .proc-thumb{width:90px;height:65px;border-radius:9px;object-fit:cover;border:1px solid var(--line);margin:0 auto 20px;display:none}
 .proc-steps{display:grid;gap:8px;margin-top:24px;max-width:270px;width:100%;text-align:left}
-.psi{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--ink2);opacity:.35;transition:all .4s}
+.psi{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--ink3);transition:all .4s}
 .psi.done{opacity:1;color:var(--ink)}
 .psi-ico{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.68rem;flex-shrink:0;transition:all .4s}
 .psi.done .psi-ico{background:linear-gradient(135deg,var(--or),var(--rd));border-color:transparent;color:#fff}
@@ -292,7 +292,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .res-rescan:active{border-color:var(--ob);color:var(--or)}
 .res-hero{display:flex;align-items:center;gap:12px;padding:16px 18px;background:rgba(76,175,112,.08);border-bottom:1px solid rgba(76,175,112,.18)}
 .ok-dot{width:12px;height:12px;border-radius:50%;background:var(--gn);flex-shrink:0;animation:livep 2s infinite}
-.ok-txt h3{font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;color:#fff;margin-bottom:2px}
+.ok-txt h2{font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;color:#fff;margin-bottom:2px}
 .ok-txt span{font-size:.73rem;color:var(--ink2)}
 .conf-badge{font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:6px;flex-shrink:0;margin-left:auto}
 .ch{background:rgba(76,175,112,.15);border:1px solid rgba(76,175,112,.3);color:var(--gn)}
@@ -322,7 +322,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .btn-wa:active{background:#156b35}
 .btn-scan-again{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;background:var(--bg2);border:1.5px solid var(--line);color:var(--ink2);border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;-webkit-appearance:none}
 .btn-scan-again:active{border-color:var(--ob)}
-.res-note{text-align:center;font-size:.72rem;color:var(--ink2);padding:12px 18px;opacity:.65;line-height:1.6}
+.res-note{text-align:center;font-size:.72rem;color:var(--ink3);padding:12px 18px;line-height:1.6}
 
 /* ═══════════════════════════════════════
    SCREEN 5 — ERROR
@@ -423,12 +423,12 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .iv-doc{background:#fff;border-radius:14px;padding:24px 20px;color:#1a1a1a;margin:16px}
 .iv-doc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #1a1a1a}
 .iv-doc-brand{font-family:'DM Serif Display',Georgia,serif;font-size:1.2rem;font-weight:700}
-.iv-doc-type{font-family:'DM Serif Display',Georgia,serif;font-size:1.6rem;text-align:right;color:#E8801A}
+.iv-doc-type{font-family:'DM Serif Display',Georgia,serif;font-size:1.6rem;text-align:right;color:#B35A00}
 .iv-doc-meta{font-size:.78rem;color:#555;line-height:1.7}
 .iv-doc-parties{display:flex;justify-content:space-between;gap:16px;margin-bottom:20px;font-size:.82rem}
-.iv-doc-parties .lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;color:#888;margin-bottom:4px}
+.iv-doc-parties .lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;color:#707070;margin-bottom:4px}
 .iv-doc-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:16px}
-.iv-doc-table th{text-align:left;font-size:.65rem;text-transform:uppercase;color:#888;border-bottom:1px solid #ddd;padding:6px 4px}
+.iv-doc-table th{text-align:left;font-size:.65rem;text-transform:uppercase;color:#707070;border-bottom:1px solid #ddd;padding:6px 4px}
 .iv-doc-table td{padding:8px 4px;border-bottom:1px solid #eee}
 .iv-doc-table td:last-child,.iv-doc-table th:last-child{text-align:right}
 .iv-doc-totals{margin-left:auto;width:60%;font-size:.85rem}
@@ -451,6 +451,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 </style>
 </head>
 <body>
+<main>
 
 <!-- ══════════════════════════
   S0 — LANGUAGE SELECT
@@ -647,9 +648,9 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
       <span class="eye">How it works</span>
       <h2 class="m-h2">From till slip to <em>tax-ready in 3 taps.</em></h2>
       <div class="steps">
-        <div class="step"><div class="step-n">1</div><div><h4>Tap the camera</h4><p>Open the scanner. Point your phone at any receipt or supplier invoice.</p></div></div>
-        <div class="step"><div class="step-n">2</div><div><h4>AI reads everything</h4><p>Supplier name, invoice number, date, every line item and VAT — captured automatically.</p></div></div>
-        <div class="step"><div class="step-n">3</div><div><h4>Review and save</h4><p>Check the extracted data, edit if needed, tap Save. Instantly in your expense records.</p></div></div>
+        <div class="step"><div class="step-n">1</div><div><h3>Tap the camera</h3><p>Open the scanner. Point your phone at any receipt or supplier invoice.</p></div></div>
+        <div class="step"><div class="step-n">2</div><div><h3>AI reads everything</h3><p>Supplier name, invoice number, date, every line item and VAT — captured automatically.</p></div></div>
+        <div class="step"><div class="step-n">3</div><div><h3>Review and save</h3><p>Check the extracted data, edit if needed, tap Save. Instantly in your expense records.</p></div></div>
       </div>
       <!-- LIVE DEMO TRIGGER -->
       <div style="margin-top:18px">
@@ -856,7 +857,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
   <div class="res-hero">
     <div class="ok-dot"></div>
     <div class="ok-txt">
-      <h3>Invoice read successfully</h3>
+      <h2>Invoice read successfully</h2>
       <span id="res-mode">Powered by Claude AI Vision</span>
     </div>
     <span class="conf-badge ch" id="res-conf">&#10003; High</span>
@@ -931,7 +932,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- ══════════════════ TRIAL EXPIRED (locked) ══════════════════ -->
 <div class="screen iv-hub" id="s-iv-expired">
   <div class="iv-topbar">
-    <span class="iv-topbar-title" data-i18n="t_setwelinv">Setwel Invoicing</span>
+    <h1 class="iv-topbar-title" data-i18n="t_setwelinv">Setwel Invoicing</h1>
   </div>
   <div class="iv-form" style="padding-top:30px;text-align:center">
     <div style="font-size:2.6rem;margin-bottom:14px">&#128274;</div>
@@ -953,12 +954,12 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-welcome')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_setwelinv">Setwel Invoicing</span>
+    <h1 class="iv-topbar-title" data-i18n="t_setwelinv">Setwel Invoicing</h1>
     <button class="iv-back" onclick="ivExportBackup()" title="Backup your data">&#128190;</button>
   </div>
 
   <!-- Toolbar (Invoice / Quote / Payment / Reports / Customers / Options) -->
-  <div class="iv-toolbar">
+  <div class="iv-toolbar" tabindex="0">
     <div class="iv-tool" onclick="ivNewInvoice()"><span class="iv-tool-ico">&#128196;</span><span class="iv-tool-lbl" data-i18n="hub_invoice">Invoice</span></div>
     <div class="iv-tool" onclick="ivNewQuote()"><span class="iv-tool-ico">&#128203;</span><span class="iv-tool-lbl" data-i18n="hub_quote">Quote</span></div>
     <div class="iv-tool" onclick="ivOpenPaymentPicker()"><span class="iv-tool-ico">&#128179;</span><span class="iv-tool-lbl" data-i18n="hub_payment">Payment</span></div>
@@ -1053,7 +1054,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-setup">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_bizdetails">Business Details</span>
+    <h1 class="iv-topbar-title" data-i18n="t_bizdetails">Business Details</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1067,7 +1068,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
       <input type="file" id="cf-logo-input" accept="image/*" style="display:none" onchange="ivLogoSelected(event)">
     </div>
 
-    <div class="iv-field"><label class="iv-label">Business / Trading Name</label><input class="iv-input" id="cf-name" placeholder="e.g. Thabo's Spaza Shop"></div>
+    <div class="iv-field"><label class="iv-label" for="cf-name">Business / Trading Name</label><input class="iv-input" id="cf-name" placeholder="e.g. Thabo's Spaza Shop"></div>
 
     <div class="iv-field">
       <label class="iv-label">Is your business VAT registered?</label>
@@ -1078,13 +1079,13 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
       <div style="font-size:.72rem;color:#A09088;margin-top:8px;line-height:1.6">Most spaza shops and small home businesses are not VAT registered — that's completely normal below the R1 million/year SARS threshold. Select "No" and your invoices simply won't add VAT. You can switch this on later once you register.</div>
     </div>
     <div class="iv-field" id="cf-vat-number-field" style="display:none">
-      <label class="iv-label">VAT Number</label>
+      <label class="iv-label" for="cf-vat">VAT Number</label>
       <input class="iv-input" id="cf-vat" placeholder="4XXXXXXXXX">
     </div>
 
-    <div class="iv-field"><label class="iv-label">Phone / WhatsApp</label><input class="iv-input" id="cf-phone" placeholder="+27 71 234 5678"></div>
-    <div class="iv-field"><label class="iv-label">Email</label><input class="iv-input" type="email" id="cf-email" placeholder="you@business.co.za"></div>
-    <div class="iv-field"><label class="iv-label">Address</label><textarea class="iv-textarea" id="cf-address" placeholder="Street, Suburb, City, Postal Code"></textarea></div>
+    <div class="iv-field"><label class="iv-label" for="cf-phone">Phone / WhatsApp</label><input class="iv-input" id="cf-phone" placeholder="+27 71 234 5678"></div>
+    <div class="iv-field"><label class="iv-label" for="cf-email">Email</label><input class="iv-input" type="email" id="cf-email" placeholder="you@business.co.za"></div>
+    <div class="iv-field"><label class="iv-label" for="cf-address">Address</label><textarea class="iv-textarea" id="cf-address" placeholder="Street, Suburb, City, Postal Code"></textarea></div>
     <button class="iv-btn-primary" onclick="ivSaveCompany()">&#10003; Save Business Details</button>
   </div>
 </div>
@@ -1093,12 +1094,12 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-doc-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivCancelForm()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="iv-form-title">New Invoice</span>
+    <h1 class="iv-topbar-title" id="iv-form-title">New Invoice</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
     <div class="iv-field">
-      <label class="iv-label">Customer</label>
+      <label class="iv-label" for="df-customer">Customer</label>
       <select class="iv-select" id="df-customer" onchange="ivOnCustomerChange()">
         <option value="">— Select customer —</option>
       </select>
@@ -1106,8 +1107,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     <button class="iv-btn-outline" onclick="ivRenderCustomers();ivCustomerNew(true)" style="margin-bottom:16px">&#43; Add new customer</button>
 
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label">Date</label><input class="iv-input" type="date" id="df-date"></div>
-      <div class="iv-field"><label class="iv-label" id="df-due-label">Due date</label><input class="iv-input" type="date" id="df-due"></div>
+      <div class="iv-field"><label class="iv-label" for="df-date">Date</label><input class="iv-input" type="date" id="df-date"></div>
+      <div class="iv-field"><label class="iv-label" id="df-due-label" for="df-due">Due date</label><input class="iv-input" type="date" id="df-due"></div>
     </div>
 
     <div class="iv-section-lbl" style="margin-top:6px">Line items</div>
@@ -1120,7 +1121,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
       <div class="iv-tot-row grand"><span>Total</span><span id="df-total">R0.00</span></div>
     </div>
 
-    <div class="iv-field"><label class="iv-label">Notes (optional)</label><textarea class="iv-textarea" id="df-notes" placeholder="Payment terms, banking details, thank you note..."></textarea></div>
+    <div class="iv-field"><label class="iv-label" for="df-notes">Notes (optional)</label><textarea class="iv-textarea" id="df-notes" placeholder="Payment terms, banking details, thank you note..."></textarea></div>
 
     <button class="iv-btn-primary" onclick="ivSaveDoc()">&#10003; Save</button>
     <button class="iv-btn-outline" onclick="ivCancelForm()">Cancel</button>
@@ -1131,7 +1132,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-customers">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_customers">Customers</span>
+    <h1 class="iv-topbar-title" data-i18n="t_customers">Customers</h1>
     <button class="iv-back" onclick="ivCustomerNew()">&#43; Add</button>
   </div>
   <div class="iv-form">
@@ -1143,15 +1144,15 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-customer-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivCustomerCancel()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_customer">Customer</span>
+    <h1 class="iv-topbar-title" data-i18n="t_customer">Customer</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Full name / Business name</label><input class="iv-input" id="cu-name" placeholder="e.g. Nomsa Dlamini"></div>
-    <div class="iv-field"><label class="iv-label">Phone / WhatsApp</label><input class="iv-input" id="cu-phone" placeholder="+27 82 123 4567"></div>
-    <div class="iv-field"><label class="iv-label">Email (optional)</label><input class="iv-input" type="email" id="cu-email" placeholder="customer@email.co.za"></div>
-    <div class="iv-field"><label class="iv-label">VAT Number (optional)</label><input class="iv-input" id="cu-vat" placeholder="4XXXXXXXXX"></div>
-    <div class="iv-field"><label class="iv-label">Address (optional)</label><textarea class="iv-textarea" id="cu-address"></textarea></div>
+    <div class="iv-field"><label class="iv-label" for="cu-name">Full name / Business name</label><input class="iv-input" id="cu-name" placeholder="e.g. Nomsa Dlamini"></div>
+    <div class="iv-field"><label class="iv-label" for="cu-phone">Phone / WhatsApp</label><input class="iv-input" id="cu-phone" placeholder="+27 82 123 4567"></div>
+    <div class="iv-field"><label class="iv-label" for="cu-email">Email (optional)</label><input class="iv-input" type="email" id="cu-email" placeholder="customer@email.co.za"></div>
+    <div class="iv-field"><label class="iv-label" for="cu-vat">VAT Number (optional)</label><input class="iv-input" id="cu-vat" placeholder="4XXXXXXXXX"></div>
+    <div class="iv-field"><label class="iv-label" for="cu-address">Address (optional)</label><textarea class="iv-textarea" id="cu-address"></textarea></div>
     <button class="iv-btn-primary" onclick="ivCustomerSave()">&#10003; Save Customer</button>
     <button class="iv-btn-outline iv-btn-danger" id="cu-delete-btn" style="display:none" onclick="ivCustomerDelete()">Delete Customer</button>
   </div>
@@ -1161,7 +1162,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-list-invoices">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_invoices">Invoices</span>
+    <h1 class="iv-topbar-title" data-i18n="t_invoices">Invoices</h1>
     <button class="iv-back" onclick="ivNewInvoice()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-list-invoices"></div></div>
@@ -1171,7 +1172,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-list-quotes">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_quotes">Quotes</span>
+    <h1 class="iv-topbar-title" data-i18n="t_quotes">Quotes</h1>
     <button class="iv-back" onclick="ivNewQuote()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-list-quotes"></div></div>
@@ -1181,7 +1182,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-list-cn">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_creditnotes">Credit Notes</span>
+    <h1 class="iv-topbar-title" data-i18n="t_creditnotes">Credit Notes</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form"><div id="iv-list-cn"></div></div>
@@ -1191,7 +1192,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-view">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivBackFromView()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="iv-view-title">Invoice</span>
+    <h1 class="iv-topbar-title" id="iv-view-title">Invoice</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-doc" id="iv-doc-content"></div>
@@ -1212,18 +1213,18 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-payment-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_recordpayment">Record Payment</span>
+    <h1 class="iv-topbar-title" data-i18n="t_recordpayment">Record Payment</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
     <div class="iv-field">
-      <label class="iv-label">Invoice</label>
+      <label class="iv-label" for="pf-invoice">Invoice</label>
       <select class="iv-select" id="pf-invoice"><option value="">— Select unpaid invoice —</option></select>
     </div>
-    <div class="iv-field"><label class="iv-label">Amount Received (R)</label><input class="iv-input" type="number" step="0.01" id="pf-amount" placeholder="0.00"></div>
+    <div class="iv-field"><label class="iv-label" for="pf-amount">Amount Received (R)</label><input class="iv-input" type="number" step="0.01" id="pf-amount" placeholder="0.00"></div>
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label">Date</label><input class="iv-input" type="date" id="pf-date"></div>
-      <div class="iv-field"><label class="iv-label">Method</label>
+      <div class="iv-field"><label class="iv-label" for="pf-date">Date</label><input class="iv-input" type="date" id="pf-date"></div>
+      <div class="iv-field"><label class="iv-label" for="pf-method">Method</label>
         <select class="iv-select" id="pf-method">
           <option>Cash</option><option>EFT</option><option>Card</option><option>Other</option>
         </select>
@@ -1237,7 +1238,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-reports">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_reports">Reports</span>
+    <h1 class="iv-topbar-title" data-i18n="t_reports">Reports</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1255,7 +1256,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-stokvel-list">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_stokvelmgr">Stokvel Manager</span>
+    <h1 class="iv-topbar-title" data-i18n="t_stokvelmgr">Stokvel Manager</h1>
     <button class="iv-back" onclick="ivStokvelNew()" data-i18n="sv_new">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-stokvel-list"></div></div>
@@ -1265,14 +1266,14 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-stokvel-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-stokvel-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_stokvel">Stokvel</span>
+    <h1 class="iv-topbar-title" data-i18n="t_stokvel">Stokvel</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label" data-i18n="sv_name_lbl">Stokvel name</label><input class="iv-input" id="sv-name" placeholder="e.g. Ediwazi Savings Club"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="sv_name_lbl" for="sv-name">Stokvel name</label><input class="iv-input" id="sv-name" placeholder="e.g. Ediwazi Savings Club"></div>
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label" data-i18n="sv_amount_lbl">Contribution amount (R)</label><input class="iv-input" type="number" step="0.01" id="sv-amount" placeholder="500.00"></div>
-      <div class="iv-field"><label class="iv-label" data-i18n="sv_freq_lbl">Frequency</label>
+      <div class="iv-field"><label class="iv-label" data-i18n="sv_amount_lbl" for="sv-amount">Contribution amount (R)</label><input class="iv-input" type="number" step="0.01" id="sv-amount" placeholder="500.00"></div>
+      <div class="iv-field"><label class="iv-label" data-i18n="sv_freq_lbl" for="sv-frequency">Frequency</label>
         <select class="iv-select" id="sv-frequency"><option>Weekly</option><option selected>Monthly</option></select>
       </div>
     </div>
@@ -1285,7 +1286,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-stokvel-detail">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-stokvel-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="sv-detail-title">Stokvel</span>
+    <h1 class="iv-topbar-title" id="sv-detail-title">Stokvel</h1>
     <button class="iv-back" onclick="ivStokvelEditOpen()">&#9998;</button>
   </div>
   <div class="iv-form">
@@ -1303,7 +1304,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 
     <div class="iv-section-lbl" data-i18n="sv_record_contrib">Record a contribution</div>
     <div class="iv-field">
-      <select class="iv-select" id="sv-contrib-member"><option value="">— Select member —</option></select>
+      <select class="iv-select" id="sv-contrib-member" aria-label="Member"><option value="">— Select member —</option></select>
     </div>
     <button class="iv-btn-outline" style="margin-top:0" onclick="ivStokvelRecordContribution()" data-i18n="sv_record_contribution_btn">&#10003; Record Contribution</button>
 
@@ -1322,12 +1323,12 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-stokvel-member-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-stokvel-detail')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_member">Member</span>
+    <h1 class="iv-topbar-title" data-i18n="t_member">Member</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label" data-i18n="sv_fullname_lbl">Full name</label><input class="iv-input" id="svm-name" placeholder="e.g. Nomsa Dlamini"></div>
-    <div class="iv-field"><label class="iv-label" data-i18n="sv_phone_lbl">Phone / WhatsApp</label><input class="iv-input" id="svm-phone" placeholder="+27 82 123 4567"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="sv_fullname_lbl" for="svm-name">Full name</label><input class="iv-input" id="svm-name" placeholder="e.g. Nomsa Dlamini"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="sv_phone_lbl" for="svm-phone">Phone / WhatsApp</label><input class="iv-input" id="svm-phone" placeholder="+27 82 123 4567"></div>
     <button class="iv-btn-primary" onclick="ivStokvelMemberSave()" data-i18n="sv_member_save_btn">&#10003; Save Member</button>
     <button class="iv-btn-outline iv-btn-danger" id="svm-delete-btn" style="display:none" onclick="ivStokvelMemberDelete()" data-i18n="sv_member_remove_btn">Remove Member</button>
   </div>
@@ -1337,7 +1338,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-layby-list">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_laybymgr">Layby Manager</span>
+    <h1 class="iv-topbar-title" data-i18n="t_laybymgr">Layby Manager</h1>
     <button class="iv-back" onclick="ivLaybyNew()">&#43; New</button>
   </div>
   <div class="iv-form"><div id="iv-layby-list"></div></div>
@@ -1347,24 +1348,24 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-layby-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-layby-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="lb-form-title">New Layby</span>
+    <h1 class="iv-topbar-title" id="lb-form-title">New Layby</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
     <div class="iv-field">
-      <label class="iv-label">Customer</label>
+      <label class="iv-label" for="lb-customer">Customer</label>
       <select class="iv-select" id="lb-customer"><option value="">— Select customer —</option></select>
     </div>
     <button class="iv-btn-outline" onclick="ivRenderCustomers();ivCustomerNew(true,'layby')" style="margin-bottom:16px">&#43; Add new customer</button>
-    <div class="iv-field"><label class="iv-label">Item description</label><input class="iv-input" id="lb-item" placeholder="e.g. Samsung TV 43-inch"></div>
+    <div class="iv-field"><label class="iv-label" for="lb-item">Item description</label><input class="iv-input" id="lb-item" placeholder="e.g. Samsung TV 43-inch"></div>
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label">Total price (R)</label><input class="iv-input" type="number" step="0.01" id="lb-total" placeholder="0.00" oninput="ivLaybyRecalc()"></div>
-      <div class="iv-field"><label class="iv-label">Deposit paid (R)</label><input class="iv-input" type="number" step="0.01" id="lb-deposit" placeholder="0.00" oninput="ivLaybyRecalc()"></div>
+      <div class="iv-field"><label class="iv-label" for="lb-total">Total price (R)</label><input class="iv-input" type="number" step="0.01" id="lb-total" placeholder="0.00" oninput="ivLaybyRecalc()"></div>
+      <div class="iv-field"><label class="iv-label" for="lb-deposit">Deposit paid (R)</label><input class="iv-input" type="number" step="0.01" id="lb-deposit" placeholder="0.00" oninput="ivLaybyRecalc()"></div>
     </div>
     <div class="iv-totals">
       <div class="iv-tot-row grand"><span>Balance remaining</span><span id="lb-balance">R0.00</span></div>
     </div>
-    <div class="iv-field"><label class="iv-label">Collection date</label><input class="iv-input" type="date" id="lb-collection-date"></div>
+    <div class="iv-field"><label class="iv-label" for="lb-collection-date">Collection date</label><input class="iv-input" type="date" id="lb-collection-date"></div>
     <button class="iv-btn-primary" onclick="ivLaybySave()">&#10003; Save Layby</button>
     <button class="iv-btn-outline iv-btn-danger" id="lb-delete-btn" style="display:none" onclick="ivLaybyDelete()">Cancel &amp; Restock Layby</button>
   </div>
@@ -1374,13 +1375,13 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-layby-detail">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivRenderLaybyList();show('s-iv-layby-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_layby">Layby</span>
+    <h1 class="iv-topbar-title" data-i18n="t_layby">Layby</h1>
     <button class="iv-back" onclick="ivLaybyEditOpen()">&#9998;</button>
   </div>
   <div class="iv-form">
     <div id="lb-detail-content"></div>
     <div class="iv-section-lbl">Record a payment</div>
-    <div class="iv-field"><label class="iv-label">Amount (R)</label><input class="iv-input" type="number" step="0.01" id="lb-payment-amount" placeholder="0.00"></div>
+    <div class="iv-field"><label class="iv-label" for="lb-payment-amount">Amount (R)</label><input class="iv-input" type="number" step="0.01" id="lb-payment-amount" placeholder="0.00"></div>
     <button class="iv-btn-primary" onclick="ivLaybyRecordPayment()">&#10003; Record Payment</button>
     <button class="iv-btn-outline" onclick="ivLaybySendReminder()">&#128172; Send Collection Reminder via WhatsApp</button>
   </div>
@@ -1390,7 +1391,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-till-list">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_spazafloat">Spaza Cash Float</span>
+    <h1 class="iv-topbar-title" data-i18n="t_spazafloat">Spaza Cash Float</h1>
     <button class="iv-back" onclick="ivTillNew()" data-i18n="till_new">&#43; Till</button>
   </div>
   <div class="iv-form"><div id="iv-till-list"></div></div>
@@ -1400,11 +1401,11 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-till-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-till-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_newtill">New Till</span>
+    <h1 class="iv-topbar-title" data-i18n="t_newtill">New Till</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label" data-i18n="till_name_lbl">Till / cashier name</label><input class="iv-input" id="tl-name" placeholder="e.g. Front Counter, or Nomsa's Till"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_name_lbl" for="tl-name">Till / cashier name</label><input class="iv-input" id="tl-name" placeholder="e.g. Front Counter, or Nomsa's Till"></div>
     <button class="iv-btn-primary" onclick="ivTillSave()" data-i18n="till_create_btn">&#10003; Create Till</button>
   </div>
 </div>
@@ -1413,7 +1414,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-till-detail">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivRenderTillList();show('s-iv-till-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="tl-detail-title">Till</span>
+    <h1 class="iv-topbar-title" id="tl-detail-title">Till</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1427,12 +1428,12 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-till-sale-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-till-detail')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_cashsale">Cash Sale</span>
+    <h1 class="iv-topbar-title" data-i18n="t_cashsale">Cash Sale</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label" data-i18n="till_amount_lbl">Amount (R)</label><input class="iv-input" type="number" step="0.01" id="ts-amount" placeholder="0.00" autofocus></div>
-    <div class="iv-field"><label class="iv-label" data-i18n="till_note_lbl">Note (optional)</label><input class="iv-input" id="ts-note" placeholder="e.g. Airtime, Bread x5"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_amount_lbl" for="ts-amount">Amount (R)</label><input class="iv-input" type="number" step="0.01" id="ts-amount" placeholder="0.00" autofocus></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_note_lbl" for="ts-note">Note (optional)</label><input class="iv-input" id="ts-note" placeholder="e.g. Airtime, Bread x5"></div>
     <button class="iv-btn-primary" onclick="ivTillSaleSave()" data-i18n="till_add_sale_btn">&#10003; Add Sale to Till</button>
   </div>
 </div>
@@ -1441,7 +1442,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-till-close-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-till-detail')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_closeday">Close Day</span>
+    <h1 class="iv-topbar-title" data-i18n="t_closeday">Close Day</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1450,7 +1451,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
       <div class="iv-tot-row"><span data-i18n="till_cash_sales_today_lbl">Cash sales today</span><span id="tc-sales">R0.00</span></div>
       <div class="iv-tot-row grand"><span data-i18n="till_expected_lbl">Expected in till</span><span id="tc-expected">R0.00</span></div>
     </div>
-    <div class="iv-field"><label class="iv-label" data-i18n="till_actual_counted_lbl">Actual cash counted in till (R)</label><input class="iv-input" type="number" step="0.01" id="tc-counted" placeholder="0.00" oninput="ivTillCloseRecalc()"></div>
+    <div class="iv-field"><label class="iv-label" data-i18n="till_actual_counted_lbl" for="tc-counted">Actual cash counted in till (R)</label><input class="iv-input" type="number" step="0.01" id="tc-counted" placeholder="0.00" oninput="ivTillCloseRecalc()"></div>
     <div class="iv-totals" id="tc-variance-box" style="display:none">
       <div class="iv-tot-row grand"><span id="tc-variance-label" data-i18n="till_variance_lbl">Variance</span><span id="tc-variance">R0.00</span></div>
     </div>
@@ -1462,7 +1463,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-payroll-hub">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_payroll">Payroll</span>
+    <h1 class="iv-topbar-title" data-i18n="t_payroll">Payroll</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1481,18 +1482,18 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-employee-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_employee">Employee</span>
+    <h1 class="iv-topbar-title" data-i18n="t_employee">Employee</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Full name</label><input class="iv-input" id="em-name" placeholder="e.g. Thabo Mokoena"></div>
-    <div class="iv-field"><label class="iv-label">ID number</label><input class="iv-input" id="em-id" placeholder="13-digit SA ID number"></div>
-    <div class="iv-field"><label class="iv-label">Monthly gross salary (R)</label><input class="iv-input" type="number" step="0.01" id="em-salary" placeholder="0.00"></div>
+    <div class="iv-field"><label class="iv-label" for="em-name">Full name</label><input class="iv-input" id="em-name" placeholder="e.g. Thabo Mokoena"></div>
+    <div class="iv-field"><label class="iv-label" for="em-id">ID number</label><input class="iv-input" id="em-id" placeholder="13-digit SA ID number"></div>
+    <div class="iv-field"><label class="iv-label" for="em-salary">Monthly gross salary (R)</label><input class="iv-input" type="number" step="0.01" id="em-salary" placeholder="0.00"></div>
     <div class="iv-field">
-      <label class="iv-label">Employee type</label>
+      <label class="iv-label" for="em-type">Employee type</label>
       <select class="iv-select" id="em-type"><option value="standard">Standard employee</option><option value="domestic">Domestic worker</option></select>
     </div>
-    <div class="iv-field"><label class="iv-label">Phone / WhatsApp</label><input class="iv-input" id="em-phone" placeholder="+27 82 123 4567"></div>
+    <div class="iv-field"><label class="iv-label" for="em-phone">Phone / WhatsApp</label><input class="iv-input" id="em-phone" placeholder="+27 82 123 4567"></div>
     <button class="iv-btn-primary" onclick="ivEmployeeSave()">&#10003; Save Employee</button>
     <button class="iv-btn-outline iv-btn-danger" id="em-delete-btn" style="display:none" onclick="ivEmployeeDelete()">Remove Employee</button>
   </div>
@@ -1502,11 +1503,11 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-payrun-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_newpayrun">New Pay Run</span>
+    <h1 class="iv-topbar-title" data-i18n="t_newpayrun">New Pay Run</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Pay period (month)</label><input class="iv-input" type="month" id="pr-period"></div>
+    <div class="iv-field"><label class="iv-label" for="pr-period">Pay period (month)</label><input class="iv-input" type="month" id="pr-period"></div>
     <div class="iv-section-lbl">Select employees to pay</div>
     <div id="pr-employee-checklist"></div>
     <button class="iv-btn-primary" onclick="ivPayrunCalculate()">&#10003; Calculate Payroll</button>
@@ -1517,7 +1518,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-payrun-review">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-payroll-hub');ivRenderPayrollHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="pr-review-title">Pay Run</span>
+    <h1 class="iv-topbar-title" id="pr-review-title">Pay Run</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
@@ -1535,7 +1536,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-payslip-view">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-payrun-review')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_payslip">Payslip</span>
+    <h1 class="iv-topbar-title" data-i18n="t_payslip">Payslip</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-doc" id="ps-doc-content"></div>
@@ -1548,7 +1549,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-inventory-list">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivOpenHub()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_inventory">Inventory</span>
+    <h1 class="iv-topbar-title" data-i18n="t_inventory">Inventory</h1>
     <button class="iv-back" onclick="ivProductNew()">&#43; Product</button>
   </div>
   <div class="iv-form">
@@ -1561,17 +1562,17 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-product-form">
   <div class="iv-topbar">
     <button class="iv-back" onclick="show('s-iv-inventory-list');ivRenderInventoryList()" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" data-i18n="t_product">Product</span>
+    <h1 class="iv-topbar-title" data-i18n="t_product">Product</h1>
     <span style="width:60px"></span>
   </div>
   <div class="iv-form">
-    <div class="iv-field"><label class="iv-label">Product name</label><input class="iv-input" id="pd-name" placeholder="e.g. Cable 2.5mm (per metre)"></div>
-    <div class="iv-field"><label class="iv-label">SKU (optional)</label><input class="iv-input" id="pd-sku" placeholder="e.g. CAB-25"></div>
+    <div class="iv-field"><label class="iv-label" for="pd-name">Product name</label><input class="iv-input" id="pd-name" placeholder="e.g. Cable 2.5mm (per metre)"></div>
+    <div class="iv-field"><label class="iv-label" for="pd-sku">SKU (optional)</label><input class="iv-input" id="pd-sku" placeholder="e.g. CAB-25"></div>
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label">Selling price (R)</label><input class="iv-input" type="number" step="0.01" id="pd-price" placeholder="0.00"></div>
-      <div class="iv-field"><label class="iv-label">Current stock on hand</label><input class="iv-input" type="number" step="1" id="pd-stock" placeholder="0"></div>
+      <div class="iv-field"><label class="iv-label" for="pd-price">Selling price (R)</label><input class="iv-input" type="number" step="0.01" id="pd-price" placeholder="0.00"></div>
+      <div class="iv-field"><label class="iv-label" for="pd-stock">Current stock on hand</label><input class="iv-input" type="number" step="1" id="pd-stock" placeholder="0"></div>
     </div>
-    <div class="iv-field"><label class="iv-label">Low stock alert level</label><input class="iv-input" type="number" step="1" id="pd-alert" placeholder="e.g. 5"></div>
+    <div class="iv-field"><label class="iv-label" for="pd-alert">Low stock alert level</label><input class="iv-input" type="number" step="1" id="pd-alert" placeholder="e.g. 5"></div>
     <button class="iv-btn-primary" onclick="ivProductSave()">&#10003; Save Product</button>
     <button class="iv-btn-outline iv-btn-danger" id="pd-delete-btn" style="display:none" onclick="ivProductDelete()">Delete Product</button>
   </div>
@@ -1581,7 +1582,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <div class="screen iv-hub" id="s-iv-product-detail">
   <div class="iv-topbar">
     <button class="iv-back" onclick="ivRenderInventoryList();show('s-iv-inventory-list')" data-i18n="back_btn">&#8592; Back</button>
-    <span class="iv-topbar-title" id="pd-detail-title">Product</span>
+    <h1 class="iv-topbar-title" id="pd-detail-title">Product</h1>
     <button class="iv-back" onclick="ivProductEditOpen()">&#9998;</button>
   </div>
   <div class="iv-form">
@@ -1591,8 +1592,8 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
     </div>
     <div class="iv-section-lbl">Adjust stock</div>
     <div class="iv-row2">
-      <div class="iv-field"><label class="iv-label">Quantity</label><input class="iv-input" type="number" step="1" id="pd-adjust-qty" placeholder="e.g. 10"></div>
-      <div class="iv-field"><label class="iv-label">Reason</label>
+      <div class="iv-field"><label class="iv-label" for="pd-adjust-qty">Quantity</label><input class="iv-input" type="number" step="1" id="pd-adjust-qty" placeholder="e.g. 10"></div>
+      <div class="iv-field"><label class="iv-label" for="pd-adjust-reason">Reason</label>
         <select class="iv-select" id="pd-adjust-reason"><option value="received">Stock received</option><option value="correction">Count correction</option><option value="damaged">Damaged / written off</option></select>
       </div>
     </div>
@@ -1609,6 +1610,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 <!-- Hidden -->
 <input type="file" id="file-input" accept="image/*">
 <canvas id="scan-canvas"></canvas>
+</main>
 
 <script>
 /* ══ STATE ══ */
@@ -2154,13 +2156,13 @@ function ivRenderLines(){
   el.innerHTML = ivFormLines.map(function(line, i){
     return '<div class="iv-li-row">'+
       '<div class="iv-li-top">'+
-        '<input class="iv-input" placeholder="Item / service description" value="'+ivEscAttr(line.desc)+'" oninput="ivFormLines['+i+'].desc=this.value">'+
-        '<button class="iv-li-remove" onclick="ivRemoveLine('+i+')">&#10005;</button>'+
+        '<input class="iv-input" aria-label="Item / service description" placeholder="Item / service description" value="'+ivEscAttr(line.desc)+'" oninput="ivFormLines['+i+'].desc=this.value">'+
+        '<button class="iv-li-remove" onclick="ivRemoveLine('+i+')" aria-label="Remove line item">&#10005;</button>'+
       '</div>'+
       '<div class="iv-li-nums">'+
-        '<div><label>Qty</label><input class="iv-input" type="number" min="0" step="1" value="'+line.qty+'" oninput="ivFormLines['+i+'].qty=parseFloat(this.value)||0;ivRecalc()"></div>'+
-        '<div><label>Price (R)</label><input class="iv-input" type="number" min="0" step="0.01" value="'+line.price+'" oninput="ivFormLines['+i+'].price=parseFloat(this.value)||0;ivRecalc()"></div>'+
-        '<div><label>Line total</label><input class="iv-input" value="'+ivMoney(line.qty*line.price)+'" disabled style="opacity:.6"></div>'+
+        '<div><label for="df-li-qty-'+i+'">Qty</label><input class="iv-input" id="df-li-qty-'+i+'" type="number" min="0" step="1" value="'+line.qty+'" oninput="ivFormLines['+i+'].qty=parseFloat(this.value)||0;ivRecalc()"></div>'+
+        '<div><label for="df-li-price-'+i+'">Price (R)</label><input class="iv-input" id="df-li-price-'+i+'" type="number" min="0" step="0.01" value="'+line.price+'" oninput="ivFormLines['+i+'].price=parseFloat(this.value)||0;ivRecalc()"></div>'+
+        '<div><label for="df-li-total-'+i+'">Line total</label><input class="iv-input" id="df-li-total-'+i+'" value="'+ivMoney(line.qty*line.price)+'" disabled style="opacity:.6"></div>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -2753,7 +2755,7 @@ function ivLaybyOpen(id){
   var paidTotal = lb.deposit + lb.payments.reduce(function(s,p){return s+p.amount},0);
   document.getElementById('lb-detail-content').innerHTML =
     '<div class="iv-doc" style="margin:0 0 16px"><div style="padding:6px 0">'+
-    '<h3 style="font-family:\'DM Serif Display\',Georgia,serif;color:#1a1a1a;margin-bottom:8px">'+ivEsc(lb.item)+'</h3>'+
+    '<h2 style="font-family:\'DM Serif Display\',Georgia,serif;color:#1a1a1a;margin-bottom:8px;font-size:1.05rem">'+ivEsc(lb.item)+'</h2>'+
     '<p style="color:#555;margin-bottom:14px">'+ivEsc(cust.name)+' &middot; '+lb.number+'</p>'+
     '<div class="iv-doc-totals" style="width:100%">'+
     '<div class="r"><span>Total price</span><span>'+ivMoney(lb.total)+'</span></div>'+
@@ -2847,7 +2849,7 @@ function ivTillOpen(id){
   var panel = document.getElementById('tl-today-panel');
   if (!today){
     panel.innerHTML = '<div class="iv-section-lbl">'+ivStr('today_prefix')+' '+ivFormatDate(ivToday())+'</div>'+
-      '<div class="iv-field"><label class="iv-label">'+ivStr('opening_float_input_lbl')+'</label><input class="iv-input" type="number" step="0.01" id="tl-opening-input" placeholder="e.g. 200.00"></div>'+
+      '<div class="iv-field"><label class="iv-label" for="tl-opening-input">'+ivStr('opening_float_input_lbl')+'</label><input class="iv-input" type="number" step="0.01" id="tl-opening-input" placeholder="e.g. 200.00"></div>'+
       '<button class="iv-btn-primary" onclick="ivTillOpenDay()">'+ivStr('open_till_today_btn')+'</button>';
   } else if (!today.closed){
     panel.innerHTML = '<div class="iv-section-lbl">'+ivStr('today_prefix')+' '+ivFormatDate(ivToday())+' <span class="iv-status sent" style="margin-left:8px">'+ivStr('open_status')+'</span></div>'+
@@ -3152,13 +3154,13 @@ function ivPayslipView(payrunId, payslipId){
       '<div><div class="iv-doc-type">PAYSLIP</div><div class="iv-doc-meta" style="text-align:right">'+ivPayrunPeriodLabel(pr.period)+'</div></div>'+
     '</div>'+
     '<div class="iv-doc-parties"><div><div class="lbl">Employee</div><strong>'+ivEsc(p.employeeName)+'</strong><br>'+(p.employeeType==='domestic'?'Domestic worker':'Employee')+'</div></div>'+
-    '<table class="iv-doc-table"><thead><tr><th>Earnings &amp; Deductions</th><th></th><th></th><th>Amount</th></tr></thead><tbody>'+
-    '<tr><td>Gross salary</td><td></td><td></td><td>'+ivMoney(p.grossSalary)+'</td></tr>'+
-    '<tr><td>PAYE (income tax)</td><td></td><td></td><td>-'+ivMoney(p.paye)+'</td></tr>'+
-    '<tr><td>UIF (employee, 1%)</td><td></td><td></td><td>-'+ivMoney(p.uifEmployee)+'</td></tr>'+
+    '<table class="iv-doc-table"><thead><tr><th>Earnings &amp; Deductions</th><th>Amount</th></tr></thead><tbody>'+
+    '<tr><td>Gross salary</td><td>'+ivMoney(p.grossSalary)+'</td></tr>'+
+    '<tr><td>PAYE (income tax)</td><td>-'+ivMoney(p.paye)+'</td></tr>'+
+    '<tr><td>UIF (employee, 1%)</td><td>-'+ivMoney(p.uifEmployee)+'</td></tr>'+
     '</tbody></table>'+
     '<div class="iv-doc-totals"><div class="r grand"><span>Net pay</span><span>'+ivMoney(p.netPay)+'</span></div></div>'+
-    '<div style="margin-top:16px;padding-top:12px;border-top:1px solid #eee;font-size:.72rem;color:#888">Employer UIF contribution (not deducted from employee): '+ivMoney(p.uifEmployer)+'. Calculated using SARS 2026/27 tax year rates. This payslip is provided for guidance — verify with a registered tax practitioner before SARS submission.</div>';
+    '<div style="margin-top:16px;padding-top:12px;border-top:1px solid #eee;font-size:.72rem;color:#707070">Employer UIF contribution (not deducted from employee): '+ivMoney(p.uifEmployer)+'. Calculated using SARS 2026/27 tax year rates. This payslip is provided for guidance — verify with a registered tax practitioner before SARS submission.</div>';
   show('s-iv-payslip-view');
 }
 function ivPayslipWhatsApp(){
@@ -3379,7 +3381,7 @@ function ivRenderLockedReports(){
     {name:'Balance Sheet &amp; Cash Flow', tier:'Builder', desc:'Full balance sheet and cash flow statement — formatted for banks and lenders.'}
   ];
   el.innerHTML = reports.map(function(r){
-    return '<div class="iv-list-item" style="cursor:pointer;opacity:.85" onclick="ivShowUpgradePrompt(\''+r.tier+'\',\''+r.name.replace(/'/g,"\\'")+'\')">' +
+    return '<div class="iv-list-item" style="cursor:pointer" onclick="ivShowUpgradePrompt(\''+r.tier+'\',\''+r.name.replace(/'/g,"\\'")+'\')">' +
       '<div class="iv-li-l"><div class="iv-li-name">&#128274; '+r.name+'</div><div class="iv-li-sub">'+r.desc+'</div></div>' +
       '<div class="iv-li-r"><span class="iv-status draft">'+r.tier+'+</span></div>' +
     '</div>';
@@ -4418,6 +4420,7 @@ window.addEventListener('DOMContentLoaded',function(){showInstallBanner();setSca
         o.classList.toggle('sel',o.dataset.lang===sl);
       });
       document.getElementById('lang-continue-btn').textContent=(TR[sl].cont||'Continue');
+      goMain();
     }
   }catch(e){}
 });

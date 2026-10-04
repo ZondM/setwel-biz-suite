@@ -20,7 +20,7 @@
 <style>
 :root{
   --bg:#0A0808;--bg2:#121010;--bg3:#1A1616;
-  --ink:#F2EDE8;--ink2:#A09088;--ink3:#5A4A42;
+  --ink:#F2EDE8;--ink2:#A09088;--ink3:#9A8A82;
   --or:#E8801A;--rd:#C93050;--gn:#2A7A40;
   --line:rgba(232,128,26,.12);--od:rgba(232,128,26,.1);--ob:rgba(232,128,26,.3);
 }
@@ -29,16 +29,17 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);line-h
 h1,h2,h3,h4{font-family:'DM Serif Display',Georgia,serif;letter-spacing:-.01em;line-height:1.15}
 p{color:var(--ink2);line-height:1.75}
 a{text-decoration:none;color:var(--or)}
+footer a,p a,li a{text-decoration:underline}
 .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
 
 #langbar{z-index:1;background:#121010;border-bottom:1px solid rgba(232,128,26,.1)}
 .lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 24px;max-width:1100px;margin:0 auto;flex-wrap:wrap}
-.lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6A5A52;margin-right:4px}
+.lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9A8A82;margin-right:4px}
 .lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:#A09088;font-family:'Inter',sans-serif;font-size:.77rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s}
 .lb-btn:hover{color:#F2EDE8;border-color:rgba(232,128,26,.2)}
 .lb-btn.active{background:rgba(232,128,26,.13);border-color:rgba(232,128,26,.3);color:#E8801A;font-weight:700}
 .lb-code{font-size:.62rem;font-weight:800;background:rgba(255,255,255,.08);border-radius:3px;padding:1px 5px}
-.lb-btn.active .lb-code{background:#E8801A;color:#fff}
+.lb-btn.active .lb-code{background:#E8801A;color:#0A0808}
 .lb-right{margin-left:auto}
 .lb-mob{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#E8801A,#C93050);color:#fff;font-size:.8rem;font-weight:700;border:none;border-radius:9px;padding:6px 13px;text-decoration:none;cursor:pointer;animation:mpulse 2.5s ease-in-out infinite}
 .lb-mob .blink{display:inline-block;animation:bounce 1.8s ease-in-out infinite}
@@ -98,13 +99,13 @@ a{text-decoration:none;color:var(--or)}
 .pkg-once{font-family:'DM Serif Display',Georgia,serif;font-size:2rem;color:#fff;line-height:1}
 .pkg-once small{font-size:.8rem;color:var(--ink2);font-family:'Inter'}
 .pkg-saving{font-size:.75rem;color:#4CAF70;font-weight:600;margin-top:4px}
-.pkg-sub-compare{font-size:.7rem;color:var(--ink2);margin-top:3px;opacity:.7}
+.pkg-sub-compare{font-size:.7rem;color:#9A8A82;margin-top:3px}
 
 .pkg-hr{border:none;border-top:1px solid var(--line);margin:14px 0}
 .pkg-ul{list-style:none;display:grid;gap:7px;font-size:.82rem;color:var(--ink2);margin-bottom:20px;flex:1}
 .pkg-ul li{display:flex;align-items:flex-start;gap:7px}
 .pkg-ul li::before{content:'✓';color:var(--or);font-weight:700;flex:none;margin-top:1px}
-.pkg-ul li.na{opacity:.32}
+.pkg-ul li.na{color:#9A8A82}
 .pkg-ul li.na::before{content:'—';color:var(--ink2)}
 .pkg-ul li.highlight{color:var(--ink);font-weight:600}
 .pkg-ul li.highlight::before{content:'★';color:var(--or)}
@@ -113,7 +114,7 @@ a{text-decoration:none;color:var(--or)}
 .pkg-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px -8px rgba(232,128,26,.45)}
 .pkg-btn.outline{background:transparent;border:1.5px solid var(--ob);color:var(--ink)}
 .pkg-btn.outline:hover{background:var(--od);border-color:var(--or)}
-.pkg-note{text-align:center;font-size:.72rem;color:var(--ink2);margin-top:8px;opacity:.8}
+.pkg-note{text-align:center;font-size:.72rem;color:#9A8A82;margin-top:8px}
 
 /* COMPARISON TABLE */
 .comp-section{padding:0 0 64px}
@@ -213,6 +214,7 @@ footer a{color:var(--or)}
 
 
 <!-- LANGUAGE BAR -->
+<header>
 <div id="langbar">
   <div class="lb-wrap">
     <span class="lb-label">Language</span>
@@ -242,6 +244,8 @@ footer a{color:var(--or)}
     <a href="index.html" class="tb-link" data-nk="home2">&#8592; Home</a>
   </div>
 </div>
+</header>
+<main>
 
 <!-- HERO -->
 <div class="hero">
@@ -488,12 +492,12 @@ footer a{color:var(--or)}
     <div class="modal-plan" id="modal-plan-name">Pro Lifetime — R 1,999 once-off</div>
 
     <div class="form-row">
-      <div class="form-field"><label class="form-label" data-i18n="pay_first">First Name *</label><input class="form-input" id="co-first" placeholder="Thabo"></div>
-      <div class="form-field"><label class="form-label" data-i18n="pay_last">Last Name *</label><input class="form-input" id="co-last" placeholder="Mokoena"></div>
+      <div class="form-field"><label class="form-label" for="co-first" data-i18n="pay_first">First Name *</label><input class="form-input" id="co-first" placeholder="Thabo" required></div>
+      <div class="form-field"><label class="form-label" for="co-last" data-i18n="pay_last">Last Name *</label><input class="form-input" id="co-last" placeholder="Mokoena" required></div>
     </div>
-    <div class="form-field"><label class="form-label" data-i18n="lt_emaillicence">Email Address * (licence key sent here)</label><input class="form-input" type="email" id="co-email" placeholder="thabo@business.co.za"></div>
-    <div class="form-field"><label class="form-label" data-i18n="pay_waphone">WhatsApp / Phone *</label><input class="form-input" type="tel" id="co-phone" placeholder="+27 82 082 9050"></div>
-    <div class="form-field"><label class="form-label" data-i18n="pay_bizname">Business Name</label><input class="form-input" id="co-biz" placeholder="Khumalo Electricals"></div>
+    <div class="form-field"><label class="form-label" for="co-email" data-i18n="lt_emaillicence">Email Address * (licence key sent here)</label><input class="form-input" type="email" id="co-email" placeholder="thabo@business.co.za" required></div>
+    <div class="form-field"><label class="form-label" for="co-phone" data-i18n="pay_waphone">WhatsApp / Phone *</label><input class="form-input" type="tel" id="co-phone" placeholder="+27 82 082 9050" required></div>
+    <div class="form-field"><label class="form-label" for="co-biz" data-i18n="pay_bizname">Business Name</label><input class="form-input" id="co-biz" placeholder="Khumalo Electricals"></div>
 
     <div class="modal-total">
       <div class="mt-row"><span data-i18n="lt_mt_pkg">Package</span><strong id="mt-pkg">Pro Lifetime</strong></div>
@@ -511,6 +515,7 @@ footer a{color:var(--or)}
   </div>
 </div>
 
+</main>
 <footer>
   <a href="terms.html" data-i18n="foot_terms">Terms &amp; Conditions</a> &nbsp;&#183;&nbsp;
   <a href="refund.html" data-i18n="foot_refund">Refund Policy</a> &nbsp;&#183;&nbsp;

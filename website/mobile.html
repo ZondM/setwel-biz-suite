@@ -21,7 +21,7 @@
 ═══════════════════════════════════════ */
 :root{
   --bg:#0A0808; --bg2:#121010; --bg3:#1A1616;
-  --ink:#F2EDE8; --ink2:#A09088; --ink3:#6A5A52;
+  --ink:#F2EDE8; --ink2:#A09088; --ink3:#9A8A82;
   --or:#E8801A; --or2:#F09A3A;
   --od:rgba(232,128,26,.14); --ob:rgba(232,128,26,.32);
   --rd:#C93050;
@@ -71,7 +71,7 @@ img{max-width:100%;display:block}
 .lang-opt{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1.5px solid var(--line);border-radius:var(--r);padding:15px 16px;margin-bottom:9px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:rgba(232,128,26,.1)}
 .lang-opt.sel{border-color:var(--ob);background:var(--od)}
 .lang-badge{width:36px;height:36px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:var(--ink2);flex-shrink:0}
-.lang-opt.sel .lang-badge{background:var(--or);border-color:var(--or);color:#fff}
+.lang-opt.sel .lang-badge{background:var(--or);border-color:var(--or);color:#0A0808}
 .lang-name{font-weight:600;font-size:.95rem;color:var(--ink)}
 .lang-native{font-size:.78rem;color:var(--ink2);margin-top:2px}
 .lang-radio{margin-left:auto;width:21px;height:21px;border-radius:50%;border:2px solid rgba(255,255,255,.2);flex:none;position:relative}
@@ -318,7 +318,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .res-actions{padding:16px 18px;display:grid;gap:9px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 .btn-dl{display:flex;align-items:center;justify-content:center;gap:9px;padding:17px;background:linear-gradient(135deg,var(--or),var(--rd));color:#fff;border:none;border-radius:13px;font-family:'Inter',sans-serif;font-weight:800;font-size:.97rem;cursor:pointer;text-decoration:none;-webkit-appearance:none}
 .btn-dl:active{transform:scale(.98)}
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:#1a8c44;color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;-webkit-appearance:none}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:#1a8c44;color:#0A0808;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;-webkit-appearance:none}
 .btn-wa:active{background:#156b35}
 .btn-scan-again{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;background:var(--bg2);border:1.5px solid var(--line);color:var(--ink2);border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;-webkit-appearance:none}
 .btn-scan-again:active{border-color:var(--ob)}
@@ -391,7 +391,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .iv-li-top input{flex:1}
 .iv-li-nums{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .iv-li-nums input{text-align:right}
-.iv-li-nums label{font-size:.62rem;color:#6A5A52;display:block;margin-bottom:3px;text-transform:uppercase}
+.iv-li-nums label{font-size:.62rem;color:#9A8A82;display:block;margin-bottom:3px;text-transform:uppercase}
 .iv-li-remove{background:rgba(229,115,115,.12);border:1px solid rgba(229,115,115,.35);color:#EF9A9A;border-radius:8px;width:32px;height:32px;flex-shrink:0;cursor:pointer;font-size:.9rem}
 .iv-add-line{width:100%;padding:12px;background:rgba(232,128,26,.1);border:1.5px dashed rgba(232,128,26,.35);color:#E8801A;border-radius:10px;font-family:'Inter',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;margin-bottom:14px}
 
@@ -415,7 +415,7 @@ video#cam-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cove
 .iv-status.overdue{background:rgba(229,115,115,.15);color:#EF9A9A}
 .iv-status.accepted{background:rgba(76,175,112,.15);color:#4CAF70}
 .iv-status.declined{background:rgba(229,115,115,.15);color:#EF9A9A}
-.iv-empty{text-align:center;padding:50px 20px;color:#6A5A52}
+.iv-empty{text-align:center;padding:50px 20px;color:#9A8A82}
 .iv-empty-ico{font-size:2.4rem;margin-bottom:10px;opacity:.5}
 .iv-empty-t{font-size:.9rem;color:#A09088;margin-bottom:16px}
 

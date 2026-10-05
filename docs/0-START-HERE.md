@@ -5,16 +5,24 @@
 | File / folder | What it is | What you do with it |
 |---|---|---|
 | **START-HERE.html** | This guide (all guides on one page) | Double-click to read it in Chrome |
-| **PREVIEW-WEBSITE.bat** | Shows the website on your own computer | Double-click to try the shop before uploading |
+| **OPEN-WEBSITE-PREVIEW.html** | A picture-perfect copy of the shop with the 10 sample products | Double-click to look around the shop. Nothing to install |
+| website-preview | The files for the preview above | Leave it next to OPEN-WEBSITE-PREVIEW.html |
+| **PREVIEW-WEBSITE.bat** | The full working shop **and admin area** on your computer (needs PHP) | Optional — use it to try the admin, import and checkout before uploading |
 | **dist\setwel-store-upload.zip** | The finished website, packed for your hosting | The **only** file you upload to cPanel (install guide below) |
 | store | The website's working files | Leave it alone — the zip above is made from it |
 | docs | The same guides as plain-text (.md) files | For Claude Code — you can ignore them |
 | build-store-zip.php, README.md, .gitignore | Technical files | Ignore |
 | Setwel-Africa-BusinessSuite-PORTABLE.zip | Your older Business Suite app | Not part of the website |
 
-Why is there no `.html` page to open for the shop? The shop is a **PHP** website. Its pages are created by your hosting's server when someone visits, so they can't be opened by double-clicking. To see the shop on your computer, use **PREVIEW-WEBSITE.bat**.
+## Look at the shop (easiest)
 
-## Preview the website on your computer
+Double-click **OPEN-WEBSITE-PREVIEW.html**. The shop opens in Chrome and you can click through the home page, categories, products, specials and information pages.
+
+It is a snapshot. Add to cart, search, checkout and the forms only work on the live website. The snapshot shows the 10 sample products, not your own edits.
+
+## Try the full shop and admin area (optional)
+
+The real shop is a **PHP** website: its pages are built by a server when someone visits. To run the real thing on your computer, including the admin area:
 
 1. Open the folder and double-click **PREVIEW-WEBSITE.bat**.
    - If Windows shows "Windows protected your PC", click **More info → Run anyway**. The file is in your own project folder.

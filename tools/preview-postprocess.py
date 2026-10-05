@@ -10,10 +10,12 @@ for d, _, files in os.walk(root):
             renames[f] = new
 banner = ('<div style="background:#c9a84c;color:#1a2f45;text-align:center;padding:8px 12px;font:600 14px system-ui,Arial,sans-serif">'
           'PREVIEW of the Setwel Africa shop — you can click around. Cart, search, checkout and forms only work on the live website.</div>')
-script = '''<script>
-document.addEventListener('submit',function(e){e.preventDefault();alert('This is a preview. Cart, search, quotes and forms work once the website is live on setwelafrica.com.');},true);
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(a&&/^https?:\\/\\/127\\.0\\.0\\.1/.test(a.getAttribute('href')||'')){e.preventDefault();alert('This page works once the website is live.');}},true);
-try{localStorage.setItem('setwel_consent','essential');}catch(e){}
+script = '''<div id="pv-toast" role="status" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:90%;background:#1a2f45;color:#fff;padding:12px 18px;border-radius:8px;font:500 14px system-ui,Arial,sans-serif;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:999" hidden></div>
+<script>
+(function(){var t=document.getElementById('pv-toast'),h;function say(m){t.textContent=m;t.hidden=false;clearTimeout(h);h=setTimeout(function(){t.hidden=true;},4000);}
+document.addEventListener('submit',function(e){e.preventDefault();say('Preview only: cart, search, quotes and forms work once the website is live on setwelafrica.com.');},true);
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(a&&/^https?:\\/\\/127\\.0\\.0\\.1/.test(a.getAttribute('href')||'')){e.preventDefault();say('This page works once the website is live.');}},true);
+try{localStorage.setItem('setwel_consent','essential');}catch(e){}})();
 </script>'''
 n = 0
 for d, _, files in os.walk(root):

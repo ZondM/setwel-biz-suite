@@ -14,3 +14,7 @@ store/uploads/brands/*
 
 # Local preview
 php-portable/
+
+# Catalogue files contain supplier cost prices: keep them out of git (download from the chat instead)
+dist/Setwel-Product-Catalogue.xlsx
+dist/Setwel-Website-Import.xlsx

@@ -1,0 +1,15 @@
+# Setwel Biz Suite — website root config
+
+# index.html is the default page for any folder
+DirectoryIndex index.html
+
+# Custom 404 — pointing at a page that actually exists on every deploy,
+# so a missing/renamed page never shows a bare, unbranded server error
+# (or worse, a double "ErrorDocument also not found" failure).
+ErrorDocument 404 /404.html
+
+# Don't let visitors browse folder contents directly
+Options -Indexes
+
+# Don't leak server version info in error pages
+ServerSignature Off

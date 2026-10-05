@@ -21,6 +21,8 @@ function import_fields(): array
         'stock_status' => 'Stock status / quantity',
         'visible' => 'Visible on website (yes/no)',
         'featured' => 'Featured (yes/no)',
+        'is_new' => 'New in market (yes/no)',
+        'is_special' => 'On special (yes/no)',
         'short_description' => 'Short description',
         'description' => 'Full description',
         'specs' => 'Specifications',
@@ -48,7 +50,9 @@ function import_synonyms(): array
         'sale_ends' => ['sale ends', 'sale end', 'valid until', 'promo end', 'end date', 'expiry'],
         'stock_status' => ['stock', 'stock status', 'availability', 'qty', 'quantity', 'soh', 'stock on hand', 'available', 'in stock'],
         'visible' => ['visible', 'show', 'published', 'active', 'online', 'status'],
-        'featured' => ['featured', 'feature', 'highlight'],
+        'featured' => ['featured', 'feature', 'highlight', 'popular'],
+        'is_new' => ['new', 'new in market', 'is new', 'new product'],
+        'is_special' => ['special', 'on special', 'specials', 'promotion'],
         'short_description' => ['short description', 'summary', 'short desc', 'tagline'],
         'description' => ['description', 'long description', 'details', 'full description', 'desc'],
         'specs' => ['specs', 'specifications', 'specification', 'features', 'tech specs'],
@@ -255,11 +259,6 @@ function import_analyse(array $rows, array $map, array $opts): array
                 $d[$f] = $v;
             }
         }
-        $calc = $opts['price_calc'] ?? 'blank';
-        if (isset($d['cost_price']) && $d['cost_price'] > 0 && ($calc === 'always' || ($calc === 'blank' && !isset($d['price'])))) {
-            $d['price'] = price_from_cost($d['cost_price']);
-            $line['warnings'][] = 'Selling price calculated from cost: ' . money($d['cost_price']) . ' + ' . setting('markup_percent') . '% = ' . money($d['price']) . '.';
-        }
         if ($v = $get('sale_ends')) {
             $dt = parse_date_cell($v);
             if ($dt === 'invalid') {
@@ -276,7 +275,7 @@ function import_analyse(array $rows, array $map, array $opts): array
                 $d['stock_status'] = $s;
             }
         }
-        foreach (['visible', 'featured'] as $f) {
+        foreach (['visible', 'featured', 'is_new', 'is_special'] as $f) {
             if (($v = $get($f)) !== '') {
                 $b = parse_yes_no($v);
                 if ($b === -1) {
@@ -323,6 +322,17 @@ function import_analyse(array $rows, array $map, array $opts): array
                     $line['warnings'][] = 'New category "' . $cat . '" will be created.';
                 }
             }
+        }
+
+        // Selling price from supplier cost, using the pricing rules for this product's brand and category.
+        $calc = $opts['price_calc'] ?? 'blank';
+        if (isset($d['cost_price']) && $d['cost_price'] > 0 && ($calc === 'always' || ($calc === 'blank' && !isset($d['price'])))) {
+            $brandId = isset($d['brand']) ? q_val('SELECT id FROM brands WHERE LOWER(name) = LOWER(?)', [$d['brand']]) : ($existing['brand_id'] ?? null);
+            $catId = isset($d['category']) ? q_val('SELECT id FROM categories WHERE LOWER(name) = LOWER(?)', [$d['category']]) : ($existing['category_id'] ?? null);
+            $brandId = $brandId !== null ? (int)$brandId : null;
+            $catId = $catId !== null ? (int)$catId : null;
+            $d['price'] = price_from_cost($d['cost_price'], $brandId, $catId);
+            $line['warnings'][] = 'Selling price: ' . money($d['cost_price']) . ' + ' . rtrim(rtrim(number_format(markup_for($brandId, $catId), 2, '.', ''), '0'), '.') . '% = ' . money($d['price']) . '.';
         }
 
         if ($existing && !empty($opts['keep_names'])) {
@@ -387,7 +397,7 @@ function import_apply(array $analysed): array
             }
             $d = $line['data'];
             $row = [];
-            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
+            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
                 if (array_key_exists($f, $d)) {
                     $row[$f] = $d[$f];
                 }
@@ -440,7 +450,7 @@ function import_apply(array $analysed): array
 /** Column headings used by the template and by the export (so an export can be edited and re-imported). */
 function export_headers(): array
 {
-    return ['SKU', 'Name', 'Brand', 'Category', 'Supplier cost (excl VAT)', 'Selling price', 'Sale price', 'Sale ends', 'Stock status', 'Visible', 'Featured', 'Short description', 'Description', 'Specifications', 'Compatible printers', 'Image URLs', 'MPN', 'GTIN', 'Warranty', 'SEO title', 'SEO description'];
+    return ['SKU', 'Name', 'Brand', 'Category', 'Supplier cost (excl VAT)', 'Selling price', 'Sale price', 'Sale ends', 'Stock status', 'Visible', 'Featured', 'New in market', 'On special', 'Short description', 'Description', 'Specifications', 'Compatible printers', 'Image URLs', 'MPN', 'GTIN', 'Warranty', 'SEO title', 'SEO description'];
 }
 
 function export_rows(): array
@@ -451,7 +461,7 @@ function export_rows(): array
         $imgs = array_map(fn($i) => abs_url($i['path']), product_images((int)$p['id']));
         $rows[] = [
             $p['sku'], $p['name'], $p['brand_name'], $p['category_name'], $p['cost_price'], $p['price'], $p['sale_price'], $p['sale_ends'],
-            stock_statuses()[$p['stock_status']] ?? $p['stock_status'], $p['visible'] ? 'yes' : 'no', $p['featured'] ? 'yes' : 'no',
+            stock_statuses()[$p['stock_status']] ?? $p['stock_status'], $p['visible'] ? 'yes' : 'no', $p['featured'] ? 'yes' : 'no', !empty($p['is_new']) ? 'yes' : 'no', !empty($p['is_special']) ? 'yes' : 'no',
             $p['short_description'], $p['description'], str_replace("\n", ' | ', (string)$p['specs']), str_replace("\n", ', ', (string)$p['compatible']),
             implode(', ', $imgs), $p['mpn'], $p['gtin'], $p['warranty'], $p['meta_title'], $p['meta_description'],
         ];
@@ -462,14 +472,14 @@ function export_rows(): array
 /** Map our own export headings straight to fields (so round-trips need no manual mapping). */
 function export_header_map(): array
 {
-    return array_combine(array_map('norm_header', export_headers()), ['sku', 'name', 'brand', 'category', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'short_description', 'description', 'specs', 'compatible', 'image_urls', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description']);
+    return array_combine(array_map('norm_header', export_headers()), ['sku', 'name', 'brand', 'category', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'short_description', 'description', 'specs', 'compatible', 'image_urls', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description']);
 }
 
 function template_rows(): array
 {
     return [
         export_headers(),
-        ['CMF3010', 'Canon i-SENSYS MF3010 Mono Laser Multifunction Printer', 'Canon', 'Printers', '2474', '', '', '', 'in stock', 'yes', 'no', 'Compact mono laser: print, copy and scan.', 'Reliable A4 mono laser multifunction printer for home and small offices.', 'Print speed: 18 ppm | Functions: Print, Copy, Scan | Connectivity: Hi-Speed USB', '', '', 'MF3010', '', '3 years (T&Cs apply)', '', ''],
-        ['CRG725', 'Canon 725 Black Toner Cartridge', 'Canon', 'Ink & Toner', '', '899', '799', '31/10/2026', 'low stock', 'yes', 'no', 'Genuine Canon 725 toner.', '', 'Yield: approx. 1 600 pages', 'Canon i-SENSYS LBP6030, Canon i-SENSYS MF3010', '', '725', '', '', '', ''],
+        ['CMF3010', 'Canon i-SENSYS MF3010 Mono Laser Multifunction Printer', 'Canon', 'Printers & Scanners', '2474', '', '', '', 'in stock', 'yes', 'no', 'no', 'no', 'Compact mono laser: print, copy and scan.', 'Reliable A4 mono laser multifunction printer for home and small offices.', 'Print speed: 18 ppm | Functions: Print, Copy, Scan | Connectivity: Hi-Speed USB', '', '', 'MF3010', '', '3 years (T&Cs apply)', '', ''],
+        ['CRG725', 'Canon 725 Black Toner Cartridge', 'Canon', 'Ink & Toner', '', '899', '799', '31/10/2026', 'low stock', 'yes', 'no', 'no', 'yes', 'Genuine Canon 725 toner.', '', 'Yield: approx. 1 600 pages', 'Canon i-SENSYS LBP6030, Canon i-SENSYS MF3010', '', '725', '', '', '', ''],
     ];
 }

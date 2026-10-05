@@ -46,7 +46,8 @@
       <label>Password again<input name="admin_password2" type="password" required autocomplete="new-password"></label>
     </div>
 
-    <label class="check"><input type="checkbox" name="sample" value="1" <?= $v['sample'] ? 'checked' : '' ?>> Add the 10 sample products (you can delete them later)</label>
+    <label class="check"><input type="checkbox" name="catalogue" value="1" <?= $v['catalogue'] ? 'checked' : '' ?>> Load the Setwel Africa product catalogue (642 products: ink &amp; toner, printers, storage, accessories, cleaning and more)</label>
+    <label class="check"><input type="checkbox" name="sample" value="1" <?= $v['sample'] ? 'checked' : '' ?>> Add the 10 flyer products (Canon printers, toner, Kenton bags) as specials</label>
     <button class="btn btn-primary btn-lg" type="submit">Install</button>
   </form>
 </main>

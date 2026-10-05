@@ -4,10 +4,17 @@ No coding needed. Everything is done at **https://setwelafrica.com/admin**.
 
 ## How prices work
 
-- You enter the **supplier cost excl. VAT** (the price on the distributor sheet or flyer).
-- The store adds your markup (**55%**, change it in Settings → Pricing) and rounds **up** to the nearest rand.
-  Example: R299.00 × 1.55 = R463.45 → **R464**.
-- Setwel Africa is not VAT registered, so the store adds no VAT. Your 55% already covers the VAT you pay the supplier.
+- You enter the **supplier cost excl. VAT** (the price on the supplier's price sheet).
+- The website adds the markup from **Admin → Pricing rules** and rounds **up** to the next rand:
+
+| Products | Markup |
+|---|---|
+| HP, Brother and Canon ink & toner | **0%** — sold at the supplier's (discounted) price, e.g. R1 557.38 → R1 558 |
+| Canon printers | **55%** |
+| Everything else (incl. Kyocera, Ricoh and Pantum cartridges) | **45%** (the default) |
+
+- Change a markup or add a rule (any brand and/or category) on the Pricing rules page. Then click **Recalculate all prices** to update the products already in the shop.
+- Setwel Africa is not VAT registered, so the website adds no VAT.
 - Customers never see your cost price or your supplier's name.
 
 ---
@@ -41,7 +48,8 @@ Tips:
 
 ## C. Add, change or remove one product
 
-- **Add:** Products → **+ Add product**. Fill in the name, SKU, brand, category and supplier cost (the selling price is calculated for you), add photos, then **Save**.
+- **Add:** Products → **+ Add product**. Fill in the name, SKU, brand, category and supplier cost (the selling price is calculated from your pricing rules), add photos, then **Save**.
+- **New in Market / Specials:** tick "New in Market" or "Show on the Specials page" on the product, or tick many products in the list and use **With ticked products → Mark as New in Market / Mark as Special**.
 - **Change:** click the product name, edit, **Save**.
 - **Hide** (e.g. discontinued): untick **Visible on website**. Hiding is safer than deleting.
 - **Delete:** open the product → **Delete product** at the bottom.
@@ -53,7 +61,8 @@ Products list → tick the products (the top box ticks all) → **With ticked pr
 - Show on website / Hide from website
 - Mark as popular (shows on the home page)
 - End sale price
-- Recalculate selling price from cost (use after changing the markup %)
+- Mark as New in Market / Mark as Special (and remove again)
+- Recalculate selling price from cost (uses your pricing rules)
 - Set stock status
 - Delete
 

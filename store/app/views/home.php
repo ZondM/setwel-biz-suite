@@ -1,6 +1,6 @@
 <?php
 $link = fn($u) => $u && str_starts_with($u, '/') ? url($u) : $u;
-$catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' => 'bag', 'usb' => 'usb', 'ssd' => 'ssd', 'paper' => 'paper', 'plug' => 'plug'];
+$catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' => 'bag', 'usb' => 'usb', 'ssd' => 'ssd', 'paper' => 'paper', 'plug' => 'plug', 'tag' => 'tag', 'clean' => 'clean', 'laptop' => 'laptop'];
 ?>
 <section class="hero" aria-label="Highlights">
   <div class="hero-slides">
@@ -42,7 +42,7 @@ $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' =
   <div class="wrap">
     <div class="section-head"><div><h2 id="cat-h">Shop by category</h2><p>Everything your office, school or home office needs.</p></div><a class="more" href="<?= url('shop') ?>">All products →</a></div>
     <div class="cat-grid">
-      <?php foreach ($categories as $c): ?>
+      <?php foreach ($categories as $c): if (!$c['product_count']) continue; ?>
         <a class="cat-tile" href="<?= url('category/' . $c['slug']) ?>">
           <span class="ico"><?= icon($catIcons[$c['icon']] ?? 'grid', 26) ?></span>
           <span><strong><?= e($c['name']) ?></strong><small><?= (int)$c['product_count'] ?> product<?= (int)$c['product_count'] === 1 ? '' : 's' ?></small></span>
@@ -55,8 +55,17 @@ $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' =
 <?php if ($deals): ?>
 <section class="section section-soft" aria-labelledby="deals-h">
   <div class="wrap">
-    <div class="section-head"><div><h2 id="deals-h">This month’s specials</h2><p>Limited-time prices while stocks last.</p></div><a class="more" href="<?= url('specials') ?>">All specials →</a></div>
+    <div class="section-head"><div><h2 id="deals-h">Specials</h2><p>This month’s deals while stocks last.</p></div><a class="more" href="<?= url('specials') ?>">All specials →</a></div>
     <div class="grid"><?php foreach ($deals as $p) { partial('card', ['p' => $p]); } ?></div>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($newest): ?>
+<section class="section" aria-labelledby="new-h">
+  <div class="wrap">
+    <div class="section-head"><div><h2 id="new-h">New in Market</h2><p>The latest printers, scanners, cartridges and accessories.</p></div><a class="more" href="<?= url('new') ?>">See all new products →</a></div>
+    <div class="grid"><?php foreach ($newest as $p) { partial('card', ['p' => $p]); } ?></div>
   </div>
 </section>
 <?php endif; ?>

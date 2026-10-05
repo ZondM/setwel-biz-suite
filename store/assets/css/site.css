@@ -95,7 +95,8 @@ p { margin: 0 0 1em; }
 /* Navigation */
 .nav { background: var(--navy); }
 .nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; }
-.nav a { display: block; padding: 12px 14px; color: #fff; text-decoration: none; font-weight: 500; font-size: .95rem; }
+.nav a { display: block; padding: 12px 11px; color: #fff; text-decoration: none; font-weight: 500; font-size: .88rem; white-space: nowrap; }
+.nav .nav-new a { color: #9fd3ff; font-weight: 700; }
 .nav a:hover, .nav a.active { background: var(--navy-2); color: var(--gold-2); }
 .nav .nav-special a { color: var(--gold-2); font-weight: 700; }
 
@@ -173,6 +174,7 @@ p { margin: 0 0 1em; }
 .card form, .card .card-actions { position: relative; z-index: 1; }
 .tag { position: absolute; top: 10px; left: 10px; z-index: 1; background: var(--danger); color: #fff; font-size: .75rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; letter-spacing: .04em; }
 .tag-gold { background: var(--gold); color: var(--navy); }
+.tag-navy { background: var(--navy); color: #fff; }
 .price { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
 .price-old { color: var(--muted); text-decoration: line-through; font-size: .9rem; font-weight: 500; margin-left: 6px; }
 .price-quote { font-size: 1rem; font-weight: 700; color: var(--navy-2); }

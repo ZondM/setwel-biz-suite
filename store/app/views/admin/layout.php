@@ -26,6 +26,7 @@ $pill = fn($n) => $n ? '<span class="pill">' . $n . '</span>' : '';
       <a class="<?= $is('/admin/products') ?>" href="<?= url('admin/products') ?>">All products</a>
       <a class="<?= $is('/admin/import') ?>" href="<?= url('admin/import') ?>">Import / update prices</a>
       <a class="<?= $is('/admin/images') ?>" href="<?= url('admin/images') ?>">Bulk images</a>
+      <a class="<?= $is('/admin/pricing') ?>" href="<?= url('admin/pricing') ?>">Pricing rules</a>
       <a class="<?= $is('/admin/catalog') ?>" href="<?= url('admin/catalog') ?>">Categories &amp; brands</a>
       <div class="group">Sales</div>
       <a class="<?= $is('/admin/orders') ?>" href="<?= url('admin/orders') ?>">Orders <?= $pill($newOrders) ?></a>
@@ -55,11 +56,19 @@ var all = document.querySelector('[data-check-all]');
 if (all) all.addEventListener('change', function () { document.querySelectorAll('input[name="ids[]"]').forEach(function (c) { c.checked = all.checked; }); });
 var calc = document.querySelector('[data-calc-price]');
 if (calc) calc.addEventListener('click', function () {
-  var cost = parseFloat(document.querySelector('[name=cost_price]').value || '0');
-  var m = parseFloat(calc.getAttribute('data-markup')), step = parseFloat(calc.getAttribute('data-step'));
+  var cost = parseFloat((document.querySelector('[name=cost_price]').value || '0').replace(/[\sR]/g, '').replace(',', '.'));
+  var b = parseInt(document.querySelector('[name=brand_id]').value || '0', 10) || null;
+  var c = parseInt(document.querySelector('[name=category_id]').value || '0', 10) || null;
+  var m = parseFloat(calc.getAttribute('data-default')), best = -1, step = parseFloat(calc.getAttribute('data-step'));
+  JSON.parse(calc.getAttribute('data-rules') || '[]').forEach(function (r) {
+    if ((r.b !== null && r.b !== b) || (r.c !== null && r.c !== c)) return;
+    var score = (r.b !== null && r.c !== null) ? 3 : (r.c !== null ? 2 : 1);
+    if (score > best) { best = score; m = r.m; }
+  });
   if (!cost) { alert('Type the supplier cost first.'); return; }
   var p = cost * (1 + m / 100); if (step > 0) p = Math.ceil(Math.round(p / step * 1e6) / 1e6) * step;
   document.querySelector('[name=price]').value = p.toFixed(2);
+  calc.textContent = 'Calculate from cost (' + m + '% markup used)';
 });
 </script>
 </body>

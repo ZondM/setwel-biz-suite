@@ -5,7 +5,7 @@
 | File / folder | What it is | What you do with it |
 |---|---|---|
 | **START-HERE.html** | This guide (all guides on one page) | Double-click to read it in Chrome |
-| **OPEN-WEBSITE-PREVIEW.html** | A picture-perfect copy of the shop with the 10 sample products | Double-click to look around the shop. Nothing to install |
+| **OPEN-WEBSITE-PREVIEW.html** | A copy of the whole shop: all 652 products, every category, New in Market and Specials | Double-click to look around the shop. Nothing to install |
 | website-preview | The files for the preview above | Leave it next to OPEN-WEBSITE-PREVIEW.html |
 | **PREVIEW-WEBSITE.bat** | The full working shop **and admin area** on your computer (needs PHP) | Optional — use it to try the admin, import and checkout before uploading |
 | **dist\setwel-store-upload.zip** | The finished website, packed for your hosting | The **only** file you upload to cPanel (install guide below) |
@@ -18,7 +18,7 @@
 
 Double-click **OPEN-WEBSITE-PREVIEW.html**. The shop opens in Chrome and you can click through the home page, categories, products, specials and information pages.
 
-It is a snapshot. Add to cart, search, checkout and the forms only work on the live website. The snapshot shows the 10 sample products, not your own edits.
+It is a snapshot. Add to cart, search, checkout and the forms only work on the live website. It shows the products and prices as they will be on the day you install the website — not edits you make later in the admin.
 
 ## Try the full shop and admin area (optional)
 

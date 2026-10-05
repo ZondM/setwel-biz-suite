@@ -24,8 +24,11 @@ Tick everything before you tell customers about the site.
 - [ ] Your logo: the store uses the Setwel "S" logo from your current website. If you have a newer/higher-quality file, send it and Claude Code will swap it in.
 
 ## Products
-- [ ] Sample products checked: keep, fix or delete them. The sample sale on the MF3010 is only a demo — change it or end it.
-- [ ] Canon 725 toner: no real price yet (shows "Price on request"). Add the cost price or hide it.
+- [ ] Pricing rules checked (Admin → Pricing rules): HP/Brother/Canon ink & toner 0%, Canon printers 55%, everything else 45%
+- [ ] First supplier price-list import done, so every product also has its cost price (the website ships with selling prices only)
+- [ ] Specials checked: the 10 flyer products are marked as specials. Canon 725 toner has no price yet ("Price on request") — add the cost or hide it.
+- [ ] Logitech products named "Logitech … (part no. …)" renamed to their real model names
+- [ ] Paper & Office: no products yet — it stays hidden until you add some
 - [ ] Real products imported from your supplier price sheets
 - [ ] Every visible product has a photo, a price, a brand and a category
 - [ ] Delivery fee checked (default **R150** — you didn't give me a figure, so change it if needed). Free over **R2 500**.

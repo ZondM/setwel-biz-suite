@@ -28,6 +28,8 @@ function admin_products(): void
         'visible' => 'p.visible = 1',
         'hidden' => 'p.visible = 0',
         'sale' => 'p.sale_price > 0',
+        'new' => 'p.is_new = 1',
+        'special' => 'p.is_special = 1',
         'noprice' => '(p.price IS NULL OR p.price = 0)',
         'noimage' => 'NOT EXISTS (SELECT 1 FROM product_images i WHERE i.product_id = p.id)',
         'out' => "p.stock_status = 'out_of_stock'",
@@ -67,12 +69,24 @@ function admin_products_bulk(): void
         case 'unfeature':
             q("UPDATE products SET featured = 0 WHERE id IN ($in)");
             break;
+        case 'new':
+            q("UPDATE products SET is_new = 1 WHERE id IN ($in)");
+            break;
+        case 'not_new':
+            q("UPDATE products SET is_new = 0 WHERE id IN ($in)");
+            break;
+        case 'special':
+            q("UPDATE products SET is_special = 1 WHERE id IN ($in)");
+            break;
+        case 'not_special':
+            q("UPDATE products SET is_special = 0 WHERE id IN ($in)");
+            break;
         case 'end_sale':
             q("UPDATE products SET sale_price = NULL, sale_ends = NULL, updated_at = ? WHERE id IN ($in)", [now()]);
             break;
         case 'reprice':
-            foreach (q_all("SELECT id, cost_price FROM products WHERE id IN ($in) AND cost_price > 0") as $r) {
-                q('UPDATE products SET price = ?, updated_at = ? WHERE id = ?', [price_from_cost((float)$r['cost_price']), now(), $r['id']]);
+            foreach (q_all("SELECT id, cost_price, brand_id, category_id FROM products WHERE id IN ($in) AND cost_price > 0") as $r) {
+                q('UPDATE products SET price = ?, updated_at = ? WHERE id = ?', [price_from_cost((float)$r['cost_price'], $r['brand_id'] ? (int)$r['brand_id'] : null, $r['category_id'] ? (int)$r['category_id'] : null), now(), $r['id']]);
             }
             break;
         case 'stock':
@@ -123,10 +137,12 @@ function admin_product_form(?string $id = null): void
         $d['stock_status'] = isset(stock_statuses()[$_POST['stock_status'] ?? '']) ? $_POST['stock_status'] : 'in_stock';
         $d['visible'] = !empty($_POST['visible']) ? 1 : 0;
         $d['featured'] = !empty($_POST['featured']) ? 1 : 0;
+        $d['is_new'] = !empty($_POST['is_new']) ? 1 : 0;
+        $d['is_special'] = !empty($_POST['is_special']) ? 1 : 0;
         $d['brand_id'] = ($_POST['new_brand'] ?? '') !== '' ? find_or_create('brands', $_POST['new_brand']) : (((int)($_POST['brand_id'] ?? 0)) ?: null);
         $d['category_id'] = ($_POST['new_category'] ?? '') !== '' ? find_or_create('categories', $_POST['new_category']) : (((int)($_POST['category_id'] ?? 0)) ?: null);
         if (!$d['price'] && $d['cost_price']) {
-            $d['price'] = price_from_cost($d['cost_price']);
+            $d['price'] = price_from_cost($d['cost_price'], $d['brand_id'] ? (int)$d['brand_id'] : null, $d['category_id'] ? (int)$d['category_id'] : null);
         }
         if ($d['sku'] === '') {
             $errors[] = 'SKU is required (use your supplier\'s product code).';
@@ -240,4 +256,57 @@ function admin_export(string $type): void
         csv_download("$name.csv", $rows);
     }
     xlsx_download("$name.xlsx", $rows, [14, 48, 12, 16, 14, 12, 11, 12, 13, 8, 9, 40, 50, 50, 40, 40, 14, 14, 20, 30, 40]);
+}
+
+
+/** Admin → Pricing rules: markup per brand and/or category. */
+function admin_pricing(): void
+{
+    require_admin();
+    if (is_post()) {
+        $action = $_POST['action'] ?? '';
+        if ($action === 'add') {
+            $markup = (float)str_replace(',', '.', (string)($_POST['markup'] ?? ''));
+            $b = (int)($_POST['brand_id'] ?? 0) ?: null;
+            $c = (int)($_POST['category_id'] ?? 0) ?: null;
+            if (!$b && !$c) {
+                flash('error', 'Choose a brand, a category or both. (The default markup for everything else is in Settings.)');
+            } elseif (q_val('SELECT id FROM price_rules WHERE ' . ($b ? 'brand_id = ' . $b : 'brand_id IS NULL') . ' AND ' . ($c ? 'category_id = ' . $c : 'category_id IS NULL'))) {
+                flash('error', 'There is already a rule for that brand and category — change its markup below.');
+            } else {
+                db_insert('price_rules', ['brand_id' => $b, 'category_id' => $c, 'markup' => $markup, 'note' => trim($_POST['note'] ?? ''), 'created_at' => now()]);
+                flash('success', 'Rule added. Click "Recalculate all prices" to apply it to existing products.');
+            }
+        } elseif ($action === 'save') {
+            foreach ((array)($_POST['markup'] ?? []) as $id => $m) {
+                db_update('price_rules', ['markup' => (float)str_replace(',', '.', (string)$m)], 'id = ?', [(int)$id]);
+            }
+            if (isset($_POST['default_markup'])) {
+                setting_save('markup_percent', (string)max(0, (float)str_replace(',', '.', (string)$_POST['default_markup'])));
+            }
+            flash('success', 'Markups saved. Click "Recalculate all prices" to apply them to existing products.');
+        } elseif ($action === 'delete') {
+            q('DELETE FROM price_rules WHERE id = ?', [(int)$_POST['id']]);
+            flash('success', 'Rule deleted.');
+        } elseif ($action === 'recalc') {
+            $GLOBALS['rules_dirty'] = true;
+            $n = 0;
+            foreach (q_all('SELECT id, cost_price, price, brand_id, category_id FROM products WHERE cost_price > 0') as $r) {
+                $new = price_from_cost((float)$r['cost_price'], $r['brand_id'] ? (int)$r['brand_id'] : null, $r['category_id'] ? (int)$r['category_id'] : null);
+                if (abs($new - (float)$r['price']) > 0.004) {
+                    q('UPDATE products SET price = ?, updated_at = ? WHERE id = ?', [$new, now(), $r['id']]);
+                    $n++;
+                }
+            }
+            flash('success', "$n selling price(s) updated. Products without a supplier cost were not changed.");
+        }
+        redirect('/admin/pricing');
+    }
+    admin_view('pricing', [
+        'title' => 'Pricing rules',
+        'rules' => price_rules(),
+        'brands' => q_all('SELECT id, name FROM brands ORDER BY name'),
+        'categories' => q_all('SELECT id, name FROM categories ORDER BY name'),
+        'no_cost' => (int)q_val('SELECT COUNT(*) FROM products WHERE (cost_price IS NULL OR cost_price = 0) AND price > 0'),
+    ]);
 }

@@ -71,6 +71,14 @@ function brands_visible(): array
         FROM brands b WHERE b.visible = 1 ORDER BY sort_order, name');
 }
 
+/** Brands that have products in one category, with counts for that category. */
+function brands_in_category(int $categoryId): array
+{
+    return q_all('SELECT b.*, COUNT(p.id) AS product_count FROM brands b JOIN products p ON p.brand_id = b.id AND p.visible = 1
+        WHERE b.visible = 1 AND (p.category_id = ? OR p.category_id IN (SELECT id FROM categories WHERE parent_id = ?))
+        GROUP BY b.id ORDER BY b.sort_order, b.name', [$categoryId, $categoryId]);
+}
+
 /** "Key: Value" lines → [[key, value], ...] */
 function parse_specs(?string $specs): array
 {
@@ -158,12 +166,23 @@ function product_search(array $f, int $perPage = 24): array
 
 function products_featured(int $limit = 8): array
 {
-    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.featured = 1 ORDER BY p.updated_at DESC LIMIT $limit");
+    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.featured = 1 AND p.is_special = 0 AND p.is_new = 0 ORDER BY p.updated_at DESC LIMIT $limit");
 }
 
 function products_on_sale(int $limit = 8): array
 {
     return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?) ORDER BY p.updated_at DESC LIMIT $limit", [date('Y-m-d')]);
+}
+
+/** Specials: products marked "special" plus products with a running sale price. */
+function products_specials(int $limit = 8): array
+{
+    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY p.featured DESC, p.updated_at DESC LIMIT $limit", [date('Y-m-d')]);
+}
+
+function products_new(int $limit = 8): array
+{
+    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_new = 1 ORDER BY c.sort_order, p.name LIMIT $limit");
 }
 
 function products_related(array $p, int $limit = 4): array

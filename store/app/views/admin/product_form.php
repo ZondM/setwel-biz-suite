@@ -54,8 +54,8 @@
     <div class="card form">
       <h2>Price</h2>
       <label>Supplier cost (excl. VAT)<input type="text" inputmode="decimal" name="cost_price" value="<?= $v('cost_price') ?>"><span class="hint">Private — never shown to customers.</span></label>
-      <label>Selling price (R)<input type="text" inputmode="decimal" name="price" value="<?= $v('price') ?>"><span class="hint">Leave blank to calculate from cost (+<?= e(setting('markup_percent')) ?>%). No price = "Request a quote".</span></label>
-      <button type="button" class="btn btn-sm" data-calc-price data-markup="<?= e(setting('markup_percent')) ?>" data-step="<?= e(setting('price_rounding')) ?>">Calculate from cost (+<?= e(setting('markup_percent')) ?>%)</button>
+      <label>Selling price (R)<input type="text" inputmode="decimal" name="price" value="<?= $v('price') ?>"><span class="hint">Leave blank to calculate from cost using your <a href="<?= url('admin/pricing') ?>">pricing rules</a>. No price = "Request a quote".</span></label>
+      <button type="button" class="btn btn-sm" data-calc-price data-step="<?= e(setting('price_rounding')) ?>" data-default="<?= e(setting('markup_percent')) ?>" data-rules="<?= e(json_encode(array_map(fn($r) => ['b' => $r['brand_id'] !== null ? (int)$r['brand_id'] : null, 'c' => $r['category_id'] !== null ? (int)$r['category_id'] : null, 'm' => (float)$r['markup']], price_rules()))) ?>">Calculate from cost</button>
       <label>Sale price (optional)<input type="text" inputmode="decimal" name="sale_price" value="<?= $v('sale_price') ?>"></label>
       <label>Sale ends<input type="date" name="sale_ends" value="<?= $v('sale_ends') ?>"><span class="hint">After this date the normal price returns automatically.</span></label>
     </div>
@@ -64,6 +64,8 @@
       <label>Stock status<select name="stock_status"><?php foreach (stock_statuses() as $k => $l): ?><option value="<?= $k ?>" <?= ($p['stock_status'] ?? '') === $k ? 'selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select><span class="hint">"Out of stock" products can only be quoted, not bought.</span></label>
       <label class="check"><input type="checkbox" name="visible" value="1" <?= !empty($p['visible']) ? 'checked' : '' ?>> Visible on website</label>
       <label class="check"><input type="checkbox" name="featured" value="1" <?= !empty($p['featured']) ? 'checked' : '' ?>> Popular (show on home page)</label>
+      <label class="check"><input type="checkbox" name="is_new" value="1" <?= !empty($p['is_new']) ? 'checked' : '' ?>> New in Market</label>
+      <label class="check"><input type="checkbox" name="is_special" value="1" <?= !empty($p['is_special']) ? 'checked' : '' ?>> Show on the Specials page</label>
       <button class="btn btn-primary btn-lg" type="submit">Save product</button>
       <button class="btn" type="submit" name="save_new" value="1">Save &amp; add another</button>
     </div>

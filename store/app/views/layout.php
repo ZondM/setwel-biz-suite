@@ -69,6 +69,7 @@ $orgSchema = [
       <div class="suggest" id="suggest-box" role="listbox" hidden></div>
     </div>
     <div class="header-actions">
+      <a class="icon-btn hide-sm" href="<?= url('contact') ?>"><?= icon('phone') ?> Contact</a>
       <a class="icon-btn hide-sm" href="<?= url('quote') ?>"><?= icon('file') ?> Quote</a>
       <a class="icon-btn" href="<?= url('cart') ?>" aria-label="Cart, <?= cart_count() ?> items"><?= icon('cart', 22) ?><span class="hide-sm">Cart</span><?php if (cart_count()): ?><span class="badge-count"><?= cart_count() ?></span><?php endif; ?></a>
       <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" data-menu><?= icon('menu', 22) ?><span class="sr-only">Menu</span></button>
@@ -79,12 +80,11 @@ $orgSchema = [
   <div class="wrap">
     <ul>
       <li><a href="<?= url('shop') ?>" class="<?= $current === '/shop' ? 'active' : '' ?>">All products</a></li>
-      <?php foreach (array_slice($cats, 0, 6) as $c): ?>
+      <?php foreach ($cats as $c): if (!$c['product_count']) continue; ?>
         <li><a href="<?= url('category/' . $c['slug']) ?>" class="<?= $current === '/category/' . $c['slug'] ? 'active' : '' ?>"><?= e($c['name']) ?></a></li>
       <?php endforeach; ?>
+      <li class="nav-new"><a href="<?= url('new') ?>">New in Market</a></li>
       <li class="nav-special"><a href="<?= url('specials') ?>">Specials</a></li>
-      <li><a href="<?= url('quote') ?>">Request a quote</a></li>
-      <li><a href="<?= url('contact') ?>">Contact</a></li>
     </ul>
   </div>
 </nav>
@@ -108,14 +108,16 @@ $orgSchema = [
       <div>
         <h3>Shop</h3>
         <ul>
-          <?php foreach (array_slice($cats, 0, 7) as $c): ?><li><a href="<?= url('category/' . $c['slug']) ?>"><?= e($c['name']) ?></a></li><?php endforeach; ?>
-          <li><a href="<?= url('specials') ?>">Monthly specials</a></li>
+          <?php foreach ($cats as $c): if (!$c['product_count']) continue; ?><li><a href="<?= url('category/' . $c['slug']) ?>"><?= e($c['name']) ?></a></li><?php endforeach; ?>
+          <li><a href="<?= url('new') ?>">New in Market</a></li>
+          <li><a href="<?= url('specials') ?>">Specials</a></li>
         </ul>
       </div>
       <div>
         <h3>Help</h3>
         <ul>
           <li><a href="<?= url('quote') ?>">Request a quote</a></li>
+          <li><a href="<?= url('contact') ?>">Contact us</a></li>
           <li><a href="<?= url('page/delivery-returns') ?>">Delivery &amp; returns</a></li>
           <li><a href="<?= url('page/warranty') ?>">Warranty</a></li>
           <li><a href="<?= url('page/about') ?>">About us</a></li>

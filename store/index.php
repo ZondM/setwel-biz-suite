@@ -26,6 +26,12 @@ if (!config('db_driver')) {
     exit;
 }
 
+// After uploading a newer version of the store, update the database automatically.
+if (setting('schema_version', '1') !== SCHEMA_VERSION) {
+    upgrade_schema();
+    setting_save('schema_version', SCHEMA_VERSION);
+}
+
 $routes = [
     // Shop
     ['GET', '/', 'home_page'],
@@ -35,6 +41,7 @@ $routes = [
     ['GET', '/product/([a-z0-9-]+)', 'product_page'],
     ['GET', '/search', 'search_page'],
     ['GET', '/specials', 'specials_page'],
+    ['GET', '/new', 'new_page'],
     ['GET', '/api/suggest', 'suggest_api'],
     ['GET|POST', '/quote', 'quote_page'],
     ['GET|POST', '/contact', 'contact_page'],
@@ -87,6 +94,7 @@ $routes = [
     ['GET|POST', '/admin/documents', 'admin_documents'],
     ['GET', '/admin/documents/(\d+)', 'admin_document_file'],
     ['GET|POST', '/admin/catalog', 'admin_catalog'],
+    ['GET|POST', '/admin/pricing', 'admin_pricing'],
     ['GET|POST', '/admin/settings', 'admin_settings'],
     ['GET|POST', '/admin/account', 'admin_account'],
 ];

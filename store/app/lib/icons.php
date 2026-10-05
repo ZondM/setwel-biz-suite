@@ -31,6 +31,8 @@ function icon(string $name, int $size = 20, string $class = ''): string
         'share' => '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>',
         'download' => '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
         'upload' => '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+        'clean' => '<path d="M9 3h5l1 3H8l1-3zM8 6h7v3a3 3 0 0 1 3 3v8a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-8a3 3 0 0 1 2-3V6z"/><path d="M15 4h3M18 2v4M10 13h4"/>',
+        'laptop' => '<rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20l-2-4H4l-2 4z"/>',
         'grid' => '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
     ];
     if ($name === 'whatsapp') {

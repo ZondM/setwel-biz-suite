@@ -58,7 +58,9 @@ The store forces `https://`. PayFast also needs https.
 3. Choose **MySQL** and fill in the database name, user and password from Step 4 (host stays `localhost`).
 4. Site URL: `https://setwelafrica.com`
 5. Type your name, email and a strong password for your admin login.
-6. Leave **Add the 10 sample products** ticked (you can delete them later).
+6. Leave both boxes ticked:
+   - **Load the Setwel Africa product catalogue** — the 642 products from your price list, with prices from your pricing rules
+   - **Add the 10 flyer products as specials** — the Canon printers, Canon 725 toner and Kenton bags
 7. Click **Install**. You will land on the admin login page.
 
 ⚠️ Do Step 6 right after Step 5. Until the wizard has been completed, anyone who opens the site could run it.

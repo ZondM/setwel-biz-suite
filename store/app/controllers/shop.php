@@ -8,9 +8,10 @@ function home_page(): void
     render('home', [
         'banners' => $banners,
         'featured' => products_featured(8),
-        'deals' => products_on_sale(4),
+        'deals' => products_specials(8),
+        'newest' => products_new(8),
         'categories' => categories_visible(),
-        'brands' => brands_visible(),
+        'brands' => array_slice(array_values(array_filter(brands_visible(), fn($b) => $b['product_count'] > 0)), 0, 12),
         'meta' => ['canonical' => abs_url('/')],
     ]);
 }
@@ -40,7 +41,7 @@ function render_listing(string $title, string $intro, array $f, array $extra = [
         'f' => $f,
         'res' => $res,
         'categories' => categories_visible(),
-        'brands' => brands_visible(),
+        'brands' => !empty($f['category']) && ($cid = q_val('SELECT id FROM categories WHERE slug = ?', [$f['category']])) ? brands_in_category((int)$cid) : brands_visible(),
         'meta' => ['title' => $title . ($f['page'] > 1 ? ' – page ' . $f['page'] : ''), 'description' => $intro ?: $title . ' — shop online at ' . setting('business_name') . '. Nationwide delivery.', 'robots' => $noindex ? 'noindex, follow' : null],
     ], $extra));
 }
@@ -87,9 +88,15 @@ function search_page(): void
 
 function specials_page(): void
 {
-    $items = q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?) ORDER BY c.sort_order, b.name, p.name", [date('Y-m-d')]);
+    $items = q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY c.sort_order, b.name, p.name", [date('Y-m-d')]);
     $featured = $items ? [] : products_featured(12);
-    render('specials', ['items' => $items, 'featured' => $featured, 'meta' => ['title' => 'Monthly specials — ' . date('F Y'), 'description' => 'This month\'s specials on printers, ink, toner and office technology at ' . setting('business_name') . '. While stocks last.']]);
+    render('specials', ['items' => $items, 'featured' => $featured, 'meta' => ['title' => 'Specials — ' . date('F Y'), 'description' => 'This month\'s specials on printers, ink, toner and office technology at ' . setting('business_name') . '. While stocks last.']]);
+}
+
+function new_page(): void
+{
+    $items = products_new(200);
+    render('new', ['items' => $items, 'meta' => ['title' => 'New in Market', 'description' => 'The newest printers, scanners, cartridges, laptops and accessories at ' . setting('business_name') . '.']]);
 }
 
 function suggest_api(): void

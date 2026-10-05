@@ -24,7 +24,28 @@ from openpyxl.utils import get_column_letter
 
 SRC = sys.argv[1]
 OUT = sys.argv[2]
-MARKUP = 0.55
+# Website categories (Setwel's grouping) and pricing rules
+CATMAP = {
+    'Printers': 'Printers & Scanners', 'Scanners': 'Printers & Scanners', 'Ink & Toner': 'Ink & Toner',
+    'Labelling Machines': 'Labelling Machines & Tape',
+    'USB Flash Drives': 'USB, SSD & HDD', 'SSD Drives': 'USB, SSD & HDD', 'Hard Drives': 'USB, SSD & HDD', 'Memory Cards': 'USB, SSD & HDD',
+    'Batteries': 'Accessories', 'Power Banks': 'Accessories', 'Accessories': 'Accessories', 'Laptop Bags': 'Accessories',
+    'Cleaning Products': 'Cleaning & Hygiene',
+    'Laptops': 'Laptops, Monitors & Projectors', 'Monitors': 'Laptops, Monitors & Projectors', 'Projectors': 'Laptops, Monitors & Projectors',
+}
+RULES = [  # (label, markup, Summary cell)
+    ('Everything else (default)', 0.45, 'C4'),
+    ('HP, Brother & Canon ink and toner (supplier price)', 0.0, 'C5'),
+    ('Canon printers', 0.55, 'C6'),
+]
+
+
+def rule_cell(item):
+    if item['category'] == 'Ink & Toner' and item['brand'] in ('HP', 'Brother', 'Canon'):
+        return 'C5'
+    if item['category'] == 'Printers & Scanners' and item['brand'] == 'Canon':
+        return 'C6'
+    return 'C4'
 
 # ---------------------------------------------------------------- read supplier list
 wb_in = openpyxl.load_workbook(SRC, read_only=True, data_only=True)
@@ -277,6 +298,7 @@ def build_item(r, kind, category, typ=None, brand=None):
     item['specs'] = specs
     if item['sku'] in NAME_OVERRIDES:
         item['name'] = NAME_OVERRIDES[item['sku']]
+    item['category'] = CATMAP.get(item['category'], item['category'])
     return item
 
 
@@ -537,25 +559,25 @@ ws = wb.active
 ws.title = 'Summary'
 ws['A1'] = 'Setwel Africa — product catalogue from supplier price list (effective 2 Oct 2026)'
 ws['A1'].font = Font(name=F, size=14, bold=True, color=NAVY)
-ws['A3'] = 'Markup on supplier cost (excl. VAT)'
+ws['A3'] = 'Pricing rules (same as Admin → Pricing rules on the website)'
 ws['A3'].font = BOLD
-ws['C3'] = MARKUP
-ws['C3'].number_format = '0%'
-ws['C3'].font = Font(name=F, size=11, bold=True, color='0000FF')
-ws['C3'].fill = PatternFill('solid', fgColor='FFFF00')
-ws['D3'] = '← change this one cell and every selling price in this workbook updates (55% = Setwel\'s markup, which already covers the 15% VAT paid to the supplier)'
-ws['D3'].font = Font(name=F, size=9, italic=True, color='5B6573')
-ws['A4'] = 'Selling price rule'
-ws['A4'].font = BOLD
-ws['C4'] = 'Supplier cost × (1 + markup), rounded UP to the next rand — same rule as the website'
-ws['C4'].font = BODY
-MARK = 'Summary!$C$3'
+for i, (label, m, cell) in enumerate(RULES):
+    r = 4 + i
+    ws[f'A{r}'] = label
+    ws[f'A{r}'].font = BODY
+    ws[cell] = m
+    ws[cell].number_format = '0%'
+    ws[cell].font = Font(name=F, size=11, bold=True, color='0000FF')
+    ws[cell].fill = PatternFill('solid', fgColor='FFFF00')
+ws['D4'] = '← change a yellow cell and every selling price that uses that rule updates. Prices are rounded UP to the next rand.'
+ws['D4'].font = Font(name=F, size=9, italic=True, color='5B6573')
 
-ws['A6'], ws['B6'], ws['C6'], ws['D6'] = 'Sheet', 'Products', 'What is in it', 'Website category'
+
+ws['A8'], ws['B8'], ws['C8'], ws['D8'] = 'Sheet', 'Products', 'What is in it', 'Website category'
 for c in 'ABCD':
-    ws[f'{c}6'].font = HFONT
-    ws[f'{c}6'].fill = HFILL
-row = 7
+    ws[f'{c}8'].font = HFONT
+    ws[f'{c}8'].fill = HFILL
+row = 9
 
 COLS = ['SKU (supplier code)', 'Manufacturer code', 'Product name', 'Brand', 'Type', 'Colour', 'Page yield', 'Capacity',
         'Compatible printers', 'Supplier cost excl. VAT (R)', 'Setwel selling price (R)', 'Barcode', 'Short description',
@@ -568,7 +590,7 @@ def write_sheet(name, title, items):
     sh = wb.create_sheet(name)
     sh['A1'] = title
     sh['A1'].font = Font(name=F, size=13, bold=True, color=NAVY)
-    sh['A2'] = (f'{len(items)} products · discontinued (EOL) items excluded · selling price = supplier cost + markup on the Summary sheet, '
+    sh['A2'] = (f'{len(items)} products · discontinued (EOL) items excluded · selling price = supplier cost + the markup rule on the Summary sheet, '
                 'rounded up to the next rand · blue = supplier input')
     sh['A2'].font = Font(name=F, size=9, italic=True, color='5B6573')
     for i, h in enumerate(COLS, 1):
@@ -578,7 +600,7 @@ def write_sheet(name, title, items):
         r = 5 + i
         spec_txt = '\n'.join(f'{k}: {v}' for k, v in it['specs'])
         vals = [it['sku'], it['mpn'], it['name'], it['brand'], it['type'], it['colour'], it['yield'], it['capacity'],
-                it['compatible'], it['cost'], f'=IF(J{r}="","Price on request",CEILING(J{r}*(1+{MARK}),1))', it['barcode'],
+                it['compatible'], it['cost'], f'=IF(J{r}="","Price on request",CEILING(J{r}*(1+Summary!${rule_cell(it)[0]}${rule_cell(it)[1:]}),1))', it['barcode'],
                 it['short'], it.get('description') or '', spec_txt, f"{it['sku']}.jpg", it.get('check', ''), it['source']]
         for j, v in enumerate(vals, 1):
             c = sh.cell(row=r, column=j, value=v if v != '' else None)
@@ -628,7 +650,7 @@ notes = [
     'HOW TO PUT THESE PRODUCTS ON THE WEBSITE',
     '1. Admin → Import / update prices → upload the separate file "Setwel-Website-Import.xlsx" (it holds only the Website import sheet).',
     '   Edit products in that file (or in the Website import sheet here) before uploading if you want to change names or descriptions.',
-    '2. Matching is automatic. Leave "Selling price" empty in the import — the website adds your markup to the supplier cost itself.',
+    '2. Matching is automatic. Leave "Selling price" empty in the import — the website adds the markup from its Pricing rules itself.',
     '3. Tick "Add NEW products as hidden" if you want to add photos before customers see them.',
     '4. Photos: save each picture with the file name shown in the "Photo file name" column (SKU.jpg) and upload them all at Admin → Bulk images.',
     '',

@@ -4,25 +4,26 @@
 function seed_basics(): void
 {
     $cats = [
-        ['Printers', 'printers', 'printer', 'Laser, inkjet, MegaTank and multifunction printers for home, school and office.'],
-        ['Ink & Toner', 'ink-toner', 'drop', 'Genuine ink and toner cartridges, drums and maintenance supplies.'],
-        ['Scanners', 'scanners', 'scan', 'Document and photo scanners for offices, schools and archives.'],
-        ['Laptop Bags', 'laptop-bags', 'bag', 'Kenton laptop backpacks, business bags and anti-theft bags.'],
-        ['USB Flash Drives', 'usb-flash-drives', 'usb', 'Reliable USB flash drives in all sizes.'],
-        ['SSD Drives', 'ssd-drives', 'ssd', 'Fast SSD drives to upgrade laptops and desktops.'],
+        ['Printers & Scanners', 'printers-scanners', 'printer', 'Laser, inkjet and multifunction printers, and document scanners for home, school and office.'],
+        ['Ink & Toner', 'ink-toner', 'drop', 'Genuine ink and toner cartridges, drums and printer supplies for HP, Canon, Brother, Kyocera, Ricoh and Pantum.'],
+        ['Labelling Machines & Tape', 'labelling-tape', 'tag', 'Label printers, P-touch machines, label tapes and labels.'],
+        ['USB, SSD & HDD', 'usb-ssd-hdd', 'usb', 'USB flash drives, SSDs, hard drives and memory cards.'],
         ['Paper & Office', 'paper-office', 'paper', 'Paper, labels and everyday office supplies.'],
-        ['Accessories', 'accessories', 'plug', 'Cables, keyboards, mice and other accessories.'],
+        ['Accessories', 'accessories', 'plug', 'Batteries, power banks, keyboards, mice, headsets, webcams and laptop bags.'],
+        ['Cleaning & Hygiene', 'cleaning-hygiene', 'clean', 'Cleaning products, hand soap, sanitiser and hygiene supplies for offices and schools.'],
+        ['Laptops, Monitors & Projectors', 'laptops-monitors-projectors', 'laptop', 'Business laptops, portable monitors and projectors.'],
     ];
     foreach ($cats as $i => [$n, $s, $icon, $d]) {
         if (!q_val('SELECT id FROM categories WHERE slug = ?', [$s])) {
             db_insert('categories', ['name' => $n, 'slug' => $s, 'icon' => $icon, 'description' => $d, 'sort_order' => $i, 'visible' => 1]);
         }
     }
-    foreach (['Canon', 'HP', 'Epson', 'Riso', 'Brother', 'Kenton'] as $i => $b) {
+    foreach (['Canon', 'HP', 'Epson', 'Riso', 'Brother', 'Kyocera', 'Ricoh', 'Pantum', 'Verbatim', 'SanDisk', 'Logitech', 'Duracell', 'Kenton'] as $i => $b) {
         if (!q_val('SELECT id FROM brands WHERE slug = ?', [slugify($b)])) {
             db_insert('brands', ['name' => $b, 'slug' => slugify($b), 'sort_order' => $i, 'visible' => 1]);
         }
     }
+    seed_price_rules();
     foreach (seed_pages() as $slug => [$title, $desc, $content]) {
         if (!q_val('SELECT id FROM pages WHERE slug = ?', [$slug])) {
             db_insert('pages', ['slug' => $slug, 'title' => $title, 'meta_description' => $desc, 'content' => $content, 'updated_at' => now()]);
@@ -40,11 +41,57 @@ function seed_basics(): void
     ]);
 }
 
+/** Default pricing rules: HP, Brother & Canon ink/toner at supplier price; Canon printers +55%; everything else +45% (default). */
+function seed_price_rules(): void
+{
+    if (q_val('SELECT COUNT(*) FROM price_rules')) {
+        return;
+    }
+    $ink = (int)q_val("SELECT id FROM categories WHERE slug = 'ink-toner'");
+    $printers = (int)q_val("SELECT id FROM categories WHERE slug = 'printers-scanners'");
+    foreach (['HP', 'Brother', 'Canon'] as $b) {
+        db_insert('price_rules', ['brand_id' => find_or_create('brands', $b), 'category_id' => $ink, 'markup' => 0, 'note' => 'Discounted supplier price — sold as is', 'created_at' => now()]);
+    }
+    db_insert('price_rules', ['brand_id' => find_or_create('brands', 'Canon'), 'category_id' => $printers, 'markup' => 55, 'note' => 'Canon printers', 'created_at' => now()]);
+    setting_save('markup_percent', '45');
+    $GLOBALS['rules_dirty'] = true;
+}
+
+/** The Setwel product catalogue (app/seed/catalogue.json): selling prices only, no supplier costs. */
+function seed_catalogue(): int
+{
+    $file = APP_DIR . '/seed/catalogue.json';
+    if (!is_file($file)) {
+        return 0;
+    }
+    $items = json_decode(file_get_contents($file), true) ?: [];
+    $n = 0;
+    $pdo = db();
+    $pdo->beginTransaction();
+    foreach ($items as $it) {
+        if (q_val('SELECT id FROM products WHERE sku = ?', [$it['sku']])) {
+            continue;
+        }
+        db_insert('products', [
+            'sku' => $it['sku'], 'name' => $it['name'], 'slug' => unique_slug('products', $it['name']),
+            'brand_id' => find_or_create('brands', $it['brand']), 'category_id' => find_or_create('categories', $it['category']),
+            'short_description' => $it['short'] ?: null, 'description' => $it['description'] ?: null, 'specs' => $it['specs'] ?: null,
+            'compatible' => $it['compatible'] ?: null, 'cost_price' => null, 'price' => $it['price'],
+            'stock_status' => $it['price'] ? 'in_stock' : 'on_order', 'visible' => 1, 'featured' => 0,
+            'is_new' => $it['is_new'] ? 1 : 0, 'is_special' => 0, 'mpn' => $it['mpn'] ?: null, 'gtin' => $it['gtin'] ?: null,
+            'warranty' => $it['warranty'] ?: null, 'created_at' => now(), 'updated_at' => now(),
+        ]);
+        $n++;
+    }
+    $pdo->commit();
+    return $n;
+}
+
 function seed_products(): void
 {
-    $printers = (int)q_val("SELECT id FROM categories WHERE slug = 'printers'");
+    $printers = (int)q_val("SELECT id FROM categories WHERE slug = 'printers-scanners'");
     $ink = (int)q_val("SELECT id FROM categories WHERE slug = 'ink-toner'");
-    $bags = (int)q_val("SELECT id FROM categories WHERE slug = 'laptop-bags'");
+    $bags = (int)q_val("SELECT id FROM categories WHERE slug = 'accessories'");
     $canon = (int)q_val("SELECT id FROM brands WHERE slug = 'canon'");
     $kenton = (int)q_val("SELECT id FROM brands WHERE slug = 'kenton'");
     $w3 = '3-year Canon warranty (T&Cs apply)';
@@ -99,15 +146,13 @@ function seed_products(): void
         $id = db_insert('products', [
             'sku' => $sku, 'name' => $name, 'slug' => unique_slug('products', $name), 'brand_id' => $brand, 'category_id' => $cat,
             'short_description' => $short, 'description' => $desc, 'specs' => $specs, 'compatible' => $compat,
-            'cost_price' => $cost, 'price' => $cost ? price_from_cost($cost) : null, 'stock_status' => $cost ? 'in_stock' : 'on_order',
-            'visible' => 1, 'featured' => $feat, 'mpn' => $mpn, 'warranty' => $warranty, 'created_at' => now(), 'updated_at' => now(),
+            'cost_price' => $cost, 'price' => $cost ? price_from_cost($cost, $brand, $cat) : null, 'stock_status' => $cost ? 'in_stock' : 'on_order',
+            'visible' => 1, 'featured' => $feat, 'is_special' => 1, 'mpn' => $mpn, 'warranty' => $warranty, 'created_at' => now(), 'updated_at' => now(),
         ]);
         if ($img && is_file(APP_DIR . "/seed/$img.jpg")) {
             add_product_image($id, APP_DIR . "/seed/$img.jpg", $name, $name);
         }
     }
-    // One sample special so you can see how sale prices look (change or remove it in the admin).
-    q("UPDATE products SET sale_price = 3699, sale_ends = '2026-10-31' WHERE sku = 'CMF3010'");
 }
 
 function seed_pages(): array

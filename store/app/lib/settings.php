@@ -27,7 +27,7 @@ function setting_defaults(): array
         'show_brand_logos' => '0',
         // Money
         'vat_registered' => '0',
-        'markup_percent' => '55',
+        'markup_percent' => '45',
         'price_rounding' => '1',
         'delivery_fee' => '150',
         'free_delivery_threshold' => '2500',
@@ -100,13 +100,52 @@ function setting_save(string $key, $value): void
     $GLOBALS['settings_dirty'] = true;
 }
 
-/**
- * Selling price from supplier cost: cost × (1 + markup%), rounded UP to the rounding step.
- * Example with 55% markup: R299.00 → R463.45 → R464 (rounding step R1).
- */
-function price_from_cost(float $cost): float
+/** Pricing rules (Admin → Pricing rules). Returns all rules, cached for the request. */
+function price_rules(): array
 {
-    $markup = (float)setting('markup_percent', 55);
+    static $rules = null;
+    if ($rules === null || isset($GLOBALS['rules_dirty'])) {
+        unset($GLOBALS['rules_dirty']);
+        try {
+            $rules = q_all('SELECT r.*, b.name AS brand_name, c.name AS category_name FROM price_rules r
+                LEFT JOIN brands b ON b.id = r.brand_id LEFT JOIN categories c ON c.id = r.category_id ORDER BY r.id');
+        } catch (Throwable $e) {
+            $rules = [];
+        }
+    }
+    return $rules;
+}
+
+/**
+ * Markup % for a product. The most specific rule wins:
+ *   brand + category  →  category only  →  brand only  →  default markup (Settings).
+ */
+function markup_for(?int $brandId, ?int $categoryId): float
+{
+    $best = null;
+    $bestScore = -1;
+    foreach (price_rules() as $r) {
+        $b = $r['brand_id'] !== null ? (int)$r['brand_id'] : null;
+        $c = $r['category_id'] !== null ? (int)$r['category_id'] : null;
+        if (($b !== null && $b !== $brandId) || ($c !== null && $c !== $categoryId)) {
+            continue;
+        }
+        $score = ($b !== null && $c !== null) ? 3 : ($c !== null ? 2 : ($b !== null ? 1 : 0));
+        if ($score > $bestScore) {
+            $best = (float)$r['markup'];
+            $bestScore = $score;
+        }
+    }
+    return $best ?? (float)setting('markup_percent', 45);
+}
+
+/**
+ * Selling price from supplier cost: cost × (1 + markup%), rounded UP to the rounding step (R1 = no cents).
+ * Example with 45% markup: R299.00 → R433.55 → R434. With 0% markup: R1 557.38 → R1 558.
+ */
+function price_from_cost(float $cost, ?int $brandId = null, ?int $categoryId = null): float
+{
+    $markup = markup_for($brandId, $categoryId);
     $price = $cost * (1 + $markup / 100);
     $step = (float)setting('price_rounding', 1);
     if ($step > 0) {

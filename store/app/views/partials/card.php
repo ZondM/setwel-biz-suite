@@ -1,6 +1,6 @@
 <?php /** @var array $p */ $price = effective_price($p); $sale = sale_active($p); ?>
 <article class="card">
-  <?php if ($sale): ?><span class="tag">SAVE <?= money((float)$p['price'] - (float)$p['sale_price'], false) ?></span><?php elseif ($p['featured']): ?><span class="tag tag-gold">POPULAR</span><?php endif; ?>
+  <?php if ($sale): ?><span class="tag">SAVE <?= money((float)$p['price'] - (float)$p['sale_price'], false) ?></span><?php elseif (!empty($p['is_special'])): ?><span class="tag">SPECIAL</span><?php elseif (!empty($p['is_new'])): ?><span class="tag tag-navy">NEW</span><?php elseif ($p['featured']): ?><span class="tag tag-gold">POPULAR</span><?php endif; ?>
   <a class="card-img" href="<?= product_url($p) ?>" tabindex="-1" aria-hidden="true">
     <img src="<?= upload_url($p['thumb'] ?: $p['image']) ?>" alt="" loading="lazy" width="300" height="300">
   </a>

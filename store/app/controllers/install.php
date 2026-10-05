@@ -28,6 +28,7 @@ function install_controller(): void
         'admin_name' => $_POST['admin_name'] ?? '',
         'admin_email' => $_POST['admin_email'] ?? '',
         'sample' => isset($_POST['db_driver']) ? !empty($_POST['sample']) : true,
+        'catalogue' => isset($_POST['db_driver']) ? !empty($_POST['catalogue']) : true,
     ];
 
     if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
@@ -78,6 +79,11 @@ function install_controller(): void
             if ($v['sample']) {
                 seed_products();
             }
+            if ($v['catalogue']) {
+                @set_time_limit(300);
+                seed_catalogue();
+            }
+            setting_save('schema_version', SCHEMA_VERSION);
             $php = "<?php\n// Created by the setup wizard on " . date('Y-m-d H:i') . ". Keep this file private.\nreturn " . var_export($config, true) . ";\n";
             if (file_put_contents(APP_DIR . '/config.php', $php) === false) {
                 $errors[] = 'Could not write app/config.php — check folder permissions (755) in cPanel File Manager.';

@@ -29,7 +29,7 @@ li{margin:4px 0}.top{text-align:right;font-size:.85rem}a{color:#2c4a6e}
 </tr>
 <tr>
 <td><strong>OPEN-WEBSITE-PREVIEW.html</strong></td>
-<td>A picture-perfect copy of the shop with the 10 sample products</td>
+<td>A copy of the whole shop: all 652 products, every category, New in Market and Specials</td>
 <td>Double-click to look around the shop. Nothing to install</td>
 </tr>
 <tr>
@@ -71,7 +71,7 @@ li{margin:4px 0}.top{text-align:right;font-size:.85rem}a{color:#2c4a6e}
 </table>
 <h2>Look at the shop (easiest)</h2>
 <p>Double-click <strong>OPEN-WEBSITE-PREVIEW.html</strong>. The shop opens in Chrome and you can click through the home page, categories, products, specials and information pages.</p>
-<p>It is a snapshot. Add to cart, search, checkout and the forms only work on the live website. The snapshot shows the 10 sample products, not your own edits.</p>
+<p>It is a snapshot. Add to cart, search, checkout and the forms only work on the live website. It shows the products and prices as they will be on the day you install the website — not edits you make later in the admin.</p>
 <h2>Try the full shop and admin area (optional)</h2>
 <p>The real shop is a <strong>PHP</strong> website: its pages are built by a server when someone visits. To run the real thing on your computer, including the admin area:</p>
 <ol>
@@ -154,7 +154,11 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <li>Choose <strong>MySQL</strong> and fill in the database name, user and password from Step 4 (host stays <code>localhost</code>).</li>
 <li>Site URL: <code>https://setwelafrica.com</code></li>
 <li>Type your name, email and a strong password for your admin login.</li>
-<li>Leave <strong>Add the 10 sample products</strong> ticked (you can delete them later).</li>
+<li>Leave both boxes ticked:<ul>
+<li><strong>Load the Setwel Africa product catalogue</strong> — the 642 products from your price list, with prices from your pricing rules</li>
+<li><strong>Add the 10 flyer products as specials</strong> — the Canon printers, Canon 725 toner and Kenton bags</li>
+</ul>
+</li>
 <li>Click <strong>Install</strong>. You will land on the admin login page.</li>
 </ol>
 <p>⚠️ Do Step 6 right after Step 5. Until the wizard has been completed, anyone who opens the site could run it.</p>
@@ -246,14 +250,34 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <p>No coding needed. Everything is done at <strong>https://setwelafrica.com/admin</strong>.</p>
 <h2>How prices work</h2>
 <ul>
-<li>You enter the <strong>supplier cost excl. VAT</strong> (the price on the distributor sheet or flyer).</li>
-<li>
-<p>The store adds your markup (<strong>55%</strong>, change it in Settings → Pricing) and rounds <strong>up</strong> to the nearest rand.
-  Example: R299.00 × 1.55 = R463.45 → <strong>R464</strong>.</p>
-</li>
-<li>
-<p>Setwel Africa is not VAT registered, so the store adds no VAT. Your 55% already covers the VAT you pay the supplier.</p>
-</li>
+<li>You enter the <strong>supplier cost excl. VAT</strong> (the price on the supplier's price sheet).</li>
+<li>The website adds the markup from <strong>Admin → Pricing rules</strong> and rounds <strong>up</strong> to the next rand:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Products</th>
+<th>Markup</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HP, Brother and Canon ink &amp; toner</td>
+<td><strong>0%</strong> — sold at the supplier's (discounted) price, e.g. R1 557.38 → R1 558</td>
+</tr>
+<tr>
+<td>Canon printers</td>
+<td><strong>55%</strong></td>
+</tr>
+<tr>
+<td>Everything else (incl. Kyocera, Ricoh and Pantum cartridges)</td>
+<td><strong>45%</strong> (the default)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Change a markup or add a rule (any brand and/or category) on the Pricing rules page. Then click <strong>Recalculate all prices</strong> to update the products already in the shop.</li>
+<li>Setwel Africa is not VAT registered, so the website adds no VAT.</li>
 <li>Customers never see your cost price or your supplier's name.</li>
 </ul>
 <hr />
@@ -293,7 +317,8 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 </ol>
 <h2>C. Add, change or remove one product</h2>
 <ul>
-<li><strong>Add:</strong> Products → <strong>+ Add product</strong>. Fill in the name, SKU, brand, category and supplier cost (the selling price is calculated for you), add photos, then <strong>Save</strong>.</li>
+<li><strong>Add:</strong> Products → <strong>+ Add product</strong>. Fill in the name, SKU, brand, category and supplier cost (the selling price is calculated from your pricing rules), add photos, then <strong>Save</strong>.</li>
+<li><strong>New in Market / Specials:</strong> tick "New in Market" or "Show on the Specials page" on the product, or tick many products in the list and use <strong>With ticked products → Mark as New in Market / Mark as Special</strong>.</li>
 <li><strong>Change:</strong> click the product name, edit, <strong>Save</strong>.</li>
 <li><strong>Hide</strong> (e.g. discontinued): untick <strong>Visible on website</strong>. Hiding is safer than deleting.</li>
 <li><strong>Delete:</strong> open the product → <strong>Delete product</strong> at the bottom.</li>
@@ -304,7 +329,8 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <li>Show on website / Hide from website</li>
 <li>Mark as popular (shows on the home page)</li>
 <li>End sale price</li>
-<li>Recalculate selling price from cost (use after changing the markup %)</li>
+<li>Mark as New in Market / Mark as Special (and remove again)</li>
+<li>Recalculate selling price from cost (uses your pricing rules)</li>
 <li>Set stock status</li>
 <li>Delete</li>
 </ul>
@@ -380,8 +406,11 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 </ul>
 <h2>Products</h2>
 <ul>
-<li>☐ Sample products checked: keep, fix or delete them. The sample sale on the MF3010 is only a demo — change it or end it.</li>
-<li>☐ Canon 725 toner: no real price yet (shows "Price on request"). Add the cost price or hide it.</li>
+<li>☐ Pricing rules checked (Admin → Pricing rules): HP/Brother/Canon ink &amp; toner 0%, Canon printers 55%, everything else 45%</li>
+<li>☐ First supplier price-list import done, so every product also has its cost price (the website ships with selling prices only)</li>
+<li>☐ Specials checked: the 10 flyer products are marked as specials. Canon 725 toner has no price yet ("Price on request") — add the cost or hide it.</li>
+<li>☐ Logitech products named "Logitech … (part no. …)" renamed to their real model names</li>
+<li>☐ Paper &amp; Office: no products yet — it stays hidden until you add some</li>
 <li>☐ Real products imported from your supplier price sheets</li>
 <li>☐ Every visible product has a photo, a price, a brand and a category</li>
 <li>☐ Delivery fee checked (default <strong>R150</strong> — you didn't give me a figure, so change it if needed). Free over <strong>R2 500</strong>.</li>

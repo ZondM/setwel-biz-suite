@@ -7,6 +7,7 @@
 <link rel="icon" href="setwel-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="pixels.js"></script>
 <style>
 :root{--dark:#0A0808;--dark2:#121010;--ink:#F2EDE8;--ink2:#A09088;--orange:#E8801A;--red:#C93050;--green:#4CAF70;--line:rgba(232,128,26,.12)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -36,6 +37,12 @@ if (new URLSearchParams(location.search).get('type') === 'trial') {
   document.getElementById('ty-ico').textContent = '\u{1F389}';
   document.getElementById('ty-h1').textContent = 'Your free trial has started!';
   document.getElementById('ty-p').textContent = 'No payment was taken today and no card was charged. Download the app to get going right away — we’ve also emailed you a confirmation. In 30 days we’ll email you a secure PayFast payment link to activate your subscription; nothing is charged before then.';
+  // The "Start Free Trial" conversion for ad platforms to optimise on.
+  // This page is reached via the redirect at the end of a real trial
+  // signup (api/start-trial.php); like any thank-you-page pixel, it
+  // would also fire if someone typed this exact URL directly, which a
+  // server-side Conversions API call (not implemented here) would avoid.
+  if (window.setwelTrackConversion) window.setwelTrackConversion('CompleteRegistration', { content_name: 'Free Trial Signup' });
 }
 </script>
 </body>

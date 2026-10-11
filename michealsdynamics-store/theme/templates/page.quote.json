@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "main": { "type": "main-page", "settings": {} },
+    "form": {
+      "type": "md-request-form",
+      "settings": { "mode": "quote", "heading": "Request a quote" }
+    }
+  },
+  "order": ["main", "form"]
+}

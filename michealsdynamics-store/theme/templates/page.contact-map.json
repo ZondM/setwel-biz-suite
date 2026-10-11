@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "main": { "type": "main-page", "settings": {} },
+    "map": { "type": "md-map", "settings": {} },
+    "form": { "type": "contact-form", "settings": {} }
+  },
+  "order": ["main", "map", "form"]
+}

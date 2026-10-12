@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning server.js",
     "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 test/*.test.js",
-    "yoco:webhook": "node --disable-warning=ExperimentalWarning scripts/register-yoco-webhook.js"
+    "yoco:webhook": "node --disable-warning=ExperimentalWarning scripts/register-yoco-webhook.js",
+    "preview": "node --disable-warning=ExperimentalWarning scripts/export-preview.js"
   },
   "dependencies": {
     "compression": "^1.8.2",

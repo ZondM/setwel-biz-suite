@@ -1,5 +1,0 @@
-COOKIE BANNER TEXT (paste into Settings > Customer privacy > Cookie banner)
-
-Title: We use cookies
-Message: We use essential cookies to run our shop (cart and checkout). With your permission we also use analytics and marketing cookies to improve the site. See our Privacy Policy.
-Buttons: Accept all | Decline | Manage preferences

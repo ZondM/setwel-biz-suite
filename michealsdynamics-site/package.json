@@ -1,0 +1,23 @@
+{
+  "name": "michealsdynamics-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Online shop for Micheals Dynamics (Pty) Ltd — medical consumables, Cape Town",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test --test-concurrency=1 test/*.test.js",
+    "yoco:webhook": "node --disable-warning=ExperimentalWarning scripts/register-yoco-webhook.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.2",
+    "express": "^4.22.3",
+    "multer": "^2.4.0",
+    "nodemailer": "^6.10.1",
+    "pdfkit": "^0.15.2"
+  }
+}

@@ -524,27 +524,55 @@ function toggleBilling(){
       }
       scene.add(cloud);
 
-      // Viewfinder corner brackets, so the cluster reads as paperwork being
-      // scanned rather than receipts scattered in the air.
-      var vfR = cloudRad + 1.3;
-      var vfGroup = new THREE.Group();
-      function vfCorner(sx, sy){
-        var len = 0.45, dx = sx > 0 ? -len : len, dy = sy > 0 ? -len : len;
-        var pts = [new THREE.Vector3(sx + dx, sy, 0), new THREE.Vector3(sx, sy, 0), new THREE.Vector3(sx, sy + dy, 0)];
-        var geo = new THREE.BufferGeometry().setFromPoints(pts);
-        return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0xe8801a, transparent: true, opacity: 0.6 }));
-      }
-      [[-vfR, vfR * 0.85], [vfR, vfR * 0.85], [-vfR, -vfR * 0.85], [vfR, -vfR * 0.85]].forEach(function(c){ vfGroup.add(vfCorner(c[0], c[1])); });
-      scene.add(vfGroup);
-      var scanLine = new THREE.Mesh(new THREE.PlaneGeometry(vfR * 1.7, 0.04), new THREE.MeshBasicMaterial({ color: 0xe3a548, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false }));
-      scene.add(scanLine);
-
       var phone = new THREE.Group();
       var phoneBody = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 3.3), new THREE.MeshBasicMaterial({ color: 0x151212 }));
-      var phoneMat = new THREE.MeshBasicMaterial({ map: receiptTexture(true), transparent: true, side: THREE.DoubleSide });
-      var phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(1.75, 2.85), phoneMat);
+      phone.add(phoneBody);
+
+      // The phone's own screen shows the scan: data rows filling in, then a
+      // green PAID stamp -- a loop, since this hero has no scroll story.
+      var logoImg = new Image(); logoImg.src = 'setwel-logo.png';
+      var scrC = document.createElement('canvas'); scrC.width = 256; scrC.height = 420; var sg = scrC.getContext('2d');
+      var scrTex = new THREE.CanvasTexture(scrC);
+      var paidAt = null;
+      function rr(x, y, w, h, r){ sg.beginPath(); sg.moveTo(x + r, y); sg.arcTo(x + w, y, x + w, y + h, r); sg.arcTo(x + w, y + h, x, y + h, r); sg.arcTo(x, y + h, x, y, r); sg.arcTo(x, y, x + w, y, r); sg.closePath(); }
+      function drawScreen(paid, fill, t){
+        sg.fillStyle = '#0d0a0a'; sg.fillRect(0, 0, 256, 420);
+        var gr = sg.createLinearGradient(0, 0, 256, 0); gr.addColorStop(0, '#e57a1c'); gr.addColorStop(0.55, '#d65536'); gr.addColorStop(1, '#c9334e');
+        sg.fillStyle = gr; sg.fillRect(0, 0, 256, 62);
+        if (logoImg.complete) { sg.save(); rr(14, 15, 32, 32, 8); sg.clip(); sg.drawImage(logoImg, 14, 15, 32, 32); sg.restore(); }
+        sg.fillStyle = '#fff'; sg.font = '600 15px Inter, sans-serif'; sg.textAlign = 'left'; sg.fillText('Setwel', 54, 38);
+        sg.fillStyle = '#f5efe9'; sg.font = '700 17px Inter, sans-serif'; sg.fillText('TAX INVOICE', 14, 92);
+        var lines = [['Labour', '1 600'], ['Cement', '719'], ['Delivery', '150']];
+        sg.font = '400 11px Inter, sans-serif';
+        var shown = Math.round(fill * lines.length);
+        for (var i = 0; i < lines.length; i++) {
+          rr(14, 104 + i * 36, 228, 28, 6); sg.fillStyle = i < shown ? '#1b1514' : '#141010'; sg.fill();
+          if (i < shown) { sg.fillStyle = '#e8ded4'; sg.textAlign = 'left'; sg.fillText(lines[i][0], 22, 122 + i * 36); sg.textAlign = 'right'; sg.fillText('R ' + lines[i][1], 228, 122 + i * 36); }
+        }
+        if (!paid && fill > 0.02 && fill < 0.99) {
+          var scanY = 100 + ((t * 110) % 130);
+          var beam = sg.createLinearGradient(0, scanY - 12, 0, scanY + 12);
+          beam.addColorStop(0, 'rgba(227,165,72,0)'); beam.addColorStop(0.5, 'rgba(227,165,72,.4)'); beam.addColorStop(1, 'rgba(227,165,72,0)');
+          sg.fillStyle = beam; sg.fillRect(10, scanY - 12, 236, 24);
+        }
+        sg.textAlign = 'center';
+        if (paid) {
+          if (paidAt === null) paidAt = t;
+          var age = t - paidAt, pop = age < 0.35 ? 1 + 0.6 * (1 - age / 0.35) : 1;
+          sg.save(); sg.translate(128, 260); sg.scale(pop, pop); sg.translate(-128, -260);
+          rr(16, 230, 224, 58, 12); sg.fillStyle = 'rgba(78,174,111,.16)'; sg.fill(); sg.strokeStyle = '#4eae6f'; sg.lineWidth = 2; sg.stroke();
+          sg.fillStyle = '#6fd292'; sg.font = '700 20px Inter, sans-serif'; sg.fillText('PAID  ✓', 128, 266);
+          sg.restore();
+        } else {
+          paidAt = null;
+          rr(16, 230, 224, 50, 12); sg.fillStyle = '#25d366'; sg.fill();
+          sg.fillStyle = '#062e16'; sg.font = '700 15px Inter, sans-serif'; sg.fillText('Send on WhatsApp', 128, 260);
+        }
+        scrTex.needsUpdate = true;
+      }
+      var phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(1.75, 2.85), new THREE.MeshBasicMaterial({ map: scrTex }));
       phoneScreen.position.z = 0.02;
-      phone.add(phoneBody); phone.add(phoneScreen);
+      phone.add(phoneScreen);
       scene.add(phone);
 
       scene.add(new THREE.AmbientLight(0xffffff, 1));
@@ -578,11 +606,9 @@ function toggleBilling(){
         cloud.children.forEach(function(m){ m.rotation.z += m.userData.spin; });
         phone.rotation.y = mx * 0.5;
         phone.rotation.x = my * -0.3;
-        // keeps "scanning now and then" instead of a static frame
-        var pulse = 0.5 + 0.5 * Math.sin(time * 0.4);
-        scanLine.position.y = Math.sin(time * 0.6) * vfR * 0.8;
-        scanLine.material.opacity = 0.2 + 0.35 * pulse;
-        vfGroup.children.forEach(function(l){ l.material.opacity = 0.35 + 0.35 * pulse; });
+        // scan -> data rows fill in -> PAID, looping since there's no scroll story here
+        var cyc = time % 6;
+        drawScreen(cyc > 3.5, Math.min(1, cyc / 3), time);
         camera.position.x = mx * 0.8;
         camera.position.y = -my * 0.6;
         camera.lookAt(0, 0, 0);

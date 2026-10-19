@@ -507,23 +507,6 @@ footer a:hover{color:var(--fg)}
     scene.add(mesh); slips.push(mesh);
   }
 
-  // Viewfinder: corner brackets + a sweeping scan line over the cluster,
-  // so it reads as the phone actively scanning the paperwork rather than
-  // receipts just floating. Fades out once the phone takes over.
-  var vfW = ringRad[1] * 2 + 1, vfH = 3.0;
-  var vfGroup = new THREE.Group();
-  function vfCorner(sx, sy){
-    var len = 0.5, dx = sx > 0 ? -len : len, dy = sy > 0 ? -len : len;
-    var pts = [new THREE.Vector3(sx + dx, sy, -2), new THREE.Vector3(sx, sy, -2), new THREE.Vector3(sx, sy + dy, -2)];
-    var geo = new THREE.BufferGeometry().setFromPoints(pts);
-    return new THREE.Line(geo, new THREE.LineBasicMaterial({color: 0xe57a1c, transparent: true, opacity: 0.85}));
-  }
-  [[-vfW/2, vfH/2], [vfW/2, vfH/2], [-vfW/2, -vfH/2], [vfW/2, -vfH/2]].forEach(function(c){ vfGroup.add(vfCorner(c[0], c[1])); });
-  scene.add(vfGroup);
-  var scanLine = new THREE.Mesh(new THREE.PlaneGeometry(vfW, 0.05), new THREE.MeshBasicMaterial({color: 0xe3a548, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false}));
-  scanLine.position.z = -1.9;
-  scene.add(scanLine);
-
   // phone
   var phone = new THREE.Group(); scene.add(phone);
   function rounded(w, h, r){ var s = new THREE.Shape(); s.moveTo(-w/2 + r, -h/2); s.lineTo(w/2 - r, -h/2); s.quadraticCurveTo(w/2, -h/2, w/2, -h/2 + r); s.lineTo(w/2, h/2 - r); s.quadraticCurveTo(w/2, h/2, w/2 - r, h/2); s.lineTo(-w/2 + r, h/2); s.quadraticCurveTo(-w/2, h/2, -w/2, h/2 - r); s.lineTo(-w/2, -h/2 + r); s.quadraticCurveTo(-w/2, -h/2, -w/2 + r, -h/2); return s; }
@@ -537,10 +520,9 @@ footer a:hover{color:var(--fg)}
   var logoImg = new Image(); logoImg.src = 'setwel-logo.png';
   var scrC = document.createElement('canvas'); scrC.width = 512; scrC.height = 1024; var sg = scrC.getContext('2d');
   var scrTex = new THREE.CanvasTexture(scrC);
-  var paidState = -1, filled = -1;
+  var paidAt = null;
   function rr(x, y, w, h, r){ sg.beginPath(); sg.moveTo(x + r, y); sg.arcTo(x + w, y, x + w, y + h, r); sg.arcTo(x + w, y + h, x, y + h, r); sg.arcTo(x, y + h, x, y, r); sg.arcTo(x, y, x + w, y, r); sg.closePath(); }
-  function drawScreen(paid, fill){
-    if (paid === paidState && fill === filled) return; paidState = paid; filled = fill;
+  function drawScreen(paid, fill, t){
     sg.fillStyle = '#0d0a0a'; sg.fillRect(0, 0, 512, 1024);
     var gr = sg.createLinearGradient(0, 0, 512, 0); gr.addColorStop(0, '#e57a1c'); gr.addColorStop(0.55, '#d65536'); gr.addColorStop(1, '#c9334e');
     sg.fillStyle = gr; sg.fillRect(0, 0, 512, 150);
@@ -556,21 +538,33 @@ footer a:hover{color:var(--fg)}
       rr(30, 300 + i * 84, 452, 66, 14); sg.fillStyle = i < shown ? '#1b1514' : '#141010'; sg.fill();
       if (i < shown) { sg.fillStyle = '#e8ded4'; sg.textAlign = 'left'; sg.fillText(lines[i][0], 50, 342 + i * 84); sg.textAlign = 'right'; sg.fillText('R ' + lines[i][1], 462, 342 + i * 84); }
     }
+    // scan sweep, right on the phone screen, while the data is still coming in
+    if (!paid && fill > 0.02 && fill < 0.99) {
+      var scanY = 290 + ((t * 260) % 320);
+      var beam = sg.createLinearGradient(0, scanY - 30, 0, scanY + 30);
+      beam.addColorStop(0, 'rgba(227,165,72,0)'); beam.addColorStop(0.5, 'rgba(227,165,72,.4)'); beam.addColorStop(1, 'rgba(227,165,72,0)');
+      sg.fillStyle = beam; sg.fillRect(20, scanY - 30, 472, 60);
+      sg.fillStyle = '#e3a548'; sg.fillRect(20, scanY - 1, 472, 2);
+    }
     sg.textAlign = 'left'; sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('VAT incl.', 34, 600);
     sg.fillStyle = '#fff'; sg.font = '700 52px Inter, sans-serif'; sg.textAlign = 'right'; sg.fillText(shown === 3 ? 'R 2 469.40' : 'R ' + ['0.00', '1 600.00', '2 319.40'][shown], 480, 610);
     sg.textAlign = 'center';
     if (paid) {
+      if (paidAt === null) paidAt = t;
+      var age = t - paidAt, pop = age < 0.35 ? 1 + 0.6 * (1 - age / 0.35) : 1;
+      sg.save(); sg.translate(256, 740); sg.scale(pop, pop); sg.translate(-256, -740);
       rr(34, 680, 444, 120, 26); sg.fillStyle = 'rgba(78,174,111,.16)'; sg.fill(); sg.strokeStyle = '#4eae6f'; sg.lineWidth = 4; sg.stroke();
       sg.fillStyle = '#6fd292'; sg.font = '700 48px Inter, sans-serif'; sg.fillText('PAID  ✓', 256, 758);
+      sg.restore();
       sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('Received today, 18:42', 256, 850);
     } else {
+      paidAt = null;
       rr(34, 680, 444, 110, 26); sg.fillStyle = '#25d366'; sg.fill();
       sg.fillStyle = '#062e16'; sg.font = '700 36px Inter, sans-serif'; sg.fillText('Send on WhatsApp', 256, 748);
       sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('Tax invoice ready in seconds', 256, 850);
     }
     scrTex.needsUpdate = true;
   }
-  logoImg.onload = function(){ paidState = -1; };
   var screen = new THREE.Mesh(new THREE.ShapeGeometry(rounded(2.3, 4.8, 0.32)), new THREE.MeshBasicMaterial({map: scrTex}));
   (function fixUV(g){ var pos = g.attributes.position, uv = g.attributes.uv; for (var i = 0; i < pos.count; i++) uv.setXY(i, (pos.getX(i) + 1.15) / 2.3, (pos.getY(i) + 2.4) / 4.8); uv.needsUpdate = true; })(screen.geometry);
   screen.position.z = 0.15; phone.add(screen);
@@ -614,18 +608,7 @@ footer a:hover{color:var(--fg)}
     phone.rotation.y = lerp(time * 0.35 + 1.2, Math.sin(time * 0.6) * 0.12 + mx * 0.35, appear) ;
     phone.rotation.x = lerp(0.3, -my * 0.2 + Math.sin(time * 0.8) * 0.03, appear);
     phone.rotation.z = lerp(0.25, 0, appear);
-    drawScreen(sp > 0.74 ? 1 : 0, Math.min(1, Math.max(0, (sp - 0.42) / 0.26)));
-
-    // viewfinder: sweeps hard over the cluster during capture, then settles
-    // into a soft, recurring pulse -- it keeps "scanning now and then"
-    // rather than switching off once the phone is centred.
-    var vfPulse = 0.1 + 0.1 * (0.5 + 0.5 * Math.sin(time * 0.35));
-    var vfVis = Math.max(vfPulse, 1 - ease((sp - 0.46) / 0.2));
-    vfGroup.children.forEach(function(l){ l.material.opacity = 0.85 * vfVis; });
-    vfGroup.visible = vfVis > 0.01;
-    scanLine.material.opacity = 0.55 * vfVis;
-    scanLine.position.y = Math.sin(time * 0.9) * (vfH / 2 - 0.15);
-    scanLine.visible = vfVis > 0.01;
+    drawScreen(sp > 0.74 ? 1 : 0, Math.min(1, Math.max(0, (sp - 0.42) / 0.26)), time);
 
     // slips: scattered orbit -> swallowed by the phone, then keep drifting
     // in a tight loop behind it instead of vanishing -- data kept "alive".

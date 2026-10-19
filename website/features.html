@@ -48,7 +48,17 @@ a{text-decoration:none;color:var(--orange)}
 #mob-menu a{color:var(--ink2);padding:11px 14px;border-radius:8px;font-size:.95rem;font-weight:500;display:block}
 #mob-menu .btn{width:100%;justify-content:center;margin-top:8px;display:flex}
 @media(max-width:900px){.nav-links{display:none}#hamburger{display:flex;align-items:center}}
-.page-hero{padding:72px 0 56px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);border-bottom:1px solid var(--line);text-align:center}
+.page-hero{position:relative;isolation:isolate;overflow:hidden;padding:72px 0 56px;border-bottom:1px solid var(--line);text-align:center}
+.h3d-stage{position:absolute;inset:0;z-index:0}
+#gl3d{position:absolute;inset:0;width:100%;height:100%;display:block}
+.h3d-fallback{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.14),transparent 65%);opacity:0;transition:opacity .4s}
+.h3d-fallback.on{opacity:1}
+.h3d-orb{position:absolute;border-radius:50%;filter:blur(44px);opacity:.28;animation:h3dfloat 9s ease-in-out infinite}
+.h3d-orb.o1{width:240px;height:240px;left:4%;top:0;background:var(--orange)}
+.h3d-orb.o2{width:200px;height:200px;right:6%;top:30%;background:var(--red);animation-delay:1.4s}
+@keyframes h3dfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.h3d-content{position:relative;z-index:2}
+@media(prefers-reduced-motion:reduce){.h3d-orb{animation:none}}
 .s-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:block}
 .page-hero h1{font-size:clamp(1.7rem,3.4vw,2.6rem);color:#fff;margin-bottom:14px}
 .page-hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -155,8 +165,12 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 </header>
 <main>
 
-<div class="page-hero">
-<div class="wrap">
+<div class="page-hero" id="hero">
+<div class="h3d-stage">
+<canvas id="gl3d" aria-hidden="true"></canvas>
+<div class="h3d-fallback" id="h3d-fallback"><div class="h3d-orb o1"></div><div class="h3d-orb o2"></div></div>
+</div>
+<div class="wrap h3d-content">
 <span class="s-label" data-i18n="fh_eye">Complete Feature List</span>
 <h1 data-i18n-html="fh_h1">Everything your business needs — <em>all included.</em></h1>
 <p data-i18n="fh_p">No modules to buy. No features locked behind paywalls you can't see. Tap any card below for the full detail on how it works and which tier includes it.</p>
@@ -1251,5 +1265,107 @@ function toggleTender(btn){
   if (arrow) arrow.innerHTML = open ? "&#8964;" : "&#8963;";
   btn.setAttribute("aria-expanded", String(!open));
 }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* Ambient 3D hero: invoices drifting around a phone that turns PAID.
+   Falls back to a static gradient if WebGL/Three.js is unavailable or the
+   visitor prefers reduced motion — the page must still work on cheap Android. */
+(function(){
+  var stage = document.querySelector('.h3d-stage');
+  var canvas = document.getElementById('gl3d');
+  var fallback = document.getElementById('h3d-fallback');
+  var heroSection = document.getElementById('hero');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ok = !!window.THREE && !reduce && !!stage;
+
+  if (ok) {
+    try {
+      var THREE = window.THREE;
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.set(0, 0, 11);
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setClearColor(0x000000, 0);
+
+      function receiptTexture(paid){
+        var c = document.createElement('canvas'); c.width = 128; c.height = 170;
+        var g = c.getContext('2d');
+        g.fillStyle = '#f2ede6'; g.fillRect(0, 0, 128, 170);
+        g.strokeStyle = 'rgba(0,0,0,.14)'; g.lineWidth = 2;
+        for (var i = 0; i < 7; i++) { g.beginPath(); g.moveTo(14, 26 + i * 16); g.lineTo(114 - (i % 3) * 18, 26 + i * 16); g.stroke(); }
+        g.fillStyle = '#c93050'; g.fillRect(14, 144, 100, 3);
+        if (paid) {
+          g.save(); g.translate(64, 86); g.rotate(-0.25);
+          g.strokeStyle = '#2a7a40'; g.lineWidth = 5; g.strokeRect(-38, -16, 76, 32);
+          g.fillStyle = '#2a7a40'; g.font = 'bold 15px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+          g.fillText('PAID', 0, 2);
+          g.restore();
+        }
+        var tex = new THREE.CanvasTexture(c); tex.needsUpdate = true;
+        return tex;
+      }
+
+      var small = window.innerWidth < 700;
+      var N = small ? 8 : 14;
+      var cloud = new THREE.Group();
+      var cloudMat = new THREE.MeshBasicMaterial({ map: receiptTexture(false), transparent: true, side: THREE.DoubleSide });
+      for (var i = 0; i < N; i++) {
+        var m = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.5), cloudMat);
+        var r = 4.2 + Math.random() * 2.2, a = Math.random() * Math.PI * 2, h = (Math.random() - 0.5) * 4;
+        m.position.set(Math.cos(a) * r, h, Math.sin(a) * r);
+        m.rotation.set(Math.random(), Math.random(), Math.random());
+        m.userData.spin = (Math.random() - 0.5) * 0.01;
+        cloud.add(m);
+      }
+      scene.add(cloud);
+
+      var phone = new THREE.Group();
+      var phoneBody = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 3.3), new THREE.MeshBasicMaterial({ color: 0x151212 }));
+      var phoneMat = new THREE.MeshBasicMaterial({ map: receiptTexture(true), transparent: true, side: THREE.DoubleSide });
+      var phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(1.75, 2.85), phoneMat);
+      phoneScreen.position.z = 0.02;
+      phone.add(phoneBody); phone.add(phoneScreen);
+      scene.add(phone);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 1));
+
+      var mx = 0, my = 0;
+      window.addEventListener('pointermove', function(e){
+        mx = (e.clientX / innerWidth - 0.5); my = (e.clientY / innerHeight - 0.5);
+      });
+
+      function size(){
+        var rect = stage.getBoundingClientRect();
+        var w = Math.max(rect.width, 1), h = Math.max(rect.height, 1);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+      }
+      size();
+      window.addEventListener('resize', size);
+
+      var running = true;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(es){ es.forEach(function(e){ running = e.isIntersecting; }); }).observe(heroSection);
+      }
+
+      function animate(){
+        requestAnimationFrame(animate);
+        if (!running) return;
+        cloud.rotation.y += 0.0022;
+        cloud.children.forEach(function(m){ m.rotation.z += m.userData.spin; });
+        phone.rotation.y = mx * 0.5;
+        phone.rotation.x = my * -0.3;
+        camera.position.x = mx * 0.8;
+        camera.position.y = -my * 0.6;
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+      }
+      animate();
+    } catch (e) { ok = false; }
+  }
+  if (!ok && canvas) { canvas.style.display = 'none'; if (fallback) fallback.classList.add('on'); }
+})();
 </script>
 </body></html>

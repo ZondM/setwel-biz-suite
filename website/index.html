@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="google-site-verification" content="ad4c42e43a6caec8" />
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Setwel Biz Suite | SARS e-Invoicing Software South Africa | Accounting, Payroll &amp; VAT201</title>
 <meta name="description" content="South Africa's most complete accounting software. SARS e-invoicing ready, VAT201 export, IRP5 payroll, 100% offline. Works on any Android during load shedding. From R59.99/month. 30-day free trial.">
 <meta name="keywords" content="accounting software South Africa, SARS e-invoicing software, VAT201 software South Africa, payroll software South Africa, invoicing software South Africa, small business accounting South Africa, POPIA compliant accounting software, offline accounting software, spaza shop accounting, IRP5 software South Africa">
@@ -26,1164 +26,572 @@
 <meta name="geo.country" content="South Africa">
 <link rel="icon" href="setwel-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="pixels.js"></script>
 <style>
-:root{--dark:#0A0808;--dark2:#121010;--dark3:#1A1616;--ink:#F2EDE8;--ink2:#A09088;--ink3:#9A8A82;--orange:#E8801A;--orange2:#F09A3A;--red:#C93050;--green:#2A7A40;--green2:#4CAF70;--od:rgba(232,128,26,.13);--ob:rgba(232,128,26,.3);--line:rgba(232,128,26,.1);--r:14px}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth;scroll-padding-top:118px;font-size:17.5px}
-body{font-family:'Inter',sans-serif;background:var(--dark);color:var(--ink);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:'DM Serif Display',Georgia,serif;line-height:1.15;letter-spacing:-.01em}
-p{color:var(--ink2);line-height:1.75}
-a{text-decoration:none;color:var(--orange)}
-img{max-width:100%;display:block}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 26px;border-radius:12px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .2s ease;font-family:'Inter',sans-serif;white-space:nowrap;text-decoration:none;line-height:1}
-.btn-primary{background:linear-gradient(135deg,var(--orange),var(--red));color:#fff}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(232,128,26,.5)}
-.btn-outline{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
-.btn-outline:hover{border-color:var(--ob);color:var(--orange)}
-.btn-wa{background:#25D366;color:#0A0808;border:none}
-.btn-wa:hover{background:#1ebe59;transform:translateY(-2px);box-shadow:0 8px 24px -6px rgba(37,211,102,.4)}
-.btn-lg{padding:17px 34px;font-size:1.05rem;border-radius:14px}
-.btn-sm{padding:9px 18px;font-size:.84rem;border-radius:9px}
-
-/* LANG BAR */
-#langbar{z-index:1;background:var(--dark2);border-bottom:1px solid var(--line)}
-.lb-wrap{display:flex;align-items:center;gap:4px;padding:8px 24px;max-width:1160px;margin:0 auto;flex-wrap:wrap}
-.lb-label{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-right:4px}
-.lb-btn{display:flex;align-items:center;gap:4px;background:transparent;border:1px solid transparent;border-radius:7px;color:var(--ink2);font-family:'Inter',sans-serif;font-size:.77rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:all .15s}
-.lb-btn:hover{color:var(--ink);border-color:rgba(232,128,26,.2)}
-.lb-btn.active{background:var(--od);border-color:var(--ob);color:var(--orange);font-weight:700}
-.lb-code{font-size:.62rem;font-weight:800;background:rgba(255,255,255,.08);border-radius:3px;padding:1px 5px}
-.lb-btn.active .lb-code{background:var(--orange);color:#0A0808}
-.lb-right{margin-left:auto}
-.lb-mob{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--orange),var(--red));color:#fff;font-size:.8rem;font-weight:700;border:none;border-radius:9px;padding:6px 13px;text-decoration:none;animation:mpulse 2.5s ease-in-out infinite}
-@keyframes mpulse{0%,100%{box-shadow:0 0 0 0 rgba(232,128,26,.4)}50%{box-shadow:0 0 0 5px rgba(232,128,26,0)}}
-@media(max-width:640px){.lb-label{display:none}.lb-btn{font-size:.72rem;padding:4px 8px}.lb-mob{font-size:.74rem;padding:5px 10px}}
-
-/* NAV */
-#nav{position:sticky;top:0;z-index:100;background:rgba(10,8,8,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
-.nav-wrap{display:flex;align-items:center;height:66px;gap:6px;max-width:1160px;margin:0 auto;padding:0 24px}
-.nav-logo{display:flex;align-items:center;gap:9px;font-family:'DM Serif Display',Georgia,serif;font-size:1.08rem;color:var(--ink);text-decoration:none;margin-right:12px;flex-shrink:0}
-.nav-logo img{width:34px;height:34px;border-radius:8px;object-fit:contain}
-.nav-logo em{font-style:normal;color:var(--orange)}
-.nav-links{display:flex;gap:1px}
-.nav-links a{color:var(--ink2);padding:8px 12px;border-radius:8px;font-size:.85rem;font-weight:500;transition:color .15s;text-decoration:none}
-.nav-links a:hover,.nav-links a.cur{color:var(--orange)}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.hamburger{display:none;background:rgba(255,255,255,.06);border:1.5px solid rgba(232,128,26,.2);border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--ink);font-size:1rem;line-height:1}
-#mob-menu{display:none;background:var(--dark2);border-bottom:1px solid var(--line);padding:14px 20px;flex-direction:column;gap:4px}
-#mob-menu a{color:var(--ink2);padding:10px 14px;border-radius:8px;font-size:.93rem;font-weight:500;text-decoration:none;display:block}
-#mob-menu .btn-primary{margin-top:8px;width:100%;justify-content:center;display:flex}
-@media(max-width:880px){.nav-links{display:none}.hamburger{display:flex;align-items:center}}
-
-/* HERO */
-.hero3d{position:relative;isolation:isolate;overflow:hidden;padding:92px 0 60px;text-align:center;border-bottom:1px solid var(--line)}
-.h3d-stage{position:absolute;inset:0;z-index:0}
-#gl3d{position:absolute;inset:0;width:100%;height:100%;display:block}
-.h3d-fallback{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% -10%,rgba(232,128,26,.18) 0%,transparent 65%);opacity:0;transition:opacity .4s}
-.h3d-fallback.on{opacity:1}
-.h3d-orb{position:absolute;border-radius:50%;filter:blur(44px);opacity:.3;animation:h3dfloat 9s ease-in-out infinite}
-.h3d-orb.o1{width:260px;height:260px;left:6%;top:6%;background:var(--orange)}
-.h3d-orb.o2{width:220px;height:220px;right:8%;top:28%;background:var(--red);animation-delay:1.4s}
-.h3d-orb.o3{width:180px;height:180px;left:40%;bottom:0;background:var(--green2);animation-delay:2.8s}
-@keyframes h3dfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
-.h3d-content{position:relative;z-index:2}
-@media(prefers-reduced-motion:reduce){.h3d-orb{animation:none}}
-.hero-eye{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:14px;display:block}
-.hero-word{font-size:clamp(2.2rem,6vw,3.8rem);color:#fff;font-weight:400;margin-bottom:16px}
-.hero-word em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:1.08rem;max-width:36rem;margin:0 auto 30px}
-.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
-.hero-badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.hb{display:flex;align-items:center;gap:6px;background:var(--dark2);border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:.78rem;color:var(--ink2);font-weight:600}
-.hb .ico{color:var(--green2)}
-@media(max-width:560px){.hero3d{padding:60px 0 40px}.hero-btns{flex-direction:column}.hero-btns .btn{width:100%}}
-
-/* SECTION HEADERS */
-.section{padding:64px 0}
-.section-alt{background:var(--dark2)}
-.s-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
-.s-ico{font-size:2rem}
-.s-eye{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:6px;display:block}
-.s-h2{font-size:clamp(1.6rem,3vw,2.3rem);color:#fff}
-.s-sub{font-size:.95rem;max-width:40rem;margin-top:10px}
-@media(max-width:640px){.section{padding:44px 0}}
-
-/* FEATURE CARD GRID (invoicing + SA-specific) */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px;align-items:start}
-@media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:540px){.feat-grid{grid-template-columns:1fr}}
-.fcard{background:var(--dark2);border:1px solid var(--line);border-radius:var(--r);padding:20px;transition:border-color .2s;cursor:pointer}
-.section-alt .fcard{background:var(--dark)}
-.fcard:hover{border-color:var(--ob)}
-.fcard.expandable::after{content:"Tap for more \2193";display:block;font-size:.68rem;color:var(--orange);margin-top:10px;font-weight:700;letter-spacing:.03em}
-.fcard.fd-open.expandable::after{content:"Show less \2191"}
-.fcard-ico{font-size:1.4rem;margin-bottom:10px}
-.fcard h3{font-family:'DM Serif Display',Georgia,serif;font-size:.98rem;color:#fff;margin-bottom:6px}
-.fcard p{font-size:.85rem;line-height:1.65}
-.fcard .benefit{font-size:.75rem;color:var(--orange);margin-top:10px;font-weight:600}
-.fcard .tier{display:inline-block;margin-top:8px;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);background:var(--od);border:1px solid var(--ob);border-radius:6px;padding:2px 8px}
-.fd-more{max-height:0;overflow:hidden;transition:max-height .35s ease}
-.fd-open .fd-more{max-height:700px;margin-top:14px}
-.fd-more-inner{border-top:1px solid var(--line);padding-top:14px}
-.fd-more-inner p{font-size:.83rem;margin-bottom:8px}
-.fd-more-inner ul{padding-left:18px;display:grid;gap:6px;margin:10px 0}
-.fd-more-inner li{font-size:.82rem;color:var(--ink2);line-height:1.6}
-.fd-more-inner li::marker{color:var(--orange)}
-.fd-lock{margin-top:12px;background:rgba(232,128,26,.08);border:1px dashed var(--ob);border-radius:10px;padding:12px 14px;font-size:.78rem;color:var(--ink2)}
-.fd-lock strong{color:var(--orange)}
-.fd-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.fd-more a.fd-wa{display:inline-flex;align-items:center;gap:6px;margin-top:0;background:#25D366;color:#0A0808;font-weight:700;font-size:.78rem;padding:8px 14px;border-radius:8px}
-.fd-trial{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--orange),var(--red));color:#fff;font-weight:700;font-size:.78rem;padding:8px 14px;border-radius:8px;text-decoration:none}
-.tl-item{padding:8px 14px;font-size:.82rem;color:var(--ink);border-bottom:1px solid rgba(232,128,26,.07)}
-.tl-item:last-child{border-bottom:none}
-
-/* PRICING */
-.billing-toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin:26px 0 6px}
-.bt-label{font-size:.86rem;color:var(--ink2);font-weight:600}
-.bt-label.on{color:#fff}
-.bt-switch{position:relative;width:46px;height:26px;background:var(--dark3);border:1px solid var(--line);border-radius:20px;cursor:pointer}
-.bt-knob{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--red));transition:left .2s}
-.bt-switch.on .bt-knob{left:22px}
-.bt-save{display:inline-block;background:rgba(42,122,64,.15);border:1px solid rgba(76,175,112,.3);color:var(--green2);border-radius:9px;padding:3px 11px;font-size:.76rem;font-weight:700}
-.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
-@media(max-width:1000px){.pricing-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:540px){.pricing-grid{grid-template-columns:1fr}}
-.plan{background:var(--dark);border:1px solid var(--line);border-radius:18px;padding:26px 20px;display:flex;flex-direction:column;position:relative;transition:border-color .2s}
-.section-alt .plan{background:var(--dark3)}
-.plan.pop{border-color:var(--orange);box-shadow:0 0 0 1px rgba(232,128,26,.3),0 20px 56px -18px rgba(232,128,26,.25)}
-.plan-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--orange),var(--red));color:#fff;font-size:.62rem;font-weight:800;letter-spacing:.08em;border-radius:9px;padding:3px 12px;white-space:nowrap;text-transform:uppercase}
-.plan-name{font-family:'DM Serif Display',Georgia,serif;font-size:1.1rem;color:#fff;margin-bottom:3px}
-.plan-for{font-size:.78rem;color:var(--ink2);min-height:2.6em;line-height:1.5;margin-bottom:16px}
-.plan-price{font-family:'DM Serif Display',Georgia,serif;font-size:2rem;color:#fff;line-height:1;margin-bottom:4px}
-.plan-price small{font-size:.75rem;color:var(--ink2);font-family:'Inter'}
-.plan-hr{border:none;border-top:1px solid var(--line);margin:16px 0}
-.plan-ul{list-style:none;display:grid;gap:7px;font-size:.82rem;color:var(--ink2);margin-bottom:20px}
-.plan-ul li{display:flex;align-items:flex-start;gap:7px}
-.plan-ul li::before{content:'✓';color:var(--orange);font-weight:700;flex:none;margin-top:1px}
-.plan .btn{margin-top:auto;justify-content:center;width:100%}
-.pricing-note{text-align:center;margin-top:22px;font-size:.88rem;color:var(--ink2)}
-.pricing-note a{color:var(--orange);font-weight:600}
-.lifetime-banner{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:rgba(42,122,64,.08);border:1px solid rgba(76,175,112,.25);border-radius:12px;padding:12px 18px;margin-top:26px;text-align:center;font-size:.86rem;color:var(--ink2)}
-.lifetime-banner a{color:var(--green2);font-weight:700}
-
-/* EXPLORE MORE BRIDGE */
-.bridge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
-@media(max-width:860px){.bridge-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.bridge-grid{grid-template-columns:1fr}}
-.bcard{background:var(--dark2);border:1px solid var(--line);border-radius:14px;padding:20px;text-decoration:none;color:inherit;display:block;transition:all .2s}
-.bcard:hover{border-color:var(--ob);transform:translateY(-2px)}
-.bcard-ico{font-size:1.5rem;margin-bottom:9px}
-.bcard h3{font-family:'DM Serif Display',Georgia,serif;font-size:.95rem;color:#fff;margin-bottom:5px}
-.bcard p{font-size:.8rem;margin-bottom:10px}
-.bcard span{font-size:.76rem;color:var(--orange);font-weight:700}
-
-/* FINAL CTA */
-.cta-box{background:linear-gradient(135deg,var(--dark2),rgba(36,20,16,.95) 60%,rgba(201,48,80,.04));border:1px solid var(--ob);border-radius:24px;padding:64px 44px;text-align:center;position:relative;overflow:hidden}
-.cta-box h2{font-size:clamp(1.7rem,3.5vw,2.5rem);color:#fff;margin-bottom:14px}
-.cta-box h2 em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.cta-box p{max-width:34rem;margin:0 auto 26px}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.cta-fine{font-size:.78rem;color:var(--ink3);margin-top:18px}
-@media(max-width:560px){.cta-box{padding:40px 20px}.cta-btns{flex-direction:column}.cta-btns .btn{width:100%}}
-
-/* FOOTER */
-footer{background:var(--dark2);border-top:1px solid var(--line);padding:56px 0 26px}
-.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:28px;margin-bottom:36px}
-@media(max-width:880px){.footer-grid{grid-template-columns:1fr 1fr 1fr}}
-@media(max-width:540px){.footer-grid{grid-template-columns:1fr 1fr}}
-.footer-brand{display:flex;align-items:center;gap:8px;margin-bottom:11px}
-.footer-brand img{width:30px;height:30px;border-radius:7px}
-.footer-brand span{font-family:'DM Serif Display',Georgia,serif;font-size:.95rem;color:#fff}
-.footer-brand em{font-style:normal;color:var(--orange)}
-.footer-tagline{font-size:.84rem;color:var(--ink2);line-height:1.65;max-width:20rem}
-footer h3{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:13px}
-footer ul{list-style:none;display:grid;gap:8px}
-footer ul a{color:var(--ink2);font-size:.84rem;transition:color .15s;text-decoration:none}
-footer ul a:hover{color:var(--orange)}
-.f-bottom{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-.f-copy{font-size:.74rem;color:var(--ink3)}
-.f-badges{display:flex;gap:6px;flex-wrap:wrap}
-.f-badge{background:var(--od);border:1px solid var(--ob);border-radius:7px;padding:3px 10px;font-size:.67rem;color:var(--orange);font-weight:600}
-
-#mob-float{display:none;position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:300;background:linear-gradient(135deg,var(--orange),var(--red));color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:.86rem;padding:12px 22px;border-radius:50px;box-shadow:0 8px 32px -8px rgba(232,128,26,.6),0 2px 12px rgba(0,0,0,.4);text-decoration:none;white-space:nowrap;align-items:center;gap:7px}
-@media(max-width:860px){#mob-float{display:flex}}
-
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-.reveal.v{opacity:1;transform:none}
-
-/* MOBILE FIXES */
-@media(max-width:767px){
-  html{scroll-padding-top:100px}
-  .wrap{padding:0 16px}
-  #langbar .lb-wrap{padding:6px 12px}
-  .lb-btn{padding:4px 6px;font-size:.68rem}
-  .lb-mob{padding:5px 9px;font-size:.72rem}
-  #nav{top:0}
-  .nav-wrap{height:56px;padding:0 16px;gap:8px}
-  .nav-logo{font-size:.95rem;margin-right:auto}
-  .nav-logo img{width:28px;height:28px}
-  .nav-right{gap:6px}
-  .nav-right .btn-outline{display:none}
-  .nav-right .btn-primary{padding:8px 12px;font-size:.78rem}
-  .hero-word{font-size:1.7rem}
-  .hero-sub{font-size:.92rem}
-  .hero-btns{flex-direction:column}
-  .hero-btns .btn{width:100%}
-  .section{padding:44px 0}
-  .s-h2{font-size:1.5rem}
-  .fcard{padding:16px}
-  .pricing-grid{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr 1fr}
-  .f-bottom{flex-direction:column;align-items:flex-start}
+/* Layout: a 3D scroll story (chaos of slips -> sucked into the phone -> invoice paid), then plain sections: pillars, SA tools, pricing, FAQ, CTA */
+:root{
+  --bg:#0a0809; --bg2:#110d0c; --surface:#161211; --line:#2c221b; --fg:#f5efe9; --muted:#b3a99f; --dim:#7d746c;
+  --orange:#e57a1c; --mid:#d65536; --crimson:#c9334e; --gold:#e3a548; --green:#4eae6f;
+  --grad:linear-gradient(90deg,#e57a1c,#d65536 55%,#c9334e);
+  --display:"DM Serif Display",Georgia,"Times New Roman",serif;
+  --body:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
 }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{max-width:100%}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+.serif{font-family:var(--display);font-weight:400}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:600;border-radius:14px;padding:15px 24px;font-size:16.5px;transition:transform .15s ease, box-shadow .15s ease;border:0;cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--grad);color:#fff;box-shadow:0 10px 30px rgba(229,122,28,.28)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(229,122,28,.38)}
+.btn.ghost{background:rgba(255,255,255,.04);color:var(--fg);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:#4a3a2e}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+/* nav */
+nav.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(10,8,9,.92),rgba(10,8,9,.6));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(44,34,27,.6)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.brand img{width:36px;height:36px;border-radius:9px;object-fit:contain}
+.brand span{font-family:var(--display);font-size:22px;white-space:nowrap}
+.brand em{font-style:normal;color:var(--gold)}
+.navlinks{display:flex;align-items:center;gap:22px;font-size:15px;color:var(--muted)}
+.navlinks a{text-decoration:none}
+.navlinks a:hover{color:var(--fg)}
+.navlinks .btn{padding:10px 16px;font-size:14.5px;color:#fff}
+@media (max-width:760px){.navlinks .hide-m{display:none}}
+
+/* 3D story */
+.story{position:relative;height:330vh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fallback{position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 40%,rgba(229,122,28,.22),transparent 70%),var(--bg)}
+.glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 55% at 50% 45%,rgba(120,50,10,.25),transparent 70%)}
+.caption{position:absolute;left:0;right:0;padding-inline:20px;text-align:center;pointer-events:none;transition:opacity .45s ease, transform .45s ease}
+.caption{z-index:2}
+.caption .inner{max-width:760px;margin:0 auto;pointer-events:auto;position:relative}
+.caption .inner::before{content:"";position:absolute;inset:-70px -60px;z-index:-1;background:radial-gradient(closest-side,rgba(10,8,9,.9),rgba(10,8,9,.72) 55%,rgba(10,8,9,0));pointer-events:none}
+.cap-hero{top:max(96px, 14vh)}
+.cap-mid{bottom:max(56px, 9vh)}
+.caption.off{opacity:0;transform:translateY(16px)}
+.caption.off .inner{pointer-events:none}
+.cap-hero h1{font-family:var(--display);font-weight:400;font-size:clamp(42px,8.4vw,92px);line-height:1.02;margin:12px 0 14px;text-wrap:balance;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.cap-hero p.sub{color:#d9cfc6;font-size:clamp(16px,2.2vw,20px);max-width:36ch;margin:0 auto 22px;text-shadow:0 2px 16px rgba(0,0,0,.8)}
+.cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cap-mid h2{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,62px);line-height:1.05;margin:8px 0 8px;text-wrap:balance;text-shadow:0 4px 30px rgba(0,0,0,.7)}
+.cap-mid p{color:#d9cfc6;margin:0 auto;max-width:42ch;text-shadow:0 2px 16px rgba(0,0,0,.9)}
+.scrollhint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:12px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:6px;transition:opacity .4s}
+.scrollhint i{width:1px;height:28px;background:linear-gradient(var(--orange),transparent);display:block;animation:drip 1.8s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.progress{position:absolute;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px}
+.progress b{width:6px;height:6px;border-radius:50%;background:#3a2e26;transition:background .3s, transform .3s}
+.progress b.on{background:var(--orange);transform:scale(1.4)}
+
+/* sections */
+section.block{padding-block:96px;position:relative}
+.head{max-width:680px;margin-bottom:40px}
+.head h2{font-family:var(--display);font-weight:400;font-size:clamp(34px,5vw,54px);line-height:1.08;margin:10px 0 12px;text-wrap:balance}
+.head p{color:var(--muted);margin:0}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:900px){.pillars{grid-template-columns:1fr}}
+.pillar{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:22px;padding:26px 24px 24px;position:relative;overflow:hidden;min-width:0}
+.pillar .num{font-family:var(--display);font-size:56px;line-height:1;color:transparent;-webkit-text-stroke:1px #4a3a2e;position:absolute;right:20px;top:14px}
+.pillar h3{font-family:var(--display);font-weight:400;font-size:32px;line-height:1.12;margin:6px 0 10px;padding-right:56px}
+.pillar .promise{color:#e8ded4;margin:0 0 16px;font-size:16.5px}
+.pillar ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;font-size:15.5px;color:var(--muted)}
+.pillar li{display:flex;gap:10px;align-items:flex-start}
+.pillar li::before{content:"";flex:none;width:16px;height:16px;margin-top:4px;border-radius:50%;background:radial-gradient(circle at 50% 50%,var(--green) 0 35%,transparent 36%),rgba(78,174,111,.16)}
+
+.anywhere{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+@media (max-width:900px){.anywhere{grid-template-columns:1fr}}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{border:1px solid var(--line);border-radius:18px;padding:18px;background:var(--surface);min-width:0}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1.1}
+.stat span{color:var(--muted);font-size:14px}
+@media (max-width:520px){.stat-row{grid-template-columns:1fr}}
+
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.tools{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.tools{grid-template-columns:1fr}}
+.tool{border:1px solid var(--line);border-radius:18px;padding:20px;background:var(--surface);min-width:0;transition:transform .2s, border-color .2s}
+.tool:hover{transform:translateY(-3px);border-color:#4a3a2e}
+.tool h4{margin:0 0 6px;font-size:17.5px}
+.tool p{margin:0;color:var(--muted);font-size:15px}
+.langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.lang{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:7px 12px;font-size:15px}
+.lang b{font-size:12px;background:#2a221d;border-radius:6px;padding:2px 6px}
+
+.pricing{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch}
+@media (max-width:1000px){.pricing{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.pricing{grid-template-columns:1fr}}
+.plan{border:1px solid var(--line);border-radius:22px;padding:24px 22px;background:var(--surface);display:flex;flex-direction:column;gap:12px;min-width:0}
+.plan.pop{border:1.5px solid var(--orange);background:linear-gradient(180deg,rgba(229,122,28,.10),var(--surface) 40%)}
+.plan .tag{align-self:flex-start;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--grad);color:#fff;border-radius:999px;padding:4px 10px}
+.plan h3{margin:0;font-size:20px}
+.plan .for{color:var(--muted);font-size:14.5px;margin:0;min-height:2.6em}
+.plan .price{font-family:var(--display);font-size:44px;line-height:1}
+.plan .price small{font-family:var(--body);font-size:15px;color:var(--muted)}
+.plan ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;font-size:14.5px;color:#d6ccc2;flex:1}
+.plan li::before{content:"✓ ";color:var(--green);font-weight:700}
+.plan .btn{width:100%}
+.note{color:var(--dim);font-size:14px;margin-top:16px}
+
+.faq{display:flex;flex-direction:column;gap:10px;max-width:780px}
+details{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:4px 18px}
+summary{cursor:pointer;list-style:none;padding:14px 0;font-weight:600;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--orange);font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 16px;color:var(--muted)}
+
+.final{text-align:center;padding-block:110px 90px;background:radial-gradient(50% 60% at 50% 30%,rgba(229,122,28,.16),transparent 70%)}
+.final img{width:96px;height:96px;border-radius:22px;box-shadow:0 0 60px rgba(229,122,28,.35)}
+.final h2{font-family:var(--display);font-weight:400;font-size:clamp(38px,6.5vw,72px);line-height:1.04;margin:18px 0 12px;text-wrap:balance}
+.final p{color:var(--muted);margin:0 auto 26px;max-width:44ch}
+.wa{margin-top:18px;color:var(--muted);font-size:15px}
+.wa a{color:var(--gold);font-weight:600}
+footer{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--dim);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 18px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--fg)}
+
+.reveal.play{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:.15;transform:translateY(26px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.caption{transition:none}.reveal.play{animation:none}.scrollhint i{animation:none}html{scroll-behavior:auto}}
 </style>
+
 </head>
 <body>
-
-<!-- LANGUAGE BAR -->
-<header>
-<div id="langbar">
-  <div class="lb-wrap">
-    <span class="lb-label">Language</span>
-    <button class="lb-btn active" onclick="setLang('en',this)" data-lang="en"><span class="lb-code">EN</span> English</button>
-    <button class="lb-btn" onclick="setLang('af',this)" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
-    <button class="lb-btn" onclick="setLang('zu',this)" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
-    <button class="lb-btn" onclick="setLang('xh',this)" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
-    <button class="lb-btn" onclick="setLang('ve',this)" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
-    <button class="lb-btn" onclick="setLang('st',this)" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
-    <div class="lb-right"><a href="mobile.html" class="lb-mob">&#128241; Mobile</a></div>
-  </div>
-</div>
-
-<!-- NAV -->
-<div id="nav">
-  <div class="nav-wrap">
-    <a href="index.html" class="nav-logo"><img src="setwel-logo.png" alt="Setwel">Setwel <em>Biz Suite</em></a>
-    <nav class="nav-links">
-      <a href="index.html" class="cur" data-nk="home">Home</a>
-      <a href="features.html" data-nk="feat">Features</a>
-      <a href="pricing.html" data-nk="price">Pricing</a>
-      <a href="about.html" data-nk="about">About</a>
-      <a href="contact.html" data-nk="contact">Contact</a>
-      <a href="faq.html" data-nk="help">Help</a>
-    </nav>
-    <div class="nav-right">
-      <a href="pricing.html" class="btn btn-outline btn-sm" data-nk="plans">See plans</a>
-      <a href="download.html" class="btn btn-primary btn-sm" data-nk="trial">Start free trial</a>
-      <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
-    </div>
-  </div>
-  <div id="mob-menu">
-    <a href="index.html" data-nk="home">Home</a>
-    <a href="features.html" data-nk="feat">Features</a>
-    <a href="pricing.html" data-nk="price">Pricing</a>
-    <a href="about.html" data-nk="about">About</a>
-    <a href="contact.html" data-nk="contact">Contact</a>
-    <a href="faq.html" data-nk="helpfaq">Help &amp; FAQ</a>
-    <a href="download.html" class="btn btn-primary" data-nk="dltrial">&#8595; Download Free Trial</a>
-  </div>
-</div>
-</header>
-<main>
-
-<!-- ═══ HERO ═══ -->
-<section id="hero" class="hero3d">
-  <div class="h3d-stage">
-    <canvas id="gl3d" aria-hidden="true"></canvas>
-    <div class="h3d-fallback" id="h3d-fallback">
-      <div class="h3d-orb o1"></div><div class="h3d-orb o2"></div><div class="h3d-orb o3"></div>
-    </div>
-  </div>
-  <div class="wrap h3d-content">
-    <span class="hero-eye" data-i18n="hero_eye">South Africa's Business Suite</span>
-    <h1 class="hero-word">Setwel <em>Biz Suite</em></h1>
-    <p class="hero-sub" data-i18n="hero_sub">Invoicing, payroll, inventory and SARS-compliant accounting — one login, built for South African businesses. From spaza shops to growing SMEs.</p>
-    <div class="hero-btns">
-      <a href="download.html" class="btn btn-primary btn-lg" data-i18n="hero_btn1">&#8595; Start Free 30-Day Trial</a>
-      <a href="pricing.html" class="btn btn-outline btn-lg" data-i18n="hero_btn2">See plans</a>
-    </div>
-    <div class="hero-badges">
-      <span class="hb"><span class="ico">&#10003;</span> <span data-i18n="hero_b1">SARS-compliant</span></span>
-      <span class="hb"><span class="ico">&#10003;</span> <span data-i18n="hero_b2">Works 100% offline</span></span>
-      <span class="hb"><span class="ico">&#10003;</span> <span data-i18n="hero_b3">WhatsApp delivery</span></span>
-      <span class="hb"><span class="ico">&#10003;</span> <span data-i18n="hero_b4">From R59.99/month</span></span>
-    </div>
-    <p style="margin-top:14px;font-size:.8rem"><span data-i18n="hero_know">Already know what you want?</span> <a href="https://drive.usercontent.google.com/download?id=1ms0e0kE2K53iaxmCBh6CYs_3YOthy7vR&export=download&authuser=0&confirm=t" target="_blank" data-i18n="hero_dl">Download for Windows now (~160MB) &#8594;</a></p>
-  </div>
-</section>
-
-<!-- ═══ INVOICING & SALES ═══ -->
-<section id="invoicing" class="section">
+<nav class="top" aria-label="Main">
   <div class="wrap">
-    <div class="s-head"><div class="s-ico">&#129534;</div><div>
-      <span class="s-eye" data-i18n="inv_eye">Where it starts</span>
-      <h2 class="s-h2" data-i18n="inv_h2">Invoicing &amp; Sales</h2>
-      <p class="s-sub" data-i18n="inv_sub">Create, send and track professional, SARS-compliant invoices and quotes in minutes — then get paid faster over WhatsApp.</p>
-    </div></div>
-
-    <div class="feat-grid">
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#129534;</div><h3 data-i18n="inv1_h3">TAX Invoices</h3>
-        <p data-i18n="inv1_p">SARS-compliant TAX INVOICES with sequential numbering, VAT split, and your business details automatically included.</p>
-        <div class="benefit">&#8594; Get paid professionally</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>A tax invoice in South Africa isn't just a bill — SARS has exact legal requirements for what must appear on it before a customer can claim input VAT, or before it holds up under audit. Get it wrong and you end up chasing customers to re-issue paperwork.</p>
-        <ul>
-          <li>Sequential invoice numbering with no gaps, exactly as SARS auditors expect</li>
-          <li>VAT automatically split out as its own line (standard-rated, zero-rated or exempt)</li>
-          <li>Your business name, address and VAT number pulled in automatically — no retyping</li>
-          <li>Customer VAT number included when supplied, so they can claim input VAT</li>
-          <li>PDF generated instantly, ready to send by WhatsApp or email</li>
-        </ul>
-        <div class="fd-lock"><strong>Included on every tier</strong> — no upgrade needed to invoice compliantly from day one.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+TAX+Invoices" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us on WhatsApp</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#128196;</div><h3 data-i18n="inv2_h3">Quote Builder</h3>
-        <p data-i18n="inv2_p">Create professional quotes and convert to invoice in one click when accepted — no retyping.</p>
-        <div class="benefit">&#8594; Close deals faster</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>Chasing a customer to retype a quote into an invoice once they've said yes wastes time and risks mistakes. Quote Builder removes the second step entirely.</p>
-        <ul>
-          <li>Build a professional quote in the same few taps as an invoice</li>
-          <li>Send by WhatsApp or email with your logo and business details</li>
-          <li>Customer accepts &#8594; convert to a TAX Invoice in one click, no retyping</li>
-          <li>Set an expiry date so pricing never goes stale</li>
-          <li>Full quote history kept against each customer</li>
-        </ul>
-        <div class="fd-lock"><strong>Included on every tier</strong> — quotes and conversions are unlimited from Hustler up.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+Quote+Builder" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us on WhatsApp</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#128172;</div><h3 data-i18n="inv3_h3">WhatsApp Delivery</h3>
-        <p data-i18n="inv3_p">Send invoices directly to a customer's WhatsApp. The fastest way to get paid in SA.</p>
-        <div class="benefit">&#8594; Invoice in seconds</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>Email invoices in South Africa often sit unread for days. WhatsApp is opened within minutes — Setwel sends your invoice as a PDF straight into your customer's chat, so payment happens faster.</p>
-        <ul>
-          <li>One tap sends the invoice PDF directly to the customer's WhatsApp number</li>
-          <li>No separate app or WhatsApp Business account setup required</li>
-          <li>Works from any device, invoice already attached and captioned</li>
-          <li>Ideal for spaza shops, tradespeople and mobile-first customers</li>
-          <li>Delivery works over any data connection — even 2G</li>
-        </ul>
-        <div class="fd-lock"><strong>Included on every tier</strong> — unlimited WhatsApp sends.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+WhatsApp+invoice+delivery" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us on WhatsApp</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#128231;</div><h3 data-i18n="inv4_h3">Email Delivery</h3>
-        <p data-i18n="inv4_p">Send PDF invoices and quotes via email with your logo and professional design.</p>
-        <div class="benefit">&#8594; Look professional</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>Some clients — especially corporates and accountants — still expect invoices by email. Setwel handles that without any extra software.</p>
-        <ul>
-          <li>PDF invoices and quotes emailed directly from the app in one tap</li>
-          <li>Your logo, business colours and layout included automatically</li>
-          <li>CC yourself or your bookkeeper automatically on every send</li>
-          <li>Full send history kept per customer for your records</li>
-        </ul>
-        <div class="fd-lock"><strong>Included on every tier</strong> — no daily send limits.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+Email+Delivery" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us on WhatsApp</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#128203;</div><h3 data-i18n="inv5_h3">Customer Statements</h3>
-        <p data-i18n="inv5_p">Generate full account statements showing all invoices, payments, and outstanding balance.</p>
-        <div class="benefit">&#8594; Reduce disputes</div><span class="tier">Grinder+</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>When a customer disputes what they owe, a statement settles it in seconds — not with a back-and-forth over WhatsApp.</p>
-        <ul>
-          <li>Full account statement per customer: every invoice, every payment, running balance</li>
-          <li>Choose any date range — month, quarter or year-to-date</li>
-          <li>Sent as PDF by WhatsApp or email, ready to forward to their accounts department</li>
-          <li>Built for retainer clients and accounts with ongoing balances</li>
-        </ul>
-        <div class="fd-lock"><strong>Grinder tier and above</strong> unlocks Customer Statements, along with unlimited customers and invoices.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+Customer+Statements" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us on WhatsApp</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#128257;</div><h3 data-i18n="inv6_h3">Recurring Invoices</h3>
-        <p data-i18n="inv6_p">Set up automatic recurring invoices for clients on monthly retainer or subscription.</p>
-        <div class="benefit">&#8594; Save admin time</div><span class="tier">Builder+</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>For retainers, subscriptions and monthly service contracts, retyping the same invoice every month is wasted admin time.</p>
-        <ul>
-          <li>Set the amount, customer and frequency once — the invoice generates and sends itself</li>
-          <li>Weekly, monthly, quarterly or annual schedules supported</li>
-          <li>Edit or pause a recurring invoice at any time</li>
-          <li>Built for retainers, rent, subscriptions and maintenance contracts</li>
-        </ul>
-        <div class="fd-lock"><strong>Builder tier and above</strong> unlocks Recurring Invoices, along with inventory and bank reconciliation.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+Recurring+Invoices" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us on WhatsApp</a></div>
-        </div></div>
-      </div>
-
+    <a class="brand" href="index.html"><img src="setwel-logo.png" alt="Setwel Biz Suite"><span>Setwel <em>Biz Suite</em></span></a>
+    <div class="navlinks">
+      <a class="hide-m" href="#features">Features</a>
+      <a class="hide-m" href="#pricing">Pricing</a>
+      <a class="hide-m" href="#faq">FAQ</a>
+      <a class="btn primary" href="download.html">Start free</a>
     </div>
-    <div style="text-align:center;margin-top:26px"><a href="features.html#invoicing" class="btn btn-outline" data-i18n="inv_seeall">See every Invoicing &amp; Sales feature &#8594;</a></div>
   </div>
-</section>
+</nav>
 
-<!-- ═══ PRICING ═══ -->
-<section id="pricing" class="section section-alt">
-  <div class="wrap">
-    <div style="text-align:center" class="reveal v">
-      <span class="s-eye" data-i18n="price_eye">Transparent pricing</span>
-      <h2 class="s-h2" data-i18n-html="price_h2">Simple, honest pricing — <em style="font-style:italic">no surprises.</em></h2>
-      <p class="s-sub" style="margin:10px auto 0" data-i18n="price_sub">All plans include a full 30-day free trial. No credit card required. Cancel anytime.</p>
-    </div>
+<main id="top">
+  <div class="story" id="story">
+    <div class="stage">
+      <div class="fallback"></div>
+      <canvas id="gl" aria-hidden="true"></canvas>
+      <div class="glow"></div>
 
-    <div class="billing-toggle-wrap">
-      <span class="bt-label on" id="bt-lbl-m" data-i18n="price_monthly">Monthly</span>
-      <div class="bt-switch" id="bt-switch" onclick="togglePricing()"><div class="bt-knob"></div></div>
-      <span class="bt-label" id="bt-lbl-a" data-i18n="price_annual">Annual</span>
-      <span class="bt-save" data-i18n="price_save">Save 2 months free</span>
-    </div>
-
-    <div class="pricing-grid">
-      <div class="plan">
-        <div class="plan-name">Hustler</div>
-        <div class="plan-for" data-i18n="plan1_for">Spaza shops, hawkers, home businesses &amp; side hustles</div>
-        <div class="plan-price" data-m="R59.99" data-a="R49.99"><span class="amt">R59.99</span> <small class="per">/mo</small></div>
-        <hr class="plan-hr">
-        <ul class="plan-ul">
-          <li>Quotes &amp; TAX Invoices (PDF)</li>
-          <li>WhatsApp &amp; email delivery</li>
-          <li>VAT auto-calculated</li>
-          <li>Income &amp; expense tracking</li>
-          <li>Camera invoice capture</li>
-          <li>Spaza cash float tracker</li>
-          <li>Stokvel &amp; layby manager</li>
-        </ul>
-        <a href="download.html" class="btn btn-outline">Start free trial</a>
-      </div>
-      <div class="plan pop">
-        <div class="plan-badge">&#11088; Most popular</div>
-        <div class="plan-name">Grinder</div>
-        <div class="plan-for" data-i18n="plan2_for">Growing businesses, freelancers &amp; tradespersons</div>
-        <div class="plan-price" data-m="R199" data-a="R166"><span class="amt">R199</span> <small class="per">/mo</small></div>
-        <hr class="plan-hr">
-        <ul class="plan-ul">
-          <li>Everything in Hustler</li>
-          <li>Unlimited customers &amp; invoices</li>
-          <li>Suppliers &amp; bills management</li>
-          <li>Profit &amp; Loss statement</li>
-          <li>VAT201 export — SARS eFiling</li>
-          <li>Payslips &amp; IRP5 for all staff</li>
-          <li>Domestic worker payslips &amp; IRP5</li>
-        </ul>
-        <a href="download.html" class="btn btn-primary">Get Grinder</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Builder</div>
-        <div class="plan-for" data-i18n="plan3_for">Established SMEs with staff, stock &amp; multiple needs</div>
-        <div class="plan-price" data-m="R399" data-a="R333"><span class="amt">R399</span> <small class="per">/mo</small></div>
-        <hr class="plan-hr">
-        <ul class="plan-ul">
-          <li>Everything in Grinder</li>
-          <li>Full payroll (PAYE/UIF/SDL)</li>
-          <li>Balance Sheet &amp; Cash Flow</li>
-          <li>Inventory with stock alerts</li>
-          <li>Purchase orders to suppliers</li>
-          <li>Bank reconciliation</li>
-          <li>Supplier development tracker</li>
-        </ul>
-        <a href="download.html" class="btn btn-outline">Get Builder</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-for" data-i18n="plan4_for">Multi-branch companies &amp; large SMEs with complex needs</div>
-        <div class="plan-price" data-m="R999" data-a="R833"><span class="amt">R999</span> <small class="per">/mo</small></div>
-        <hr class="plan-hr">
-        <ul class="plan-ul">
-          <li>Everything in Builder</li>
-          <li>Unlimited users &amp; branches</li>
-          <li>EFT batch files (FNB/ABSA/Capitec)</li>
-          <li>Purchase approval workflows</li>
-          <li>API access for integrations</li>
-          <li>Custom report builder</li>
-        </ul>
-        <a href="download.html" class="btn btn-outline">Get Enterprise</a>
-      </div>
-    </div>
-
-    <div class="lifetime-banner">
-      <span data-i18n="price_preferonce">&#10003; Prefer to pay once? </span><a href="lifetime.html" data-i18n="price_viewlifetime">View Lifetime Licence packages &#8594;</a>
-    </div>
-    <p class="pricing-note"><span data-i18n="price_accountant">Accountant?</span> <strong style="color:#fff">Partner Plan</strong> <span data-i18n="price_partner">from R1,499/mo — unlimited client files.</span> <a href="contact.html" data-i18n="price_contactus">Contact us &#8599;</a></p>
-    <div style="text-align:center;margin-top:16px"><a href="pricing.html" class="btn btn-outline" data-i18n="price_viewfull">View full pricing details &#8594;</a></div>
-  </div>
-</section>
-
-<!-- ═══ SA-SPECIFIC FEATURES ═══ -->
-<section id="sa-specific" class="section">
-  <div class="wrap">
-    <div class="s-head"><div class="s-ico">&#9889;</div><div>
-      <span class="s-eye" data-i18n="sa_eye">Built for South Africa</span>
-      <h2 class="s-h2" data-i18n="sa_h2">SA-Specific Features</h2>
-      <p class="s-sub" data-i18n="sa_sub">Built for South African realities — not ported from overseas software. Tap any card for the full picture.</p>
-    </div></div>
-
-    <div class="feat-grid">
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#127978;</div><h3 data-i18n="sa1_h3">Spaza Cash Float Tracker</h3>
-        <p data-i18n="sa1_p">Daily opening float, cash sales, change tracking, and closing count — built for cash-first, till-based businesses.</p>
-        <div class="benefit">&#8594; Know your till exactly</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>Most SA spaza shops, salons and market stalls lose money not through theft, but through a till that's never actually counted. The float tracker closes that gap:</p>
-        <ul>
-          <li>Set a daily opening float (e.g. R200 in coins and small notes) before trading starts</li>
-          <li>Every cash sale logs automatically against the till, no separate entry needed</li>
-          <li>Closing count at day-end compares what's physically in the drawer to what the system expects</li>
-          <li>Shortages or overages are flagged immediately — before they become a pattern</li>
-          <li>Multiple tills or cashiers supported, each with their own float and reconciliation</li>
-        </ul>
-        <div class="fd-lock"><strong>Builder+ tier unlocks:</strong> multi-day trend reports, per-cashier variance history, and automatic float top-up suggestions.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+the+Spaza+Cash+Float+Tracker" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us about this feature</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#127919;</div><h3 data-i18n="sa2_h3">Stokvel Manager</h3>
-        <p data-i18n="sa2_p">Member contributions, rotation payouts, and meeting expenses — transparent stokvel management every member can verify.</p>
-        <div class="benefit">&#8594; Build member trust</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <p>South Africa has an estimated 800,000+ active stokvels moving billions of rand a year, and most are still run on a notebook or a WhatsApp group — which makes disputes over "who paid" common. Setwel's Stokvel Manager removes that friction:</p>
-        <ul>
-          <li>Full member directory with a running contribution history per person</li>
-          <li>Automatic default/late-payment alerts sent before the next meeting</li>
-          <li>Rotation payout scheduling — the system tells you whose turn is next and when</li>
-          <li>Digital member statement sent via WhatsApp so nobody has to "trust the treasurer's notebook"</li>
-          <li>Total pool balance always visible to the admin in real time</li>
-        </ul>
-        <div class="fd-lock"><strong>Builder+ tier unlocks:</strong> full rotation automation, multi-stokvel management, and exportable audit-ready statements for AGMs.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+the+Stokvel+Manager" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us about this feature</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#127970;</div><h3 data-i18n="sa3_h3">Supplier Development</h3>
-        <p data-i18n="sa3_p">Track and manage supplier development spend to support B-BBEE compliance. Categorise spend and generate reports for verification agencies.</p>
-        <div class="benefit">&#8594; Improve B-BBEE score</div><span class="tier">Builder+</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <ul>
-          <li>Log every supplier invoice against your B-BBEE spend categories</li>
-          <li>Track qualifying spend toward Enterprise &amp; Supplier Development targets</li>
-          <li>Generate reports formatted for your verification agency</li>
-          <li>See your progress toward B-BBEE scorecard points at a glance</li>
-        </ul>
-        <div class="fd-lock"><strong>Builder+ tier:</strong> full scorecard tracking across all five B-BBEE elements, not just supplier development.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+Supplier+Development+tracking" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us about this feature</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#128717;</div><h3 data-i18n="sa4_h3">Layby Management</h3>
-        <p data-i18n="sa4_p">Track layby deposits, balances, collection dates with automatic WhatsApp reminders.</p>
-        <div class="benefit">&#8594; Reduce write-offs</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <ul>
-          <li>Record deposit, agreed payment terms, and running balance per layby item</li>
-          <li>Automatic WhatsApp reminders sent as the collection date approaches</li>
-          <li>Auto-cancel and restock rule if a layby lapses past its expiry</li>
-          <li>Full layby register, split into active and completed</li>
-        </ul>
-        <div class="fd-lock"><strong>Builder+ tier:</strong> customisable reminder schedules and bulk layby reporting.</div>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+Layby+Management" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us about this feature</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard expandable" onclick="toggleFd(this)">
-        <div class="fcard-ico">&#127760;</div><h3 data-i18n="sa5_h3">Multilingual Invoices</h3>
-        <p data-i18n="sa5_p">Send invoices in English, Afrikaans, isiZulu, isiXhosa, Tshivenda or Sesotho.</p>
-        <div class="benefit">&#8594; Serve every customer</div><span class="tier">All tiers</span>
-        <div class="fd-more"><div class="fd-more-inner">
-        <ul>
-          <li>Customer-facing invoice text switches per customer, not per account</li>
-          <li>All six languages available on every tier, no upgrade required</li>
-          <li>Line items, totals and VAT wording translate — numbers stay standard</li>
-        </ul>
-        <div class="fd-actions"><a href="download.html" class="fd-trial" onclick="event.stopPropagation()">&#8595; Start free trial</a>
-<a href="https://wa.me/27820829050?text=Hi+Setwel%2C+I%27d+like+to+know+more+about+multilingual+invoicing" class="fd-wa" target="_blank" rel="noopener" onclick="event.stopPropagation()">&#128172; Ask us about this feature</a></div>
-        </div></div>
-      </div>
-
-      <div class="fcard" style="position:relative;overflow:visible;cursor:default">
-        <div class="fcard-ico">&#128196;</div>
-        <h3 data-i18n="sa6_h3">Tender Documents Consultancy</h3>
-        <p data-i18n="sa6_p">Professional tender support services to help SA businesses win government and corporate tenders. Expert consultants handle every step of the application process.</p>
-        <div class="benefit">&#8594; Win more tenders</div>
-        <span class="tier">Consultancy Service</span>
-        <div style="margin-top:14px">
-        <button onclick="toggleTender(this)" style="background:linear-gradient(135deg,#E8801A,#C93050);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-family:Inter,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px" aria-expanded="false">
-        <span>View all services</span><span class="tender-arrow">&#8964;</span>
-        </button>
-        <div class="tender-list" style="display:none;background:rgba(10,8,8,.95);border:1px solid rgba(232,128,26,.3);border-radius:10px;margin-top:6px;overflow:hidden">
-        <div style="padding:6px 0">
-        <div class="tl-item">&#10003; Applications</div>
-        <div class="tl-item">&#10003; Tender document completion</div>
-        <div class="tl-item">&#10003; Tender searches and alerts</div>
-        <div class="tl-item">&#10003; Compliance file preparation</div>
-        <div class="tl-item">&#10003; Company profile writing</div>
-        <div class="tl-item">&#10003; Proposal and methodology writing</div>
-        <div class="tl-item">&#10003; Pricing schedule preparation</div>
-        <div class="tl-item">&#10003; Bid submission</div>
-        <div class="tl-item">&#10003; Supplier registration</div>
-        <div class="tl-item">&#10003; CSD registration and maintenance</div>
-        <div class="tl-item">&#10003; B-BBEE assistance</div>
-        <div class="tl-item">&#10003; CIDB assistance</div>
-        <div class="tl-item" style="color:#E8801A">&#43; And many more</div>
-        </div>
-        <a href="contact.html" style="display:block;background:linear-gradient(135deg,#E8801A,#C93050);color:#fff;text-align:center;padding:11px;font-weight:700;font-size:.82rem;text-decoration:none;font-family:Inter,sans-serif">Enquire about tender consultancy &#8594;</a>
-        </div>
+      <div class="caption cap-hero" id="c0">
+        <div class="inner">
+          <p class="eyebrow">The money app for SA small business</p>
+          <h1>Get paid. Stay legal.<br><span class="grad" style="font-style:italic">Sleep easy.</span></h1>
+          <p class="sub">Invoices on WhatsApp, SARS-ready books and payroll on any Android phone, with or without data.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="download.html">Start free 30-day trial</a>
+            <a class="btn ghost" href="mobile.html">Open on my phone</a>
+          </div>
         </div>
       </div>
-
-    </div>
-    <div style="text-align:center;margin-top:26px"><a href="features.html#sa" class="btn btn-outline" data-i18n="sa_seeall">See every SA-Specific feature &#8594;</a></div>
-  </div>
-</section>
-
-<!-- ═══ BRIDGE TO REST OF FEATURES ═══ -->
-<section class="section section-alt">
-  <div class="wrap">
-    <div style="text-align:center">
-      <span class="s-eye" data-i18n="bridge_eye">Also included</span>
-      <h2 class="s-h2" data-i18n="bridge_h2">And everything else a growing business needs.</h2>
-      <p class="s-sub" style="margin:10px auto 0" data-i18n="bridge_sub">Payroll, stock control, tax compliance and reporting — all in the same login.</p>
-    </div>
-    <div class="bridge-grid">
-      <a href="features.html#payroll" class="bcard">
-        <div class="bcard-ico">&#128084;</div>
-        <h3 data-i18n="bc1_h4">Payroll &amp; HR</h3>
-        <p data-i18n="bc1_p">PAYE, UIF, SDL, payslips and IRP5s — including domestic workers.</p>
-        <span data-i18n="bc_see">See details &#8594;</span>
-      </a>
-      <a href="features.html#inventory" class="bcard">
-        <div class="bcard-ico">&#128230;</div>
-        <h3 data-i18n="bc2_h4">Inventory &amp; Stock</h3>
-        <p data-i18n="bc2_p">Real-time stock levels, low-stock alerts and supplier orders.</p>
-        <span data-i18n="bc_see">See details &#8594;</span>
-      </a>
-      <a href="features.html#tax" class="bcard">
-        <div class="bcard-ico">&#127963;</div>
-        <h3 data-i18n="bc3_h4">Tax &amp; SARS</h3>
-        <p data-i18n="bc3_p">VAT201 export, tax invoices and SARS deadline reminders.</p>
-        <span data-i18n="bc_see">See details &#8594;</span>
-      </a>
-      <a href="features.html#reports" class="bcard">
-        <div class="bcard-ico">&#128202;</div>
-        <h3 data-i18n="bc4_h4">Reports &amp; Analytics</h3>
-        <p data-i18n="bc4_p">P&amp;L, Balance Sheet, Cash Flow and aged debtors/creditors.</p>
-        <span data-i18n="bc_see">See details &#8594;</span>
-      </a>
-    </div>
-    <div style="text-align:center;margin-top:22px"><a href="tax-calculator.html" class="btn btn-outline" data-i18n="bridge_taxcalc">&#128176; Try our free SARS tax calculator &#8594;</a></div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="section">
-  <div class="wrap">
-    <div class="cta-box">
-      <span class="btn" style="background:var(--od);border:1px solid var(--ob);color:var(--orange);padding:5px 14px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:16px" data-i18n="cta_badge">30-day free trial &middot; No credit card</span>
-      <h2 data-i18n-html="cta_h2">Ready to simplify <em>your business?</em></h2>
-      <p data-i18n="cta_p">Join South African businesses running their full accounting on Setwel Biz Suite.</p>
-      <div class="cta-btns">
-        <a href="download.html" class="btn btn-primary btn-lg" data-i18n="dltrial">&#8595; Download Free Trial</a>
-        <a href="contact.html" class="btn btn-outline btn-lg" data-i18n="cta_contactsales">Contact Sales</a>
-        <a href="https://wa.me/27820829050" class="btn btn-wa btn-lg" data-i18n="cta_whatsapp">&#128172; WhatsApp</a>
+      <div class="caption cap-mid off" id="c1">
+        <div class="inner">
+          <p class="eyebrow">Sound familiar?</p>
+          <h2>Chasing payments.<br>Guessing what you <span class="grad" style="font-style:italic">actually</span> made this month.</h2>
+          <p>And a SARS deadline you only remember on the last day.</p>
+        </div>
       </div>
-      <div class="cta-fine" data-i18n="cta_fine">&#128274; Your data stays on your device &nbsp;&middot;&nbsp; POPIA compliant &nbsp;&middot;&nbsp; Built in South Africa &nbsp;&middot;&nbsp; Cancel anytime</div>
+      <div class="caption cap-mid off" id="c2">
+        <div class="inner">
+          <p class="eyebrow">Snap it. Send it.</p>
+          <h2>Every slip, every invoice,<br><span class="grad" style="font-style:italic">in one phone.</span></h2>
+          <p>Photograph a receipt and it's read for you. Send a proper tax invoice on WhatsApp in seconds.</p>
+        </div>
+      </div>
+      <div class="caption cap-mid off" id="c3">
+        <div class="inner">
+          <p class="eyebrow">Sorted.</p>
+          <h2>You look like a big company.<br><span class="grad" style="font-style:italic">You get paid like one.</span></h2>
+          <p>Mark it paid, see who still owes you, and know exactly where you stand tonight.</p>
+        </div>
+      </div>
+      <div class="progress" aria-hidden="true"><b class="on"></b><b></b><b></b><b></b></div>
+      <div class="scrollhint" id="hint">Scroll<i></i></div>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
+  <section class="block" id="features">
+    <div class="wrap">
+      <div class="head reveal pre">
+        <p class="eyebrow">Three things you're really buying</p>
+        <h2>Not accounting software. <span class="grad" style="font-style:italic">Peace of mind.</span></h2>
+        <p>Everything in Setwel serves one of three jobs. Here's what's inside today.</p>
+      </div>
+      <div class="pillars">
+        <article class="pillar reveal pre">
+          <span class="num">01</span>
+          <p class="eyebrow">Get paid</p>
+          <h3>Money in, faster</h3>
+          <p class="promise">Invoice on WhatsApp in seconds, follow up without the awkward phone call.</p>
+          <ul>
+            <li>Tax invoices and quotes, sent on WhatsApp or email</li>
+            <li>Quote to invoice in one tap, no retyping</li>
+            <li>Unpaid list and payment recording (cash, EFT, card)</li>
+            <li>Layby with WhatsApp reminders</li>
+          </ul>
+        </article>
+        <article class="pillar reveal pre">
+          <span class="num">02</span>
+          <p class="eyebrow">Stay legal</p>
+          <h3>SARS without the stress</h3>
+          <p class="promise">Compliant paperwork without an accountant on speed dial.</p>
+          <ul>
+            <li>Tax invoices with sequential numbers and VAT split</li>
+            <li>VAT201 export for eFiling</li>
+            <li>Payslips and IRP5s, including domestic workers</li>
+            <li>PAYE, UIF and SDL on full payroll plans</li>
+          </ul>
+        </article>
+        <article class="pillar reveal pre">
+          <span class="num">03</span>
+          <p class="eyebrow">Know your money</p>
+          <h3>Your numbers, every night</h3>
+          <p class="promise">See what came in, what's owed and what's on the shelf.</p>
+          <ul>
+            <li>Camera capture for receipts and supplier invoices</li>
+            <li>Profit &amp; loss, sales and unpaid-account reports</li>
+            <li>Stock levels with low-stock alerts</li>
+            <li>Daily till float with shortage and overage flags</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:20px">
+    <div class="wrap anywhere">
+      <div class="head reveal pre" style="margin-bottom:0">
+        <p class="eyebrow">Works where you work</p>
+        <h2>No data? No signal? <span class="grad" style="font-style:italic">No problem.</span></h2>
+        <p>Setwel runs offline on any Android phone, so you keep invoicing at the market, on site or in the shop. No laptop, no airtime burned. Only WhatsApp sending and the camera scanner need a connection.</p>
+      </div>
+      <div class="stat-row reveal pre">
+        <div class="stat"><b>Offline</b><span>Invoices, payroll and reports without data</span></div>
+        <div class="stat"><b>6</b><span>South African languages for your invoices</span></div>
+        <div class="stat"><b>R59.99</b><span>a month to start, 30 days free</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:20px">
+    <div class="wrap">
+      <div class="head reveal pre">
+        <p class="eyebrow">Built for ekasi. Ready for the boardroom.</p>
+        <h2>Tools nobody overseas thought to build</h2>
+        <p>Setwel was made in South Africa for how South Africans actually do business.</p>
+      </div>
+      <div class="tools">
+        <div class="tool reveal pre"><h4>Spaza cash float</h4><p>Opening float, cash sales, closing count. See shortages per cashier before they become a habit.</p></div>
+        <div class="tool reveal pre"><h4>Stokvel manager</h4><p>Contributions, rotation payouts and member statements on WhatsApp. No more notebook disputes.</p></div>
+        <div class="tool reveal pre"><h4>Layby, sorted</h4><p>Deposits, balances and friendly WhatsApp reminders. Lapsed laybys go back into stock.</p></div>
+        <div class="tool reveal pre"><h4>B-BBEE supplier tracker</h4><p>Track supplier development spend for your verification (Builder and up).</p></div>
+      </div>
+      <div class="langs reveal pre" aria-label="Invoice languages">
+        <span class="lang"><b>EN</b>English</span><span class="lang"><b>AF</b>Afrikaans</span><span class="lang"><b>ZU</b>isiZulu</span><span class="lang"><b>XH</b>isiXhosa</span><span class="lang"><b>VE</b>Tshivenda</span><span class="lang"><b>ST</b>Sesotho</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="pricing">
+    <div class="wrap">
+      <div class="head reveal pre">
+        <p class="eyebrow">Simple pricing</p>
+        <h2>Pay for what you use. <span class="grad" style="font-style:italic">Start free.</span></h2>
+        <p>Every plan includes a 30-day free trial. No credit card. Cancel anytime.</p>
+      </div>
+      <div class="pricing">
+        <div class="plan reveal pre">
+          <h3>Hustler</h3><p class="for">Spaza shops, hawkers and home businesses</p>
+          <div class="price">R59.99<small> /month</small></div>
+          <ul><li>Quotes and tax invoices</li><li>WhatsApp and email sending</li><li>Camera invoice capture</li><li>Cash float, stokvel and layby</li></ul>
+          <a class="btn ghost" href="download.html">Start free</a>
+        </div>
+        <div class="plan pop reveal pre">
+          <span class="tag">Most popular</span>
+          <h3>Grinder</h3><p class="for">Growing businesses, freelancers and trades</p>
+          <div class="price">R199<small> /month</small></div>
+          <ul><li>Everything in Hustler</li><li>Unlimited customers and invoices</li><li>Profit &amp; loss, suppliers and bills</li><li>VAT201 export, payslips and IRP5</li></ul>
+          <a class="btn primary" href="download.html">Start free</a>
+        </div>
+        <div class="plan reveal pre">
+          <h3>Builder</h3><p class="for">Established SMEs with staff and stock</p>
+          <div class="price">R399<small> /month</small></div>
+          <ul><li>Everything in Grinder</li><li>Full payroll: PAYE, UIF, SDL</li><li>Inventory with stock alerts</li><li>Balance sheet, cash flow, bank reconciliation</li></ul>
+          <a class="btn ghost" href="download.html">Start free</a>
+        </div>
+        <div class="plan reveal pre">
+          <h3>Enterprise</h3><p class="for">Multi-branch companies</p>
+          <div class="price">R999<small> /month</small></div>
+          <ul><li>Everything in Builder</li><li>Unlimited users and branches</li><li>EFT batch files (FNB, ABSA, Capitec)</li><li>Approvals, API, custom reports</li></ul>
+          <a class="btn ghost" href="download.html">Start free</a>
+        </div>
+      </div>
+      <p class="note">Accountants: the Partner Plan (from R1,499/month) covers unlimited client files. Prefer to pay once? <a href="lifetime.html" style="color:var(--gold);font-weight:600">View lifetime licences &#8594;</a></p>
+    </div>
+  </section>
+
+  <section class="block" id="faq" style="padding-top:20px">
+    <div class="wrap">
+      <div class="head reveal pre"><p class="eyebrow">Questions</p><h2>Straight answers</h2></div>
+      <div class="faq">
+        <details class="reveal pre"><summary>Do I need data or Wi-Fi?</summary><p>No, not for most things. Invoices, payroll, stock and reports work offline. Only sending on WhatsApp and the camera scanner need a connection.</p></details>
+        <details class="reveal pre"><summary>Do I need a laptop or an app store?</summary><p>No. Open setwelbusiness.co.za/mobile.html in Chrome on your Android phone and add it to your home screen. There's also a Windows version for computers.</p></details>
+        <details class="reveal pre"><summary>Are the invoices SARS-compliant?</summary><p>Setwel creates tax invoices with sequential numbering, your business details and the VAT split, and exports your VAT201 figures for eFiling.</p></details>
+        <details class="reveal pre"><summary>What happens after the 30-day trial?</summary><p>Your data stays safe. You choose a plan to keep invoicing and running reports. Nothing is deleted.</p></details>
+        <details class="reveal pre"><summary>Where is my data stored?</summary><p>On your own device, which keeps it private and POPIA-friendly. Use the backup button regularly so you can restore it if your phone is lost.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <img src="setwel-logo.png" alt="Setwel Biz Suite logo" class="reveal pre">
+      <h2 class="reveal pre">Your books. Your phone.<br><span class="grad" style="font-style:italic">Your power.</span></h2>
+      <p class="reveal pre">Start your free 30-day trial today. No credit card, no laptop, no stress.</p>
+      <div class="cta-row reveal pre">
+        <a class="btn primary" href="download.html">Download for Windows</a>
+        <a class="btn ghost" href="mobile.html">Use it on my phone</a>
+      </div>
+      <p class="wa">Questions? WhatsApp us on <strong>082 082 9050</strong> · <a href="https://wa.me/27820829050" target="_blank" rel="noopener">Chat now</a></p>
+    </div>
+  </section>
 </main>
+
 <footer>
   <div class="wrap">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand"><img src="setwel-logo.png" alt="Setwel"><span>Setwel <em>Biz Suite</em></span></div>
-        <p class="footer-tagline" data-i18n="foot_tagline">From SA boardrooms to Ekasi spaza shops — equipping every entrepreneur with the power to grow.</p>
-      </div>
-      <div><h3 data-i18n="foot_product">Product</h3><ul><li><a href="features.html" data-nk="feat">Features</a></li><li><a href="pricing.html" data-nk="price">Pricing</a></li><li><a href="download.html" data-i18n="foot_download">Download</a></li><li><a href="mobile.html" data-i18n="foot_mobile">Mobile</a></li></ul></div>
-      <div><h3 data-i18n="foot_resources">Resources</h3><ul><li><a href="faq.html" data-i18n="foot_helpcentre">Help Centre</a></li><li><a href="tax-calculator.html" data-i18n="foot_taxcalc">Tax Calculator</a></li><li><a href="faq.html" data-i18n="foot_payrollguide">Payroll guide</a></li></ul></div>
-      <div><h3 data-i18n="foot_company">Company</h3><ul><li><a href="about.html" data-i18n="foot_aboutus">About us</a></li><li><a href="contact.html" data-nk="contact">Contact</a></li></ul></div>
-      <div><h3 data-i18n="foot_legal">Legal</h3><ul><li><a href="refund.html" data-i18n="foot_refund">Refund Policy</a></li><li><a href="terms.html" data-i18n="foot_terms">Terms &amp; Conditions</a></li><li><a href="terms.html#s7" data-i18n="foot_popia">POPIA &amp; Privacy</a></li></ul></div>
-    </div>
-    <div class="f-bottom">
-      <span class="f-copy">&copy; 2023&#8211;2026 Setwel Africa (Pty) Ltd &nbsp;&middot;&nbsp; All rights reserved</span>
-      <div class="f-badges"><span class="f-badge">POPIA</span><span class="f-badge">Made in SA</span><span class="f-badge">100% Offline</span><span class="f-badge">SARS VAT201</span></div>
-    </div>
+    <span>© 2023–2026 Setwel Africa (Pty) Ltd · Made in South Africa</span>
+    <nav aria-label="Footer">
+      <a href="features.html">Features</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a><a href="terms.html">Terms</a><a href="refund.html">Refund Policy</a>
+    </nav>
   </div>
 </footer>
 
-<a href="mobile.html" id="mob-float"><span>&#128241;</span> Switch to Mobile</a>
-
-<script>
-function toggleMenu(){var m=document.getElementById("mob-menu");m.style.display=m.style.display==="flex"?"none":"flex"}
-document.querySelectorAll("#mob-menu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mob-menu").style.display="none"})});
-
-/* Expandable feature cards */
-function toggleFd(card){
-  var wasOpen = card.classList.contains("fd-open");
-  document.querySelectorAll(".fcard.fd-open").forEach(function(c){ if (c !== card) c.classList.remove("fd-open"); });
-  card.classList.toggle("fd-open", !wasOpen);
-}
-
-/* Tender consultancy service list */
-function toggleTender(btn){
-  var list = btn.parentElement.querySelector(".tender-list");
-  var arrow = btn.querySelector(".tender-arrow");
-  var open = list.style.display === "block";
-  list.style.display = open ? "none" : "block";
-  if (arrow) arrow.innerHTML = open ? "&#8964;" : "&#8963;";
-  btn.setAttribute("aria-expanded", String(!open));
-}
-
-/* Pricing monthly/annual toggle */
-function togglePricing(){
-  var sw = document.getElementById('bt-switch');
-  var annual = !sw.classList.contains('on');
-  sw.classList.toggle('on', annual);
-  document.getElementById('bt-lbl-m').classList.toggle('on', !annual);
-  document.getElementById('bt-lbl-a').classList.toggle('on', annual);
-  document.querySelectorAll('.plan-price').forEach(function(el){
-    el.querySelector('.amt').textContent = annual ? el.dataset.a : el.dataset.m;
-    el.querySelector('.per').textContent = annual ? '/mo, billed annually' : '/mo';
-  });
-}
-
-/* Language bar — translates the nav menu site-wide (full-page translation is a separate, larger project) */
-var NAV_LANG={
-  en:{home:'Home',feat:'Features',price:'Pricing',about:'About',contact:'Contact',help:'Help',plans:'See plans',featcta:'See features',trial:'Start free trial',buyonce:'✓ Buy Once',helpfaq:'Help & FAQ',dltrial:'↓ Download Free Trial'},
-  af:{home:'Tuis',feat:'Kenmerke',price:'Pryse',about:'Oor ons',contact:'Kontak',help:'Hulp',plans:'Sien planne',featcta:'Sien kenmerke',trial:'Begin gratis proeftydperk',buyonce:'✓ Koop eenmalig',helpfaq:'Hulp & VGV',dltrial:'↓ Laai gratis proef af'},
-  zu:{home:'Ikhaya',feat:'Izici',price:'Intengo',about:'Mayelana',contact:'Xhumana',help:'Usizo',plans:'Bona amaplani',featcta:'Bona izici',trial:'Qala ukuhlolwa kwamahhala',buyonce:'✓ Thenga kanye',helpfaq:'Usizo Nemibuzo',dltrial:'↓ Landa ukuhlolwa kwamahhala'},
-  xh:{home:'Ikhaya',feat:'Iimpawu',price:'Ixabiso',about:'Malunga',contact:'Qhagamshelana',help:'Uncedo',plans:'Jonga amaplani',featcta:'Jonga iimpawu',trial:'Qala ukuhlolwa okusimahla',buyonce:'✓ Thenga kanye',helpfaq:'Uncedo Nemibuzo',dltrial:'↓ Khuphela uvavanyo lwasimahla'},
-  ve:{home:'Hayani',feat:'Zwibveleto',price:'Mitengo',about:'Nga rine',contact:'Dzudzanya',help:'Thuso',plans:'Vhona manwali',featcta:'Vhona zwibveleto',trial:'Thoma u linga kha mahala',buyonce:'✓ Renga lwe-thihi',helpfaq:'Thuso na Mbudziso',dltrial:'↓ Dzhenisa u linga mahala'},
-  st:{home:'Hae',feat:'Likarolo',price:'Theko',about:'Mabapi',contact:'Hokela',help:'Thuso',plans:'Bona manwali',featcta:'Bona likarolo',trial:'Qala ho lekola mahala',buyonce:'✓ Reka hanngwe',helpfaq:'Thuso le Dipotso',dltrial:'↓ Download teko ya mahala'}
-};
-function setLang(lang, btn){
-  document.querySelectorAll('.lb-btn').forEach(function(b){b.classList.remove('active')});
-  if(btn) btn.classList.add('active');
-  try{localStorage.setItem('setwel_lang',lang)}catch(e){}
-  var t = NAV_LANG[lang] || NAV_LANG.en;
-  document.querySelectorAll('[data-nk]').forEach(function(el){
-    var k = el.getAttribute('data-nk');
-    if(t[k]) el.textContent = t[k];
-  });
-  applyContentLang(lang);
-}
-/* Full homepage content translation — hero, sections, feature cards, pricing, footer */
-var CONTENT_LANG = {
-  af:{
-    hero_eye:"Suid-Afrika se Besigheidsuite",
-    hero_sub:"Fakturering, salarisse, voorraad en SARS-voldoenende rekeningkunde — een aanmelding, gebou vir Suid-Afrikaanse besighede. Van spaza-winkels tot groeiende KMO's.",
-    hero_btn1:"&#8595; Begin Gratis 30-Dae Proeftydperk", hero_btn2:"Sien planne",
-    hero_b1:"SARS-voldoenend", hero_b2:"Werk 100% vanlyn", hero_b3:"WhatsApp-aflewering", hero_b4:"Vanaf R59.99/maand",
-    hero_know:"Weet jy reeds wat jy wil hê?", hero_dl:"Laai nou af vir Windows (~160MB) &#8594;",
-    inv_eye:"Waar dit begin", inv_h2:"Fakturering &amp; Verkope",
-    inv_sub:"Skep, stuur en volg professionele, SARS-voldoenende fakture en kwotasies binne minute — kry dan vinniger betaal via WhatsApp.",
-    inv1_h3:"BTW-fakture", inv1_p:"SARS-voldoenende BELASTINGFAKTURE met deurlopende nommering, BTW-opsplitsing, en jou besigheidsbesonderhede outomaties ingesluit.",
-    inv2_h3:"Kwotasiebouer", inv2_p:"Skep professionele kwotasies en skakel met een klik om na 'n faktuur wanneer aanvaar — geen herskryf nodig nie.",
-    inv3_h3:"WhatsApp-aflewering", inv3_p:"Stuur fakture direk na 'n kliënt se WhatsApp. Die vinnigste manier om in SA betaal te word.",
-    inv4_h3:"E-posaflewering", inv4_p:"Stuur PDF-fakture en kwotasies per e-pos met jou logo en professionele ontwerp.",
-    inv5_h3:"Kliëntestate", inv5_p:"Genereer volledige rekeningstate wat alle fakture, betalings en uitstaande saldo's wys.",
-    inv6_h3:"Herhalende Fakture", inv6_p:"Stel outomatiese herhalende fakture op vir kliënte op maandelikse retensie of intekening.",
-    inv_seeall:"Sien elke Fakturering &amp; Verkope-kenmerk &#8594;",
-    price_eye:"Deursigtige pryse", price_h2:"Eenvoudige, eerlike pryse — <em style=\"font-style:italic\">geen verrassings nie.</em>",
-    price_sub:"Alle planne sluit 'n volle 30-dae gratis proeftydperk in. Geen kredietkaart nodig nie. Kanselleer enige tyd.",
-    price_monthly:"Maandeliks", price_annual:"Jaarliks", price_save:"Bespaar 2 maande gratis",
-    plan1_for:"Spaza-winkels, smouse, tuisbesighede &amp; newe-bedrywighede",
-    plan2_for:"Groeiende besighede, vryskutwerkers &amp; ambagsmanne",
-    plan3_for:"Gevestigde KMO's met personeel, voorraad &amp; veelvuldige behoeftes",
-    plan4_for:"Multi-tak-maatskappye &amp; groot KMO's met komplekse behoeftes",
-    price_preferonce:"&#10003; Verkies om net een keer te betaal? ", price_viewlifetime:"Bekyk Lewenslange Lisensie-pakkette &#8594;",
-    price_accountant:"Rekenmeester?", price_partner:"Vennootplan vanaf R1,499/maand — onbeperkte kliëntlêers.", price_contactus:"Kontak ons &#8599;",
-    price_viewfull:"Bekyk volledige prysbesonderhede &#8594;",
-    sa_eye:"Gebou vir Suid-Afrika", sa_h2:"SA-Spesifieke Kenmerke",
-    sa_sub:"Gebou vir Suid-Afrikaanse realiteite — nie oorgedra van oorsese sagteware nie. Tik op enige kaart vir die volle prentjie.",
-    sa1_h3:"Spaza-kontantvlotter-opspoorder", sa1_p:"Daaglikse openingsvlotter, kontantverkope, kleingeld-opsporing, en sluitingstelling — gebou vir kontant-eerste, tiller-gebaseerde besighede.",
-    sa2_h3:"Stokvel-bestuurder", sa2_p:"Lidbydraes, rotasie-uitbetalings, en vergaderingsuitgawes — deursigtige stokvel-bestuur wat elke lid kan verifieer.",
-    sa3_h3:"Verskaffersontwikkeling", sa3_p:"Volg en bestuur verskaffersontwikkelingsbesteding om B-BBEE-voldoening te ondersteun. Kategoriseer besteding en genereer verslae vir verifikasie-agentskappe.",
-    sa4_h3:"Uitleg-bestuur", sa4_p:"Volg uitleg-deposito's, saldo's, afhaaldatums met outomatiese WhatsApp-herinnerings.",
-    sa5_h3:"Veeltalige Fakture", sa5_p:"Stuur fakture in Engels, Afrikaans, isiZulu, isiXhosa, Tshivenda of Sesotho.",
-    sa6_h3:"Tenderdokument-konsultasie", sa6_p:"Professionele tenderondersteuningsdienste om SA-besighede te help wen aan regerings- en korporatiewe tenders. Kundige konsultante hanteer elke stap van die aansoekproses.",
-    sa_seeall:"Sien elke SA-Spesifieke kenmerk &#8594;",
-    bridge_eye:"Ook ingesluit", bridge_h2:"En alles anders wat 'n groeiende besigheid nodig het.",
-    bridge_sub:"Salarisse, voorraadbeheer, belastingvoldoening en verslagdoening — alles in dieselfde aanmelding.",
-    bc1_h4:"Salarisse &amp; MH", bc1_p:"PAYE, UIF, SDL, salarisstrokies en IRP5's — insluitend huiswerkers.",
-    bc2_h4:"Voorraad &amp; Aandele", bc2_p:"Intydse voorraadvlakke, lae-voorraad-waarskuwings en verskafferbestellings.",
-    bc3_h4:"Belasting &amp; SARS", bc3_p:"BTW201-uitvoer, belastingfakture en SARS-sperdatum-herinnerings.",
-    bc4_h4:"Verslae &amp; Analise", bc4_p:"W&amp;V, Balansstaat, Kontantvloei en veroudede debiteure/krediteure.",
-    bc_see:"Sien besonderhede &#8594;", bridge_taxcalc:"&#128176; Probeer ons gratis SARS-belastingberekenaar &#8594;",
-    cta_badge:"30-dae gratis proeftydperk &middot; Geen kredietkaart nodig nie", cta_h2:"Gereed om <em>jou besigheid</em> te vereenvoudig?",
-    cta_p:"Sluit aan by Suid-Afrikaanse besighede wat hul volledige rekeningkunde op Setwel Biz Suite bedryf.",
-    cta_contactsales:"Kontak Verkope", cta_whatsapp:"&#128172; WhatsApp",
-    cta_fine:"&#128274; Jou data bly op jou toestel &nbsp;&middot;&nbsp; POPIA-voldoenend &nbsp;&middot;&nbsp; Gebou in Suid-Afrika &nbsp;&middot;&nbsp; Kanselleer enige tyd",
-    foot_tagline:"Van SA-raadskamers tot Ekasi-spaza-winkels — ons bemagtig elke entrepreneur met die krag om te groei.",
-    foot_product:"Produk", foot_download:"Aflaai", foot_mobile:"Mobiel",
-    foot_resources:"Hulpbronne", foot_helpcentre:"Hulpsentrum", foot_taxcalc:"Belastingberekenaar", foot_payrollguide:"Salarisgids",
-    foot_company:"Maatskappy", foot_aboutus:"Oor ons",
-    foot_legal:"Regte", foot_refund:"Terugbetalingsbeleid", foot_terms:"Bepalings &amp; Voorwaardes", foot_popia:"POPIA &amp; Privaatheid",
-    dltrial:"↓ Laai gratis proef af"
-  },
-  zu:{
-    hero_eye:"Isistimu Yebhizinisi YaseNingizimu Afrika",
-    hero_sub:"Ukukhishwa kwezimali, amaholo, impahla kanye nokubalwa kwezimali okuhambisana ne-SARS — ukungena okukodwa, kwakhelwe amabhizinisi aseNingizimu Afrika. Kusukela ezitolo zesipaza kuya kumabhizinisi amancane akhulayo.",
-    hero_btn1:"&#8595; Qala Uvivinyo Lwamahhala Lwezinsuku ezingu-30", hero_btn2:"Bona amaplani",
-    hero_b1:"Ihambisana ne-SARS", hero_b2:"Isebenza ngo-100% ngaphandle kwe-inthanethi", hero_b3:"Ukulethwa nge-WhatsApp", hero_b4:"Kusukela ku-R59.99/inyanga",
-    hero_know:"Usuvele wazi lokho okufunayo?", hero_dl:"Landa manje ku-Windows (~160MB) &#8594;",
-    inv_eye:"Lapho kuqala khona", inv_h2:"Ukukhishwa Kwezimali &amp; Ukuthengisa",
-    inv_sub:"Yakha, thumela futhi ulandelele ama-invoyisi nezicelo zentengo eziprofeshinali, ezihambisana ne-SARS ngemizuzu — bese uhola ukukhokhelwa ngokushesha nge-WhatsApp.",
-    inv1_h3:"Ama-invoyisi e-VAT", inv1_p:"AMA-INVOYISI eHAMBISANA ne-SARS anezinombolo ezilandelanayo, ukuhlukaniswa kwe-VAT, kanye nemininingwane yebhizinisi lakho efakwe ngokuzenzakalela.",
-    inv2_h3:"Umakhi Wezicelo Zentengo", inv2_p:"Yakha izicelo zentengo eziprofeshinali bese uziguqula zibe yi-invoyisi ngokuchofoza okukodwa uma zamukelwe — akukho ukuphinda ukubhala.",
-    inv3_h3:"Ukulethwa nge-WhatsApp", inv3_p:"Thumela ama-invoyisi ngqo ku-WhatsApp yekhasimende. Indlela esheshayo yokukhokhelwa eNingizimu Afrika.",
-    inv4_h3:"Ukulethwa nge-imeyili", inv4_p:"Thumela ama-invoyisi e-PDF nezicelo zentengo nge-imeyili nelogo yakho kanye nomklamo oprofeshinali.",
-    inv5_h3:"Izitatimende Zamakhasimende", inv5_p:"Khiqiza izitatimende zeakhawunti eziphelele ezibonisa wonke ama-invoyisi, izinkokhelo, kanye nebhalansi esasele.",
-    inv6_h3:"Ama-invoyisi Aphindaphindwayo", inv6_p:"Misa ama-invoyisi aphindaphindwayo ngokuzenzakalela amakhasimende asemabhalane ngenyanga noma abhalisele isevisi.",
-    inv_seeall:"Bona sonke isici Sokukhishwa Kwezimali &amp; Ukuthengisa &#8594;",
-    price_eye:"Amanani asobala", price_h2:"Amanani alula, aqotho — <em style=\"font-style:italic\">akukho okumangazayo.</em>",
-    price_sub:"Wonke amaplani afaka uvivinyo lwamahhala oluphelele lwezinsuku ezingu-30. Akudingeki ikhadi lesikweletu. Khansela noma nini.",
-    price_monthly:"Ngenyanga", price_annual:"Ngonyaka", price_save:"Onga izinyanga ezi-2 mahhala",
-    plan1_for:"Izitolo zesipaza, abathengisi, amabhizinisi asekhaya &amp; imisebenzi yaseceleni",
-    plan2_for:"Amabhizinisi akhulayo, abazisebenzeli kanye nezingcweti zomsebenzi",
-    plan3_for:"Amabhizinisi asezimele anabasebenzi, impahla &amp; izidingo eziningi",
-    plan4_for:"Izinkampani ezinamagatsha amaningi &amp; amabhizinisi amakhulu anezidingo eziyinkimbinkimbi",
-    price_preferonce:"&#10003; Ukhetha ukukhokha kanye kuphela? ", price_viewlifetime:"Bheka amaphakheji Elayisensi Yaphakade &#8594;",
-    price_accountant:"Umabhalane?", price_partner:"Uhlelo Lomlingani kusukela ku-R1,499/inyanga — amafayela amakhasimende angenamkhawulo.", price_contactus:"Xhumana nathi &#8599;",
-    price_viewfull:"Bheka imininingwane ephelele yamanani &#8594;",
-    sa_eye:"Kwakhelwe iNingizimu Afrika", sa_h2:"Izici EziQondene NeNingizimu Afrika",
-    sa_sub:"Kwakhelwe izimo zangempela zaseNingizimu Afrika — akuguqulwanga kusuka kusofthiwe yasemazweni angaphandle. Chofoza noma yikuphi ikhadi ukuthola umfanekiso ophelele.",
-    sa1_h3:"Umlandeleli Wemali Yesipaza", sa1_p:"Imali yokuqala yansuku zonke, ukuthengisa ngemali, ukulandelela imali yophindisela, kanye nokubala ekuvalweni — kwakhelwe amabhizinisi asebenzisa imali njengokuqala, asebenzisa amakhesha.",
-    sa2_h3:"Umphathi Westokvela", sa2_p:"Iminikelo yamalungu, ukukhokhwa okujikelezayo, kanye nezindleko zemihlangano — ukuphathwa kwestokvela okusobala amalungu angakuqinisekisa.",
-    sa3_h3:"Ukuthuthukiswa Kwabahlinzeki", sa3_p:"Landelela futhi uphathe ukuchithwa kwemali kokuthuthukiswa kwabahlinzeki ukuze kusekelwe ukuhambisana ne-B-BBEE. Hlukanisa ukuchithwa kwemali futhi ukhiqize imibiko yezinhlangano zokuqinisekisa.",
-    sa4_h3:"Ukuphathwa Kwe-Layby", sa4_p:"Landelela izibambiso ze-layby, amabhalansi, izinsuku zokulanda ngezikhumbuzo ze-WhatsApp ezizenzakalelayo.",
-    sa5_h3:"Ama-invoyisi Ezilimi Eziningi", sa5_p:"Thumela ama-invoyisi ngesiNgisi, isiBhunu, isiZulu, isiXhosa, isiVenda noma isiSotho.",
-    sa6_h3:"Ukwelulekwa Ngamadokhumenti Etenda", sa6_p:"Amasevisi okusekela itenda aprofeshinali okusiza amabhizinisi aseNingizimu Afrika ukuwina amatenda kahulumeni nawezinkampani. Abeluleki abanolwazi baphatha zonke izinyathelo zenqubo yesicelo.",
-    sa_seeall:"Bona sonke isici EsiQondene NeNingizimu Afrika &#8594;",
-    bridge_eye:"Kufakwe futhi", bridge_h2:"Kanye nakho konke okunye ibhizinisi elikhulayo elikudingayo.",
-    bridge_sub:"Amaholo, ukulawulwa kwempahla, ukuhambisana nentela kanye nokubika — konke ekungeneni okufanayo.",
-    bc1_h4:"Amaholo &amp; Abasebenzi", bc1_p:"I-PAYE, i-UIF, i-SDL, amaphepha eholo kanye ne-IRP5 — kufaka nezisebenzi zasekhaya.",
-    bc2_h4:"Impahla &amp; Isitoko", bc2_p:"Amazinga empahla ngesikhathi sangempela, izixwayiso zesitoko esiphansi kanye nama-oda kubahlinzeki.",
-    bc3_h4:"Intela &amp; I-SARS", bc3_p:"Ukukhishwa kwe-VAT201, ama-invoyisi entela kanye nezikhumbuzo zomhla wokugcina we-SARS.",
-    bc4_h4:"Imibiko &amp; Ukuhlaziywa", bc4_p:"I-P&amp;L, Ibhalansi, Ukugeleza Kwemali kanye nezikweletu ezindala.",
-    bc_see:"Bona imininingwane &#8594;", bridge_taxcalc:"&#128176; Zama isibali sethu semahhala se-SARS &#8594;",
-    cta_badge:"Uvivinyo lwamahhala lwezinsuku ezingu-30 &middot; Alikho ikhadi lesikweletu", cta_h2:"Ukulungele ukwenza <em>ibhizinisi lakho</em> libe lula?",
-    cta_p:"Joyina amabhizinisi aseNingizimu Afrika asebenzisa yonke ibhalansi yawo ku-Setwel Biz Suite.",
-    cta_contactsales:"Xhumana Nokuthengisa", cta_whatsapp:"&#128172; WhatsApp",
-    cta_fine:"&#128274; Idatha yakho ihlala kudivayisi yakho &nbsp;&middot;&nbsp; Ihambisana ne-POPIA &nbsp;&middot;&nbsp; Yakhiwe eNingizimu Afrika &nbsp;&middot;&nbsp; Khansela noma nini",
-    foot_tagline:"Kusukela emakamelweni ebhodi aseNingizimu Afrika kuya ezitolo zesipaza zase-Ekasi — sinika wonke usomabhizinisi amandla okukhula.",
-    foot_product:"Umkhiqizo", foot_download:"Ukulanda", foot_mobile:"Iselula",
-    foot_resources:"Izinsiza", foot_helpcentre:"Isikhungo Sosizo", foot_taxcalc:"Isibali Sentela", foot_payrollguide:"Umhlahlandlela Wamaholo",
-    foot_company:"Inkampani", foot_aboutus:"Mayelana nathi",
-    foot_legal:"Okomthetho", foot_refund:"Inqubomgomo Yembuyiselo", foot_terms:"Imigomo &amp; Imibandela", foot_popia:"I-POPIA &amp; Ubumfihlo",
-    dltrial:"↓ Landa ukuhlolwa kwamahhala"
-  },
-  xh:{
-    hero_eye:"Uhlelo Lweshishini LoMzantsi Afrika",
-    hero_sub:"Ukukhutshwa kweetyala, imivuzo, izinto ezigcinwe kwaye kubalo-mali elihambelana ne-SARS — ukungena okukodwa, yakhelwe amashishini oMzantsi Afrika. Ukusuka kwiivenkile zesipaza ukuya kumashishini amancinci akhulayo.",
-    hero_btn1:"&#8595; Qalisa Uvavanyo Lwamahhala Lweentsuku ezingama-30", hero_btn2:"Jonga amaplani",
-    hero_b1:"Ihambelana ne-SARS", hero_b2:"Isebenza ngo-100% ngaphandle kwe-intanethi", hero_b3:"Ukuhanjiswa nge-WhatsApp", hero_b4:"Ukususela ku-R59.99/inyanga",
-    hero_know:"Sele usazi ofuna kona?", hero_dl:"Khuphela ngoku kwi-Windows (~160MB) &#8594;",
-    inv_eye:"Apho kuqala khona", inv_h2:"Ukukhutshwa Kweetyala &amp; Ukuthengisa",
-    inv_sub:"Yenza, thumela kwaye ulandelele iifektyisi eziprofeshinali, ezihambelana ne-SARS kunye neengcebiso zamaxabiso ngemizuzu — emva koko ubhatalwe ngokukhawuleza nge-WhatsApp.",
-    inv1_h3:"Iifektyisi ze-VAT", inv1_p:"IIFEKTYISI EZIHAMBELANA NE-SARS ezinamanani alandelelanayo, ukwahlulwa kwe-VAT, kunye neenkcukacha zeshishini lakho zifakwa ngokuzenzekelayo.",
-    inv2_h3:"Umakhi Weengcebiso Zamaxabiso", inv2_p:"Yenza iingcebiso zamaxabiso eziprofeshinali uze uziguqulele kwifektyisi ngecofa elinye xa zamkelwe — akukho kuphinda ukubhala.",
-    inv3_h3:"Ukuhanjiswa nge-WhatsApp", inv3_p:"Thumela iifektyisi ngqo kwi-WhatsApp yomthengi. Eyona ndlela ikhawulezayo yokubhatalwa eMzantsi Afrika.",
-    inv4_h3:"Ukuhanjiswa nge-imeyili", inv4_p:"Thumela iifektyisi ze-PDF kunye neengcebiso zamaxabiso nge-imeyili kunye nelogo yakho kunye noyilo oluprofeshinali.",
-    inv5_h3:"Iingxelo Zabathengi", inv5_p:"Yenza iingxelo ezipheleleyo zeakhawunti ezibonisa zonke iifektyisi, iintlawulo, kunye netyala eliseleyo.",
-    inv6_h3:"Iifektyisi Ezibuyelayo", inv6_p:"Misela iifektyisi ezizenzekelayo ezibuyelayo kubathengi abakwinkontrakthi yenyanga okanye ababhalisele inkonzo.",
-    inv_seeall:"Jonga yonke into Yokukhutshwa Kweetyala &amp; Ukuthengisa &#8594;",
-    price_eye:"Amaxabiso acacileyo", price_h2:"Amaxabiso alula, anyanisekileyo — <em style=\"font-style:italic\">akukho zothusayo.</em>",
-    price_sub:"Zonke izicwangciso ziquka uvavanyo lwamahhala olupheleleyo lweentsuku ezingama-30. Akufunwa khadi letyala. Rhoxisa nanini na.",
-    price_monthly:"Ngenyanga", price_annual:"Ngonyaka", price_save:"Yonga iinyanga ezi-2 zamahhala",
-    plan1_for:"Iivenkile zesipaza, abathengisi, amashishini asekhaya &amp; imisebenzi yangaphandle",
-    plan2_for:"Amashishini akhulayo, abaziqhubi kunye nezingcali zomsebenzi",
-    plan3_for:"Amashishini asekiweyo anabasebenzi, izinto ezigcinwe &amp; iimfuno ezininzi",
-    plan4_for:"Iinkampani ezinamasebe amaninzi &amp; amashishini amakhulu aneemfuno ezintsonkothileyo",
-    price_preferonce:"&#10003; Ukhetha ukubhatala kanye kuphela? ", price_viewlifetime:"Jonga iipakethi Zelayisenisi Yobomi Bonke &#8594;",
-    price_accountant:"Umlawuli mali?", price_partner:"Isicwangciso Seqabane ukususela ku-R1,499/inyanga — iifayile zabathengi ezingenamda.", price_contactus:"Qhagamshelana nathi &#8599;",
-    price_viewfull:"Jonga iinkcukacha ezipheleleyo zamaxabiso &#8594;",
-    sa_eye:"Yakhelwe uMzantsi Afrika", sa_h2:"Iimpawu EziKhethekileyo zoMzantsi Afrika",
-    sa_sub:"Yakhelwe iimeko zokwenyani zoMzantsi Afrika — ayiguqulwanga kwisoftware yaphesheya. Cofa nayiphi na ikhadi ufumane umfanekiso opheleleyo.",
-    sa1_h3:"Umlandeleli Wemali Yesipaza", sa1_p:"Imali yokuvula yemihla ngemihla, ukuthengisa ngemali, ukulandelela irherho, kunye nokubala ekuvaleni — yakhelwe amashishini asebenzisa imali njengokuqala.",
-    sa2_h3:"Umphathi Westokfela", sa2_p:"Amarhafu amalungu, iintlawulo ezijikelezayo, kunye neendleko zeentlanganiso — ulawulo lwestokfela olucacileyo amalungu onke anokuqinisekisa.",
-    sa3_h3:"Uphuhliso Lwabaxhasi", sa3_p:"Landelela kwaye ulawule inkcitho yophuhliso lwabaxhasi ukuxhasa ukuhambelana ne-B-BBEE. Hlela inkcitho kwaye wenze iingxelo zamashishini aqinisekisayo.",
-    sa4_h3:"Ulawulo lwe-Layby", sa4_p:"Landelela izibekelo ze-layby, amatyala, imihla yokulanda ngezikhumbuzo ze-WhatsApp ezizenzekelayo.",
-    sa5_h3:"Iifektyisi Zeelwimi Ezininzi", sa5_p:"Thumela iifektyisi ngesiNgesi, isiBhulu, isiZulu, isiXhosa, isiVenda okanye isiSuthu.",
-    sa6_h3:"Ingcebiso Yamaxwebhu Etenda", sa6_p:"Iinkonzo zenkxaso yetenda eziprofeshinali zokunceda amashishini oMzantsi Afrika aphumelele iitenda karhulumente nezamashishini. Iingcali zicebisa zilawula onke amanyathelo enkqubo yesicelo.",
-    sa_seeall:"Jonga yonke impawu Ekhethekileyo yoMzantsi Afrika &#8594;",
-    bridge_eye:"Kuquka nayiphi na", bridge_h2:"Kunye nakho konke okunye ishishini elikhulayo elikudingayo.",
-    bridge_sub:"Umvuzo, ulawulo lwezinto ezigcinwe, ukuhambelana nerhafu kunye nengxelo — konke kungeno olunye.",
-    bc1_h4:"Umvuzo &amp; Abasebenzi", bc1_p:"I-PAYE, i-UIF, i-SDL, amaphepha omvuzo kunye ne-IRP5 — kubandakanya nabasebenzi basekhaya.",
-    bc2_h4:"Izinto Ezigcinwe &amp; Isitokhwe", bc2_p:"Amanqanaba ezinto ezigcinwe ngexesha langempela, izilumkiso zesitokhwe esiphantsi kunye nee-oda kubaxhasi.",
-    bc3_h4:"Irhafu &amp; I-SARS", bc3_p:"Ukukhutshwa kwe-VAT201, iifektyisi zerhafu kunye nezikhumbuzo zomhla wokugqibela we-SARS.",
-    bc4_h4:"Iingxelo &amp; Uhlalutyo", bc4_p:"I-P&amp;L, Ibhalansi, Ukuhamba Kwemali kunye namatyala amadala.",
-    bc_see:"Jonga iinkcukacha &#8594;", bridge_taxcalc:"&#128176; Zama isibalo sethu samahhala se-SARS &#8594;",
-    cta_badge:"Uvavanyo lwamahhala lweentsuku ezingama-30 &middot; Akukho khadi letyala", cta_h2:"Ukulungele ukwenza <em>ishishini lakho</em> libe lula?",
-    cta_p:"Joyina amashishini oMzantsi Afrika asebenzisa lonke ibhalansi yawo kwi-Setwel Biz Suite.",
-    cta_contactsales:"Qhagamshelana Nokuthengisa", cta_whatsapp:"&#128172; WhatsApp",
-    cta_fine:"&#128274; Idatha yakho ihlala kwisixhobo sakho &nbsp;&middot;&nbsp; Ihambelana ne-POPIA &nbsp;&middot;&nbsp; Yakhiwe eMzantsi Afrika &nbsp;&middot;&nbsp; Rhoxisa nanini na",
-    foot_tagline:"Ukusuka kumagumbi eebhodi zoMzantsi Afrika ukuya kwiivenkile zesipaza zase-Ekasi — sixhobisa wonke usomashishini ngamandla okukhula.",
-    foot_product:"Imveliso", foot_download:"Ukukhuphela", foot_mobile:"Iselfowuni",
-    foot_resources:"Izixhobo", foot_helpcentre:"Iziko Loncedo", foot_taxcalc:"Isibalo Serhafu", foot_payrollguide:"Isikhokelo Somvuzo",
-    foot_company:"Inkampani", foot_aboutus:"Malunga nathi",
-    foot_legal:"Okomthetho", foot_refund:"Umgaqo-nkqubo Wembuyekezo", foot_terms:"Imigaqo &amp; Iimeko", foot_popia:"I-POPIA &amp; Ubumfihlo",
-    dltrial:"↓ Khuphela uvavanyo lwasimahla"
-  },
-  ve:{
-    hero_eye:"Muvhuso wa Bindu wa Afrika Tshipembe",
-    hero_sub:"U bva zwibammbiri, mbadelo, thundu na mbalo dzi tendelanaho na SARS — u dzhena hu one, ho fhaṱelwa mabindu a Afrika Tshipembe. Kubva kha mavhengele a spaza u swika kha mabindu ane a hula.",
-    hero_btn1:"&#8595; Thoma u Linga nga Mahala Maḓuvha a 30", hero_btn2:"Vhona manwali",
-    hero_b1:"I tendelana na SARS", hero_b2:"I shuma nga 100% hu si na inthanete", hero_b3:"U rumelwa nga WhatsApp", hero_b4:"U bva kha R59.99/ṅwedzi",
-    hero_know:"No no ḓivha zwine na zwi ṱoda?", hero_dl:"Dzhenisani zwino kha Windows (~160MB) &#8594;",
-    inv_eye:"Hune zwa thoma hone", inv_h2:"U bva Zwibammbiri &amp; Kurengiselano",
-    inv_sub:"Bveledzani, rumani na u tevhedza zwibammbiri zwa vhuḓi, zwi tendelanaho na SARS na themendelo nga miniti — nahone ni ḓo lifhelwa nga u ṱavhanya kha WhatsApp.",
-    inv1_h3:"Zwibammbiri zwa VAT", inv1_p:"ZWIBAMMBIRI zwi tendelanaho na SARS zwine zwa vha na nomboro dzi tevhelanaho, u fhandekanywa ha VAT, na mafhungo a bindu ḽaṋu a dzhenisiwa nga u ḓiitela.",
-    inv2_h3:"Muvhumbi wa Themendelo", inv2_p:"Bveledzani themendelo dza vhuḓi na u dzhi shandukisela kha tshibammbiri nga u kwama kanwe musi dzi tendelwa — a hu na u dovha u ṅwala.",
-    inv3_h3:"U Rumelwa nga WhatsApp", inv3_p:"Rumelani zwibammbiri nga ho livhaho kha WhatsApp ya muthengi. Nḓila i ṱavhanyaho ya u lifhelwa Afrika Tshipembe.",
-    inv4_h3:"U Rumelwa nga Imeili", inv4_p:"Rumelani zwibammbiri zwa PDF na themendelo nga imeili na luswayo lwaṋu na muvhumbo wa vhuḓi.",
-    inv5_h3:"Mafhungo a Vhathengi", inv5_p:"Bveledzani mafhungo o ḓalaho a akhaunthi ane a sumbedza zwibammbiri zwoṱhe, mbadelo, na mbalelo yo salaho.",
-    inv6_h3:"Zwibammbiri zwi Dovhaho", inv6_p:"Dzudzanyani zwibammbiri zwine zwa dovha nga u ḓiitela kha vhadzheneli vha ṅwedzi kana vho ṅwalisaho tshenzhemo.",
-    inv_seeall:"Vhonani zwoṱhe zwa u bva Zwibammbiri &amp; Kurengiselano &#8594;",
-    price_eye:"Mitengo yo Vhonalaho", price_h2:"Mitengo yo leluwaho, ya vhukuma — <em style=\"font-style:italic\">a hu na zwi mangadzaho.</em>",
-    price_sub:"Manwali oṱhe a katela u linga nga mahala ho ḓalaho ha maḓuvha a 30. A hu ṱoḓei khadi ya tshikolodo. Litshani nga tshifhinga tshiṅwe na tshiṅwe.",
-    price_monthly:"Nga ṅwedzi", price_annual:"Nga ṅwaha", price_save:"Ilani miṅwedzi mbili nga mahala",
-    plan1_for:"Mavhengele a spaza, vhathengisi, mabindu a hayani &amp; mishumo ya tsini",
-    plan2_for:"Mabindu ane a hula, vhashumeli vhaṱuku na vhaḓi vha mishumo",
-    plan3_for:"Mabindu o dziimisaho ane a vha na vhashumi, thundu &amp; ṱhoḓea nnzhi",
-    plan4_for:"Makhamphani ane a vha na maofisi manzhi &amp; mabindu makhulu ane a vha na ṱhoḓea dzo raraho",
-    price_preferonce:"&#10003; Ni khou takalela u lifha lwo engedzeaho lwoṱhe? ", price_viewlifetime:"Vhonani zwipakiwa zwa Layisennisi ya Vhutshilo &#8594;",
-    price_accountant:"Muṅwali wa mbalo?", price_partner:"Muvhambadzano u bva kha R1,499/ṅwedzi — mafaela a vhathengi a si na mikano.", price_contactus:"Ri dzhenelele &#8599;",
-    price_viewfull:"Vhonani mafhungo oṱhe a mitengo &#8594;",
-    sa_eye:"Ho fhaṱelwa Afrika Tshipembe", sa_h2:"Zwidodombedzwa zwa Afrika Tshipembe",
-    sa_sub:"Ho fhaṱelwa vhukuma ha Afrika Tshipembe — a zwo ngo bviswa kha softiwe ya mashango a nnḓa. Kwamani karata iṅwe na iṅwe u wana mufanyiso woṱhe.",
-    sa1_h3:"Mutevheledzi wa Tshelede ya Spaza", sa1_p:"Tshelede ya u thoma ya ḓuvha ḽiṅwe na ḽiṅwe, thengiso ya tshelede, u tevhedza mbadelo dza u shandukisa, na u vhala hu tshi valwa — ho fhaṱelwa mabindu ane a shumisa tshelede nga u thoma.",
-    sa2_h3:"Mulanguli wa Stokvel", sa2_p:"Miṋekedzo ya miraḓo, mbadelo dzine dza tendelana, na tshelede ya muṱangano — vhulanguli ha stokvel vhu vhonalaho vhune miraḓo yoṱhe ya nga sedza.",
-    sa3_h3:"Mvelaphanḓa ya Vhashumisani", sa3_p:"Tevhedzani na u langula tshelede ya mvelaphanḓa ya vhashumisani u tikedza u tendelana na B-BBEE. Kategoraisani tshelede na u bveledza mabiko a maziko a u sedzulusa.",
-    sa4_h3:"Vhulanguli ha Layby", sa4_p:"Tevhedzani zwiimo zwa layby, mbalelo, maḓuvha a u dzhia nga themendelo dzi ḓiitelaho dza WhatsApp.",
-    sa5_h3:"Zwibammbiri zwa Nyambo Nnzhi", sa5_p:"Rumelani zwibammbiri nga Luisimane, Luawa, isiZulu, isiXhosa, Tshivenḓa kana Sesotho.",
-    sa6_h3:"Vhudzheneli ha Maṅwalwa a Themendari", sa6_p:"Tshenzhemo dza vhudzheneli dza vhuḓi u thusa mabindu a Afrika Tshipembe u kunda themendari dza muvhuso na khamphani. Vhaḓivhi vha vhudzheneli vha langula magondo oṱhe a maitele a khumbelo.",
-    sa_seeall:"Vhonani zwoṱhe zwa Afrika Tshipembe &#8594;",
-    bridge_eye:"Zwo dovha zwa katelwa", bridge_h2:"Na zwiṅwe zwoṱhe zwine bindu ḽine ḽa khou hula ḽa zwi ṱoḓa.",
-    bridge_sub:"Mbadelo, vhulanguli ha thundu, u tendelana na mutero na mabiko — zwoṱhe kha u dzhena hu one.",
-    bc1_h4:"Mbadelo &amp; Vhashumi", bc1_p:"PAYE, UIF, SDL, mbadelo na IRP5 — zwi tshi katela na vhashumi va hayani.",
-    bc2_h4:"Thundu &amp; Zwithu", bc2_p:"Levele dza thundu nga tshifhinga tsha vhukuma, themendelo dza thundu i tsi na nnzhi na khumbelo kha vhashumisani.",
-    bc3_h4:"Mutero &amp; SARS", bc3_p:"U bva ha VAT201, zwibammbiri zwa mutero na themendelo dza tshifhinga tsha SARS.",
-    bc4_h4:"Mabiko &amp; Musaukanyo", bc4_p:"P&amp;L, Bhalansi, Mutsininyuko wa Tshelede na mikwerekwere ya kale.",
-    bc_see:"Vhonani mafhungo &#8594;", bridge_taxcalc:"&#128176; Lingani tshibalo tshashu tsha mahala tsha SARS &#8594;",
-    cta_badge:"U linga nga mahala maḓuvha a 30 &middot; A hu ṱoḓei khadi ya tshikolodo", cta_h2:"No ḓilugisela u leludza <em>bindu ḽaṋu</em>?",
-    cta_p:"Ḓivhofhi mabindu a Afrika Tshipembe ane a shumisa mbalo yao yoṱhe kha Setwel Biz Suite.",
-    cta_contactsales:"Dzhenelani na Vhathengisi", cta_whatsapp:"&#128172; WhatsApp",
-    cta_fine:"&#128274; Data yaṋu i dzula kha vhuḓisiwa haṋu &nbsp;&middot;&nbsp; I tendelana na POPIA &nbsp;&middot;&nbsp; Yo fhaṱiwa Afrika Tshipembe &nbsp;&middot;&nbsp; Litshani nga tshifhinga tshiṅwe na tshiṅwe",
-    foot_tagline:"Kubva kha zwikhala zwa bodo zwa Afrika Tshipembe u swika kha mavhengele a spaza a Ekasi — ri ṋea muvhumbi muṅwe na muṅwe maanḓa a u hula.",
-    foot_product:"Tshibveledzwa", foot_download:"U Dzhenisa", foot_mobile:"Selula",
-    foot_resources:"Zwishumiswa", foot_helpcentre:"Vhudzulo ha Thuso", foot_taxcalc:"Tshibalo tsha Mutero", foot_payrollguide:"Thembe ya Mbadelo",
-    foot_company:"Khamphani", foot_aboutus:"Nga ha rine",
-    foot_legal:"Zwa Mulayo", foot_refund:"Mulayo wa u Vhuisa Tshelede", foot_terms:"Milayo &amp; Zwiimo", foot_popia:"POPIA &amp; Vhuphuri",
-    dltrial:"↓ Dzhenisa u linga mahala"
-  },
-  st:{
-    hero_eye:"Sistimi ya Khoebo ya Afrika Boroa",
-    hero_sub:"Ho ntšha lifekthara, meputso, thepa le boitsebiso bo lumellanang le SARS — ho kena ho le hong, e entsoeng bakeng sa likhoebo tsa Afrika Boroa. Ho tloha mabenkeleng a spaza ho ea likhoebong tse nyane tse holang.",
-    hero_btn1:"&#8595; Qala Teko ea Mahala ea Matsatsi a 30", hero_btn2:"Bona merero",
-    hero_b1:"E lumellana le SARS", hero_b2:"E sebetsa ka 100% ntle le inthanete", hero_b3:"Ho romelloa ka WhatsApp", hero_b4:"Ho tloha ho R59.99/khoeli",
-    hero_know:"Na o se o tseba seo o se batlang?", hero_dl:"Download hona joale bakeng sa Windows (~160MB) &#8594;",
-    inv_eye:"Moo ho qalang teng", inv_h2:"Ho Ntša Lifekthara &amp; Thekiso",
-    inv_sub:"Etsa, romela le ho latela lifekthara tse setso, tse lumellanang le SARS le lintlha tsa theko ka metsotso — kamora moo o lefshoe kapele ka WhatsApp.",
-    inv1_h3:"Lifekthara tsa VAT", inv1_p:"LIFEKTHARA tse lumellanang le SARS tse nang le linomoro tse latellanang, karohano ea VAT, le lintlha tsa khoebo ea hau li kenngoa ka boitsebo.",
-    inv2_h3:"Moetsi oa Lintlha tsa Theko", inv2_p:"Etsa lintlha tsa theko tse setso 'me u li fetole hore e be fekthara ka ho tobetsa hanngoe ha li amoheloa — ha ho na ho ngola hape.",
-    inv3_h3:"Ho Romelloa ka WhatsApp", inv3_p:"Romela lifekthara ka kotloloho ho WhatsApp ea moreki. Tsela e potlakileng ea ho lefshoa Afrika Boroa.",
-    inv4_h3:"Ho Romelloa ka Imeile", inv4_p:"Romela lifekthara tsa PDF le lintlha tsa theko ka imeile ka lets'oao la hau le moralo o setso.",
-    inv5_h3:"Litlaleho tsa Bareki", inv5_p:"Hlahisa litlaleho tse felletseng tsa akhaonto tse bontšang lifekthara tsohle, litefo, le tekanyo e setseng.",
-    inv6_h3:"Lifekthara tse Pheto-phetoang", inv6_p:"Theha lifekthara tse iketsahalletseng tse pheto-phetoang bakeng sa bareki ba khoeli le khoeli kapa ba ngolisitsoeng.",
-    inv_seeall:"Bona ntho e 'ngoe le e 'ngoe ea Ho Ntša Lifekthara &amp; Thekiso &#8594;",
-    price_eye:"Litheko tse hlakileng", price_h2:"Litheko tse bonolo, tse tšepahalang — <em style=\"font-style:italic\">ha ho tse makatsang.</em>",
-    price_sub:"Merero eohle e kenyelletsa teko ea mahala e felletseng ea matsatsi a 30. Ha ho hlokahale khatho ea mokitlane. Khansela neng kapa neng.",
-    price_monthly:"Khoeli le khoeli", price_annual:"Selemo le selemo", price_save:"Boloka likhoeli tse 2 mahala",
-    plan1_for:"Mabenkele a spaza, barekisi, likhoebo tsa lapeng &amp; mesebetsi e eketsehileng",
-    plan2_for:"Likhoebo tse holang, basebetsi ba ikemetseng le litsebi tsa mosebetsi",
-    plan3_for:"Likhoebo tse tsitsitseng tse nang le basebetsi, thepa &amp; litlhoko tse ngata",
-    plan4_for:"Lik'hamphani tse nang le makala a mangata &amp; likhoebo tse kholo tse nang le litlhoko tse rarahaneng",
-    price_preferonce:"&#10003; Na u rata ho lefa hanngoe feela? ", price_viewlifetime:"Bona liphutheloana tsa Laesense ea Bophelo Bohle &#8594;",
-    price_accountant:"Mohlokomeli oa lichelete?", price_partner:"Lenaneo la Molekane ho tloha ho R1,499/khoeli — lifaele tsa bareki tse se nang moeli.", price_contactus:"Ikopanye le rona &#8599;",
-    price_viewfull:"Bona lintlha tse felletseng tsa litheko &#8594;",
-    sa_eye:"E entsoeng bakeng sa Afrika Boroa", sa_h2:"Likarolo tse Ikhethang tsa Afrika Boroa",
-    sa_sub:"E entsoeng bakeng sa maemo a sebele a Afrika Boroa — ha e a fetoloa ho tsoa software ea kantle ho naha. Tobetsa karete efe kapa efe hore u fumane setšoantšo se felletseng.",
-    sa1_h3:"Molateli oa Chelete ea Spaza", sa1_p:"Chelete ea ho qala letsatsi ka leng, thekiso ea chelete, ho latela chelete e khutlisoang, le ho bala nakong ea ho koala — e entsoeng bakeng sa likhoebo tse sebelisang chelete pele.",
-    sa2_h3:"Molaoli oa Setokofele", sa2_p:"Menehelo ea litho, litefo tse potolohang, le litšenyehelo tsa liboka — tsamaiso ea setokofele e hlakileng eo setho ka seng se ka e netefatsang.",
-    sa3_h3:"Ntlafatso ea Bafani", sa3_p:"Latela le ho laola tšebeliso ea chelete ea ntlafatso ea bafani ho tšehetsa tumellano ea B-BBEE. Arola tšebeliso ea chelete 'me u hlahise litlaleho bakeng sa mekhatlo ea ho netefatsa.",
-    sa4_h3:"Taolo ea Layby", sa4_p:"Latela lipeeletso tsa layby, likoloto, le matsatsi a ho lata ka litsebiso tse iketsahalletseng tsa WhatsApp.",
-    sa5_h3:"Lifekthara tsa Lipuo tse Ngata", sa5_p:"Romela lifekthara ka Senyesemane, Seburu, isiZulu, isiXhosa, Tshivenda kapa Sesotho.",
-    sa6_h3:"Tlhahlobo ea Litokomane tsa Tenda", sa6_p:"Litšebeletso tse setso tsa tšehetso ea tenda ho thusa likhoebo tsa Afrika Boroa ho hapa litenda tsa 'muso le tsa lik'hamphani. Baeletsi ba tsebo ba sebetsana le mohato o mong le o mong oa ts'ebetso ea kopo.",
-    sa_seeall:"Bona karolo e 'ngoe le e 'ngoe e Ikhethang ea Afrika Boroa &#8594;",
-    bridge_eye:"Ho boetse ho kenyellelitsoe", bridge_h2:"Le tsohle tseng ling tseo khoebo e holang e li hlokang.",
-    bridge_sub:"Meputso, taolo ea thepa, tumellano ea lekhetho le tlaleho — tsohle ho kena ho le hong.",
-    bc1_h4:"Meputso &amp; Basebetsi", bc1_p:"PAYE, UIF, SDL, liphampitšana tsa meputso le IRP5 — ho kenyelletsa le basebetsi ba lapeng.",
-    bc2_h4:"Thepa &amp; Setoko", bc2_p:"Maemo a thepa ka nako ea sebele, litemoso tsa setoko se tlase le liodara ho bafani.",
-    bc3_h4:"Lekhetho &amp; SARS", bc3_p:"Ho ntša VAT201, lifekthara tsa lekhetho le litsebiso tsa letsatsi la ho qetela la SARS.",
-    bc4_h4:"Litlaleho &amp; Tlhahlobo", bc4_p:"P&amp;L, Bhalanse, Phallo ea Chelete le makoloto a khale.",
-    bc_see:"Bona lintlha &#8594;", bridge_taxcalc:"&#128176; Leka sebali sa rona sa mahala sa SARS &#8594;",
-    cta_badge:"Teko ea mahala ea matsatsi a 30 &middot; Ha ho khatho ea mokitlane", cta_h2:"Na u itokiselitse ho nolofatsa <em>khoebo ea hau</em>?",
-    cta_p:"Ikopanye le likhoebo tsa Afrika Boroa tse sebelisang boitsebiso ba tsona bohle ho Setwel Biz Suite.",
-    cta_contactsales:"Ikopanye le Thekiso", cta_whatsapp:"&#128172; WhatsApp",
-    cta_fine:"&#128274; Data ea hau e lula setsing sa hau &nbsp;&middot;&nbsp; E lumellana le POPIA &nbsp;&middot;&nbsp; E entsoe Afrika Boroa &nbsp;&middot;&nbsp; Khansela neng kapa neng",
-    foot_tagline:"Ho tloha ka likamoreng tsa boto tsa Afrika Boroa ho ea mabenkeleng a spaza a Ekasi — re matlafatsa mohoebi e mong le e mong ka matla a ho hola.",
-    foot_product:"Sehlahisoa", foot_download:"Download", foot_mobile:"Mohala",
-    foot_resources:"Lisebelisoa", foot_helpcentre:"Setsi sa Thuso", foot_taxcalc:"Sebali sa Lekhetho", foot_payrollguide:"Tataiso ea Meputso",
-    foot_company:"Khamphani", foot_aboutus:"Mabapi le rona",
-    foot_legal:"Semolao", foot_refund:"Leano la Pusetso", foot_terms:"Melao &amp; Maemo", foot_popia:"POPIA &amp; Lekunutu",
-    dltrial:"↓ Download teko ya mahala"
-  }
-};
-function applyContentLang(lang){
-  if(lang==='en'){
-    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
-    return;
-  }
-  var c = CONTENT_LANG[lang];
-  if(!c) return;
-  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
-    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
-    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
-    if(c[k]) el.innerHTML = c[k];
-  });
-}
-window.addEventListener("DOMContentLoaded",function(){
-  try{ var s=localStorage.getItem("setwel_lang"); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}
-  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('v'); });
-});
-var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("v");io.unobserve(e.target)}})},{threshold:0});
-document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* Ambient 3D hero: invoices orbiting, settling into a phone that turns PAID.
-   Falls back to a static gradient if WebGL/Three.js is unavailable or the
-   visitor prefers reduced motion — the page must work on any cheap Android. */
 (function(){
-  var stage = document.querySelector('.h3d-stage');
-  var canvas = document.getElementById('gl3d');
-  var fallback = document.getElementById('h3d-fallback');
-  var heroSection = document.getElementById('hero');
+  document.documentElement.classList.add('js');
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ok = !!window.THREE && !reduce && !!stage;
 
-  if (ok) {
-    try {
-      var THREE = window.THREE;
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-      camera.position.set(0, 0, 11);
-      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-      renderer.setClearColor(0x000000, 0);
-
-      function receiptTexture(paid){
-        var c = document.createElement('canvas'); c.width = 128; c.height = 170;
-        var g = c.getContext('2d');
-        g.fillStyle = '#f2ede6'; g.fillRect(0, 0, 128, 170);
-        g.strokeStyle = 'rgba(0,0,0,.14)'; g.lineWidth = 2;
-        for (var i = 0; i < 7; i++) { g.beginPath(); g.moveTo(14, 26 + i * 16); g.lineTo(114 - (i % 3) * 18, 26 + i * 16); g.stroke(); }
-        g.fillStyle = '#c93050'; g.fillRect(14, 144, 100, 3);
-        if (paid) {
-          g.save(); g.translate(64, 86); g.rotate(-0.25);
-          g.strokeStyle = '#2a7a40'; g.lineWidth = 5; g.strokeRect(-38, -16, 76, 32);
-          g.fillStyle = '#2a7a40'; g.font = 'bold 15px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
-          g.fillText('PAID', 0, 2);
-          g.restore();
-        }
-        var tex = new THREE.CanvasTexture(c); tex.needsUpdate = true;
-        return tex;
-      }
-
-      var small = window.innerWidth < 700;
-      var N = small ? 10 : 18;
-      var cloud = new THREE.Group();
-      var cloudMat = new THREE.MeshBasicMaterial({ map: receiptTexture(false), transparent: true, side: THREE.DoubleSide });
-      for (var i = 0; i < N; i++) {
-        var m = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.5), cloudMat);
-        var r = 4.2 + Math.random() * 2.2, a = Math.random() * Math.PI * 2, h = (Math.random() - 0.5) * 5;
-        m.position.set(Math.cos(a) * r, h, Math.sin(a) * r);
-        m.rotation.set(Math.random(), Math.random(), Math.random());
-        m.userData.spin = (Math.random() - 0.5) * 0.01;
-        cloud.add(m);
-      }
-      scene.add(cloud);
-
-      var phone = new THREE.Group();
-      var phoneBody = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 3.9), new THREE.MeshBasicMaterial({ color: 0x151212 }));
-      var phoneMat = new THREE.MeshBasicMaterial({ map: receiptTexture(true), transparent: true, side: THREE.DoubleSide });
-      var phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 3.4), phoneMat);
-      phoneScreen.position.z = 0.02;
-      phone.add(phoneBody); phone.add(phoneScreen);
-      scene.add(phone);
-
-      scene.add(new THREE.AmbientLight(0xffffff, 1));
-
-      var mx = 0, my = 0;
-      window.addEventListener('pointermove', function(e){
-        mx = (e.clientX / innerWidth - 0.5); my = (e.clientY / innerHeight - 0.5);
-      });
-
-      function size(){
-        var rect = stage.getBoundingClientRect();
-        var w = Math.max(rect.width, 1), h = Math.max(rect.height, 1);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h; camera.updateProjectionMatrix();
-      }
-      size();
-      window.addEventListener('resize', size);
-
-      var running = true;
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function(es){ es.forEach(function(e){ running = e.isIntersecting; }); }).observe(heroSection);
-      }
-
-      function animate(){
-        requestAnimationFrame(animate);
-        if (!running) return;
-        cloud.rotation.y += 0.0022;
-        cloud.children.forEach(function(m){ m.rotation.z += m.userData.spin; });
-        phone.rotation.y = mx * 0.5;
-        phone.rotation.x = my * -0.3;
-        camera.position.x = mx * 0.8;
-        camera.position.y = -my * 0.6;
-        camera.lookAt(0, 0, 0);
-        renderer.render(scene, camera);
-      }
-      animate();
-    } catch (e) { ok = false; }
+  // reveal on scroll
+  var revs = document.querySelectorAll('.reveal.pre');
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && e.target.getBoundingClientRect().top > innerHeight * 0.5){ e.target.classList.add('play'); } if(e.isIntersecting) io.unobserve(e.target); }); }, {rootMargin:'0px 0px -8% 0px'});
+    revs.forEach(function(el){ io.observe(el); });
   }
-  if (!ok && canvas) { canvas.style.display = 'none'; if (fallback) fallback.classList.add('on'); }
+
+  // story captions
+  var story = document.getElementById('story');
+  var caps = [0,1,2,3].map(function(i){ return document.getElementById('c'+i); });
+  var dots = document.querySelectorAll('.progress b');
+  var hint = document.getElementById('hint');
+  function progress(){
+    var r = story.getBoundingClientRect();
+    var total = story.offsetHeight - innerHeight;
+    return Math.min(1, Math.max(0, -r.top / Math.max(1,total)));
+  }
+  var cur = -1;
+  function updateCaps(p){
+    var idx = p < 0.16 ? 0 : p < 0.42 ? 1 : p < 0.7 ? 2 : 3;
+    if (idx === cur) return; cur = idx;
+    caps.forEach(function(c,i){ c.classList.toggle('off', i !== idx); });
+    dots.forEach(function(d,i){ d.classList.toggle('on', i === idx); });
+    hint.style.opacity = idx === 0 ? 1 : 0;
+  }
+
+  // ---------- 3D ----------
+  var canvas = document.getElementById('gl');
+  var ok = !!window.THREE;
+  var renderer;
+  if (ok) { try { renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true}); } catch(e) { ok = false; } }
+  if (!ok) { canvas.style.display = 'none'; addEventListener('scroll', function(){ updateCaps(progress()); }, {passive:true}); updateCaps(progress()); return; }
+
+  var small = innerWidth < 700;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2));
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x0a0809, 14, 30);
+  var camera = new THREE.PerspectiveCamera(small ? 58 : 42, 1, 0.1, 100);
+  camera.position.set(0, 0, 14);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  var key = new THREE.DirectionalLight(0xffffff, 0.75); key.position.set(3, 5, 8); scene.add(key);
+  var warm = new THREE.PointLight(0xe57a1c, 2.2, 30); warm.position.set(-6, 3, 6); scene.add(warm);
+  var red = new THREE.PointLight(0xc9334e, 1.6, 30); red.position.set(6, -4, 5); scene.add(red);
+
+  function rnd(a, b){ return a + Math.random() * (b - a); }
+  function seeded(n){ var x = Math.sin(n * 9301 + 49297) * 233280; return x - Math.floor(x); }
+
+  // receipt textures (generic, no real shop names)
+  function receiptTex(v){
+    var c = document.createElement('canvas'); c.width = 256; c.height = 420; var g = c.getContext('2d');
+    g.fillStyle = v % 3 === 2 ? '#f3efe6' : '#fbf8f2'; g.fillRect(0, 0, 256, 420);
+    g.fillStyle = '#2b2622'; g.textAlign = 'center';
+    g.font = 'bold 22px monospace'; g.fillText(['TILL SLIP', 'TAX INVOICE', 'RECEIPT', 'CASH SALE'][v % 4], 128, 40);
+    g.font = '13px monospace'; g.fillText('2026/10/' + (10 + v) + '  ' + (8 + v % 9) + ':4' + v % 10, 128, 64);
+    g.textAlign = 'left'; g.font = '15px monospace';
+    var items = [['Bread', '18.99'], ['Milk 2L', '36.50'], ['Airtime', '29.00'], ['Cement', '119.90'], ['Paraffin', '64.00'], ['Sugar 2kg', '42.99'], ['Hair braid', '250.00'], ['Labour', '450.00']];
+    var tot = 0;
+    for (var i = 0; i < 5; i++) { var it = items[(v * 3 + i) % items.length]; g.fillText(it[0], 22, 104 + i * 30); g.textAlign = 'right'; g.fillText('R ' + it[1], 234, 104 + i * 30); g.textAlign = 'left'; tot += parseFloat(it[1]); }
+    g.strokeStyle = '#2b2622'; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(20, 262); g.lineTo(236, 262); g.stroke(); g.setLineDash([]);
+    g.font = 'bold 19px monospace'; g.fillText('TOTAL', 22, 292); g.textAlign = 'right'; g.fillText('R ' + tot.toFixed(2), 234, 292);
+    g.textAlign = 'left'; g.fillStyle = '#2b2622';
+    for (var b = 0; b < 46; b++) { var w = seeded(v * 50 + b) > 0.5 ? 3 : 1.5; g.fillRect(30 + b * 4.3, 330, w, 54); }
+    if (v % 4 === 1) { g.save(); g.translate(170, 200); g.rotate(-0.35); g.strokeStyle = 'rgba(201,51,78,.75)'; g.lineWidth = 3; g.strokeRect(-56, -20, 112, 40); g.fillStyle = 'rgba(201,51,78,.85)'; g.font = 'bold 20px sans-serif'; g.textAlign = 'center'; g.fillText('UNPAID', 0, 7); g.restore(); }
+    var t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
+  }
+  var texes = []; for (var v = 0; v < 6; v++) texes.push(receiptTex(v));
+
+  // Orderly arrangement: two neat, evenly-spaced rings instead of a random
+  // scattered cloud -- fewer slips, each with a fixed place, gently orbiting.
+  var N = small ? 10 : 16;
+  var slipGeo = new THREE.PlaneGeometry(1.15, 1.9);
+  var slips = [];
+  var rings = 2;
+  for (var i = 0; i < N; i++) {
+    var m = new THREE.MeshStandardMaterial({map: texes[i % texes.length], color: 0xb8aea3, side: THREE.DoubleSide, roughness: 0.9, metalness: 0.0, transparent: true});
+    var mesh = new THREE.Mesh(slipGeo, m);
+    var ring = i % rings;
+    var perRing = Math.ceil(N / rings);
+    var idxInRing = Math.floor(i / rings);
+    var rad = ring === 0 ? (small ? 5.2 : 7.2) : (small ? 7.4 : 10.2);
+    var ang = (idxInRing / perRing) * Math.PI * 2 + ring * (Math.PI / perRing);
+    var h = ring === 0 ? 1.3 : -1.3;
+    mesh.userData = {rad: rad, ang: ang, h: h, z: ring === 0 ? -1.5 : -3.5, spin: new THREE.Vector3(0, ring === 0 ? 0.18 : -0.18, 0), speed: (ring === 0 ? 1 : -1) * 0.09, delay: (idxInRing / perRing) * 0.3};
+    scene.add(mesh); slips.push(mesh);
+  }
+
+  // phone
+  var phone = new THREE.Group(); scene.add(phone);
+  function rounded(w, h, r){ var s = new THREE.Shape(); s.moveTo(-w/2 + r, -h/2); s.lineTo(w/2 - r, -h/2); s.quadraticCurveTo(w/2, -h/2, w/2, -h/2 + r); s.lineTo(w/2, h/2 - r); s.quadraticCurveTo(w/2, h/2, w/2 - r, h/2); s.lineTo(-w/2 + r, h/2); s.quadraticCurveTo(-w/2, h/2, -w/2, h/2 - r); s.lineTo(-w/2, -h/2 + r); s.quadraticCurveTo(-w/2, -h/2, -w/2 + r, -h/2); return s; }
+  var body = new THREE.Mesh(new THREE.ExtrudeGeometry(rounded(2.5, 5.0, 0.42), {depth: 0.22, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.06, bevelSegments: 4, curveSegments: 10}),
+    new THREE.MeshStandardMaterial({color: 0x1a1513, metalness: 0.6, roughness: 0.35}));
+  body.position.z = -0.14; phone.add(body);
+  var rim = new THREE.Mesh(new THREE.ExtrudeGeometry(rounded(2.62, 5.12, 0.46), {depth: 0.12, bevelEnabled: false, curveSegments: 10}),
+    new THREE.MeshStandardMaterial({color: 0xc98a3a, metalness: 0.9, roughness: 0.3}));
+  rim.position.z = -0.1; phone.add(rim);
+
+  var logoImg = new Image(); logoImg.src = 'setwel-logo.png';
+  var scrC = document.createElement('canvas'); scrC.width = 512; scrC.height = 1024; var sg = scrC.getContext('2d');
+  var scrTex = new THREE.CanvasTexture(scrC);
+  var paidState = -1, filled = -1;
+  function rr(x, y, w, h, r){ sg.beginPath(); sg.moveTo(x + r, y); sg.arcTo(x + w, y, x + w, y + h, r); sg.arcTo(x + w, y + h, x, y + h, r); sg.arcTo(x, y + h, x, y, r); sg.arcTo(x, y, x + w, y, r); sg.closePath(); }
+  function drawScreen(paid, fill){
+    if (paid === paidState && fill === filled) return; paidState = paid; filled = fill;
+    sg.fillStyle = '#0d0a0a'; sg.fillRect(0, 0, 512, 1024);
+    var gr = sg.createLinearGradient(0, 0, 512, 0); gr.addColorStop(0, '#e57a1c'); gr.addColorStop(0.55, '#d65536'); gr.addColorStop(1, '#c9334e');
+    sg.fillStyle = gr; sg.fillRect(0, 0, 512, 150);
+    if (logoImg.complete) { sg.save(); rr(30, 40, 76, 76, 18); sg.clip(); sg.drawImage(logoImg, 30, 40, 76, 76); sg.restore(); }
+    sg.fillStyle = '#fff'; sg.font = '600 34px Inter, sans-serif'; sg.textAlign = 'left'; sg.fillText('Setwel', 124, 90);
+    sg.font = '400 22px Inter, sans-serif'; sg.fillText('Biz Suite', 124, 120);
+    sg.fillStyle = '#f5efe9'; sg.font = '700 40px Inter, sans-serif'; sg.fillText('TAX INVOICE', 34, 222);
+    sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('#0042  ·  To: Sipho Building', 34, 262);
+    var lines = [['Labour (8 hrs)', '1 600.00'], ['Cement x6', '719.40'], ['Delivery', '150.00']];
+    sg.font = '400 26px Inter, sans-serif';
+    var shown = Math.round(fill * lines.length);
+    for (var i = 0; i < lines.length; i++) {
+      rr(30, 300 + i * 84, 452, 66, 14); sg.fillStyle = i < shown ? '#1b1514' : '#141010'; sg.fill();
+      if (i < shown) { sg.fillStyle = '#e8ded4'; sg.textAlign = 'left'; sg.fillText(lines[i][0], 50, 342 + i * 84); sg.textAlign = 'right'; sg.fillText('R ' + lines[i][1], 462, 342 + i * 84); }
+    }
+    sg.textAlign = 'left'; sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('VAT incl.', 34, 600);
+    sg.fillStyle = '#fff'; sg.font = '700 52px Inter, sans-serif'; sg.textAlign = 'right'; sg.fillText(shown === 3 ? 'R 2 469.40' : 'R ' + ['0.00', '1 600.00', '2 319.40'][shown], 480, 610);
+    sg.textAlign = 'center';
+    if (paid) {
+      rr(34, 680, 444, 120, 26); sg.fillStyle = 'rgba(78,174,111,.16)'; sg.fill(); sg.strokeStyle = '#4eae6f'; sg.lineWidth = 4; sg.stroke();
+      sg.fillStyle = '#6fd292'; sg.font = '700 48px Inter, sans-serif'; sg.fillText('PAID  ✓', 256, 758);
+      sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('Received today, 18:42', 256, 850);
+    } else {
+      rr(34, 680, 444, 110, 26); sg.fillStyle = '#25d366'; sg.fill();
+      sg.fillStyle = '#062e16'; sg.font = '700 36px Inter, sans-serif'; sg.fillText('Send on WhatsApp', 256, 748);
+      sg.fillStyle = '#9d948c'; sg.font = '400 24px Inter, sans-serif'; sg.fillText('Tax invoice ready in seconds', 256, 850);
+    }
+    scrTex.needsUpdate = true;
+  }
+  logoImg.onload = function(){ paidState = -1; };
+  var screen = new THREE.Mesh(new THREE.ShapeGeometry(rounded(2.3, 4.8, 0.32)), new THREE.MeshBasicMaterial({map: scrTex}));
+  (function fixUV(g){ var pos = g.attributes.position, uv = g.attributes.uv; for (var i = 0; i < pos.count; i++) uv.setXY(i, (pos.getX(i) + 1.15) / 2.3, (pos.getY(i) + 2.4) / 4.8); uv.needsUpdate = true; })(screen.geometry);
+  screen.position.z = 0.15; phone.add(screen);
+
+  // gold dust
+  var dustN = small ? 180 : 320, dpos = new Float32Array(dustN * 3);
+  for (var d = 0; d < dustN; d++) { dpos[d*3] = rnd(-14, 14); dpos[d*3+1] = rnd(-9, 9); dpos[d*3+2] = rnd(-12, 4); }
+  var dgeo = new THREE.BufferGeometry(); dgeo.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+  var dust = new THREE.Points(dgeo, new THREE.PointsMaterial({color: 0xe3a548, size: 0.05, transparent: true, opacity: 0.7, depthWrite: false}));
+  scene.add(dust);
+
+  function resize(){
+    var w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    camera.fov = w / h < 0.8 ? 58 : 42; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+
+  var mx = 0, my = 0;
+  addEventListener('pointermove', function(e){ mx = (e.clientX / innerWidth - 0.5); my = (e.clientY / innerHeight - 0.5); }, {passive: true});
+
+  function ease(t){ t = Math.max(0, Math.min(1, t)); return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2; }
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  var tmp = new THREE.Vector3(), target = new THREE.Vector3();
+  var clock = new THREE.Clock(), time = 0, visible = true, sp = 0;
+  document.addEventListener('visibilitychange', function(){ visible = !document.hidden; });
+
+  function frame(){
+    requestAnimationFrame(frame);
+    if (!visible) return;
+    var dt = Math.min(0.05, clock.getDelta()); if (!reduce) time += dt;
+    var p = progress(); sp += (p - sp) * (reduce ? 1 : 0.12); updateCaps(p);
+    var portrait = camera.aspect < 0.8;
+
+    // phone: hidden small -> centre stage
+    var appear = ease((sp - 0.2) / 0.3);
+    var ps = lerp(0.35, portrait ? 0.92 : 0.95, appear);
+    phone.scale.setScalar(ps);
+    phone.position.set(portrait ? 0 : lerp(0, 0, appear), lerp(-1.2, portrait ? 0.9 : 0.75, appear), lerp(-8, 0, appear));
+    var settle = ease((sp - 0.62) / 0.3);
+    phone.rotation.y = lerp(time * 0.35 + 1.2, Math.sin(time * 0.6) * 0.12 + mx * 0.35, appear) ;
+    phone.rotation.x = lerp(0.3, -my * 0.2 + Math.sin(time * 0.8) * 0.03, appear);
+    phone.rotation.z = lerp(0.25, 0, appear);
+    drawScreen(sp > 0.74 ? 1 : 0, Math.min(1, Math.max(0, (sp - 0.42) / 0.26)));
+
+    // slips: orderly orbit -> fly into the screen
+    for (var i = 0; i < slips.length; i++) {
+      var s = slips[i], u = s.userData;
+      var a = u.ang + time * u.speed;
+      tmp.set(Math.cos(a) * u.rad * (portrait ? 0.62 : 1), u.h * (portrait ? 1.5 : 1), u.z + Math.sin(a) * 1.2);
+      var k = ease((sp - 0.36 - u.delay * 0.4) / 0.24);
+      target.copy(phone.position); target.y += (seeded(i) - 0.5) * 1.6 * ps; target.z += 0.3;
+      s.position.set(lerp(tmp.x, target.x, k), lerp(tmp.y, target.y, k), lerp(tmp.z, target.z, k));
+      var sc = lerp(1, 0.05, k); s.scale.setScalar(sc);
+      s.rotation.set(0, time * u.spin.y + a, 0);
+      s.material.opacity = 1 - ease((k - 0.75) / 0.25);
+      s.visible = s.material.opacity > 0.01;
+    }
+
+    dust.rotation.y = time * 0.02; dust.position.y = sp * 2;
+    dust.material.opacity = 0.35 + 0.45 * settle;
+    warm.intensity = 2.2 + settle * 1.2;
+    camera.position.x = lerp(camera.position.x, mx * 0.8, 0.05);
+    camera.position.y = lerp(camera.position.y, -my * 0.5, 0.05);
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+  }
+  frame();
 })();
 </script>
+
 </body>
 </html>

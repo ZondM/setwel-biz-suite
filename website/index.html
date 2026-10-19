@@ -66,6 +66,11 @@ nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:
 .navlinks a{text-decoration:none}
 .navlinks a:hover{color:var(--fg)}
 .navlinks .btn{padding:10px 16px;font-size:14.5px;color:#fff}
+.hamburger{display:none;background:rgba(255,255,255,.06);border:1px solid rgba(232,128,26,.25);border-radius:8px;padding:8px 11px;cursor:pointer;color:var(--fg);font-size:1rem;line-height:1}
+#mob-menu{display:none;flex-direction:column;gap:2px;background:#110d0c;border-bottom:1px solid rgba(44,34,27,.6);padding:10px 20px 14px}
+#mob-menu a{color:var(--muted);padding:12px 4px;font-size:16px;text-decoration:none;border-bottom:1px solid rgba(44,34,27,.4)}
+#mob-menu a:last-child{border-bottom:none}
+#mob-menu .btn{margin-top:10px;justify-content:center;color:#fff;border-bottom:none}
 @media (max-width:760px){
   .navlinks .hide-m{display:none}
   nav.top .wrap{gap:6px}
@@ -73,6 +78,7 @@ nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:
   .navlinks{gap:10px}
   .navlinks .lbl{display:none}
   .btn.primary{padding:10px 16px;font-size:14px}
+  .hamburger{display:flex;align-items:center}
 }
 
 /* 3D story */
@@ -194,7 +200,15 @@ footer a:hover{color:var(--fg)}
       <a class="hide-m" href="#faq">FAQ</a>
       <a href="mobile.html">&#128241;<span class="lbl"> Mobile</span></a>
       <a class="btn primary" href="download.html">Start free</a>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">&#9776;</button>
     </div>
+  </div>
+  <div id="mob-menu">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="mobile.html">&#128241; Mobile</a>
+    <a class="btn primary" href="download.html">Start free trial</a>
   </div>
 </nav>
 
@@ -419,6 +433,10 @@ footer a:hover{color:var(--fg)}
   </div>
 </footer>
 
+<script>
+function toggleMenu(){ var m = document.getElementById('mob-menu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
+document.querySelectorAll('#mob-menu a').forEach(function(a){ a.addEventListener('click', function(){ document.getElementById('mob-menu').style.display = 'none'; }); });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){

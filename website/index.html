@@ -55,8 +55,21 @@ img{max-width:100%}
 .btn.ghost:hover{border-color:#4a3a2e}
 .btn:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 
+/* language bar */
+#langbar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:21;background:var(--bg2);border-bottom:1px solid var(--line)}
+.lb-wrap{display:flex;align-items:center;gap:4px;padding:7px 20px;max-width:1120px;margin:0 auto;overflow-x:auto;scrollbar-width:none}
+.lb-wrap::-webkit-scrollbar{display:none}
+.lb-lbl{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-right:2px;flex:none}
+.lb-btn{flex:none;background:transparent;border:1px solid transparent;border-radius:7px;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:500;padding:5px 9px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.lb-btn:hover{color:var(--fg)}
+.lb-btn.active{background:rgba(229,122,28,.14);border-color:rgba(229,122,28,.35);color:var(--orange);font-weight:700}
+.lb-code{font-size:10px;font-weight:800;background:rgba(255,255,255,.08);border-radius:3px;padding:1px 5px}
+.lb-btn.active .lb-code{background:var(--orange);color:#0a0809}
+.lb-right{margin-left:auto;flex:none}
+.lb-mob{display:flex;align-items:center;gap:5px;color:#fff;font-size:12.5px;font-weight:700;background:var(--grad);border:none;border-radius:8px;padding:5px 11px;text-decoration:none;white-space:nowrap}
+
 /* nav */
-nav.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(10,8,9,.92),rgba(10,8,9,.6));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(44,34,27,.6)}
+nav.top{position:fixed;top:calc(40px + env(safe-area-inset-top,0px));left:0;right:0;z-index:20;background:linear-gradient(180deg,rgba(10,8,9,.92),rgba(10,8,9,.6));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(44,34,27,.6)}
 nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
 .brand img{width:36px;height:36px;border-radius:9px;object-fit:contain}
@@ -71,12 +84,12 @@ nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:
 #mob-menu a{color:var(--muted);padding:12px 4px;font-size:16px;text-decoration:none;border-bottom:1px solid rgba(44,34,27,.4)}
 #mob-menu a:last-child{border-bottom:none}
 #mob-menu .btn{margin-top:10px;justify-content:center;color:#fff;border-bottom:none}
+@media (max-width:640px){.lb-lbl{display:none}}
 @media (max-width:760px){
   .navlinks .hide-m{display:none}
   nav.top .wrap{gap:6px}
   .brand span{font-size:18px}
   .navlinks{gap:10px}
-  .navlinks .lbl{display:none}
   .btn.primary{padding:10px 16px;font-size:14px}
   .hamburger{display:flex;align-items:center}
 }
@@ -91,7 +104,7 @@ nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:
 .caption{z-index:2}
 .caption .inner{max-width:760px;margin:0 auto;pointer-events:auto;position:relative}
 .caption .inner::before{content:"";position:absolute;inset:-70px -60px;z-index:-1;background:radial-gradient(closest-side,rgba(10,8,9,.9),rgba(10,8,9,.72) 55%,rgba(10,8,9,0));pointer-events:none}
-.cap-hero{top:max(96px, 14vh)}
+.cap-hero{top:max(136px, 14vh)}
 .cap-mid{bottom:max(56px, 9vh)}
 .caption.off{opacity:0;transform:translateY(16px)}
 .caption.off .inner{pointer-events:none}
@@ -191,24 +204,35 @@ footer a:hover{color:var(--fg)}
 
 </head>
 <body>
+<div id="langbar">
+  <div class="lb-wrap">
+    <span class="lb-lbl">Language</span>
+    <button class="lb-btn active" onclick="setLang('en',this)" data-lang="en"><span class="lb-code">EN</span> English</button>
+    <button class="lb-btn" onclick="setLang('af',this)" data-lang="af"><span class="lb-code">AF</span> Afrikaans</button>
+    <button class="lb-btn" onclick="setLang('zu',this)" data-lang="zu"><span class="lb-code">ZU</span> isiZulu</button>
+    <button class="lb-btn" onclick="setLang('xh',this)" data-lang="xh"><span class="lb-code">XH</span> isiXhosa</button>
+    <button class="lb-btn" onclick="setLang('ve',this)" data-lang="ve"><span class="lb-code">VE</span> Tshivenda</button>
+    <button class="lb-btn" onclick="setLang('st',this)" data-lang="st"><span class="lb-code">ST</span> Sesotho</button>
+    <div class="lb-right"><a href="mobile.html" class="lb-mob">&#128241; Mobile</a></div>
+  </div>
+</div>
 <nav class="top" aria-label="Main">
   <div class="wrap">
     <a class="brand" href="index.html"><img src="setwel-logo.png" alt="Setwel Biz Suite"><span>Setwel <em>Biz Suite</em></span></a>
     <div class="navlinks">
-      <a class="hide-m" href="#features">Features</a>
-      <a class="hide-m" href="#pricing">Pricing</a>
-      <a class="hide-m" href="#faq">FAQ</a>
-      <a href="mobile.html">&#128241;<span class="lbl"> Mobile</span></a>
-      <a class="btn primary" href="download.html">Start free</a>
+      <a class="hide-m" href="#features" data-nk="feat">Features</a>
+      <a class="hide-m" href="#pricing" data-nk="price">Pricing</a>
+      <a class="hide-m" href="#faq" data-nk="faq">FAQ</a>
+      <a class="btn primary" href="download.html" data-nk="trial">Start free</a>
       <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">&#9776;</button>
     </div>
   </div>
   <div id="mob-menu">
-    <a href="#features">Features</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="mobile.html">&#128241; Mobile</a>
-    <a class="btn primary" href="download.html">Start free trial</a>
+    <a href="#features" data-nk="feat">Features</a>
+    <a href="#pricing" data-nk="price">Pricing</a>
+    <a href="#faq" data-nk="faq">FAQ</a>
+    <a href="mobile.html" data-nk="mobile">&#128241; Mobile</a>
+    <a class="btn primary" href="download.html" data-nk="trialfull">Start free trial</a>
   </div>
 </nav>
 
@@ -221,34 +245,34 @@ footer a:hover{color:var(--fg)}
 
       <div class="caption cap-hero" id="c0">
         <div class="inner">
-          <p class="eyebrow">The money app for SA small business</p>
-          <h1>Get paid. Stay legal.<br><span class="grad" style="font-style:italic">Sleep easy.</span></h1>
-          <p class="sub">Invoices on WhatsApp, SARS-ready books and payroll on any Android phone, with or without data.</p>
+          <p class="eyebrow" data-i18n="hero_eye">The money app for SA small business</p>
+          <h1 data-i18n-html="hero_h1">Get paid. Stay legal.<br><span class="grad" style="font-style:italic">Sleep easy.</span></h1>
+          <p class="sub" data-i18n="hero_sub">Invoices on WhatsApp, SARS-ready books and payroll on any Android phone, with or without data.</p>
           <div class="cta-row">
-            <a class="btn primary" href="download.html">Start free 30-day trial</a>
-            <a class="btn ghost" href="mobile.html">Open on my phone</a>
+            <a class="btn primary" href="download.html" data-i18n="hero_btn1">Start free 30-day trial</a>
+            <a class="btn ghost" href="mobile.html" data-i18n="hero_btn2">Open on my phone</a>
           </div>
         </div>
       </div>
       <div class="caption cap-mid off" id="c1">
         <div class="inner">
-          <p class="eyebrow">Sound familiar?</p>
-          <h2>Chasing payments.<br>Guessing what you <span class="grad" style="font-style:italic">actually</span> made this month.</h2>
-          <p>And a SARS deadline you only remember on the last day.</p>
+          <p class="eyebrow" data-i18n="c1_eye">Sound familiar?</p>
+          <h2 data-i18n-html="c1_h2">Chasing payments.<br>Guessing what you <span class="grad" style="font-style:italic">actually</span> made this month.</h2>
+          <p data-i18n="c1_p">And a SARS deadline you only remember on the last day.</p>
         </div>
       </div>
       <div class="caption cap-mid off" id="c2">
         <div class="inner">
-          <p class="eyebrow">Snap it. Send it.</p>
-          <h2>Every slip, every invoice,<br><span class="grad" style="font-style:italic">in one phone.</span></h2>
-          <p>Photograph a receipt and it's read for you. Send a proper tax invoice on WhatsApp in seconds.</p>
+          <p class="eyebrow" data-i18n="c2_eye">Snap it. Send it.</p>
+          <h2 data-i18n-html="c2_h2">Every slip, every invoice,<br><span class="grad" style="font-style:italic">in one phone.</span></h2>
+          <p data-i18n="c2_p">Photograph a receipt and it's read for you. Send a proper tax invoice on WhatsApp in seconds.</p>
         </div>
       </div>
       <div class="caption cap-mid off" id="c3">
         <div class="inner">
-          <p class="eyebrow">Sorted.</p>
-          <h2>You look like a big company.<br><span class="grad" style="font-style:italic">You get paid like one.</span></h2>
-          <p>Mark it paid, see who still owes you, and know exactly where you stand tonight.</p>
+          <p class="eyebrow" data-i18n="c3_eye">Sorted.</p>
+          <h2 data-i18n-html="c3_h2">You look like a big company.<br><span class="grad" style="font-style:italic">You get paid like one.</span></h2>
+          <p data-i18n="c3_p">Mark it paid, see who still owes you, and know exactly where you stand tonight.</p>
         </div>
       </div>
       <div class="progress" aria-hidden="true"><b class="on"></b><b></b><b></b><b></b></div>
@@ -259,45 +283,45 @@ footer a:hover{color:var(--fg)}
   <section class="block" id="features">
     <div class="wrap">
       <div class="head reveal pre">
-        <p class="eyebrow">Three things you're really buying</p>
-        <h2>Not accounting software. <span class="grad" style="font-style:italic">Peace of mind.</span></h2>
-        <p>Everything in Setwel serves one of three jobs. Here's what's inside today.</p>
+        <p class="eyebrow" data-i18n="feat_eye">Three things you're really buying</p>
+        <h2 data-i18n-html="feat_h2">Not accounting software. <span class="grad" style="font-style:italic">Peace of mind.</span></h2>
+        <p data-i18n="feat_p">Everything in Setwel serves one of three jobs. Here's what's inside today.</p>
       </div>
       <div class="pillars">
         <article class="pillar reveal pre">
           <span class="num">01</span>
-          <p class="eyebrow">Get paid</p>
-          <h3>Money in, faster</h3>
-          <p class="promise">Invoice on WhatsApp in seconds, follow up without the awkward phone call.</p>
+          <p class="eyebrow" data-i18n="p1_eye">Get paid</p>
+          <h3 data-i18n="p1_h3">Money in, faster</h3>
+          <p class="promise" data-i18n="p1_promise">Invoice on WhatsApp in seconds, follow up without the awkward phone call.</p>
           <ul>
-            <li>Tax invoices and quotes, sent on WhatsApp or email</li>
-            <li>Quote to invoice in one tap, no retyping</li>
-            <li>Unpaid list and payment recording (cash, EFT, card)</li>
-            <li>Layby with WhatsApp reminders</li>
+            <li data-i18n="p1_li1">Tax invoices and quotes, sent on WhatsApp or email</li>
+            <li data-i18n="p1_li2">Quote to invoice in one tap, no retyping</li>
+            <li data-i18n="p1_li3">Unpaid list and payment recording (cash, EFT, card)</li>
+            <li data-i18n="p1_li4">Layby with WhatsApp reminders</li>
           </ul>
         </article>
         <article class="pillar reveal pre">
           <span class="num">02</span>
-          <p class="eyebrow">Stay legal</p>
-          <h3>SARS without the stress</h3>
-          <p class="promise">Compliant paperwork without an accountant on speed dial.</p>
+          <p class="eyebrow" data-i18n="p2_eye">Stay legal</p>
+          <h3 data-i18n="p2_h3">SARS without the stress</h3>
+          <p class="promise" data-i18n="p2_promise">Compliant paperwork without an accountant on speed dial.</p>
           <ul>
-            <li>Tax invoices with sequential numbers and VAT split</li>
-            <li>VAT201 export for eFiling</li>
-            <li>Payslips and IRP5s, including domestic workers</li>
-            <li>PAYE, UIF and SDL on full payroll plans</li>
+            <li data-i18n="p2_li1">Tax invoices with sequential numbers and VAT split</li>
+            <li data-i18n="p2_li2">VAT201 export for eFiling</li>
+            <li data-i18n="p2_li3">Payslips and IRP5s, including domestic workers</li>
+            <li data-i18n="p2_li4">PAYE, UIF and SDL on full payroll plans</li>
           </ul>
         </article>
         <article class="pillar reveal pre">
           <span class="num">03</span>
-          <p class="eyebrow">Know your money</p>
-          <h3>Your numbers, every night</h3>
-          <p class="promise">See what came in, what's owed and what's on the shelf.</p>
+          <p class="eyebrow" data-i18n="p3_eye">Know your money</p>
+          <h3 data-i18n="p3_h3">Your numbers, every night</h3>
+          <p class="promise" data-i18n="p3_promise">See what came in, what's owed and what's on the shelf.</p>
           <ul>
-            <li>Camera capture for receipts and supplier invoices</li>
-            <li>Profit &amp; loss, sales and unpaid-account reports</li>
-            <li>Stock levels with low-stock alerts</li>
-            <li>Daily till float with shortage and overage flags</li>
+            <li data-i18n="p3_li1">Camera capture for receipts and supplier invoices</li>
+            <li data-i18n="p3_li2">Profit &amp; loss, sales and unpaid-account reports</li>
+            <li data-i18n="p3_li3">Stock levels with low-stock alerts</li>
+            <li data-i18n="p3_li4">Daily till float with shortage and overage flags</li>
           </ul>
         </article>
       </div>
@@ -307,14 +331,14 @@ footer a:hover{color:var(--fg)}
   <section class="block" style="padding-top:20px">
     <div class="wrap anywhere">
       <div class="head reveal pre" style="margin-bottom:0">
-        <p class="eyebrow">Works where you work</p>
-        <h2>No data? No signal? <span class="grad" style="font-style:italic">No problem.</span></h2>
-        <p>Setwel runs offline on any Android phone, so you keep invoicing at the market, on site or in the shop. No laptop, no airtime burned. Only WhatsApp sending and the camera scanner need a connection.</p>
+        <p class="eyebrow" data-i18n="works_eye">Works where you work</p>
+        <h2 data-i18n-html="works_h2">No data? No signal? <span class="grad" style="font-style:italic">No problem.</span></h2>
+        <p data-i18n="works_p">Setwel runs offline on any Android phone, so you keep invoicing at the market, on site or in the shop. No laptop, no airtime burned. Only WhatsApp sending and the camera scanner need a connection.</p>
       </div>
       <div class="stat-row reveal pre">
-        <div class="stat"><b>Offline</b><span>Invoices, payroll and reports without data</span></div>
-        <div class="stat"><b>6</b><span>South African languages for your invoices</span></div>
-        <div class="stat"><b>R59.99</b><span>a month to start, 30 days free</span></div>
+        <div class="stat"><b data-i18n="stat1_b">Offline</b><span data-i18n="stat1_s">Invoices, payroll and reports without data</span></div>
+        <div class="stat"><b>6</b><span data-i18n="stat2_s">South African languages for your invoices</span></div>
+        <div class="stat"><b>R59.99</b><span data-i18n="stat3_s">a month to start, 30 days free</span></div>
       </div>
     </div>
   </section>
@@ -322,15 +346,15 @@ footer a:hover{color:var(--fg)}
   <section class="block" style="padding-top:20px">
     <div class="wrap">
       <div class="head reveal pre">
-        <p class="eyebrow">Built for ekasi. Ready for the boardroom.</p>
-        <h2>Tools nobody overseas thought to build</h2>
-        <p>Setwel was made in South Africa for how South Africans actually do business.</p>
+        <p class="eyebrow" data-i18n="tools_eye">Built for ekasi. Ready for the boardroom.</p>
+        <h2 data-i18n="tools_h2">Tools nobody overseas thought to build</h2>
+        <p data-i18n="tools_p">Setwel was made in South Africa for how South Africans actually do business.</p>
       </div>
       <div class="tools">
-        <div class="tool reveal pre"><h4>Spaza cash float</h4><p>Opening float, cash sales, closing count. See shortages per cashier before they become a habit.</p></div>
-        <div class="tool reveal pre"><h4>Stokvel manager</h4><p>Contributions, rotation payouts and member statements on WhatsApp. No more notebook disputes.</p></div>
-        <div class="tool reveal pre"><h4>Layby, sorted</h4><p>Deposits, balances and friendly WhatsApp reminders. Lapsed laybys go back into stock.</p></div>
-        <div class="tool reveal pre"><h4>B-BBEE supplier tracker</h4><p>Track supplier development spend for your verification (Builder and up).</p></div>
+        <div class="tool reveal pre"><h4 data-i18n="tool1_h4">Spaza cash float</h4><p data-i18n="tool1_p">Opening float, cash sales, closing count. See shortages per cashier before they become a habit.</p></div>
+        <div class="tool reveal pre"><h4 data-i18n="tool2_h4">Stokvel manager</h4><p data-i18n="tool2_p">Contributions, rotation payouts and member statements on WhatsApp. No more notebook disputes.</p></div>
+        <div class="tool reveal pre"><h4 data-i18n="tool3_h4">Layby, sorted</h4><p data-i18n="tool3_p">Deposits, balances and friendly WhatsApp reminders. Lapsed laybys go back into stock.</p></div>
+        <div class="tool reveal pre"><h4 data-i18n="tool4_h4">B-BBEE supplier tracker</h4><p data-i18n="tool4_p">Track supplier development spend for your verification (Builder and up).</p></div>
       </div>
       <div class="langs reveal pre" aria-label="Invoice languages">
         <span class="lang"><b>EN</b>English</span><span class="lang"><b>AF</b>Afrikaans</span><span class="lang"><b>ZU</b>isiZulu</span><span class="lang"><b>XH</b>isiXhosa</span><span class="lang"><b>VE</b>Tshivenda</span><span class="lang"><b>ST</b>Sesotho</span>
@@ -341,8 +365,8 @@ footer a:hover{color:var(--fg)}
   <section class="block" style="padding-top:20px">
     <div class="wrap">
       <div class="head reveal pre">
-        <p class="eyebrow">From our customers</p>
-        <h2>Real people, <span class="grad" style="font-style:italic">real businesses.</span></h2>
+        <p class="eyebrow" data-i18n="test_eye">From our customers</p>
+        <h2 data-i18n-html="test_h2">Real people, <span class="grad" style="font-style:italic">real businesses.</span></h2>
       </div>
       <div class="testimonials">
         <div class="rev reveal pre">
@@ -362,38 +386,38 @@ footer a:hover{color:var(--fg)}
   <section class="block" id="pricing">
     <div class="wrap">
       <div class="head reveal pre">
-        <p class="eyebrow">Simple pricing</p>
-        <h2>Pay for what you use. <span class="grad" style="font-style:italic">Start free.</span></h2>
-        <p>Every plan includes a 30-day free trial. No credit card. Cancel anytime.</p>
+        <p class="eyebrow" data-i18n="price_eye">Simple pricing</p>
+        <h2 data-i18n-html="price_h2">Pay for what you use. <span class="grad" style="font-style:italic">Start free.</span></h2>
+        <p data-i18n="price_p">Every plan includes a 30-day free trial. No credit card. Cancel anytime.</p>
       </div>
       <div class="pricing">
         <div class="plan reveal pre">
-          <h3>Hustler</h3><p class="for">Spaza shops, hawkers and home businesses</p>
+          <h3>Hustler</h3><p class="for" data-i18n="plan1_for">Spaza shops, hawkers and home businesses</p>
           <div class="price">R59.99<small> /month</small></div>
-          <ul><li>Quotes and tax invoices</li><li>WhatsApp and email sending</li><li>Camera invoice capture</li><li>Cash float, stokvel and layby</li></ul>
-          <a class="btn ghost" href="download.html">Start free</a>
+          <ul><li data-i18n="plan1_li1">Quotes and tax invoices</li><li data-i18n="plan1_li2">WhatsApp and email sending</li><li data-i18n="plan1_li3">Camera invoice capture</li><li data-i18n="plan1_li4">Cash float, stokvel and layby</li></ul>
+          <a class="btn ghost" href="download.html" data-i18n="plan_btn">Start free</a>
         </div>
         <div class="plan pop reveal pre">
-          <span class="tag">Most popular</span>
-          <h3>Grinder</h3><p class="for">Growing businesses, freelancers and trades</p>
+          <span class="tag" data-i18n="plan2_tag">Most popular</span>
+          <h3>Grinder</h3><p class="for" data-i18n="plan2_for">Growing businesses, freelancers and trades</p>
           <div class="price">R199<small> /month</small></div>
-          <ul><li>Everything in Hustler</li><li>Unlimited customers and invoices</li><li>Profit &amp; loss, suppliers and bills</li><li>VAT201 export, payslips and IRP5</li></ul>
-          <a class="btn primary" href="download.html">Start free</a>
+          <ul><li data-i18n="plan2_li1">Everything in Hustler</li><li data-i18n="plan2_li2">Unlimited customers and invoices</li><li data-i18n="plan2_li3">Profit &amp; loss, suppliers and bills</li><li data-i18n="plan2_li4">VAT201 export, payslips and IRP5</li></ul>
+          <a class="btn primary" href="download.html" data-i18n="plan_btn">Start free</a>
         </div>
         <div class="plan reveal pre">
-          <h3>Builder</h3><p class="for">Established SMEs with staff and stock</p>
+          <h3>Builder</h3><p class="for" data-i18n="plan3_for">Established SMEs with staff and stock</p>
           <div class="price">R399<small> /month</small></div>
-          <ul><li>Everything in Grinder</li><li>Full payroll: PAYE, UIF, SDL</li><li>Inventory with stock alerts</li><li>Balance sheet, cash flow, bank reconciliation</li></ul>
-          <a class="btn ghost" href="download.html">Start free</a>
+          <ul><li data-i18n="plan3_li1">Everything in Grinder</li><li data-i18n="plan3_li2">Full payroll: PAYE, UIF, SDL</li><li data-i18n="plan3_li3">Inventory with stock alerts</li><li data-i18n="plan3_li4">Balance sheet, cash flow, bank reconciliation</li></ul>
+          <a class="btn ghost" href="download.html" data-i18n="plan_btn">Start free</a>
         </div>
         <div class="plan reveal pre">
-          <h3>Enterprise</h3><p class="for">Multi-branch companies</p>
+          <h3>Enterprise</h3><p class="for" data-i18n="plan4_for">Multi-branch companies</p>
           <div class="price">R999<small> /month</small></div>
-          <ul><li>Everything in Builder</li><li>Unlimited users and branches</li><li>EFT batch files (FNB, ABSA, Capitec)</li><li>Approvals, API, custom reports</li></ul>
-          <a class="btn ghost" href="download.html">Start free</a>
+          <ul><li data-i18n="plan4_li1">Everything in Builder</li><li data-i18n="plan4_li2">Unlimited users and branches</li><li data-i18n="plan4_li3">EFT batch files (FNB, ABSA, Capitec)</li><li data-i18n="plan4_li4">Approvals, API, custom reports</li></ul>
+          <a class="btn ghost" href="download.html" data-i18n="plan_btn">Start free</a>
         </div>
       </div>
-      <p class="note">Accountants: the Partner Plan (from R1,499/month) covers unlimited client files. Prefer to pay once? <a href="lifetime.html" style="color:var(--gold);font-weight:600">View lifetime licences &#8594;</a></p>
+      <p class="note" data-i18n-html="price_note">Accountants: the Partner Plan (from R1,499/month) covers unlimited client files. Prefer to pay once? <a href="lifetime.html" style="color:var(--gold);font-weight:600">View lifetime licences &#8594;</a></p>
     </div>
   </section>
 
@@ -413,13 +437,13 @@ footer a:hover{color:var(--fg)}
   <section class="final">
     <div class="wrap">
       <img src="setwel-logo.png" alt="Setwel Biz Suite logo" class="reveal pre">
-      <h2 class="reveal pre">Your books. Your phone.<br><span class="grad" style="font-style:italic">Your power.</span></h2>
-      <p class="reveal pre">Start your free 30-day trial today. No credit card, no laptop, no stress.</p>
+      <h2 class="reveal pre" data-i18n-html="final_h2">Your books. Your phone.<br><span class="grad" style="font-style:italic">Your power.</span></h2>
+      <p class="reveal pre" data-i18n="final_p">Start your free 30-day trial today. No credit card, no laptop, no stress.</p>
       <div class="cta-row reveal pre">
-        <a class="btn primary" href="download.html">Download for Windows</a>
-        <a class="btn ghost" href="mobile.html">Use it on my phone</a>
+        <a class="btn primary" href="download.html" data-i18n="final_btn1">Download for Windows</a>
+        <a class="btn ghost" href="mobile.html" data-i18n="final_btn2">Use it on my phone</a>
       </div>
-      <p class="wa">Questions? WhatsApp us on <strong>082 082 9050</strong> · <a href="https://wa.me/27820829050" target="_blank" rel="noopener">Chat now</a></p>
+      <p class="wa" data-i18n-html="final_wa">Questions? WhatsApp us on <strong>082 082 9050</strong> · <a href="https://wa.me/27820829050" target="_blank" rel="noopener">Chat now</a></p>
     </div>
   </section>
 </main>
@@ -436,6 +460,274 @@ footer a:hover{color:var(--fg)}
 <script>
 function toggleMenu(){ var m = document.getElementById('mob-menu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
 document.querySelectorAll('#mob-menu a').forEach(function(a){ a.addEventListener('click', function(){ document.getElementById('mob-menu').style.display = 'none'; }); });
+var NAV_LANG={
+  en:{feat:'Features',price:'Pricing',faq:'FAQ',mobile:'Mobile',trial:'Start free',trialfull:'Start free trial'},
+  af:{feat:'Kenmerke',price:'Pryse',faq:'Vrae',mobile:'Selfoon',trial:'Begin gratis',trialfull:'Begin gratis proeftydperk'},
+  zu:{feat:'Izici',price:'Intengo',faq:'Imibuzo',mobile:'Iselula',trial:'Qala mahhala',trialfull:'Qala ukuhlolwa kwamahhala'},
+  xh:{feat:'Iimpawu',price:'Ixabiso',faq:'Imibuzo',mobile:'Iselfowuni',trial:'Qala simahla',trialfull:'Qala ukuhlolwa okusimahla'},
+  ve:{feat:'Zwibveleto',price:'Mitengo',faq:'Mbudziso',mobile:'Mobile',trial:'Thoma mahala',trialfull:'Thoma u linga kha mahala'},
+  st:{feat:'Likarolo',price:'Theko',faq:'Dipotso',mobile:'Mobile',trial:'Qala mahala',trialfull:'Qala ho lekola mahala'}
+};
+/* Full page content translation — hero, story, pillars, pricing, final CTA (FAQ left in English, matching other pages) */
+var CONTENT_LANG = {
+  af:{
+    hero_eye:"Die geld-app vir SA kleinsake", hero_h1:"Kry betaal. Bly wetlik.<br><span class=\"grad\" style=\"font-style:italic\">Slaap rustig.</span>",
+    hero_sub:"Fakture op WhatsApp, SARS-gereed boeke en salarisse op enige Android-foon, met of sonder data.",
+    hero_btn1:"Begin gratis 30-dae proeftydperk", hero_btn2:"Maak oop op my foon",
+    c1_eye:"Klink bekend?", c1_h2:"Jaag betalings.<br>Raai wat jy <span class=\"grad\" style=\"font-style:italic\">werklik</span> hierdie maand gemaak het.",
+    c1_p:"En 'n SARS-sperdatum wat jy net op die laaste dag onthou.",
+    c2_eye:"Neem 'n foto. Stuur dit.", c2_h2:"Elke strokie, elke faktuur,<br><span class=\"grad\" style=\"font-style:italic\">in een foon.</span>",
+    c2_p:"Fotografeer 'n kwitansie en dit word vir jou gelees. Stuur 'n ordentlike belastingfaktuur op WhatsApp binne sekondes.",
+    c3_eye:"Gereeld.", c3_h2:"Jy lyk soos 'n groot maatskappy.<br><span class=\"grad\" style=\"font-style:italic\">Jy word betaal soos een.</span>",
+    c3_p:"Merk dit betaal, sien wie jou nog skuld, en weet presies waar jy vanaand staan.",
+    feat_eye:"Drie dinge wat jy regtig koop", feat_h2:"Nie rekeningkundige sagteware nie. <span class=\"grad\" style=\"font-style:italic\">Gemoedsrus.</span>",
+    feat_p:"Alles in Setwel dien een van drie doelwitte. Hier's wat vandag ingesluit is.",
+    p1_eye:"Kry betaal", p1_h3:"Geld in, vinniger", p1_promise:"Faktureer op WhatsApp binne sekondes, volg op sonder die ongemaklike oproep.",
+    p1_li1:"Belastingfakture en kwotasies, gestuur op WhatsApp of e-pos", p1_li2:"Kwotasie na faktuur in een tik, geen herskryf nie",
+    p1_li3:"Onbetaalde lys en betalingopname (kontant, EFT, kaart)", p1_li4:"Uitleg met WhatsApp-herinnerings",
+    p2_eye:"Bly wetlik", p2_h3:"SARS sonder die stres", p2_promise:"Voldoenende papierwerk sonder 'n rekenmeester op bystand.",
+    p2_li1:"Belastingfakture met deurlopende nommers en BTW-opsplitsing", p2_li2:"BTW201-uitvoer vir eFiling",
+    p2_li3:"Salarisstrokies en IRP5's, insluitend huiswerkers", p2_li4:"PAYE, UIF en SDL op volle salarisplanne",
+    p3_eye:"Ken jou geld", p3_h3:"Jou syfers, elke aand", p3_promise:"Sien wat ingekom het, wat uitstaande is en wat op die rak is.",
+    p3_li1:"Kameravaslegging vir kwitansies en verskafferfakture", p3_li2:"Wins- en verliesstate, verkope- en onbetaalde-rekeningverslae",
+    p3_li3:"Voorraadvlakke met lae-voorraad-waarskuwings", p3_li4:"Daaglikse tilvlotter met tekort- en oorskotvlae",
+    works_eye:"Werk waar jy werk", works_h2:"Geen data? Geen sein? <span class=\"grad\" style=\"font-style:italic\">Geen probleem.</span>",
+    works_p:"Setwel werk aanlyn-vry op enige Android-foon, so jy hou aan faktureer by die mark, op die werf of in die winkel. Geen skootrekenaar, geen lugtyd verbrand nie. Net WhatsApp-stuur en die kameraskandeerder benodig 'n verbinding.",
+    stat1_b:"Vanlyn", stat1_s:"Fakture, salarisse en verslae sonder data", stat2_s:"Suid-Afrikaanse tale vir jou fakture", stat3_s:"per maand om te begin, 30 dae gratis",
+    tools_eye:"Gebou vir ekasi. Gereed vir die direksiekamer.", tools_h2:"Gereedskap wat niemand oorsee gedink het om te bou nie",
+    tools_p:"Setwel is in Suid-Afrika gemaak vir hoe Suid-Afrikaners werklik sake doen.",
+    tool1_h4:"Spaza-kontantvlotter", tool1_p:"Openingsvlotter, kontantverkope, sluitingstelling. Sien tekorte per kassier voordat dit 'n gewoonte word.",
+    tool2_h4:"Stokvel-bestuurder", tool2_p:"Bydraes, rotasie-uitbetalings en lidstate op WhatsApp. Geen meer notaboek-geskille nie.",
+    tool3_h4:"Uitleg, gereeld", tool3_p:"Deposito's, saldo's en vriendelike WhatsApp-herinnerings. Verstreke uitlegs gaan terug na voorraad.",
+    tool4_h4:"B-BBEE-verskaffer-opspoorder", tool4_p:"Volg verskaffersontwikkelingsbesteding vir jou verifikasie (Builder en hoër).",
+    test_eye:"Van ons kliënte", test_h2:"Regte mense, <span class=\"grad\" style=\"font-style:italic\">regte besighede.</span>",
+    price_eye:"Eenvoudige pryse", price_h2:"Betaal vir wat jy gebruik. <span class=\"grad\" style=\"font-style:italic\">Begin gratis.</span>",
+    price_p:"Elke plan sluit 'n 30-dae gratis proeftydperk in. Geen kredietkaart nie. Kanselleer enige tyd.",
+    plan1_for:"Spazawinkels, smouse en tuisbesighede", plan1_li1:"Kwotasies en belastingfakture", plan1_li2:"WhatsApp- en e-posstuur",
+    plan1_li3:"Kameravaslegging van fakture", plan1_li4:"Kontantvlotter, stokvel en uitleg", plan_btn:"Begin gratis",
+    plan2_tag:"Mees gewild", plan2_for:"Groeiende besighede, vryskutters en ambagte", plan2_li1:"Alles in Hustler",
+    plan2_li2:"Onbeperkte kliënte en fakture", plan2_li3:"Wins en verlies, verskaffers en rekeninge", plan2_li4:"BTW201-uitvoer, salarisstrokies en IRP5",
+    plan3_for:"Gevestigde KMO's met personeel en voorraad", plan3_li1:"Alles in Grinder", plan3_li2:"Volle salarisadministrasie: PAYE, UIF, SDL",
+    plan3_li3:"Voorraad met voorraadwaarskuwings", plan3_li4:"Balansstaat, kontantvloei, bankrekonsiliasie",
+    plan4_for:"Maatskappye met meervoudige takke", plan4_li1:"Alles in Builder", plan4_li2:"Onbeperkte gebruikers en takke",
+    plan4_li3:"EFT-bondeltjies (FNB, ABSA, Capitec)", plan4_li4:"Goedkeurings, API, pasgemaakte verslae",
+    price_note:"Rekenmeesters: die Vennootplan (vanaf R1,499/maand) dek onbeperkte kliëntlêers. Verkies om eenmalig te betaal? <a href=\"lifetime.html\" style=\"color:var(--gold);font-weight:600\">Bekyk lewenslange lisensies &#8594;</a>",
+    final_h2:"Jou boeke. Jou foon.<br><span class=\"grad\" style=\"font-style:italic\">Jou krag.</span>", final_p:"Begin vandag jou gratis 30-dae proeftydperk. Geen kredietkaart, geen skootrekenaar, geen stres nie.",
+    final_btn1:"Laai af vir Windows", final_btn2:"Gebruik dit op my foon",
+    final_wa:"Vrae? WhatsApp ons by <strong>082 082 9050</strong> · <a href=\"https://wa.me/27820829050\" target=\"_blank\" rel=\"noopener\">Klets nou</a>"
+  },
+  zu:{
+    hero_eye:"Uhlelo lwemali lwamabhizinisi amancane aseNingizimu Afrika", hero_h1:"Khokhelwa. Hlala ngomthetho.<br><span class=\"grad\" style=\"font-style:italic\">Lala kahle.</span>",
+    hero_sub:"Ama-invoyisi nge-WhatsApp, izincwadi ezilungele i-SARS kanye nemiholo kunoma iluphi ifoni ye-Android, ngedatha noma ngaphandle kwayo.",
+    hero_btn1:"Qala uvivinyo lwamahhala lwezinsuku ezingu-30", hero_btn2:"Vula kufoni yami",
+    c1_eye:"Kuzwakala kujwayelekile?", c1_h2:"Ulandelela izinkokhelo.<br>Uqagela okuyikho <span class=\"grad\" style=\"font-style:italic\">ngempela</span> okutholakele kuleli nyanga.",
+    c1_p:"Kanye nomhla wokugcina we-SARS owukhumbula kuphela ngosuku lokugcina.",
+    c2_eye:"Thatha isithombe. Thumela.", c2_h2:"Yonke incwadi yentengo, yonke i-invoyisi,<br><span class=\"grad\" style=\"font-style:italic\">kufoni eyodwa.</span>",
+    c2_p:"Thatha isithombe sephepha lokukhokha, ufundelwe. Thumela i-invoyisi yentela yangempela nge-WhatsApp ngemizuzwana.",
+    c3_eye:"Kulungile.", c3_h2:"Ubukeka njengenkampani enkulu.<br><span class=\"grad\" style=\"font-style:italic\">Ukhokhelwa njengenkampani enkulu.</span>",
+    c3_p:"Phawula ukuthi ikhokhiwe, bona ubani osekuseyokukubola, futhi wazi kahle ukuthi usimeme sini namuhla ebusuku.",
+    feat_eye:"Izinto ezintathu ozithenga ngempela", feat_h2:"Akusiyo isofthiwe yokubala. <span class=\"grad\" style=\"font-style:italic\">Ukuthula kwengqondo.</span>",
+    feat_p:"Konke okukuSetwel kusiza umsebenzi owodwa phakathi kwabathathu. Nakhu okufakiwe namuhla.",
+    p1_eye:"Khokhelwa", p1_h3:"Imali ingena, ngokushesha", p1_promise:"Thumela i-invoyisi nge-WhatsApp ngemizuzwana, ulandelele ngaphandle kocingo olunokunenga.",
+    p1_li1:"Ama-invoyisi entela namakhota, athunyelwe nge-WhatsApp noma i-imeyili", p1_li2:"Ikhota iguqulelwa ku-invoyisi ngokuchofoza okukodwa, akusho ukubhala kabusha",
+    p1_li3:"Uhlu lwezingakhokhelwa kanye nokurekhoda inkokhelo (ukheshi, i-EFT, ikhadi)", p1_li4:"Uhlelo lokubamba ngezinxushunxushu nezikhumbuzo ze-WhatsApp",
+    p2_eye:"Hlala ngomthetho", p2_h3:"I-SARS ngaphandle kokucindezeleka", p2_promise:"Amaphepha ahambisana nomthetho ngaphandle kommeli kumabhalane ngaso sonke isikhathi.",
+    p2_li1:"Ama-invoyisi entela anezinombolo ezilandelanayo kanye nokuhlukaniswa kwe-VAT", p2_li2:"Ukukhishwa kwe-VAT201 ye-eFiling",
+    p2_li3:"Amaphepha eholo nama-IRP5, kufaka izisebenzi zasekhaya", p2_li4:"I-PAYE, UIF ne-SDL kuhlelo oluphelele lweholo",
+    p3_eye:"Yazi imali yakho", p3_h3:"Izinombolo zakho, ebusuku bonke", p3_promise:"Bona okungenile, okusalele nokusesitokisini.",
+    p3_li1:"Ukuthwebula ngekhamera amaphepha okukhokha namawoyisi abahlinzeki", p3_li2:"Imibiko yenzuzo nokulahlekelwa, ukuthengisa namabhalansi angakhokhelwa",
+    p3_li3:"Amazinga esitoko ngesixwayiso sesitoko esiphansi", p3_li4:"Ukubalwa kwetili kwansuku zonke ngezibonisi zokushoda kanye nokweqisa",
+    works_eye:"Isebenza lapho usebenza", works_h2:"Ayikho idatha? Ayikho isignali? <span class=\"grad\" style=\"font-style:italic\">Ayinankinga.</span>",
+    works_p:"Setwel isebenza ngaphandle kwedatha kunoma iluphi ifoni ye-Android, ngakho uqhubeka ukhokhelwa emakethe, endaweni yomsebenzi noma esitolo. Ayidingi ikhompiyutha, ayichithi isikhathi sedatha. Kuphela ukuthumela nge-WhatsApp nesikenara sekhamera okudinga uxhumano.",
+    stat1_b:"Ngaphandle kwedatha", stat1_s:"Ama-invoyisi, iholo nemibiko ngaphandle kwedatha", stat2_s:"Izilimi zaseNingizimu Afrika zama-invoyisi akho", stat3_s:"ngenyanga ukuqala, izinsuku 30 zamahhala",
+    tools_eye:"Yakhelwe ekasi. Ilungele ibhodi eliphezulu.", tools_h2:"Amathuluzi akekho owaphesheya acabanga ukuwakha",
+    tools_p:"Setwel yenziwe eNingizimu Afrika ngendlela amaNingizimu Afrika enza ngempela ibhizinisi.",
+    tool1_h4:"Ukheshi wesipaza", tool1_p:"Uvulo lwemali, ukuthengisa ngokheshi, ukubala kokuvala. Bona ukushoda kumkhwenyana ngaphambi kokuba kube umkhuba.",
+    tool2_h4:"Umphathi westokvel", tool2_p:"Iminikelo, ukukhokhwa ngokujikeleza namabhalansi amalungu nge-WhatsApp. Ayisekho impikiswano ngencwadi.",
+    tool3_h4:"Ilayibhi, kulungile", tool3_p:"Izibambiso, amabhalansi nezikhumbuzo ze-WhatsApp ezinomusa. Amalayibhi angasafani abuyela esitokweni.",
+    tool4_h4:"Umlandeleli we-B-BBEE wabahlinzeki", tool4_p:"Landelela ukusetshenziswa kwemali yentuthuko yabahlinzeki yokuqinisekisa kwakho (Builder nangaphezulu).",
+    test_eye:"Kubathengi bethu", test_h2:"Abantu bangempela, <span class=\"grad\" style=\"font-style:italic\">amabhizinisi angempela.</span>",
+    price_eye:"Intengo elula", price_h2:"Khokha ngoba yini oyisebenzisa. <span class=\"grad\" style=\"font-style:italic\">Qala mahhala.</span>",
+    price_p:"Wonke uhlelo lufaka uvivinyo lwamahhala lwezinsuku 30. Ayikho ikhadi lesikweletu. Khansela nganoma isikhathi.",
+    plan1_for:"Izitolo zesipaza, abathengisi nabamabhizinisi asekhaya", plan1_li1:"Amakhota namawoyisi entela", plan1_li2:"Ukuthunyelwa nge-WhatsApp ne-imeyili",
+    plan1_li3:"Ukuthwebula ama-invoyisi ngekhamera", plan1_li4:"Ukheshi, istokvel nelayibhi", plan_btn:"Qala mahhala",
+    plan2_tag:"Othandwa kakhulu", plan2_for:"Amabhizinisi akhula, abazisebenzeli namakhono", plan2_li1:"Konke okukuHustler",
+    plan2_li2:"Amakhasimende namawoyisi angenamkhawulo", plan2_li3:"Inzuzo nokulahlekelwa, abahlinzeki kanye nezikweletu", plan2_li4:"Ukukhishwa kwe-VAT201, amaphepha eholo ne-IRP5",
+    plan3_for:"Amabhizinisi asesimeme abalebonsela nesitoko", plan3_li1:"Konke okukuGrinder", plan3_li2:"Iholo eliphelele: PAYE, UIF, SDL",
+    plan3_li3:"Isitoko nezibonisi zesitoko", plan3_li4:"Ibhalansi, ukugeleza kwemali, ukuvumelanisa nebhange",
+    plan4_for:"Izinkampani ezinezigodi eziyingi", plan4_li1:"Konke okukuBuilder", plan4_li2:"Abasebenzisi nezigodi ezingenamkhawulo",
+    plan4_li3:"Amafayela e-EFT ngamaqoqo (FNB, ABSA, Capitec)", plan4_li4:"Ukugunyazwa, API, imibiko eyenziwe ngezifiso",
+    price_note:"Abamabhalane: uHlelo lweZinini (kusukela ku-R1,499/inyanga) lumboza amafayela amakhasimende angenamkhawulo. Ukhetha ukukhokha kanye? <a href=\"lifetime.html\" style=\"color:var(--gold);font-weight:600\">Buka amalayisensi aphakade &#8594;</a>",
+    final_h2:"Izincwadi zakho. Ifoni yakho.<br><span class=\"grad\" style=\"font-style:italic\">Amandla akho.</span>", final_p:"Qala uvivinyo lwamahhala lwezinsuku 30 namuhla. Ayikho ikhadi lesikweletu, ayikho ikhompiyutha, ayikho ingcindezi.",
+    final_btn1:"Landa ye-Windows", final_btn2:"Sebenzisa kufoni yami",
+    final_wa:"Imibuzo? Thinta ku-WhatsApp ku-<strong>082 082 9050</strong> · <a href=\"https://wa.me/27820829050\" target=\"_blank\" rel=\"noopener\">Xoxa manje</a>"
+  },
+  xh:{
+    hero_eye:"Isixhobo semali seebhizinisi ezincinci zoMzantsi Afrika", hero_h1:"Hlawulwa. Hlala ngasemthethweni.<br><span class=\"grad\" style=\"font-style:italic\">Lala kamnandi.</span>",
+    hero_sub:"Iinvoyisi nge-WhatsApp, iincwadi ezilungele i-SARS kunye nemivuzo kuyifowuni nganye ye-Android, ngedatha okanye ngaphandle kwayo.",
+    hero_btn1:"Qalisa uvavanyo lwasimahla lweentsuku 30", hero_btn2:"Vula kwifowuni yam",
+    c1_eye:"Kuvakala kuqhelekile?", c1_h2:"Ulandela iintlawulo.<br>Uqikelela okuyikho <span class=\"grad\" style=\"font-style:italic\">ngenyani</span> okwenziweyo kweli nyanga.",
+    c1_p:"Kunye nomhla wokugqibela we-SARS owukhumbula kuphela kusuku lokugqibela.",
+    c2_eye:"Thatha ifoto. Thumela.", c2_h2:"Lonke uxwebhu, yonke i-invoyisi,<br><span class=\"grad\" style=\"font-style:italic\">kwifowuni enye.</span>",
+    c2_p:"Thatha ifoto yerisithi ifundelwe wena. Thumela i-invoyisi yerhafu ngempela nge-WhatsApp ngemizuzwana.",
+    c3_eye:"Kulungile.", c3_h2:"Ubonakala ngathi ungunkampani enkulu.<br><span class=\"grad\" style=\"font-style:italic\">Uhlawulwa ngathi ungunkampani enkulu.</span>",
+    c3_p:"Phawula ukuba ihlawulwe, bona ngubani oseyokubolekile, kwaye wazi kakuhle apho umi khona ngokuhlwanje.",
+    feat_eye:"Izinto ezithathu ozithengayo ngokwenene", feat_h2:"Ayisiyo isoftware yokubala. <span class=\"grad\" style=\"font-style:italic\">Uxolo lwengqondo.</span>",
+    feat_p:"Yonke into kuSetwel inceda umsebenzi omnye phakathi kwabathathu. Nantsi into equkwayo namhlanje.",
+    p1_eye:"Hlawulwa", p1_h3:"Imali ingena, ngokukhawuleza", p1_promise:"Hlawulisa nge-WhatsApp ngemizuzwana, ulandelele ngaphandle komnxeba ongathandekiyo.",
+    p1_li1:"Iinvoyisi zerhafu kunye neekhowtheshini, zithunyelwa nge-WhatsApp okanye i-imeyile", p1_li2:"Ikhowtheshini iguqulelwa ku-invoyisi ngokucofa kwanye, akufuneki ukubhala kwakhona",
+    p1_li3:"Uluhlu lwabangahlawulileyo kunye nokurekhoda intlawulo (imali, i-EFT, ikhadi)", p1_li4:"Ulayibhi ngezikhumbuzo ze-WhatsApp",
+    p2_eye:"Hlala ngasemthethweni", p2_h3:"I-SARS ngaphandle koxinezeleko", p2_promise:"Amaxwebhu avisisana nomthetho ngaphandle komxhasi-mali kuhlala elungele ukunceda.",
+    p2_li1:"Iinvoyisi zerhafu ezinamanani alandelelanayo kunye nokwahlula kwe-VAT", p2_li2:"Ukuthunyelwa kwe-VAT201 kwi-eFiling",
+    p2_li3:"Amaphepha-mvuzo kunye ne-IRP5, kuquka abasebenzi basekhaya", p2_li4:"I-PAYE, UIF kunye ne-SDL kwizicwangciso zomvuzo ezipheleleyo",
+    p3_eye:"Yazi imali yakho", p3_h3:"Amanani akho, ngobusuku ngabusuku", p3_promise:"Bona ekungeneyo, ekusamele kunye nokukwishelufu.",
+    p3_li1:"Ukuthwebula ngekhamera iirisithi kunye neenvoyisi zabaxhasi", p3_li2:"Iingxelo zenzuzo nelahleko, zokuthengisa kunye nemali engahlawulwayo",
+    p3_li3:"Amanqanaba empahla kunye nesilumkiso sempahla ephantsi", p3_li4:"Imali yetyala yemihla ngemihla kunye neempawu zokunqongophala nokugqithisa",
+    works_eye:"Isebenza apho usebenza khona", works_h2:"Akukho datha? Akukho isiganalo? <span class=\"grad\" style=\"font-style:italic\">Akukho ngxaki.</span>",
+    works_p:"Setwel isebenza ngaphandle kwenethiwekhi kuyifowuni nganye ye-Android, ngoko uqhubeka uhlawulisa esivenkileni, kwindawo yomsebenzi okanye evenkileni. Akukho ikhompyutha, akukho imali yedatha echithwayo. Kuphela ukuthumela nge-WhatsApp kunye nesikena sekhamera kufuna uqhagamshelwano.",
+    stat1_b:"Ngaphandle kwedatha", stat1_s:"Iinvoyisi, imivuzo kunye neengxelo ngaphandle kwedatha", stat2_s:"Iilwimi zoMzantsi Afrika zeenvoyisi zakho", stat3_s:"ngenyanga ukuqalisa, iintsuku 30 zisimahla",
+    tools_eye:"Yenzelwe ekasi. Ilungele ibhodi eliphezulu.", tools_h2:"Izixhobo ongazicinganga kwaphesheya",
+    tools_p:"Setwel yenziwe eMzantsi Afrika ngendlela amaMzantsi Afrika enza ishishini ngenyani.",
+    tool1_h4:"Imali yotshintshelwano wesipaza", tool1_p:"Imali yokuvula, ukuthengisa ngemali, ukubalwa kokuvala. Bona ukunqongophala ngomnini-tshintshelwano ngaphambi kokuba kube umkhwa.",
+    tool2_h4:"Umphathi westokfela", tool2_p:"Iminikelo, intlawulo yokujikeleza kunye neengxelo zamalungu nge-WhatsApp. Akusekho ukungavisisani kwencwadi.",
+    tool3_h4:"Ulayibhi, kulungile", tool3_p:"Izibambiso, amabhalansi kunye nezikhumbuzo ze-WhatsApp ezinobubele. Ulayibhi ongasafanelekile ubuyela kwimveliso.",
+    tool4_h4:"Umlandeleli we-B-BBEE wabaxhasi", tool4_p:"Landela inkcitho yophuhliso lwabaxhasi kuqinisekiso lwakho (Builder nangaphezulu).",
+    test_eye:"Kubathengi bethu", test_h2:"Abantu benyani, <span class=\"grad\" style=\"font-style:italic\">amashishini enyani.</span>",
+    price_eye:"Amaxabiso alula", price_h2:"Hlawula ngento oyisebenzisayo. <span class=\"grad\" style=\"font-style:italic\">Qalisa simahla.</span>",
+    price_p:"Sonke isicwangciso siquka uvavanyo lwasimahla lweentsuku 30. Akukho ikhadi letyala. Rhoxisa nangaliphi ixesha.",
+    plan1_for:"Iivenkile zesipaza, abathengisi kunye namashishini asekhaya", plan1_li1:"Ikhowtheshini kunye neenvoyisi zerhafu", plan1_li2:"Ukuthumela nge-WhatsApp kunye ne-imeyile",
+    plan1_li3:"Ukuthwebula iinvoyisi ngekhamera", plan1_li4:"Imali yotshintshelwano, istokfela kunye nolayibhi", plan_btn:"Qalisa simahla",
+    plan2_tag:"Othandwayo kakhulu", plan2_for:"Amashishini akhulayo, abazenzeli kunye nobuchule", plan2_li1:"Yonke into kuHustler",
+    plan2_li2:"Abathengi kunye neenvoyisi ezingenamda", plan2_li3:"Inzuzo nelahleko, abaxhasi kunye neetyala", plan2_li4:"Ukuthunyelwa kwe-VAT201, amaphepha-mvuzo kunye ne-IRP5",
+    plan3_for:"Amashishini amaseleyo anabasebenzi kunye nempahla", plan3_li1:"Yonke into kuGrinder", plan3_li2:"Umvuzo opheleleyo: PAYE, UIF, SDL",
+    plan3_li3:"Impahla kunye nesilumkiso sempahla", plan3_li4:"Ibhalansi, ukuhamba kwemali, ukuvisisana kwebhanki",
+    plan4_for:"Iinkampani ezinamasebe amaninzi", plan4_li1:"Yonke into kuBuilder", plan4_li2:"Abasebenzisi kunye namasebe angenamda",
+    plan4_li3:"Iifayile zeqela ze-EFT (FNB, ABSA, Capitec)", plan4_li4:"Uvume, API, iingxelo ezenziwe ngesicelo",
+    price_note:"Abaxhasi-mali: Isicwangciso soMlingane (kusukela kuR1,499/inyanga) siqukela iifayile zabathengi ezingenamda. Ukhetha ukuhlawula kwanye? <a href=\"lifetime.html\" style=\"color:var(--gold);font-weight:600\">Jonga amalayisenisi obomi &#8594;</a>",
+    final_h2:"Iincwadi zakho. Ifowuni yakho.<br><span class=\"grad\" style=\"font-style:italic\">Amandla akho.</span>", final_p:"Qalisa uvavanyo lwakho lwasimahla lweentsuku 30 namhlanje. Akukho ikhadi letyala, akukho ikhompyutha, akukho uxinzelelo.",
+    final_btn1:"Khuphela i-Windows", final_btn2:"Sebenzisa kwifowuni yam",
+    final_wa:"Imibuzo? Qhagamshelana nathi nge-WhatsApp ku-<strong>082 082 9050</strong> · <a href=\"https://wa.me/27820829050\" target=\"_blank\" rel=\"noopener\">Ncokola ngoku</a>"
+  },
+  ve:{
+    hero_eye:"App ya masheleni ya bizinisi dzitete dza Afrika Tshipembe", hero_h1:"Lifhiwa. Dzula wa mulayo.<br><span class=\"grad\" style=\"font-style:italic\">Eda nga mulalo.</span>",
+    hero_sub:"Dziinvoyisi nga WhatsApp, bugu dzo lugiselelwaho SARS na mirogo kha foni ya Android ine ya vha hone, na data kana hu si na data.",
+    hero_btn1:"Thoma u linga kha mahala ha maduvha 30", hero_btn2:"Vula kha foni yanga",
+    c1_eye:"Zwi tou pfala tshifhinga ntswa?", c1_h2:"U tevhela mbadelo.<br>U humbula zwe wa <span class=\"grad\" style=\"font-style:italic\">vhukuma</span> wa kona kha hono nwedzi.",
+    c1_p:"Na tshifhinga tsha u fhedza tsha SARS tshine wa tou hu humbula nga duvha la u fhedza.",
+    c2_eye:"Tea foto. Rumela.", c2_h2:"Khasi iwe na iwe, invoyisi iwe na iwe,<br><span class=\"grad\" style=\"font-style:italic\">kha foni thihi.</span>",
+    c2_p:"Tea foto ya risiti nahone i vhalwa khauwe. Rumela invoyisi ya mutero nga WhatsApp nga masekondi.",
+    c3_eye:"Zwo tendelwa.", c3_h2:"U tou tou nga khamphani khulwane.<br><span class=\"grad\" style=\"font-style:italic\">U lifhiwa u fana na khamphani khulwane.</span>",
+    c3_p:"Sumbedza zwi lifhiwa, vhona avha vhaya vha tshee na mulandu, nahone u divhe nga vhukuma hune wa khou ima khone nga vhusiku hano.",
+    feat_eye:"Zwithu zwiraru zwe u khou zwi renga nga vhukuma", feat_h2:"A si software ya u vhala. <span class=\"grad\" style=\"font-style:italic\">Mulalo wa mbilu.</span>",
+    feat_p:"Zwoṱhe kha Setwel zwi shuma mushumo muthihi wa vhuraru. Hezwi ndi zwe zwi dzheniswa namusi.",
+    p1_eye:"Lifhiwa", p1_h3:"Masheleni a dzhena, nga u fhisha", p1_promise:"Invoyisi nga WhatsApp nga masekondi, tevhedza hu si na luphone lu konḓaho.",
+    p1_li1:"Dziinvoyisi dza mutero na khodzashini, dzo rumelwa nga WhatsApp kana imeili", p1_li2:"Khodzashini u shanduka invoyisi nga u thenda luthihi, a huna u ṅwala hafhu",
+    p1_li3:"Luṅwalo lwa zwine zwa saathu u lifhiwa na u ṅwala mbadelo (tshelede, EFT, khadi)", p1_li4:"Layibi na khumbudzo dza WhatsApp",
+    p2_eye:"Dzula wa mulayo", p2_h3:"SARS hu si na mutsiko", p2_promise:"Maṅwalo ane a tendelana na mulayo hu si na muvhalie wa maano nga tshifhinga tshoṱhe.",
+    p2_li1:"Dziinvoyisi dza mutero dzine dza vha na nomboro dzo tevhekanyaho na vhukovhekanyi ha VAT", p2_li2:"U rumela VAT201 kha eFiling",
+    p2_li3:"Mbambedzo ya mirogo na IRP5, hu tshi katela vhashumi vha hayani", p2_li4:"PAYE, UIF na SDL kha mirero yoṱhe ya mirogo",
+    p3_eye:"Ḓivha masheleni au", p3_h3:"Nomboro dzau, vhusiku hoṱhe", p3_promise:"Vhona zwe zwa dzhena, zwine zwa saathu u lifhiwa na zwine zwa kha gabelo.",
+    p3_li1:"U fara nga khamera risiti na dziinvoyisi dza vhane vha ṋetshedza", p3_li2:"Mibiko ya phindulo na u xela, zwithengiso na zwine zwa saathu u lifhiwa",
+    p3_li3:"Maimo a goloi na tsevho ya goloi ṱhukhu", p3_li4:"Tshelede ya fulodi ya ḓuvha ḽiṅwe na ḽiṅwe na vhutsevho ha u shaya kana u engedza",
+    works_eye:"I shuma hune wa shuma hone", works_h2:"A si data? A si siginala? <span class=\"grad\" style=\"font-style:italic\">A si thaidzo.</span>",
+    works_p:"Setwel i shuma hu si na data kha foni dza Android, ngauralo u bvela phanda u ṋetshedza invoyisi mavhengeleni, fhethu ha mushumo kana vhengeleni. A huna khomphiyutha, a huna data i no fhela. Fhedzi u rumela nga WhatsApp na u fara nga khamera ndi zwine zwa ṱoḓa mvano.",
+    stat1_b:"Hu si na data", stat1_s:"Dziinvoyisi, mirogo na mibiko hu si na data", stat2_s:"Luambo lwa Afrika Tshipembe kha dziinvoyisi dzau", stat3_s:"nwedzi muthihi u thoma, maduvha 30 a mahala",
+    tools_eye:"Yo itelwa ekasi. Yo lugela bodo khulwane.", tools_h2:"Zwishumiswa zwine a si muthu tshitangeni tsho humbula u zwi fhaṱa",
+    tools_p:"Setwel yo itwa Afrika Tshipembe u ya nga nḓila ine Vhaafrika Tshipembe vha ita bindu ngayo nga vhukuma.",
+    tool1_h4:"Tshelede ya spaza", tool1_p:"Tshelede ya u thoma, zwithengiso tsha tshelede, u vhala u vala. Vhona u shaya nga muthu muthihi na muthihi hu sathu u vha mukhwa.",
+    tool2_h4:"Mulanguli wa stokvel", tool2_p:"Muthusho, mbadelo ya u rembuluga na mibiko ya maswa nga WhatsApp. A huna u hanedzana nga bugu.",
+    tool3_h4:"Layibi, yo tendelwa", tool3_p:"Zwibveledzwa, phindulo na khumbudzo dza WhatsApp dzi vhuya. Layibi dzo fhiraho dzi humela kha goloi.",
+    tool4_h4:"Mulandeli wa B-BBEE wa vhane vha ṋetshedza", tool4_p:"Tevhela ndeme ya mbuelo ya vhane vha ṋetshedza u itela u sedzwa hau (Builder na nṱha hao).",
+    test_eye:"Kha vathengi vhashu", test_h2:"Vhathu vha vhukuma, <span class=\"grad\" style=\"font-style:italic\">mabindu a vhukuma.</span>",
+    price_eye:"Pfanyisedzo yo leluwaho", price_h2:"Lifha zwine wa khou shumisa. <span class=\"grad\" style=\"font-style:italic\">Thoma nga mahala.</span>",
+    price_p:"Muano muṅwe na muṅwe u katela u linga kha mahala ha maduvha 30. A huna khadi ya kholoto. Litsha nga tshifhinga tshoṱhe.",
+    plan1_for:"Mavhengele a spaza, vharengisi na mabindu a hayani", plan1_li1:"Khodzashini na dziinvoyisi dza mutero", plan1_li2:"U rumela nga WhatsApp na imeili",
+    plan1_li3:"U fara invoyisi nga khamera", plan1_li4:"Tshelede ya fulodi, stokvel na layibi", plan_btn:"Thoma nga mahala",
+    plan2_tag:"Yo takadzaho vhanzhi", plan2_for:"Mabindu ane a khou aluwa, vhashumi vha vhoṋe na vhuḓifara", plan2_li1:"Zwoṱhe kha Hustler",
+    plan2_li2:"Vhathengi na dziinvoyisi hu si na mukano", plan2_li3:"Phindulo na u xela, vhane vha ṋetshedza na mikwelo", plan2_li4:"U rumela VAT201, mbambedzo ya mirogo na IRP5",
+    plan3_for:"Mabindu o fulufhedzeaho ane a vha na vhashumi na goloi", plan3_li1:"Zwoṱhe kha Grinder", plan3_li2:"Mirogo yoṱhe: PAYE, UIF, SDL",
+    plan3_li3:"Goloi na tsevho ya goloi ṱhukhu", plan3_li4:"Bugu ya bhalansi, mutsinganyo wa tshelede, u ṱanganedzana na bannga",
+    plan4_for:"Khamphani dzine dza vha na madea manzhi", plan4_li1:"Zwoṱhe kha Builder", plan4_li2:"Vhashumisi na madea hu si na mukano",
+    plan4_li3:"Fayili dza EFT dza thumba (FNB, ABSA, Capitec)", plan4_li4:"Vhutendi, API, mibiko yo itelwa iwe",
+    price_note:"Vhavhalie vha maano: Muano wa Vhathusiwa (u bva kha R1,499/nwedzi) u katela fayili dza vhathengi hu si na mukano. Ni khou takala u lifha nga nngele? <a href=\"lifetime.html\" style=\"color:var(--gold);font-weight:600\">Sedzani layisenisi dza vhutshilo &#8594;</a>",
+    final_h2:"Bugu dzau. Foni yau.<br><span class=\"grad\" style=\"font-style:italic\">Maanda au.</span>", final_p:"Thomani u linga hau ha mahala ha maduvha 30 namusi. A huna khadi ya kholoto, a huna khomphiyutha, a huna mutsiko.",
+    final_btn1:"Dzhenisa ya Windows", final_btn2:"Shumisani kha foni yanga",
+    final_wa:"Mbudziso? Ri vhidzeni nga WhatsApp kha <strong>082 082 9050</strong> · <a href=\"https://wa.me/27820829050\" target=\"_blank\" rel=\"noopener\">Ambani zwino</a>"
+  },
+  st:{
+    hero_eye:"App ea chelete bakeng sa likhoebo tse nyenyane tsa Afrika Boroa", hero_h1:"Lefuoa. Dula ka molao.<br><span class=\"grad\" style=\"font-style:italic\">Robala ka khotso.</span>",
+    hero_sub:"Li-invoice ka WhatsApp, libuka tse lokiselitsoeng SARS le meputso ho fono efe kapa efe ea Android, le data kapa ntle le data.",
+    hero_btn1:"Qala teko ea mahala ea matsatsi a 30", hero_btn2:"Bula ho fono ea ka",
+    c1_eye:"E utloahala e tloaelehile?", c1_h2:"U salla litefo morao.<br>U hakanya seo u se <span class=\"grad\" style=\"font-style:italic\">etsang kannete</span> khoeling ena.",
+    c1_p:"Le letsatsi la ho fihlela la SARS leo u le hopolang feela ka letsatsi la ho qetela.",
+    c2_eye:"Nka foto. Romela.", c2_h2:"Resiti e 'ngoe le e 'ngoe, invoice e 'ngoe le e 'ngoe,<br><span class=\"grad\" style=\"font-style:italic\">ho fono e le 'ngoe.</span>",
+    c2_p:"Nka foto ea risiti 'me e baloe bakeng sa hau. Romela invoice ea lekhetho e nepahetseng ka WhatsApp ka metsotsoana.",
+    c3_eye:"E lokile.", c3_h2:"U shebahala joaloka k'hamphani e kholo.<br><span class=\"grad\" style=\"font-style:italic\">U lefuoa joaloka e kholo.</span>",
+    c3_p:"Tšoaea e lefuoa, bona ba sa u kolotang, 'me u tsebe hantle moo u emeng teng bosiung bona.",
+    feat_eye:"Lintho tse tharo tseo u li rekang hantle", feat_h2:"Hase software ea boramatsete. <span class=\"grad\" style=\"font-style:italic\">Khutso ea kelello.</span>",
+    feat_p:"Ntho e 'ngoe le e 'ngoe ho Setwel e sebeletsa e 'ngoe ea mesebetsi e meraro. Sena ke seo se kenyelelitsoeng kajeno.",
+    p1_eye:"Lefuoa", p1_h3:"Chelete e kena, kapele", p1_promise:"Romela invoice ka WhatsApp ka metsotsoana, latela ntle le mohala o sa thabiseng.",
+    p1_li1:"Li-invoice tsa lekhetho le litlhahiso tsa theko, tse rometsoeng ka WhatsApp kapa imeile", p1_li2:"Tlhahiso ea theko e fetoha invoice ka ho tobetsa hanngwe, ha ho ngolla hape",
+    p1_li3:"Lethathamo la tse sa lefuoang le ho ngola tefo (chelete, EFT, karete)", p1_li4:"Layby e nang le khopotso tsa WhatsApp",
+    p2_eye:"Dula ka molao", p2_h3:"SARS ntle le khatello", p2_promise:"Litokomane tse lumellanang le molao ntle le ramatsete ea letsatsi le letsatsi.",
+    p2_li1:"Li-invoice tsa lekhetho tse nang le linomoro tse latellanang le karohano ea VAT", p2_li2:"Tlhahiso ea VAT201 bakeng sa eFiling",
+    p2_li3:"Lipampiri tsa moputso le IRP5, ho kenyelelitsoe basebetsi ba lapeng", p2_li4:"PAYE, UIF le SDL ho merero e felletseng ea moputso",
+    p3_eye:"Tseba chelete ea hau", p3_h3:"Linomoro tsa hau, bosiu bo bong le bo bong", p3_promise:"Bona seo se kenang, se sa lefuoang le se kerekong.",
+    p3_li1:"Ho tšoasa ka khamera resiti le li-invoice tsa bafani", p3_li2:"Litlaleho tsa phaello le tahleho, thekiso le likoloto tse sa lefuoang",
+    p3_li3:"Boemo ba thepa le temoso ea thepa e tlase", p3_li4:"Chelete ea til'he ea letsatsi le letsatsi e nang le lipontšo tsa khaello le tlaleho",
+    works_eye:"E sebetsa moo u sebetsang teng", works_h2:"Ha ho data? Ha ho sesupo? <span class=\"grad\" style=\"font-style:italic\">Ha ho bothata.</span>",
+    works_p:"Setwel e sebetsa ntle le data ho fono e fe kapa e fe ea Android, kahoo u tsoela pele ho fana ka li-invoice mmarakeng, moo u sebetsang kapa lebenkeleng. Ha ho khomphutha, ha ho data e sebelisoang. Ho romela ka WhatsApp le scanner ea khamera feela ho hlokang khokahano.",
+    stat1_b:"Ntle le data", stat1_s:"Li-invoice, meputso le litlaleho ntle le data", stat2_s:"Lipuo tsa Afrika Boroa bakeng sa li-invoice tsa hau", stat3_s:"khoeling ho qala, matsatsi 30 a mahala",
+    tools_eye:"E hahelletsoe ekasi. E lokiselitsoe boto e phahameng.", tools_h2:"Lisebelisoa tseo ho seng motho kantle naha a neng a nahana ho li haha",
+    tools_p:"Setwel e entsoe Afrika Boroa bakeng sa tsela eo Maafrika Boroa a etsang khoebo ka eona hantle.",
+    tool1_h4:"Chelete ea float ea spaza", tool1_p:"Float ea ho qala, thekiso ea chelete, ho bala ho koala. Bona khaello ho mosebeletsi e mong le e mong pele e fetoha tloaelo.",
+    tool2_h4:"Mookameli oa stokvele", tool2_p:"Menehelo, tefo ea potoloho le litlaleho tsa litho ka WhatsApp. Ha ho sa na likhang tsa bukana.",
+    tool3_h4:"Layby, e lokile", tool3_p:"Tepositi, likoloto le khopotso tsa WhatsApp tse mosa. Layby tse felletseng li khutlela stock.",
+    tool4_h4:"Mohlahlobi oa mofani oa B-BBEE", tool4_p:"Latela tšebeliso ea tsoelo-pele ea mofani bakeng sa netefatso ea hau (Builder le ka holimo).",
+    test_eye:"Ho bareki ba rona", test_h2:"Batho ba sebele, <span class=\"grad\" style=\"font-style:italic\">likhoebo tsa sebele.</span>",
+    price_eye:"Litheko tse bonolo", price_h2:"Lefa bakeng sa seo u se sebelisang. <span class=\"grad\" style=\"font-style:italic\">Qala mahala.</span>",
+    price_p:"Lenaneo le leng le le leng le kenyelletsa teko ea mahala ea matsatsi 30. Ha ho karete ea mokoloto. Khansela neng kapa neng.",
+    plan1_for:"Mabenkele a spaza, barekisi le likhoebo tsa lapeng", plan1_li1:"Litlhahiso tsa theko le li-invoice tsa lekhetho", plan1_li2:"Ho romela ka WhatsApp le imeile",
+    plan1_li3:"Ho tšoasa invoice ka khamera", plan1_li4:"Float ea chelete, stokvele le layby", plan_btn:"Qala mahala",
+    plan2_tag:"E ratoang ka ho fetisisa", plan2_for:"Likhoebo tse holang, basebetsi ba ikemetseng le litsebi", plan2_li1:"Tsohle tse ho Hustler",
+    plan2_li2:"Bareki le li-invoice tse se nang moeli", plan2_li3:"Phaello le tahleho, bafani le litefiso", plan2_li4:"Tlhahiso ea VAT201, lipampiri tsa moputso le IRP5",
+    plan3_for:"Likhoebo tse tsitsitseng tse nang le basebetsi le thepa", plan3_li1:"Tsohle tse ho Grinder", plan3_li2:"Moputso o felletseng: PAYE, UIF, SDL",
+    plan3_li3:"Thepa e nang le temoso ea thepa", plan3_li4:"Lekheo la bhalanse, phallo ea chelete, tumellano ea pankana",
+    plan4_for:"Likhoebo tse nang le makala a mangata", plan4_li1:"Tsohle tse ho Builder", plan4_li2:"Basebelisi le makala a se nang moeli",
+    plan4_li3:"Lifaele tsa sehlopha tsa EFT (FNB, ABSA, Capitec)", plan4_li4:"Tumello, API, litlaleho tse etselitsoeng uena",
+    price_note:"Baramatsete: Lenaneo la Balekane (ho tloha ho R1,499/khoeling) le kenyelletsa lifaele tsa bareki tse se nang moeli. U rata ho lefa hang? <a href=\"lifetime.html\" style=\"color:var(--gold);font-weight:600\">Sheba laesense tsa bophelo &#8594;</a>",
+    final_h2:"Libuka tsa hau. Fono ea hau.<br><span class=\"grad\" style=\"font-style:italic\">Matla a hau.</span>", final_p:"Qala teko ea hau ea mahala ea matsatsi 30 kajeno. Ha ho karete ea mokoloto, ha ho khomphutha, ha ho khatello.",
+    final_btn1:"Download bakeng sa Windows", final_btn2:"Sebelisa ho fono ea ka",
+    final_wa:"Lipotso? Re nke WhatsApp ho <strong>082 082 9050</strong> · <a href=\"https://wa.me/27820829050\" target=\"_blank\" rel=\"noopener\">Buisana joale</a>"
+  }
+};
+function setLang(lang, btn){
+  document.querySelectorAll('.lb-btn').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  try{localStorage.setItem('setwel_lang',lang)}catch(e){}
+  var t = NAV_LANG[lang] || NAV_LANG.en;
+  document.querySelectorAll('[data-nk]').forEach(function(el){
+    var k = el.getAttribute('data-nk');
+    if(t[k]) el.textContent = t[k];
+  });
+  applyContentLang(lang);
+}
+function applyContentLang(lang){
+  if(lang === 'en'){
+    document.querySelectorAll('[data-i18n-orig]').forEach(function(el){ el.innerHTML = el.getAttribute('data-i18n-orig'); });
+    return;
+  }
+  var c = CONTENT_LANG[lang];
+  if(!c) return;
+  document.querySelectorAll('[data-i18n],[data-i18n-html]').forEach(function(el){
+    var k = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-html');
+    if(!el.hasAttribute('data-i18n-orig')) el.setAttribute('data-i18n-orig', el.innerHTML);
+    if(c[k]) el.innerHTML = c[k];
+  });
+}
+document.addEventListener('DOMContentLoaded', function(){
+  try{ var s=localStorage.getItem('setwel_lang'); if(s && NAV_LANG[s]){ var b=document.querySelector('.lb-btn[data-lang="'+s+'"]'); setLang(s,b); } }catch(e){}
+});
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>

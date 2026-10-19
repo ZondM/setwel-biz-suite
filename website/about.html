@@ -49,7 +49,13 @@ a{text-decoration:none;color:var(--orange)}
 #mob-menu .btn{width:100%;justify-content:center;margin-top:8px;display:flex}
 @media(max-width:900px){.nav-links{display:none}#hamburger{display:flex;align-items:center}}
 .s-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:block}
-.page-hero{padding:80px 0 64px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);border-bottom:1px solid var(--line)}
+.page-hero{position:relative;overflow:hidden;isolation:isolate;padding:80px 0 64px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);border-bottom:1px solid var(--line)}
+.le-orb{position:absolute;border-radius:50%;filter:blur(44px);opacity:.25;animation:lefloat 9s ease-in-out infinite;z-index:0}
+.le-orb.o1{width:220px;height:220px;left:2%;top:-10%;background:var(--orange)}
+.le-orb.o2{width:190px;height:190px;right:4%;bottom:-16%;background:var(--red);animation-delay:1.6s}
+@keyframes lefloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.page-hero>.wrap{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.le-orb{animation:none}}
 .page-hero h1{font-size:clamp(1.7rem,3.4vw,2.6rem);color:#fff;margin-bottom:18px}
 .page-hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .page-hero p{font-size:1.05rem;max-width:36rem;margin-bottom:16px}
@@ -137,6 +143,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 <main>
 
 <div class="page-hero">
+<div class="le-orb o1"></div><div class="le-orb o2"></div>
 <div class="wrap">
 <span class="s-label" data-i18n="ab_eye">Our Story</span>
 <h1 data-i18n-html="ab_h1">Born in South Africa. <em>Built for South Africa.</em></h1>

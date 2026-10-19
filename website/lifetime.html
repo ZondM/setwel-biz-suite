@@ -60,7 +60,13 @@ footer a,p a,li a{text-decoration:underline}
 .tb-sub:hover{transform:translateY(-1px);box-shadow:0 6px 20px -6px rgba(232,128,26,.4)}
 
 /* HERO */
-.hero{padding:72px 0 56px;text-align:center;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(232,128,26,.12),transparent 60%);border-bottom:1px solid var(--line)}
+.hero{position:relative;overflow:hidden;isolation:isolate;padding:72px 0 56px;text-align:center;background:radial-gradient(ellipse 80% 55% at 50% 0%,rgba(232,128,26,.12),transparent 60%);border-bottom:1px solid var(--line)}
+.le-orb{position:absolute;border-radius:50%;filter:blur(44px);opacity:.25;animation:lefloat 9s ease-in-out infinite;z-index:0}
+.le-orb.o1{width:220px;height:220px;left:2%;top:-10%;background:var(--or)}
+.le-orb.o2{width:190px;height:190px;right:4%;bottom:-16%;background:var(--gn)}
+@keyframes lefloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.hero>.wrap{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.le-orb{animation:none}}
 .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(42,122,64,.12);border:1px solid rgba(42,122,64,.3);border-radius:20px;padding:5px 14px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#4CAF70;margin-bottom:20px}
 .hero h1{font-size:clamp(2rem,4.5vw,3.4rem);color:#fff;margin-bottom:14px}
 .hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--or),var(--rd));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -250,6 +256,7 @@ footer a{color:var(--or)}
 
 <!-- HERO -->
 <div class="hero">
+  <div class="le-orb o1"></div><div class="le-orb o2"></div>
   <div class="wrap">
     <div class="hero-tag" data-i18n="lt_herotag">&#9733; Pay Once. Own Forever.</div>
     <h1 data-i18n-html="lt_h1">No subscriptions.<br><em>Buy once, use for life.</em></h1>

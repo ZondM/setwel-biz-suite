@@ -52,7 +52,13 @@ footer a,p a,li a,.pay-footer a{text-decoration:underline}
 .tb-back:hover{color:var(--orange);border-color:rgba(232,128,26,.4)}
 
 /* PAGE HERO */
-.pay-hero{text-align:center;padding:56px 0 40px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 60%);border-bottom:1px solid var(--line)}
+.pay-hero{position:relative;overflow:hidden;isolation:isolate;text-align:center;padding:56px 0 40px;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 60%);border-bottom:1px solid var(--line)}
+.le-orb{position:absolute;border-radius:50%;filter:blur(44px);opacity:.25;animation:lefloat 9s ease-in-out infinite;z-index:0}
+.le-orb.o1{width:220px;height:220px;left:2%;top:-10%;background:var(--orange)}
+.le-orb.o2{width:190px;height:190px;right:4%;bottom:-16%;background:var(--red);animation-delay:1.6s}
+@keyframes lefloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.pay-hero>.wrap{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.le-orb{animation:none}}
 .pay-hero h1{font-size:clamp(1.8rem,3.5vw,2.8rem);color:#fff;margin-bottom:10px}
 .pay-hero h1 em{font-style:italic;background:linear-gradient(90deg,var(--orange),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .pay-hero p{font-size:.97rem;max-width:34rem;margin:0 auto}
@@ -177,6 +183,7 @@ footer a,p a,li a,.pay-footer a{text-decoration:underline}
 <main>
 
 <div class="pay-hero">
+  <div class="le-orb o1"></div><div class="le-orb o2"></div>
   <div class="wrap">
     <h1 data-i18n-html="pay_h1">Choose your plan — <em>start free.</em></h1>
     <p data-i18n="pay_sub">30-day free trial on all plans. Pay only when you're ready. Cancel anytime.</p>

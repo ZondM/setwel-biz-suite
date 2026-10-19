@@ -64,7 +64,13 @@ img{max-width:100%;display:block}
 #mob-menu .btn{width:100%;justify-content:center;margin-top:8px;display:flex}
 @media(max-width:900px){.nav-links{display:none}#hamburger{display:flex;align-items:center}}
 
-.dl-hero{padding:72px 0 56px;text-align:center;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);border-bottom:1px solid var(--line)}
+.dl-hero{position:relative;overflow:hidden;isolation:isolate;padding:72px 0 56px;text-align:center;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(232,128,26,.1),transparent 65%);border-bottom:1px solid var(--line)}
+.le-orb{position:absolute;border-radius:50%;filter:blur(44px);opacity:.25;animation:lefloat 9s ease-in-out infinite;z-index:0}
+.le-orb.o1{width:220px;height:220px;left:2%;top:-10%;background:var(--orange)}
+.le-orb.o2{width:190px;height:190px;right:4%;bottom:-16%;background:var(--red);animation-delay:1.6s}
+@keyframes lefloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+.dl-hero>.wrap{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.le-orb{animation:none}}
 .dl-badge{display:inline-block;background:var(--orange-dim);border:1px solid var(--orange-border);color:var(--orange);border-radius:20px;padding:5px 16px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
 .dl-hero h1{font-size:clamp(1.6rem,3.2vw,2.3rem);color:#fff;margin-bottom:14px}
 .dl-hero p{font-size:1rem;max-width:34rem;margin:0 auto 6px}
@@ -180,6 +186,7 @@ footer{background:var(--dark2);border-top:1px solid var(--line);padding:36px 0 2
 
 <!-- HERO -->
 <div class="dl-hero">
+  <div class="le-orb o1"></div><div class="le-orb o2"></div>
   <div class="wrap">
     <span class="dl-badge" data-i18n="dl_badge">Free 30-day trial</span>
     <div style="background:rgba(232,128,26,.12);border:1px solid rgba(232,128,26,.35);border-radius:12px;padding:12px 18px;max-width:500px;margin:14px auto 0;font-size:.85rem;color:#F2EDE8">

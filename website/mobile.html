@@ -106,6 +106,7 @@ img{max-width:100%;display:block}
 .le-orb.o2{width:120px;height:120px;left:-20px;bottom:0;background:var(--rd);animation-delay:1.5s}
 @keyframes lefloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 @media(prefers-reduced-motion:reduce){.le-orb{animation:none}}
+#gl-m{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:none}
 .hero-tag-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .tag{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
 .tag-o{background:var(--od);border:1px solid var(--ob);color:var(--or)}
@@ -506,8 +507,9 @@ img{max-width:100%;display:block}
     </div>
 
     <!-- HERO -->
-    <div class="hero" style="margin-top:14px">
-      <div class="le-orb o1"></div><div class="le-orb o2"></div>
+    <div class="hero" id="m-hero" style="margin-top:14px">
+      <canvas id="gl-m" aria-hidden="true"></canvas>
+      <div id="hero-fallback"><div class="le-orb o1"></div><div class="le-orb o2"></div></div>
 
       <!-- Install prompt banner - shows on mobile browsers -->
       <div id="install-banner" style="display:none;background:rgba(232,128,26,.12);border:1px solid rgba(232,128,26,.3);border-radius:12px;padding:13px 15px;margin:0 0 14px">
@@ -4246,6 +4248,130 @@ window.addEventListener('DOMContentLoaded',function(){showInstallBanner();
   }catch(e){}
 });
 
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* Ambient 3D hero: invoices drifting around a phone that's already marked
+   PAID, with a camera-style viewfinder scanning over them now and then.
+   Falls back to the CSS glow + orbs (already in the markup) if WebGL is
+   unavailable or the visitor prefers reduced motion -- this is the real
+   mobile product page, so it has to stay cheap on any Android phone. */
+(function(){
+  var hero = document.getElementById('m-hero');
+  var canvas = document.getElementById('gl-m');
+  var fallback = document.getElementById('hero-fallback');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ok = !!window.THREE && !reduce && !!hero && !!canvas;
+
+  if (ok) {
+    try {
+      var THREE = window.THREE;
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(48, 1, 0.1, 50);
+      camera.position.set(0, 0, 7.5);
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setClearColor(0x000000, 0);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+
+      function receiptTexture(paid){
+        var c = document.createElement('canvas'); c.width = 128; c.height = 170;
+        var g = c.getContext('2d');
+        g.fillStyle = '#f2ede6'; g.fillRect(0, 0, 128, 170);
+        g.strokeStyle = 'rgba(0,0,0,.14)'; g.lineWidth = 2;
+        for (var i = 0; i < 7; i++) { g.beginPath(); g.moveTo(14, 26 + i * 16); g.lineTo(114 - (i % 3) * 18, 26 + i * 16); g.stroke(); }
+        g.fillStyle = '#c93050'; g.fillRect(14, 144, 100, 3);
+        if (paid) {
+          g.save(); g.translate(64, 86); g.rotate(-0.25);
+          g.strokeStyle = 'rgba(42,122,64,.85)'; g.lineWidth = 5; g.strokeRect(-38, -16, 76, 32);
+          g.fillStyle = 'rgba(42,122,64,.9)'; g.font = 'bold 15px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+          g.fillText('PAID', 0, 2);
+          g.restore();
+        }
+        var tex = new THREE.CanvasTexture(c); tex.needsUpdate = true;
+        return tex;
+      }
+
+      var cloudRad = 1.4;
+      var cloud = new THREE.Group();
+      var cloudMat = new THREE.MeshBasicMaterial({ map: receiptTexture(false), transparent: true, side: THREE.DoubleSide });
+      for (var i = 0; i < 6; i++) {
+        var m = new THREE.Mesh(new THREE.PlaneGeometry(0.75, 1.05), cloudMat);
+        var r = cloudRad + Math.random() * 0.7, a = Math.random() * Math.PI * 2, h = (Math.random() - 0.5) * 1.5;
+        m.position.set(Math.cos(a) * r, h, Math.sin(a) * r);
+        m.rotation.set(Math.random(), Math.random(), Math.random());
+        m.userData.spin = (Math.random() - 0.5) * 0.01;
+        cloud.add(m);
+      }
+      scene.add(cloud);
+
+      var vfR = cloudRad + 0.8;
+      var vfGroup = new THREE.Group();
+      function vfCorner(sx, sy){
+        var len = 0.3, dx = sx > 0 ? -len : len, dy = sy > 0 ? -len : len;
+        var pts = [new THREE.Vector3(sx + dx, sy, 0), new THREE.Vector3(sx, sy, 0), new THREE.Vector3(sx, sy + dy, 0)];
+        var geo = new THREE.BufferGeometry().setFromPoints(pts);
+        return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0xe8801a, transparent: true, opacity: 0.6 }));
+      }
+      [[-vfR, vfR * 0.8], [vfR, vfR * 0.8], [-vfR, -vfR * 0.8], [vfR, -vfR * 0.8]].forEach(function(c){ vfGroup.add(vfCorner(c[0], c[1])); });
+      scene.add(vfGroup);
+      var scanLine = new THREE.Mesh(new THREE.PlaneGeometry(vfR * 1.7, 0.03), new THREE.MeshBasicMaterial({ color: 0xe3a548, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false }));
+      scene.add(scanLine);
+
+      var phone = new THREE.Group();
+      var phoneBody = new THREE.Mesh(new THREE.PlaneGeometry(1.25, 2.1), new THREE.MeshBasicMaterial({ color: 0x151212 }));
+      var phoneMat = new THREE.MeshBasicMaterial({ map: receiptTexture(true), transparent: true, side: THREE.DoubleSide });
+      var phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(1.08, 1.82), phoneMat);
+      phoneScreen.position.z = 0.02;
+      phone.add(phoneBody); phone.add(phoneScreen);
+      scene.add(phone);
+
+      scene.add(new THREE.AmbientLight(0xffffff, 1));
+
+      function size(){
+        var rect = hero.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        var w = rect.width, h = rect.height;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+      }
+      size();
+      window.addEventListener('resize', size);
+      // The hero sits behind the language-picker gate on first load, so it
+      // measures 0x0 until that's dismissed -- a plain resize listener
+      // never fires for that. ResizeObserver catches the real size as soon
+      // as the hero is actually shown.
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(size).observe(hero);
+      } else {
+        setTimeout(size, 400);
+      }
+
+      var running = true;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function(es){ es.forEach(function(e){ running = e.isIntersecting; }); }).observe(hero);
+      }
+
+      var clock = new THREE.Clock(), time = 0;
+      function animate(){
+        requestAnimationFrame(animate);
+        if (!running) return;
+        time += clock.getDelta();
+        cloud.rotation.y += 0.0022;
+        cloud.children.forEach(function(m){ m.rotation.z += m.userData.spin; });
+        phone.rotation.y = Math.sin(time * 0.3) * 0.18;
+        var pulse = 0.5 + 0.5 * Math.sin(time * 0.4);
+        scanLine.position.y = Math.sin(time * 0.6) * vfR * 0.8;
+        scanLine.material.opacity = 0.18 + 0.3 * pulse;
+        vfGroup.children.forEach(function(l){ l.material.opacity = 0.3 + 0.3 * pulse; });
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+      }
+      animate();
+      canvas.style.display = 'block';
+      if (fallback) fallback.style.display = 'none';
+    } catch (e) { ok = false; }
+  }
+})();
 </script>
 
 </body>

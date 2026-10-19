@@ -536,6 +536,8 @@ function toggleBilling(){
       }
       [[-vfR, vfR * 0.85], [vfR, vfR * 0.85], [-vfR, -vfR * 0.85], [vfR, -vfR * 0.85]].forEach(function(c){ vfGroup.add(vfCorner(c[0], c[1])); });
       scene.add(vfGroup);
+      var scanLine = new THREE.Mesh(new THREE.PlaneGeometry(vfR * 1.7, 0.04), new THREE.MeshBasicMaterial({ color: 0xe3a548, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending, depthWrite: false }));
+      scene.add(scanLine);
 
       var phone = new THREE.Group();
       var phoneBody = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 3.3), new THREE.MeshBasicMaterial({ color: 0x151212 }));
@@ -567,13 +569,20 @@ function toggleBilling(){
         new IntersectionObserver(function(es){ es.forEach(function(e){ running = e.isIntersecting; }); }).observe(heroSection);
       }
 
+      var clock = new THREE.Clock(), time = 0;
       function animate(){
         requestAnimationFrame(animate);
         if (!running) return;
+        time += clock.getDelta();
         cloud.rotation.y += 0.0022;
         cloud.children.forEach(function(m){ m.rotation.z += m.userData.spin; });
         phone.rotation.y = mx * 0.5;
         phone.rotation.x = my * -0.3;
+        // keeps "scanning now and then" instead of a static frame
+        var pulse = 0.5 + 0.5 * Math.sin(time * 0.4);
+        scanLine.position.y = Math.sin(time * 0.6) * vfR * 0.8;
+        scanLine.material.opacity = 0.2 + 0.35 * pulse;
+        vfGroup.children.forEach(function(l){ l.material.opacity = 0.35 + 0.35 * pulse; });
         camera.position.x = mx * 0.8;
         camera.position.y = -my * 0.6;
         camera.lookAt(0, 0, 0);

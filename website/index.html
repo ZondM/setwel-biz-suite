@@ -485,24 +485,44 @@ footer a:hover{color:var(--fg)}
   }
   var texes = []; for (var v = 0; v < 6; v++) texes.push(receiptTex(v));
 
-  // Orderly arrangement: two neat, evenly-spaced rings instead of a random
-  // scattered cloud -- fewer slips, each with a fixed place, gently orbiting.
+  // Tight, orderly cluster right beside the phone (not spread across the
+  // whole screen) -- reads as a small stack of paperwork waiting to be
+  // scanned, not slips scattered everywhere.
   var N = small ? 10 : 16;
   var slipGeo = new THREE.PlaneGeometry(1.15, 1.9);
   var slips = [];
   var rings = 2;
+  var ringRad = [small ? 2.5 : 3.2, small ? 3.6 : 4.6];
+  var ringH = [0.9, -0.9];
   for (var i = 0; i < N; i++) {
     var m = new THREE.MeshStandardMaterial({map: texes[i % texes.length], color: 0xb8aea3, side: THREE.DoubleSide, roughness: 0.9, metalness: 0.0, transparent: true});
     var mesh = new THREE.Mesh(slipGeo, m);
     var ring = i % rings;
     var perRing = Math.ceil(N / rings);
     var idxInRing = Math.floor(i / rings);
-    var rad = ring === 0 ? (small ? 5.2 : 7.2) : (small ? 7.4 : 10.2);
+    var rad = ringRad[ring];
     var ang = (idxInRing / perRing) * Math.PI * 2 + ring * (Math.PI / perRing);
-    var h = ring === 0 ? 1.3 : -1.3;
+    var h = ringH[ring];
     mesh.userData = {rad: rad, ang: ang, h: h, z: ring === 0 ? -1.5 : -3.5, spin: new THREE.Vector3(0, ring === 0 ? 0.18 : -0.18, 0), speed: (ring === 0 ? 1 : -1) * 0.09, delay: (idxInRing / perRing) * 0.3};
     scene.add(mesh); slips.push(mesh);
   }
+
+  // Viewfinder: corner brackets + a sweeping scan line over the cluster,
+  // so it reads as the phone actively scanning the paperwork rather than
+  // receipts just floating. Fades out once the phone takes over.
+  var vfW = ringRad[1] * 2 + 1, vfH = 3.0;
+  var vfGroup = new THREE.Group();
+  function vfCorner(sx, sy){
+    var len = 0.5, dx = sx > 0 ? -len : len, dy = sy > 0 ? -len : len;
+    var pts = [new THREE.Vector3(sx + dx, sy, -2), new THREE.Vector3(sx, sy, -2), new THREE.Vector3(sx, sy + dy, -2)];
+    var geo = new THREE.BufferGeometry().setFromPoints(pts);
+    return new THREE.Line(geo, new THREE.LineBasicMaterial({color: 0xe57a1c, transparent: true, opacity: 0.85}));
+  }
+  [[-vfW/2, vfH/2], [vfW/2, vfH/2], [-vfW/2, -vfH/2], [vfW/2, -vfH/2]].forEach(function(c){ vfGroup.add(vfCorner(c[0], c[1])); });
+  scene.add(vfGroup);
+  var scanLine = new THREE.Mesh(new THREE.PlaneGeometry(vfW, 0.05), new THREE.MeshBasicMaterial({color: 0xe3a548, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false}));
+  scanLine.position.z = -1.9;
+  scene.add(scanLine);
 
   // phone
   var phone = new THREE.Group(); scene.add(phone);
@@ -595,6 +615,14 @@ footer a:hover{color:var(--fg)}
     phone.rotation.x = lerp(0.3, -my * 0.2 + Math.sin(time * 0.8) * 0.03, appear);
     phone.rotation.z = lerp(0.25, 0, appear);
     drawScreen(sp > 0.74 ? 1 : 0, Math.min(1, Math.max(0, (sp - 0.42) / 0.26)));
+
+    // viewfinder: sweeps over the cluster, fades once the phone settles
+    var vfVis = 1 - ease((sp - 0.46) / 0.2);
+    vfGroup.children.forEach(function(l){ l.material.opacity = 0.85 * vfVis; });
+    vfGroup.visible = vfVis > 0.01;
+    scanLine.material.opacity = 0.55 * vfVis;
+    scanLine.position.y = Math.sin(time * 0.9) * (vfH / 2 - 0.15);
+    scanLine.visible = vfVis > 0.01;
 
     // slips: orderly orbit -> fly into the screen
     for (var i = 0; i < slips.length; i++) {

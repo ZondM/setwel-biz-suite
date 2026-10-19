@@ -99,7 +99,13 @@ img{max-width:100%;display:block}
 .nav-dl-btn{display:flex;align-items:center;gap:5px;background:linear-gradient(135deg,var(--or),var(--rd));color:#fff;font-family:'Inter',sans-serif;font-size:.75rem;font-weight:700;border:none;border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;-webkit-appearance:none}
 
 /* HERO SECTION */
-.hero{padding:36px 20px 28px;text-align:left;max-width:500px;margin:0 auto}
+.hero{position:relative;overflow:hidden;isolation:isolate;padding:36px 20px 28px;text-align:left;max-width:500px;margin:0 auto}
+.hero::before{content:'';position:absolute;inset:-24px -24px 35% -24px;z-index:-1;background:radial-gradient(60% 75% at 30% 0%,rgba(232,128,26,.18),transparent 70%)}
+.le-orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.22;animation:lefloat 9s ease-in-out infinite;z-index:-1}
+.le-orb.o1{width:150px;height:150px;right:-30px;top:-30px;background:var(--or)}
+.le-orb.o2{width:120px;height:120px;left:-20px;bottom:0;background:var(--rd);animation-delay:1.5s}
+@keyframes lefloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@media(prefers-reduced-motion:reduce){.le-orb{animation:none}}
 .hero-tag-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .tag{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
 .tag-o{background:var(--od);border:1px solid var(--ob);color:var(--or)}
@@ -109,12 +115,6 @@ img{max-width:100%;display:block}
 .hero-sub{font-size:.95rem;line-height:1.72;margin-bottom:22px}
 .hero-btns{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
 .hero-proof{display:flex;align-items:center;gap:10px}
-.avs{display:flex}
-.avs span{width:26px;height:26px;border-radius:50%;border:2px solid var(--bg);margin-left:-6px;display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:700;color:#fff;flex-shrink:0}
-.avs span:first-child{margin-left:0;background:#2E3946}
-.avs span:nth-child(2){background:var(--rd)}
-.avs span:nth-child(3){background:#B35A00}
-.avs span:nth-child(4){background:#4A6278}
 .proof-txt{font-size:.8rem;color:var(--ink2)}
 .proof-txt strong{color:var(--ink)}
 
@@ -507,6 +507,7 @@ img{max-width:100%;display:block}
 
     <!-- HERO -->
     <div class="hero" style="margin-top:14px">
+      <div class="le-orb o1"></div><div class="le-orb o2"></div>
 
       <!-- Install prompt banner - shows on mobile browsers -->
       <div id="install-banner" style="display:none;background:rgba(232,128,26,.12);border:1px solid rgba(232,128,26,.3);border-radius:12px;padding:13px 15px;margin:0 0 14px">
@@ -545,8 +546,7 @@ img{max-width:100%;display:block}
         <a href="index.html" class="btn btn-ghost" id="h-desk">&#128196; View desktop site</a>
       </div>
       <div class="hero-proof">
-        <div class="avs"><span>TM</span><span>NZ</span><span>SK</span><span>AP</span></div>
-        <div class="proof-txt">Trusted by <strong>800+</strong> SA businesses</div>
+        <div class="proof-txt"><strong>SARS-compliant</strong> &middot; Works 100% offline &middot; From <strong>R59.99</strong>/month</div>
       </div>
     </div>
 

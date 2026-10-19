@@ -48,7 +48,7 @@ img{max-width:100%}
 .serif{font-family:var(--display);font-weight:400}
 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin:0}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:600;border-radius:14px;padding:15px 24px;font-size:16.5px;transition:transform .15s ease, box-shadow .15s ease;border:0;cursor:pointer;font-family:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;font-weight:600;border-radius:14px;padding:15px 24px;font-size:16.5px;transition:transform .15s ease, box-shadow .15s ease;border:0;cursor:pointer;font-family:inherit;white-space:nowrap;flex:none}
 .btn.primary{background:var(--grad);color:#fff;box-shadow:0 10px 30px rgba(229,122,28,.28)}
 .btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(229,122,28,.38)}
 .btn.ghost{background:rgba(255,255,255,.04);color:var(--fg);border:1px solid var(--line)}
@@ -66,7 +66,14 @@ nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:
 .navlinks a{text-decoration:none}
 .navlinks a:hover{color:var(--fg)}
 .navlinks .btn{padding:10px 16px;font-size:14.5px;color:#fff}
-@media (max-width:760px){.navlinks .hide-m{display:none}}
+@media (max-width:760px){
+  .navlinks .hide-m{display:none}
+  nav.top .wrap{gap:6px}
+  .brand span{font-size:18px}
+  .navlinks{gap:10px}
+  .navlinks .lbl{display:none}
+  .btn.primary{padding:10px 16px;font-size:14px}
+}
 
 /* 3D story */
 .story{position:relative;height:330vh}
@@ -185,6 +192,7 @@ footer a:hover{color:var(--fg)}
       <a class="hide-m" href="#features">Features</a>
       <a class="hide-m" href="#pricing">Pricing</a>
       <a class="hide-m" href="#faq">FAQ</a>
+      <a href="mobile.html">&#128241;<span class="lbl"> Mobile</span></a>
       <a class="btn primary" href="download.html">Start free</a>
     </div>
   </div>

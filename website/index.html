@@ -128,6 +128,14 @@ section.block{padding-block:96px;position:relative}
 .lang{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:7px 12px;font-size:15px}
 .lang b{font-size:12px;background:#2a221d;border-radius:6px;padding:2px 6px}
 
+.testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:700px){.testimonials{grid-template-columns:1fr}}
+.rev{border:1px solid var(--line);border-radius:18px;padding:22px;background:var(--surface);min-width:0}
+.rev .stars{color:var(--orange);font-size:.95rem;letter-spacing:2px;margin-bottom:10px}
+.rev p{color:#e8ded4;font-style:italic;margin:0 0 14px;font-size:16px;line-height:1.6}
+.rev .who{font-size:14.5px;color:var(--muted)}
+.rev .who strong{color:var(--fg);font-style:normal}
+
 .pricing{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch}
 @media (max-width:1000px){.pricing{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.pricing{grid-template-columns:1fr}}
@@ -304,6 +312,27 @@ footer a:hover{color:var(--fg)}
       </div>
       <div class="langs reveal pre" aria-label="Invoice languages">
         <span class="lang"><b>EN</b>English</span><span class="lang"><b>AF</b>Afrikaans</span><span class="lang"><b>ZU</b>isiZulu</span><span class="lang"><b>XH</b>isiXhosa</span><span class="lang"><b>VE</b>Tshivenda</span><span class="lang"><b>ST</b>Sesotho</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:20px">
+    <div class="wrap">
+      <div class="head reveal pre">
+        <p class="eyebrow">From our customers</p>
+        <h2>Real people, <span class="grad" style="font-style:italic">real businesses.</span></h2>
+      </div>
+      <div class="testimonials">
+        <div class="rev reveal pre">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"Setwel has simplified our invoicing."</p>
+          <div class="who"><strong>Mabuza WT</strong> &mdash; Micheals Dynamics</div>
+        </div>
+        <div class="rev reveal pre">
+          <div class="stars">&#9733;&#9733;&#9733;&#9733;<span style="opacity:.3">&#9733;</span></div>
+          <p>"We rely on Setwel Invoicing every day."</p>
+          <div class="who"><strong>LP Hase</strong> &mdash; Cape IntelSA</div>
+        </div>
       </div>
     </div>
   </section>

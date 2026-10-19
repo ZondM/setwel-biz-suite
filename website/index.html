@@ -616,26 +616,32 @@ footer a:hover{color:var(--fg)}
     phone.rotation.z = lerp(0.25, 0, appear);
     drawScreen(sp > 0.74 ? 1 : 0, Math.min(1, Math.max(0, (sp - 0.42) / 0.26)));
 
-    // viewfinder: sweeps over the cluster, fades once the phone settles
-    var vfVis = 1 - ease((sp - 0.46) / 0.2);
+    // viewfinder: sweeps hard over the cluster during capture, then settles
+    // into a soft, recurring pulse -- it keeps "scanning now and then"
+    // rather than switching off once the phone is centred.
+    var vfPulse = 0.1 + 0.1 * (0.5 + 0.5 * Math.sin(time * 0.35));
+    var vfVis = Math.max(vfPulse, 1 - ease((sp - 0.46) / 0.2));
     vfGroup.children.forEach(function(l){ l.material.opacity = 0.85 * vfVis; });
     vfGroup.visible = vfVis > 0.01;
     scanLine.material.opacity = 0.55 * vfVis;
     scanLine.position.y = Math.sin(time * 0.9) * (vfH / 2 - 0.15);
     scanLine.visible = vfVis > 0.01;
 
-    // slips: orderly orbit -> fly into the screen
+    // slips: scattered orbit -> swallowed by the phone, then keep drifting
+    // in a tight loop behind it instead of vanishing -- data kept "alive".
     for (var i = 0; i < slips.length; i++) {
       var s = slips[i], u = s.userData;
       var a = u.ang + time * u.speed;
       tmp.set(Math.cos(a) * u.rad * (portrait ? 0.62 : 1), u.h * (portrait ? 1.5 : 1), u.z + Math.sin(a) * 1.2);
       var k = ease((sp - 0.36 - u.delay * 0.4) / 0.24);
-      target.copy(phone.position); target.y += (seeded(i) - 0.5) * 1.6 * ps; target.z += 0.3;
+      var ba = u.ang + time * u.speed * 1.6 + i;
+      var br = 1.5 + (i % 3) * 0.55;
+      target.set(phone.position.x + Math.cos(ba) * br * (portrait ? 0.7 : 1), phone.position.y + Math.sin(ba * 0.7) * br * 0.7 + (seeded(i) - 0.5) * 0.3, phone.position.z - 1.0 - (i % 3) * 0.18);
       s.position.set(lerp(tmp.x, target.x, k), lerp(tmp.y, target.y, k), lerp(tmp.z, target.z, k));
-      var sc = lerp(1, 0.05, k); s.scale.setScalar(sc);
+      var sc = lerp(1, 0.4, k); s.scale.setScalar(sc);
       s.rotation.set(0, time * u.spin.y + a, 0);
-      s.material.opacity = 1 - ease((k - 0.75) / 0.25);
-      s.visible = s.material.opacity > 0.01;
+      s.material.opacity = lerp(1, 0.6, k);
+      s.visible = true;
     }
 
     dust.rotation.y = time * 0.02; dust.position.y = sp * 2;

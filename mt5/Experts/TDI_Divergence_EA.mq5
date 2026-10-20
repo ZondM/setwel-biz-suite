@@ -18,13 +18,17 @@
 //|  - trailing: after TrailStartR, SL follows price at TrailATR     |
 //|  No martingale, no grid, no averaging.                           |
 //|                                                                  |
-//|  Install: TDI_Divergence_Pro.ex5 in MQL5\Indicators,             |
-//|           this file in MQL5\Experts, compile, attach to ONE      |
+//|  Install: compile TDI_Divergence_Pro v9.1 in MQL5\Indicators,    |
+//|           THEN compile this EA (it embeds the indicator),       |
+//|           attach to ONE                                          |
 //|           chart per symbol, enable Algo Trading.                 |
 //+------------------------------------------------------------------+
 #property version     "1.10"
 #property description "TDI divergence EA + Stop-Loss Enforcer, break-even, trailing stop"
-#property tester_indicator "TDI_Divergence_Pro.ex5"
+//--- the indicator is compiled INTO this EA: compile TDI_Divergence_Pro.mq5 (v9.1)
+//--- in MQL5\Indicators first, then compile this EA. Recompile the EA after any indicator change.
+#resource "\\Indicators\\TDI_Divergence_Pro.ex5"
+#define IND_RES "::Indicators\\TDI_Divergence_Pro.ex5"
 
 #include <Trade\Trade.mqh>
 
@@ -35,7 +39,6 @@ enum ENUM_FAIL_POLICY { FAIL_CLOSE=0, // Close the unprotected position
 
 input group "=== Entries ==="
 input bool            InpEnableEntries   = true;              // MASTER SWITCH: false = no new trades (open trades stay protected)
-input string          InpIndName         = "TDI_Divergence_Pro"; // Indicator file name in MQL5\Indicators
 input ENUM_TIMEFRAMES InpEntryTF         = PERIOD_CURRENT;    // Signal timeframe
 input bool            InpAllowBuys       = true;
 input bool            InpAllowSells      = true;
@@ -169,7 +172,7 @@ void PB(bool v)   { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_BOOL;   g_p
 void BuildParams()
 {
    ArrayResize(g_par,0); g_np=0;
-   PS(InpIndName);
+   PS(IND_RES);
    PI(InpIndMaxBars);   // InpMaxBars
    PB(false);           // InpDraw
    PB(false);           // InpShowPanel
@@ -206,8 +209,8 @@ int OnInit()
       (InpConfTF2!=PERIOD_CURRENT && InpConfTF2!=g_tf && g_hConf2==INVALID_HANDLE) ||
       (InpConfTF3!=PERIOD_CURRENT && InpConfTF3!=g_tf && g_hConf3==INVALID_HANDLE))
    {
-      string m=StringFormat("TDI EA: cannot load indicator '%s' (error %d). Put TDI_Divergence_Pro.mq5 (v9.1) in MQL5\\Indicators and compile it.",
-                            InpIndName,GetLastError());
+      string m=StringFormat("TDI EA: indicator could not start (error %d). Compile TDI_Divergence_Pro.mq5 v9.1 in MQL5\\Indicators, "
+                            "then recompile this EA. Details in the Experts tab.",GetLastError());
       Print(m); Alert(m);
       return(INIT_FAILED);
    }

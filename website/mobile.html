@@ -3471,7 +3471,7 @@ function goMain(){
   document.getElementById('s-lang').style.display='none';
   applyLang(G.lang);
   show('s-welcome');
-  try{localStorage.setItem('setwel_lang',G.lang)}catch(e){}
+  try{localStorage.setItem('setwel_mobile_lang',G.lang)}catch(e){}
 }
 function applyLang(lang){
   var t=TR[lang]||TR.en;
@@ -4236,7 +4236,7 @@ if ('serviceWorker' in navigator) {
 /* ══ INIT ══ */
 window.addEventListener('DOMContentLoaded',function(){showInstallBanner();
   try{
-    var sl=localStorage.getItem('setwel_lang');
+    var sl=localStorage.getItem('setwel_mobile_lang');
     if(sl&&TR[sl]){
       G.lang=sl;
       document.querySelectorAll('.lang-opt').forEach(function(o){

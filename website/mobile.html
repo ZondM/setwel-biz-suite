@@ -4249,6 +4249,10 @@ if ('serviceWorker' in navigator) {
 
 /* ══ INIT ══ */
 window.addEventListener('DOMContentLoaded',function(){showInstallBanner();
+  // The language/welcome screen is shown on every visit by design, not just
+  // the first one — pre-select whatever was chosen last time (if anything)
+  // so a returning visitor only has to tap Continue, but they always see
+  // and can change the choice here rather than it being skipped silently.
   try{
     var sl=localStorage.getItem('setwel_mobile_lang');
     if(sl&&TR[sl]){
@@ -4257,7 +4261,6 @@ window.addEventListener('DOMContentLoaded',function(){showInstallBanner();
         o.classList.toggle('sel',o.dataset.lang===sl);
       });
       document.getElementById('lang-continue-btn').textContent=(TR[sl].cont||'Continue');
-      goMain();
     }
   }catch(e){}
 });

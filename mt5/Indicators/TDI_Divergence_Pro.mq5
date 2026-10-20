@@ -7,6 +7,11 @@
 //|        price makes LOWER LOWS (market keeps going deeper).       |
 //|  SELL: green makes a LOWER HIGH while price makes HIGHER HIGHS.  |
 //|                                                                  |
+//|  v9: SERIOUS TREND = higher timeframe (auto: M1-M15 -> H1,        |
+//|      M30/H1 -> H4). Against it only a 3+ leg exhaustion with     |
+//|      leg-1 TDI >= 70 / <= 30 and a structure break.              |
+//|      Outcome statistics (hindsight, testing only) on the panel   |
+//|      and in ..._stats.csv - never used to create signals.        |
 //|  v8 rules (from your marked charts):                             |
 //|   - flat TDI counts: TDI equal within TDITol points while price  |
 //|     goes deeper is a divergence                                  |
@@ -39,14 +44,15 @@
 //|  10 Leg count   11 Direction (+1 buy, -1 sell)                   |
 //|  12 Kind (1 DIV, 2 EXH counter-trend, 3 CONT)                    |
 //|  13 Trend at that closed bar (+1 up, 0 none, -1 down)            |
+//|  14 Higher-timeframe trend at that closed bar (+1 / 0 / -1)      |
 //+------------------------------------------------------------------+
-#property version     "8.00"
+#property version     "9.00"
 #property description "TDI-led divergence (green line vs price). Closed bars only, non-repainting."
 #property indicator_separate_window
 #property indicator_minimum 0
 #property indicator_maximum 100
-#property indicator_buffers 20
-#property indicator_plots   14
+#property indicator_buffers 22
+#property indicator_plots   15
 
 #property indicator_label1  "Upper Band"
 #property indicator_type1   DRAW_LINE
@@ -87,8 +93,10 @@
 #property indicator_type13  DRAW_NONE
 #property indicator_label14 "Trend"
 #property indicator_type14  DRAW_NONE
+#property indicator_label15 "HTF Trend"
+#property indicator_type15  DRAW_NONE
 
-#define PFX "TDV8_"
+#define PFX "TDV9_"
 #define KIND_DIV  1
 #define KIND_EXH  2
 #define KIND_CONT 3
@@ -175,11 +183,26 @@ input bool   InpUseRangeZone     = true;  // No trend: require leg-1 TDI in zone
 input double InpRangeOS          = 40;    //   buy: leg-1 TDI at or below
 input double InpRangeOB          = 60;    //   sell: leg-1 TDI at or above
 
+input group "=== Serious trend = higher timeframe ==="
+input bool            InpUseHTF        = true;           // Use higher-timeframe trend
+input ENUM_TIMEFRAMES InpHTF           = PERIOD_CURRENT; // HTF (current = auto: M1-M15 -> H1, M30/H1 -> H4, else D1)
+input int             InpHTFEMA        = 50;             //   HTF EMA period
+input int             InpHTFSlopeBars  = 5;              //   HTF EMA slope over N closed HTF bars
+input double          InpHTFSlopeATR   = 0.5;            //   slope >= this x HTF ATR = serious trend
+input int             InpHTFExhMinLegs = 3;              //   against HTF trend: min legs
+input double          InpHTFExhOB      = 70;             //   against HTF trend: sell leg-1 TDI at or above
+input double          InpHTFExhOS      = 30;             //   against HTF trend: buy leg-1 TDI at or below
+
 input group "=== Trend continuation (pullback with the trend) ==="
 input bool   InpUseCont          = true;  // Pullback signals in the trend direction
 input double InpContBuyMaxTDI    = 45;    //   buy: last-leg TDI at or below (real TDI pullback)
 input double InpContSellMinTDI   = 55;    //   sell: last-leg TDI at or above
 input double InpContPullbackATR  = 1.0;   //   price pullback from the swing extreme, x ATR
+
+input group "=== Outcome statistics (hindsight, testing only - never used for signals) ==="
+input bool   InpShowStats        = true;  // Show win/loss per signal kind on the panel + stats CSV
+input double InpStatSLBufATR     = 0.3;   //   SL = last-leg extreme +/- this x ATR
+input double InpStatRR           = 2.0;   //   TP = this x risk
 
 input group "=== Display / alerts / log ==="
 input int    InpMaxBars          = 5000;  // Bars to evaluate
@@ -201,7 +224,8 @@ input color  InpPendColor        = clrGray;
 
 //--- buffers
 double UB[],LB[],YB[],GB[],RB[],SellA[],BuyA[],SellSL[],BuySL[],SigID[],SigLegs[],SigDir[],SigType[],TrendB[];
-double RSI[],POS[],NEG[],TRB[],ATRB[],EMAT[];
+double HTFB[];
+double RSI[],POS[],NEG[],TRB[],ATRB[],EMAT[],HTFS[];
 
 //--- state
 struct SPivot
@@ -237,6 +261,20 @@ bool   g_live=false;
 int    g_cntBuy=0, g_cntSell=0, g_cntRej=0;
 string g_lastTxt="Last signal: none";
 string g_log[];  int g_nLog=0;
+
+//--- higher timeframe
+ENUM_TIMEFRAMES g_htf=PERIOD_H1;
+bool     g_useHTF=false;
+int      g_hHTFma=INVALID_HANDLE, g_hHTFatr=INVALID_HANDLE, g_hN=0;
+double   g_hMA[], g_hATR[];
+
+//--- outcome statistics (hindsight)
+struct SSig
+{
+   int    bar, dir, kind, dbl, legs, res, lastChk;   // res: 0 open, 1 win, -1 loss, -2 invalid
+   double v1, vN, slope, hslope, band1, sl, entry, tp;
+};
+SSig g_sig[]; int g_nSig=0;
 
 //+------------------------------------------------------------------+
 int IMax(int a,int b) { return(a>b ? a : b); }
@@ -286,21 +324,23 @@ int OnInit()
    SetIndexBuffer(11,SigDir, INDICATOR_DATA);
    SetIndexBuffer(12,SigType,INDICATOR_DATA);
    SetIndexBuffer(13,TrendB, INDICATOR_DATA);
-   SetIndexBuffer(14,RSI,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(15,POS,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(16,NEG,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(17,TRB,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(18,ATRB,   INDICATOR_CALCULATIONS);
-   SetIndexBuffer(19,EMAT,   INDICATOR_CALCULATIONS);
+   SetIndexBuffer(14,HTFB,   INDICATOR_DATA);
+   SetIndexBuffer(15,RSI,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(16,POS,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(17,NEG,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(18,TRB,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(19,ATRB,   INDICATOR_CALCULATIONS);
+   SetIndexBuffer(20,EMAT,   INDICATOR_CALCULATIONS);
+   SetIndexBuffer(21,HTFS,   INDICATOR_CALCULATIONS);
 
    PlotIndexSetInteger(5,PLOT_ARROW,234);
    PlotIndexSetInteger(6,PLOT_ARROW,233);
    PlotIndexSetInteger(5,PLOT_LINE_COLOR,InpSellColor);
    PlotIndexSetInteger(6,PLOT_LINE_COLOR,InpBuyColor);
-   for(int p=0;p<14;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
+   for(int p=0;p<15;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
    for(int p=0;p<5;p++)  PlotIndexSetInteger(p,PLOT_DRAW_BEGIN,WarmBars());
 
-   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v8");
+   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v9");
    IndicatorSetInteger(INDICATOR_DIGITS,2);
    IndicatorSetInteger(INDICATOR_LEVELS,3);
    IndicatorSetDouble(INDICATOR_LEVELVALUE,0,32);
@@ -310,12 +350,62 @@ int OnInit()
    IndicatorSetInteger(INDICATOR_LEVELSTYLE,STYLE_DOT);
 
    g_lastSig[0]=-1000000; g_lastSig[1]=-1000000;
+
+   g_htf=InpHTF;
+   if(g_htf==PERIOD_CURRENT)
+   {
+      int sec=PeriodSeconds(_Period);
+      g_htf=(sec<=900 ? PERIOD_H1 : (sec<=3600 ? PERIOD_H4 : PERIOD_D1));
+   }
+   g_useHTF=(InpUseHTF && PeriodSeconds(g_htf)>PeriodSeconds(_Period));
+   if(InpUseHTF && !g_useHTF) Print("TDI Div Pro: HTF must be higher than the chart timeframe - HTF filter off");
+   if(g_useHTF)
+   {
+      g_hHTFma =iMA(_Symbol,g_htf,InpHTFEMA,0,MODE_EMA,PRICE_CLOSE);
+      g_hHTFatr=iATR(_Symbol,g_htf,InpATRPeriod);
+      if(g_hHTFma==INVALID_HANDLE || g_hHTFatr==INVALID_HANDLE)
+      { Print("TDI Div Pro: cannot create HTF handles"); return(INIT_FAILED); }
+   }
    return(INIT_SUCCEEDED);
 }
 
 void OnDeinit(const int reason)
 {
    if(InpDraw) ObjectsDeleteAll(0,PFX);
+   if(g_hHTFma!=INVALID_HANDLE)  IndicatorRelease(g_hHTFma);
+   if(g_hHTFatr!=INVALID_HANDLE) IndicatorRelease(g_hHTFatr);
+}
+
+//+------------------------------------------------------------------+
+//| Higher timeframe (serious trend) - closed HTF bars only          |
+//+------------------------------------------------------------------+
+string HTFName() { return(StringSubstr(EnumToString(g_htf),7)); }
+
+bool LoadHTF()
+{
+   if(!g_useHTF) return(true);
+   int n=IMin(BarsCalculated(g_hHTFma),BarsCalculated(g_hHTFatr));
+   if(n<=InpHTFSlopeBars+2) return(false);
+   n=IMin(n,20000);
+   ArraySetAsSeries(g_hMA,true); ArraySetAsSeries(g_hATR,true);
+   if(CopyBuffer(g_hHTFma,0,0,n,g_hMA)<n || CopyBuffer(g_hHTFatr,0,0,n,g_hATR)<n) return(false);
+   g_hN=n;
+   return(true);
+}
+
+// trend of the last HTF bar that was CLOSED when chart bar c opened
+int HTFTrendCalc(datetime tc,double &slope)
+{
+   slope=0;
+   if(!g_useHTF || g_hN<=0) return(0);
+   int sh=iBarShift(_Symbol,g_htf,tc,false);
+   if(sh<0) return(0);
+   int j=sh+1, k=j+InpHTFSlopeBars;
+   if(k>=g_hN || g_hATR[j]<=0) return(0);
+   slope=(g_hMA[j]-g_hMA[k])/g_hATR[j];
+   if(slope>= InpHTFSlopeATR) return(1);
+   if(slope<=-InpHTFSlopeATR) return(-1);
+   return(0);
 }
 
 //+------------------------------------------------------------------+
@@ -425,7 +515,7 @@ void CalcTDI(int from,int total,const double &o[],const double &h[],const double
       {
          SellA[i]=EMPTY_VALUE; BuyA[i]=EMPTY_VALUE; SellSL[i]=EMPTY_VALUE; BuySL[i]=EMPTY_VALUE;
          SigID[i]=EMPTY_VALUE; SigLegs[i]=EMPTY_VALUE; SigDir[i]=EMPTY_VALUE;
-         SigType[i]=EMPTY_VALUE; TrendB[i]=EMPTY_VALUE;
+         SigType[i]=EMPTY_VALUE; TrendB[i]=EMPTY_VALUE; HTFB[i]=EMPTY_VALUE;
       }
    }
 }
@@ -465,6 +555,16 @@ string ExhaustionMiss(const SCand &cd)
    if(InpExhNeedBand && (cd.dir>0 ? v>LB[b] : v<UB[b])) return("leg-1 TDI inside the band");
    if(InpExhMinTDIDiv>0 && (cd.legVal[cd.legs-1]-v)*cd.dir<InpExhMinTDIDiv)
       return(StringFormat("TDI divergence %.1f < %.1f",(cd.legVal[cd.legs-1]-v)*cd.dir,InpExhMinTDIDiv));
+   return("");
+}
+
+// "" = allowed against the higher-timeframe trend, otherwise the reason
+string HTFExhMiss(const SCand &cd)
+{
+   double v=cd.legVal[0];
+   if(cd.legs<InpHTFExhMinLegs) return(StringFormat("%d legs < %d",cd.legs,InpHTFExhMinLegs));
+   if(cd.dir>0 && v>InpHTFExhOS) return(StringFormat("leg-1 TDI %.1f > %.0f",v,InpHTFExhOS));
+   if(cd.dir<0 && v<InpHTFExhOB) return(StringFormat("leg-1 TDI %.1f < %.0f",v,InpHTFExhOB));
    return("");
 }
 
@@ -651,6 +751,12 @@ bool BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
    if(why=="" && InpUseTrendFilter && tr==0 && InpUseRangeZone &&
       (dir>0 ? cd.legVal[0]>InpRangeOS : cd.legVal[0]<InpRangeOB))
       why=StringFormat("no trend: leg-1 TDI %.1f not in %s zone",cd.legVal[0],dir>0 ? "buy" : "sell");
+   if(why=="" && g_useHTF && (int)HTFB[c]==-dir)
+   {
+      string m=HTFExhMiss(cd);
+      if(m!="") why="against "+HTFName()+" trend "+TrendName((int)HTFB[c])+" ("+m+")";
+      else { cd.kind=KIND_EXH; cd.deadline=N.bar+InpExhConfirmBars; }
+   }
 
    if(why!="") { Reject(cd,c,why,t,h,l); return(true); }
    AddPending(cd,c,t,h,l);
@@ -664,6 +770,7 @@ bool BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
 void BuildCont(int dir,int nIdx,int c,const datetime &t[],const double &h[],const double &l[])
 {
    if(!InpUseCont || TrendAt(c)!=dir) return;
+   if(g_useHTF && (int)HTFB[c]==-dir) return;
    SPivot N=g_piv[nIdx];
    if(dir>0 ? N.val>InpContBuyMaxTDI : N.val<InpContSellMinTDI) return;   // TDI did not pull back
 
@@ -783,6 +890,16 @@ void CheckPending(int c,const datetime &t[],const double &o[],const double &h[],
             else why="trend turned "+TrendName(tr);
          }
       }
+      if(why=="" && g_useHTF && (int)HTFB[c]==-d)
+      {
+         if(cd.kind==KIND_CONT) why=HTFName()+" trend against";
+         else
+         {
+            string m=HTFExhMiss(cd);
+            if(m!="") why="against "+HTFName()+" trend ("+m+")";
+            else cd.kind=KIND_EXH;
+         }
+      }
       if(cd.kind==KIND_EXH) { needBase=InpExhNeedBase; needBreak=InpExhNeedBreak; }
       if(why=="")
       {
@@ -817,6 +934,7 @@ void Publish(const SCand &cd,int c,const datetime &t[],const double &h[],const d
    SigType[c]=cd.kind;
    g_piv[cd.xIdx].sigs++;
    g_lastSig[DI(d)]=c;
+   AddStat(cd,c);
 
    string side=(d>0 ? "BUY" : "SELL");
    g_lastTxt=StringFormat("Last: %s %s L%d confirmed %s, entry from %s",side,KindName(cd.kind),cd.legs,TS(t[c]),TS(t[c]+PeriodSeconds()));
@@ -856,6 +974,9 @@ void Reject(const SCand &cd,int c,string why,const datetime &t[],const double &h
 //+------------------------------------------------------------------+
 void ProcessBar(int c,const datetime &t[],const double &o[],const double &h[],const double &l[],const double &cl[])
 {
+   double hs=0;
+   HTFB[c]=HTFTrendCalc(t[c],hs);
+   HTFS[c]=hs;
    int q=c-InpPivRight;
    if(q-InpPivLeft>=g_start)
    {
@@ -870,6 +991,79 @@ void ProcessBar(int c,const datetime &t[],const double &o[],const double &h[],co
    }
    CheckPending(c,t,o,h,l,cl);
    TrendB[c]=TrendAt(c);
+}
+
+//+------------------------------------------------------------------+
+//| Outcome statistics (hindsight only, for testing)                 |
+//+------------------------------------------------------------------+
+void AddStat(const SCand &cd,int c)
+{
+   ArrayResize(g_sig,g_nSig+1,256);
+   int i=g_nSig++, d=cd.dir, b0=cd.legBar[0];
+   g_sig[i].bar=c; g_sig[i].dir=d; g_sig[i].kind=cd.kind; g_sig[i].dbl=cd.dbl; g_sig[i].legs=cd.legs;
+   g_sig[i].res=0; g_sig[i].lastChk=c; g_sig[i].entry=0; g_sig[i].tp=0;
+   g_sig[i].v1=cd.legVal[0]; g_sig[i].vN=cd.legVal[cd.legs-1];
+   g_sig[i].slope=TrendSlope(c); g_sig[i].hslope=HTFS[c];
+   g_sig[i].band1=(d>0 ? LB[b0]-cd.legVal[0] : cd.legVal[0]-UB[b0]);   // > 0 = outside the band
+   g_sig[i].sl=cd.legPrice[cd.legs-1]-d*InpStatSLBufATR*ATRB[c];
+}
+
+bool UpdateStats(int lastClosed,const double &o[],const double &h[],const double &l[])
+{
+   bool changed=false;
+   for(int i=0;i<g_nSig;i++)
+   {
+      if(g_sig[i].res!=0) continue;
+      int b=g_sig[i].bar, d=g_sig[i].dir;
+      if(b+1>g_rates-1) continue;
+      if(g_sig[i].entry==0)
+      {
+         g_sig[i].entry=o[b+1];
+         double risk=(g_sig[i].entry-g_sig[i].sl)*d;
+         if(risk<=0) { g_sig[i].res=-2; changed=true; continue; }
+         g_sig[i].tp=g_sig[i].entry+d*InpStatRR*risk;
+         g_sig[i].lastChk=b;
+      }
+      for(int k=g_sig[i].lastChk+1;k<=lastClosed;k++)
+      {
+         g_sig[i].lastChk=k;
+         if(d>0 ? l[k]<=g_sig[i].sl : h[k]>=g_sig[i].sl) { g_sig[i].res=-1; changed=true; break; }  // SL first (conservative)
+         if(d>0 ? h[k]>=g_sig[i].tp : l[k]<=g_sig[i].tp) { g_sig[i].res=1;  changed=true; break; }
+      }
+   }
+   return(changed);
+}
+
+string StatsText()
+{
+   int w[4]={0,0,0,0}, lo[4]={0,0,0,0}, op=0;
+   for(int i=0;i<g_nSig;i++)
+   {
+      int k=g_sig[i].kind;
+      if(k<1 || k>3) continue;
+      if(g_sig[i].res==1) w[k]++; else if(g_sig[i].res==-1) lo[k]++; else if(g_sig[i].res==0) op++;
+   }
+   return(StringFormat("Hindsight 1:%.1f  DIV %dW/%dL  EXH %dW/%dL  CONT %dW/%dL  open %d",
+                       InpStatRR,w[1],lo[1],w[2],lo[2],w[3],lo[3],op));
+}
+
+void WriteStats(const datetime &t[])
+{
+   if(!InpLogFile || !InpShowStats) return;
+   int f=FileOpen("TDIDivPro_"+_Symbol+"_"+TFStr()+"_stats.csv",FILE_WRITE|FILE_TXT|FILE_ANSI|FILE_SHARE_READ);
+   if(f==INVALID_HANDLE) return;
+   FileWriteString(f,"confirm_bar;direction;kind;double;legs;leg1_tdi;last_tdi;tf_slope_atr;htf_slope_atr;leg1_outside_band;entry;sl;tp;result\r\n");
+   for(int i=0;i<g_nSig;i++)
+   {
+      string res=(g_sig[i].res==1 ? "WIN" : (g_sig[i].res==-1 ? "LOSS" : (g_sig[i].res==-2 ? "INVALID" : "OPEN")));
+      FileWriteString(f,TS(t[g_sig[i].bar])+";"+(g_sig[i].dir>0 ? "BUY" : "SELL")+";"+KindName(g_sig[i].kind)+";"+
+                      IntegerToString(g_sig[i].dbl)+";"+IntegerToString(g_sig[i].legs)+";"+
+                      DoubleToString(g_sig[i].v1,2)+";"+DoubleToString(g_sig[i].vN,2)+";"+
+                      DoubleToString(g_sig[i].slope,2)+";"+DoubleToString(g_sig[i].hslope,2)+";"+
+                      DoubleToString(g_sig[i].band1,2)+";"+DoubleToString(g_sig[i].entry,_Digits)+";"+
+                      DoubleToString(g_sig[i].sl,_Digits)+";"+DoubleToString(g_sig[i].tp,_Digits)+";"+res+"\r\n");
+   }
+   FileClose(f);
 }
 
 //+------------------------------------------------------------------+
@@ -1021,7 +1215,7 @@ void PanelLine(int i,string txt,color col)
       ObjectSetInteger(0,n,OBJPROP_CORNER,CORNER_LEFT_LOWER);
       ObjectSetInteger(0,n,OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
       ObjectSetInteger(0,n,OBJPROP_XDISTANCE,10);
-      ObjectSetInteger(0,n,OBJPROP_YDISTANCE,20+(5-i)*16);
+      ObjectSetInteger(0,n,OBJPROP_YDISTANCE,20+(6-i)*16);
       ObjectSetInteger(0,n,OBJPROP_FONTSIZE,9);
       ObjectSetString(0,n,OBJPROP_FONT,"Consolas");
       ObjectSetInteger(0,n,OBJPROP_SELECTABLE,false);
@@ -1053,12 +1247,15 @@ string Forming(int dir,int lc,const datetime &t[],const double &h[],const double
 void UpdatePanel(const datetime &t[],const double &h[],const double &l[])
 {
    int lc=g_rates-2;
-   PanelLine(0,StringFormat("TDI Div Pro v8 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
+   PanelLine(0,StringFormat("TDI Div Pro v9 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
    int tr=TrendAt(lc);
    string tt=StringFormat("Trend: %s (EMA%d slope %+.2f ATR)",TrendName(tr),InpTrendEMA,TrendSlope(lc));
    if(InpUseTrendFilter && tr!=0)
       tt+=(tr>0 ? " - buys; sells only at exhaustion" : " - sells; buys only at exhaustion");
+   if(g_useHTF && lc>=0 && HTFB[lc]!=EMPTY_VALUE)
+      tt+=StringFormat(" | %s %s (%+.2f)",HTFName(),TrendName((int)HTFB[lc]),HTFS[lc]);
    PanelLine(5,tt,tr>0 ? clrLime : (tr<0 ? clrTomato : clrSilver));
+   if(InpShowStats) PanelLine(6,StatsText(),clrSilver);
    PanelLine(1,g_lastTxt,clrWhite);
    string p="Pending: none";
    if(g_nPend>0)
@@ -1090,6 +1287,7 @@ void ResetState()
    g_cntBuy=0; g_cntSell=0; g_cntRej=0;
    g_lastSig[0]=-1000000; g_lastSig[1]=-1000000;
    g_lastTxt="Last signal: none";
+   ArrayResize(g_sig,0); g_nSig=0;
    if(InpDraw) ObjectsDeleteAll(0,PFX);
 }
 
@@ -1115,8 +1313,12 @@ int OnCalculate(const int rates_total,const int prev_calculated,
    if(g_last<g_start-1) g_last=g_start-1;
 
    int lastClosed=rates_total-2;                 // the forming bar is never evaluated
+   if(lastClosed>g_last && !LoadHTF())           // HTF history not ready yet: try again on the next tick
+      return(full ? 0 : prev_calculated);
+   bool newBars=(lastClosed>g_last);
    for(int c=g_last+1;c<=lastClosed;c++) ProcessBar(c,time,open,high,low,close);
    if(lastClosed>g_last) g_last=lastClosed;
+   if(InpShowStats && newBars && (UpdateStats(lastClosed,open,high,low) || full)) WriteStats(time);
 
    if(!g_live) { g_live=true; FlushLog(); }      // history done; from now on events are live
    if(InpDraw && InpShowPanel) UpdatePanel(time,high,low);

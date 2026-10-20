@@ -2,7 +2,7 @@
 
 | Step | File | Status |
 |---|---|---|
-| 1. Indicator | `Indicators/TDI_Divergence_Pro.mq5` | v7 compiled 0 errors (your MT5). **v8 (double top/bottom, one signal per swing, counter-trend break) written, not compiled yet** |
+| 1. Indicator | `Indicators/TDI_Divergence_Pro.mq5` | v8 compiled 0 errors (your MT5). **v9 (HTF serious trend + outcome stats) written, not compiled yet** |
 | 2. Stop-Loss Enforcer | — | next, after step 1 passes |
 | 3. EA | — | after step 2 |
 

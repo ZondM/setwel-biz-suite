@@ -126,6 +126,12 @@ v8 additions:
 
 Known misses against your marks (from screenshots, not measured): V10 M15 15 Oct 3-leg flat buy (TDI about 30) in a grinding downtrend still qualifies as EXH; V10 M15 11 Oct 2-leg buy with TDI about 18 qualifies as deep EXH.
 
+## 8c. v9 — serious trend on the higher timeframe + outcome statistics
+
+- HTF = H1 for M1–M15 charts, H4 for M30/H1, D1 above (or set `InpHTF`). Trend = slope of HTF EMA50 over the last 5 **closed** HTF bars ÷ HTF ATR14; ≥ +0.5 UP, ≤ −0.5 DOWN.
+- Against the HTF trend: only EXH with ≥ 3 legs, leg-1 TDI ≥ 70 (sell) / ≤ 30 (buy), plus the structure break. CONT never against it.
+- Outcome statistics (hindsight, testing only, never feeds signals): entry = next bar open, SL = last-leg extreme ± 0.3 ATR, TP = 2R, SL checked first inside a bar. Panel line + `MQL5\Files\TDIDivPro_<symbol>_<tf>_stats.csv` with each signal's features (kind, legs, leg-1/last TDI, TF and HTF slope, band distance) and WIN/LOSS. This file is what final tuning should be based on.
+
 ## 9. Multi-timeframe
 
 - A confirmed signal on TF X is "active" for `ActiveBars_X` bars after its confirm bar.
@@ -144,6 +150,7 @@ Known misses against your marks (from screenshots, not measured): V10 M15 15 Oct
 | 11 | Direction | +1 buy / −1 sell |
 | 12 | Kind | 1 DIV, 2 EXH, 3 CONT |
 | 13 | Trend | +1 / 0 / −1 on that closed bar |
+| 14 | HTF trend | +1 / 0 / −1 (last closed HTF bar) |
 
 EA reads bar 1 only, after `BarsCalculated == Bars`, and stores processed SignalIDs in a terminal GlobalVariable so a restart cannot re-enter the same signal. EA contains **no** divergence logic of its own.
 

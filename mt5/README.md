@@ -3,8 +3,7 @@
 | Step | File | Status |
 |---|---|---|
 | 1. Indicator | `Indicators/TDI_Divergence_Pro.mq5` | v8 compiled 0 errors (your MT5). **v9 (HTF serious trend + outcome stats) written, not compiled yet** |
-| 2. Stop-Loss Enforcer | — | next, after step 1 passes |
-| 3. EA | — | after step 2 |
+| 2+3. EA with Stop-Loss Enforcer, break-even, trailing | `Experts/TDI_Divergence_EA.mq5` | **written, NOT compiled yet** |
 
 Rules: `SPEC.md`. Old v4 files in `baseline/` are reference only.
 
@@ -30,3 +29,15 @@ Rules: `SPEC.md`. Old v4 files in `baseline/` are reference only.
 6. Send me: screenshots + the CSV log for anything wrong (missed setup, wrong setup, arrow too late).
 
 No test results exist yet. Nothing here is proven profitable.
+
+## Install (EA)
+1. Indicator v9 compiled in `MQL5\Indicators` (the EA loads it by name `TDI_Divergence_Pro`).
+2. Copy `TDI_Divergence_EA.mq5` to `MQL5\Experts`, open in MetaEditor, Compile.
+3. Strategy Tester first (Every tick based on real ticks), then a DEMO account. One chart per symbol, Algo Trading ON.
+
+## EA test checklist
+1. Tester: each trade's entry bar = an indicator arrow bar + 1 (open of the next bar).
+2. Every position has an SL immediately; Journal shows "confirmed by server" for BE / trailing moves.
+3. Open a manual trade without SL with `InpManageManual=true`: SL installed within ~5 s, or closed after retries (policy CLOSE).
+4. Restart the terminal with an open trade: no duplicate entry; BE / trailing continue.
+5. V10, V25, V50 separately (lot minimums differ; the EA skips instead of over-risking).

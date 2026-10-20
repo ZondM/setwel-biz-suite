@@ -107,18 +107,19 @@ Provisional setups are shown in a separate colour and are never exposed in the E
 
 No filter set removes all false signals; effect is measured in testing (Deliverable 4).
 
-## 8b. Trend filter and signal kinds (v6, from your marked charts 20 Oct)
+## 8b. Trend filter and signal kinds (v7, from your marked charts)
 
 Trend on each closed bar `c`: `slope = (EMA50[c] − EMA50[c−10]) / ATR14[c]`. UP if `slope ≥ +0.6`, DOWN if `≤ −0.6`, else NONE.
+TDI "equal" tolerance `TDITol = 2.0`: TDI flat (within 2 points) while price goes deeper counts as divergence (your V10 M5 missed 2 and 3).
 
 | Kind | When | Rule |
 |---|---|---|
-| **DIV** | trend NONE, or same direction as signal | Sections 4–6 as before |
-| **EXH** (counter-trend) | divergence AGAINST the trend | allowed only if leg-1 TDI ≥ 68 (sell) / ≤ 32 (buy) **and** outside the volatility band, **and** the confirm bar has green back through the yellow base line (window 10 bars). Otherwise rejected `against trend UP/DOWN` |
-| **CONT** (with trend) | trend UP (buy) / DOWN (sell) | previous TDI swing low → new TDI swing low that is **higher**, price low also **higher**, new TDI low ≤ 45 (buy) / high ≥ 55 (sell), price pulled back ≥ 1 ATR from the swing extreme. Same confirmation as DIV; rejected if the trend is gone on the confirm bar |
+| **DIV** | with the trend | any TDI level (V50 18 Oct, V25 17 Oct pullback buys) |
+| **DIV** | no trend | leg-1 TDI ≤ 40 (buy) / ≥ 60 (sell) |
+| **EXH** | against the trend | leg-1 TDI ≤ 32 / ≥ 68 **and** ≥ 3 legs, or 2 legs with leg-1 TDI ≤ 25 / ≥ 75. Normal fast confirmation (no yellow-line wait) |
+| **CONT** | with the trend | TDI and price both higher low (buy) / lower high (sell) after ≥ 1 ATR pullback, TDI ≤ 45 / ≥ 55 |
 
-Mapping to your examples: V10 13–16 Oct buys and V25 20 Oct buy → DOWN trend, leg-1 TDI not exhausted → blocked. V25 18–19 Oct sells → UP trend; blocked unless leg-1 TDI was outside the upper band. V25 17 Oct and V50 18 Oct pullback buys → CONT / with-trend DIV. V50 top sells and V25 16 Oct bottom buy → EXH (only if TDI was really outside the band).
-Default change: `UseMinPriceDiv` now on (0.25 ATR) to drop flat tops/bottoms (V25 18 Oct 05:00).
+Known misses against your marks (from screenshots, not measured): V10 M15 15 Oct 3-leg flat buy (TDI about 30) in a grinding downtrend still qualifies as EXH; V10 M15 11 Oct 2-leg buy with TDI about 18 qualifies as deep EXH.
 
 ## 9. Multi-timeframe
 

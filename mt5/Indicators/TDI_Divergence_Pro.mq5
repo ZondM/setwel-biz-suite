@@ -7,6 +7,14 @@
 //|        price makes LOWER LOWS (market keeps going deeper).       |
 //|  SELL: green makes a LOWER HIGH while price makes HIGHER HIGHS.  |
 //|                                                                  |
+//|  v6 TREND FILTER (from your marked charts):                      |
+//|   - no trade against a trend (EMA slope, closed bars)            |
+//|   - against the trend ONLY at TDI exhaustion: leg-1 TDI beyond   |
+//|     68/32 AND outside the band, and green must cross back        |
+//|     through the yellow base line to confirm          (kind EXH)  |
+//|   - with the trend also: pullback buy/sell where TDI AND price   |
+//|     hold a higher low (uptrend) / lower high (downtrend)  (CONT) |
+//|                                                                  |
 //|  Non-repainting: only CLOSED bars are evaluated, each bar once,  |
 //|  in time order. A published signal is never moved or removed.   |
 //|  The arrow sits on the CONFIRMATION bar; entry is allowed from   |
@@ -19,14 +27,16 @@
 //|   8 Buy SL ref  (lowest low of the last leg)                     |
 //|   9 Signal ID   (open time of the last-leg TDI pivot bar)        |
 //|  10 Leg count   11 Direction (+1 buy, -1 sell)                   |
+//|  12 Kind (1 DIV, 2 EXH counter-trend, 3 CONT)                    |
+//|  13 Trend at that closed bar (+1 up, 0 none, -1 down)            |
 //+------------------------------------------------------------------+
-#property version     "5.00"
+#property version     "6.00"
 #property description "TDI-led divergence (green line vs price). Closed bars only, non-repainting."
 #property indicator_separate_window
 #property indicator_minimum 0
 #property indicator_maximum 100
-#property indicator_buffers 17
-#property indicator_plots   12
+#property indicator_buffers 20
+#property indicator_plots   14
 
 #property indicator_label1  "Upper Band"
 #property indicator_type1   DRAW_LINE
@@ -63,8 +73,15 @@
 #property indicator_type11  DRAW_NONE
 #property indicator_label12 "Direction"
 #property indicator_type12  DRAW_NONE
+#property indicator_label13 "Kind"
+#property indicator_type13  DRAW_NONE
+#property indicator_label14 "Trend"
+#property indicator_type14  DRAW_NONE
 
-#define PFX "TDV5_"
+#define PFX "TDV6_"
+#define KIND_DIV  1
+#define KIND_EXH  2
+#define KIND_CONT 3
 
 enum ENUM_DIV_SOURCE
 {
@@ -104,8 +121,8 @@ input int    InpMaxSignalsPerSeq = 2;     // Max signals from the same leg 1
 input group "=== Filters (each one on/off) ==="
 input bool   InpUseTDIProm       = true;  // TDI swing prominence
 input double InpTDIProm          = 3.0;   //   min TDI swing size (points)
-input bool   InpUseMinPriceDiv   = false; // Min price divergence
-input double InpMinPriceDivATR   = 0.2;   //   x ATR between leg 1 and last leg
+input bool   InpUseMinPriceDiv   = true;  // Min price divergence (rejects flat tops/bottoms)
+input double InpMinPriceDivATR   = 0.25;  //   x ATR between leg 1 and last leg
 input bool   InpUseMinTDIDiv     = false; // Min TDI divergence
 input double InpMinTDIDiv        = 2.0;   //   TDI points between leg 1 and last leg
 input bool   InpUsePullback      = false; // Price pullback between leg 1 and last leg
@@ -121,6 +138,24 @@ input bool   InpUseCandleDir     = true;  // Confirm: bullish (buy) / bearish (s
 input bool   InpUseCloseBeyond   = false; // Confirm: close beyond the last-leg candle
 input bool   InpUseCooldown      = false; // Cooldown between same-direction signals
 input int    InpCooldownBars     = 10;    //   bars
+
+input group "=== Trend filter (no trades against a serious trend) ==="
+input bool   InpUseTrendFilter   = true;  // Block divergence against the trend
+input int    InpTrendEMA         = 50;    // Trend EMA period (close)
+input int    InpTrendSlopeBars   = 10;    // EMA slope measured over N bars
+input double InpTrendSlopeATR    = 0.6;   // Slope >= this x ATR = trend
+input bool   InpAllowExhaustion  = true;  // Allow counter-trend ONLY at TDI exhaustion
+input double InpExhOB            = 68;    //   sell: leg-1 TDI at or above
+input double InpExhOS            = 32;    //   buy: leg-1 TDI at or below
+input bool   InpExhNeedBand      = true;  //   leg-1 TDI also outside the volatility band
+input double InpExhMinTDIDiv     = 0;     //   min TDI divergence points (0 = off)
+input int    InpExhConfirmBars   = 10;    //   bars allowed for green to cross back through yellow
+
+input group "=== Trend continuation (pullback with the trend) ==="
+input bool   InpUseCont          = true;  // Pullback signals in the trend direction
+input double InpContBuyMaxTDI    = 45;    //   buy: last-leg TDI at or below (real TDI pullback)
+input double InpContSellMinTDI   = 55;    //   sell: last-leg TDI at or above
+input double InpContPullbackATR  = 1.0;   //   price pullback from the swing extreme, x ATR
 
 input group "=== Display / alerts / log ==="
 input int    InpMaxBars          = 5000;  // Bars to evaluate
@@ -141,8 +176,8 @@ input color  InpSellColor        = clrMagenta;
 input color  InpPendColor        = clrGray;
 
 //--- buffers
-double UB[],LB[],YB[],GB[],RB[],SellA[],BuyA[],SellSL[],BuySL[],SigID[],SigLegs[],SigDir[];
-double RSI[],POS[],NEG[],TRB[],ATRB[];
+double UB[],LB[],YB[],GB[],RB[],SellA[],BuyA[],SellSL[],BuySL[],SigID[],SigLegs[],SigDir[],SigType[],TrendB[];
+double RSI[],POS[],NEG[],TRB[],ATRB[],EMAT[];
 
 //--- state
 struct SPivot
@@ -158,6 +193,7 @@ struct SPivot
 struct SCand
 {
    int    dir;          // +1 buy, -1 sell
+   int    kind;         // KIND_DIV / KIND_EXH / KIND_CONT
    int    xIdx;         // index of leg 1 in g_piv
    int    legs;
    int    legBar[6];
@@ -186,7 +222,8 @@ string TFStr()        { return(StringSubstr(EnumToString((ENUM_TIMEFRAMES)_Perio
 
 int WarmBars()
 {
-   return(InpRSIPeriod+IMax(IMax(InpGreenPeriod,InpRedPeriod),IMax(InpBasePeriod,InpBandPeriod))+InpATRPeriod+2);
+   return(InpRSIPeriod+IMax(IMax(InpGreenPeriod,InpRedPeriod),IMax(InpBasePeriod,InpBandPeriod))+
+          IMax(InpATRPeriod,InpTrendEMA+InpTrendSlopeBars)+2);
 }
 
 double Src(int i)
@@ -202,7 +239,8 @@ int OnInit()
    if(InpRSIPeriod<2 || InpGreenPeriod<1 || InpRedPeriod<1 || InpBasePeriod<1 || InpBandPeriod<2 ||
       InpATRPeriod<1 || InpPivLeft<1 || InpPivRight<1 || InpPriceSep<0 || InpConfirmBars<InpPivRight ||
       InpMinLegs<2 || InpMaxLegs<InpMinLegs || InpMaxLegs>5 || InpMinSpan<1 || InpMaxSpan<=InpMinSpan ||
-      InpMinLegBars<1 || InpMaxSignalsPerSeq<1 || InpMaxBars<InpMaxSpan)
+      InpMinLegBars<1 || InpMaxSignalsPerSeq<1 || InpMaxBars<InpMaxSpan ||
+      InpTrendEMA<2 || InpTrendSlopeBars<1 || InpExhConfirmBars<InpPivRight)
    {
       Print("TDI Div Pro: invalid inputs (check periods, legs 2..5, ConfirmBars >= PivRight, MaxSpan > MinSpan)");
       return(INIT_PARAMETERS_INCORRECT);
@@ -220,20 +258,23 @@ int OnInit()
    SetIndexBuffer(9, SigID,  INDICATOR_DATA);
    SetIndexBuffer(10,SigLegs,INDICATOR_DATA);
    SetIndexBuffer(11,SigDir, INDICATOR_DATA);
-   SetIndexBuffer(12,RSI,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(13,POS,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(14,NEG,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(15,TRB,    INDICATOR_CALCULATIONS);
-   SetIndexBuffer(16,ATRB,   INDICATOR_CALCULATIONS);
+   SetIndexBuffer(12,SigType,INDICATOR_DATA);
+   SetIndexBuffer(13,TrendB, INDICATOR_DATA);
+   SetIndexBuffer(14,RSI,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(15,POS,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(16,NEG,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(17,TRB,    INDICATOR_CALCULATIONS);
+   SetIndexBuffer(18,ATRB,   INDICATOR_CALCULATIONS);
+   SetIndexBuffer(19,EMAT,   INDICATOR_CALCULATIONS);
 
    PlotIndexSetInteger(5,PLOT_ARROW,234);
    PlotIndexSetInteger(6,PLOT_ARROW,233);
    PlotIndexSetInteger(5,PLOT_LINE_COLOR,InpSellColor);
    PlotIndexSetInteger(6,PLOT_LINE_COLOR,InpBuyColor);
-   for(int p=0;p<12;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
+   for(int p=0;p<14;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
    for(int p=0;p<5;p++)  PlotIndexSetInteger(p,PLOT_DRAW_BEGIN,WarmBars());
 
-   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v5");
+   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v6");
    IndicatorSetInteger(INDICATOR_DIGITS,2);
    IndicatorSetInteger(INDICATOR_LEVELS,3);
    IndicatorSetDouble(INDICATOR_LEVELVALUE,0,32);
@@ -350,13 +391,50 @@ void CalcTDI(int from,int total,const double &o[],const double &h[],const double
       for(int k=0;k<p;k++) st+=TRB[i-k];
       ATRB[i]=st/p;
 
+      //--- trend EMA on close
+      EMAT[i]=MAAt(c,EMAT,i,InpTrendEMA,MODE_EMA);
+
       //--- signal buffers of bars not yet evaluated are always empty
       if(i>g_last)
       {
          SellA[i]=EMPTY_VALUE; BuyA[i]=EMPTY_VALUE; SellSL[i]=EMPTY_VALUE; BuySL[i]=EMPTY_VALUE;
          SigID[i]=EMPTY_VALUE; SigLegs[i]=EMPTY_VALUE; SigDir[i]=EMPTY_VALUE;
+         SigType[i]=EMPTY_VALUE; TrendB[i]=EMPTY_VALUE;
       }
    }
+}
+
+//+------------------------------------------------------------------+
+//| Trend (closed bar c only)                                        |
+//+------------------------------------------------------------------+
+double TrendSlope(int c)
+{
+   if(c-InpTrendSlopeBars<0 || ATRB[c]<=0) return(0);
+   return((EMAT[c]-EMAT[c-InpTrendSlopeBars])/ATRB[c]);
+}
+
+int TrendAt(int c)
+{
+   double s=TrendSlope(c);
+   if(s>= InpTrendSlopeATR) return(1);
+   if(s<=-InpTrendSlopeATR) return(-1);
+   return(0);
+}
+
+string TrendName(int tr) { return(tr>0 ? "UP" : (tr<0 ? "DOWN" : "NONE")); }
+string KindName(int k)   { return(k==KIND_EXH ? "EXH" : (k==KIND_CONT ? "CONT" : "DIV")); }
+
+// "" = leg 1 is a true TDI exhaustion extreme, otherwise the reason
+string ExhaustionMiss(const SCand &cd)
+{
+   double v=cd.legVal[0];
+   int    b=cd.legBar[0];
+   if(cd.dir>0 && v>InpExhOS) return(StringFormat("leg-1 TDI %.1f > %.0f",v,InpExhOS));
+   if(cd.dir<0 && v<InpExhOB) return(StringFormat("leg-1 TDI %.1f < %.0f",v,InpExhOB));
+   if(InpExhNeedBand && (cd.dir>0 ? v>LB[b] : v<UB[b])) return("leg-1 TDI inside the band");
+   if(InpExhMinTDIDiv>0 && MathAbs(cd.legVal[cd.legs-1]-v)<InpExhMinTDIDiv)
+      return(StringFormat("TDI divergence %.1f < %.1f",MathAbs(cd.legVal[cd.legs-1]-v),InpExhMinTDIDiv));
+   return("");
 }
 
 //+------------------------------------------------------------------+
@@ -454,7 +532,7 @@ string CandId(const SCand &cd,const datetime &t[])
 //+------------------------------------------------------------------+
 //| A new TDI pivot N appeared: look for leg 1 and count the legs    |
 //+------------------------------------------------------------------+
-void BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[],const double &l[])
+bool BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[],const double &l[])
 {
    int    ptype=-dir;                 // buy uses TDI lows, sell uses TDI highs
    SPivot N=g_piv[nIdx];
@@ -472,11 +550,11 @@ void BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
       if(!TDIExtreme(dir,g_piv[k].val,g_piv[k].bar,c))   continue; // leg 1 is the deepest TDI since leg 1
       if(best<0 || (g_piv[k].val-g_piv[best].val)*dir<=0) best=k;  // deepest TDI leg 1, ties -> older
    }
-   if(best<0) return;                                         // no divergence
+   if(best<0) return(false);                                  // no divergence
 
    SCand cd;
    ZeroMemory(cd);
-   cd.dir=dir; cd.xIdx=best; cd.created=c; cd.deadline=N.bar+InpConfirmBars;
+   cd.dir=dir; cd.kind=KIND_DIV; cd.xIdx=best; cd.created=c; cd.deadline=N.bar+InpConfirmBars;
    SetLeg(cd,0,g_piv[best]);
    cd.legs=1;
 
@@ -527,26 +605,84 @@ void BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
    if(why=="" && g_piv[best].sigs>=InpMaxSignalsPerSeq)
       why="signal limit for this leg 1 reached";
 
-   if(why!="") { Reject(cd,c,why,t,h,l); return; }
+   //--- trend: against the trend only as an exhaustion reversal
+   int tr=TrendAt(c);
+   if(why=="" && InpUseTrendFilter && tr==-dir)
+   {
+      string ex=ExhaustionMiss(cd);
+      if(!InpAllowExhaustion)  why="against trend "+TrendName(tr);
+      else if(ex!="")          why="against trend "+TrendName(tr)+" ("+ex+")";
+      else { cd.kind=KIND_EXH; cd.deadline=N.bar+InpExhConfirmBars; }
+   }
 
+   if(why!="") { Reject(cd,c,why,t,h,l); return(true); }
+   AddPending(cd,c,t,h,l);
+   return(true);
+}
+
+//+------------------------------------------------------------------+
+//| Trend continuation: in an uptrend the TDI AND price both make a  |
+//| higher low after a real pullback (mirror for downtrend)          |
+//+------------------------------------------------------------------+
+void BuildCont(int dir,int nIdx,int c,const datetime &t[],const double &h[],const double &l[])
+{
+   if(!InpUseCont || TrendAt(c)!=dir) return;
+   SPivot N=g_piv[nIdx];
+   if(dir>0 ? N.val>InpContBuyMaxTDI : N.val<InpContSellMinTDI) return;   // TDI did not pull back
+
+   int x=-1;
+   for(int k=nIdx-1;k>=0;k--)
+   {
+      if(g_piv[k].type!=-dir) continue;
+      int span=N.bar-g_piv[k].bar;
+      if(span>InpMaxSpan) break;
+      if(span<InpMinSpan) continue;
+      x=k; break;                                       // the previous TDI swing of the same type
+   }
+   if(x<0) return;
+   SPivot X=g_piv[x];
+   if((N.val-X.val)*dir<=0)     return;                 // TDI higher low (buy) / lower high (sell)
+   if((N.price-X.price)*dir<=0) return;                 // price holds: higher low (buy) / lower high (sell)
+   if(!PriceDeepest(dir,N.price,N.pbar,c,h,l)) return;  // no deeper price since the last leg
+
+   double pb=0;                                         // pullback from the swing extreme to the last leg
+   for(int k=X.pbar;k<=N.pbar;k++)
+   {
+      double m=(dir>0) ? h[k]-N.price : N.price-l[k];
+      if(m>pb) pb=m;
+   }
+   if(pb<InpContPullbackATR*ATRB[N.pbar]) return;
+
+   SCand cd;
+   ZeroMemory(cd);
+   cd.dir=dir; cd.kind=KIND_CONT; cd.xIdx=x; cd.created=c; cd.deadline=N.bar+InpConfirmBars;
+   SetLeg(cd,0,X);
+   SetLeg(cd,1,N);
+   cd.legs=2;
+   if(g_piv[x].sigs>=InpMaxSignalsPerSeq) { Reject(cd,c,"signal limit for this leg 1 reached",t,h,l); return; }
+   AddPending(cd,c,t,h,l);
+}
+
+void AddPending(const SCand &cd,int c,const datetime &t[],const double &h[],const double &l[])
+{
    ArrayResize(g_pend,g_nPend+1,16);
    g_pend[g_nPend]=cd;
    g_nPend++;
    LogEvent("PENDING",cd,c,"",t);
    if(InpShowPending && CanDraw(c)) DrawSetup(cd,c,t,h,l,true);
    if(g_live && InpAlertPending)
-      Notify(StringFormat("%s %s %s setup forming (L%d) - waiting for confirmation",_Symbol,TFStr(),cd.dir>0?"BUY":"SELL",cd.legs));
+      Notify(StringFormat("%s %s %s %s setup (L%d) - waiting for confirmation",_Symbol,TFStr(),cd.dir>0?"BUY":"SELL",KindName(cd.kind),cd.legs));
 }
 
 //+------------------------------------------------------------------+
 //| Confirmation                                                     |
 //+------------------------------------------------------------------+
-string ConfirmMiss(const SCand &cd,int c,const double &o[],const double &h[],const double &l[],const double &cl[])
+string ConfirmMiss(const SCand &cd,int c,bool needBase,const double &o[],const double &h[],const double &l[],const double &cl[])
 {
    int d=cd.dir;
    if(InpUseGreenDir  && (Src(c)-Src(c-1))*d<=0) return("TDI not turning");
    if(InpUseRedCross  && (GB[c]-RB[c])*d<=0)     return(d>0 ? "green below red" : "green above red");
-   if(InpUseBase      && (GB[c]-YB[c])*d<=0)     return(d>0 ? "green below base" : "green above base");
+   if((InpUseBase || needBase) && (GB[c]-YB[c])*d<=0) return(d>0 ? "green below base" : "green above base");
    if(InpUseCandleDir && (cl[c]-o[c])*d<=0)      return(d>0 ? "candle not bullish" : "candle not bearish");
    if(InpUseCloseBeyond)
    {
@@ -579,9 +715,23 @@ void CheckPending(int c,const datetime &t[],const double &o[],const double &h[],
          else if((Src(c)-cd.legVal[0])*d<0)
             why="TDI broke the leg-1 level";
       }
+      //--- trend on the decision bar
+      bool needBase=false;
+      if(why=="" && InpUseTrendFilter)
+      {
+         int tr=TrendAt(c);
+         if(cd.kind==KIND_CONT && tr!=d)
+            why="trend no longer "+TrendName(d);
+         else if(cd.kind!=KIND_CONT && tr==-d)
+         {
+            if(cd.kind==KIND_EXH || (InpAllowExhaustion && ExhaustionMiss(cd)==""))
+            { cd.kind=KIND_EXH; needBase=true; }
+            else why="trend turned "+TrendName(tr);
+         }
+      }
       if(why=="")
       {
-         string miss=ConfirmMiss(cd,c,o,h,l,cl);
+         string miss=ConfirmMiss(cd,c,needBase,o,h,l,cl);
          if(miss=="")
          {
             if(InpUseCooldown && c-g_lastSig[DI(d)]<InpCooldownBars) why="cooldown";
@@ -589,8 +739,8 @@ void CheckPending(int c,const datetime &t[],const double &o[],const double &h[],
             else if(g_piv[cd.xIdx].sigs>=InpMaxSignalsPerSeq)        why="signal limit for this leg 1 reached";
             else confirm=true;
          }
-         else if(c>=cd.deadline)
-            why="not confirmed within "+IntegerToString(InpConfirmBars)+" bars ("+miss+")";
+         else if(c>=cd.deadline || (cd.kind!=KIND_EXH && c>=cd.legBar[li]+InpConfirmBars))
+            why="not confirmed within "+IntegerToString(cd.deadline-cd.legBar[li])+" bars ("+miss+")";
          else
             continue;                                   // still waiting
       }
@@ -608,11 +758,12 @@ void Publish(const SCand &cd,int c,const datetime &t[],const double &h[],const d
    SigID[c]=(double)(long)t[cd.legBar[li]];
    SigLegs[c]=cd.legs;
    SigDir[c]=d;
+   SigType[c]=cd.kind;
    g_piv[cd.xIdx].sigs++;
    g_lastSig[DI(d)]=c;
 
    string side=(d>0 ? "BUY" : "SELL");
-   g_lastTxt=StringFormat("Last: %s L%d confirmed %s, entry from %s",side,cd.legs,TS(t[c]),TS(t[c]+PeriodSeconds()));
+   g_lastTxt=StringFormat("Last: %s %s L%d confirmed %s, entry from %s",side,KindName(cd.kind),cd.legs,TS(t[c]),TS(t[c]+PeriodSeconds()));
    LogEvent("SIGNAL",cd,c,"",t);
 
    string id=CandId(cd,t);
@@ -621,8 +772,8 @@ void Publish(const SCand &cd,int c,const datetime &t[],const double &h[],const d
 
    if(g_live)
    {
-      string msg=StringFormat("%s %s CONFIRMED %s divergence L%d | SL ref %s | entry from %s",
-                              _Symbol,TFStr(),side,cd.legs,DoubleToString(cd.legPrice[li],_Digits),TS(t[c]+PeriodSeconds()));
+      string msg=StringFormat("%s %s CONFIRMED %s %s L%d | SL ref %s | entry from %s",
+                              _Symbol,TFStr(),side,KindName(cd.kind),cd.legs,DoubleToString(cd.legPrice[li],_Digits),TS(t[c]+PeriodSeconds()));
       Print(msg);
       Notify(msg);
    }
@@ -641,7 +792,7 @@ void Reject(const SCand &cd,int c,string why,const datetime &t[],const double &h
               cd.dir>0 ? ANCHOR_UPPER : ANCHOR_LOWER,7,LegDetail(cd,t));
    }
    if(g_live && InpPrintRejects)
-      Print(StringFormat("%s %s %s rejected: %s",_Symbol,TFStr(),cd.dir>0?"BUY":"SELL",why));
+      Print(StringFormat("%s %s %s %s rejected: %s",_Symbol,TFStr(),cd.dir>0?"BUY":"SELL",KindName(cd.kind),why));
 }
 
 //+------------------------------------------------------------------+
@@ -657,10 +808,12 @@ void ProcessBar(int c,const datetime &t[],const double &o[],const double &h[],co
       {
          int pb =PriceMatch(type,q,c,h,l);
          int idx=AddPivot(type,q,pb,Src(q),type>0 ? h[pb] : l[pb]);
-         BuildCandidate(type>0 ? -1 : 1,idx,c,t,h,l);
+         int dir=(type>0 ? -1 : 1);
+         if(!BuildCandidate(dir,idx,c,t,h,l)) BuildCont(dir,idx,c,t,h,l);
       }
    }
    CheckPending(c,t,o,h,l,cl);
+   TrendB[c]=TrendAt(c);
 }
 
 //+------------------------------------------------------------------+
@@ -689,7 +842,8 @@ void AppendLine(string line)
 void LogEvent(string kind,const SCand &cd,int c,string reason,const datetime &t[])
 {
    if(!InpLogFile) return;
-   string line=kind+";"+(cd.dir>0 ? "BUY" : "SELL")+";"+IntegerToString((long)t[cd.legBar[cd.legs-1]])+";"+
+   string line=kind+";"+(cd.dir>0 ? "BUY" : "SELL")+";"+KindName(cd.kind)+";"+TrendName(TrendAt(c))+";"+
+               IntegerToString((long)t[cd.legBar[cd.legs-1]])+";"+
                IntegerToString(cd.legs)+";"+LegDetail(cd,t)+";"+TS(t[c])+";"+TS(t[c]+PeriodSeconds())+";"+reason;
    if(g_live) { AppendLine(line); return; }
    ArrayResize(g_log,g_nLog+1,1024);
@@ -702,7 +856,7 @@ void FlushLog()
    int f=FileOpen(LogFile(),FILE_WRITE|FILE_TXT|FILE_ANSI|FILE_SHARE_READ);
    if(f!=INVALID_HANDLE)
    {
-      FileWriteString(f,"event;direction;signal_id;legs;legs_detail;event_bar;entry_from;reason\r\n");
+      FileWriteString(f,"event;direction;kind;trend;signal_id;legs;legs_detail;event_bar;entry_from;reason\r\n");
       for(int i=0;i<g_nLog;i++) FileWriteString(f,g_log[i]+"\r\n");
       FileClose(f);
    }
@@ -780,12 +934,13 @@ void DrawSetup(const SCand &cd,int c,const datetime &t[],const double &h[],const
    }
    if(InpShowLegLabels)
       for(int n=0;n<cd.legs;n++)
-         ObjText(base+"LB"+IntegerToString(n),0,t[cd.legPBar[n]],cd.legPrice[n],"L"+IntegerToString(n+1),col,an,8,"");
+         ObjText(base+"LB"+IntegerToString(n),0,t[cd.legPBar[n]],cd.legPrice[n],
+                 "L"+IntegerToString(n+1)+(n==cd.legs-1 && cd.kind!=KIND_DIV ? " "+KindName(cd.kind) : ""),col,an,8,"");
    if(pending) return;
 
    int    li  =cd.legs-1;
    string side=(cd.dir>0 ? "BUY" : "SELL");
-   string tip =StringFormat("%s L%d | confirmed on bar %s (closed %s) | entry from %s | SL ref %s | %s",
+   string tip =StringFormat("%s "+KindName(cd.kind)+" L%d | confirmed on bar %s (closed %s) | entry from %s | SL ref %s | %s",
                            side,cd.legs,TS(t[c]),TS(t[c]+PeriodSeconds()),TS(t[c]+PeriodSeconds()),
                            DoubleToString(cd.legPrice[li],_Digits),LegDetail(cd,t));
    if(cd.dir>0) ObjArrow(base+"AR",t[c],l[c],233,col,ANCHOR_TOP,tip);
@@ -809,7 +964,7 @@ void PanelLine(int i,string txt,color col)
       ObjectSetInteger(0,n,OBJPROP_CORNER,CORNER_LEFT_LOWER);
       ObjectSetInteger(0,n,OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
       ObjectSetInteger(0,n,OBJPROP_XDISTANCE,10);
-      ObjectSetInteger(0,n,OBJPROP_YDISTANCE,20+(4-i)*16);
+      ObjectSetInteger(0,n,OBJPROP_YDISTANCE,20+(5-i)*16);
       ObjectSetInteger(0,n,OBJPROP_FONTSIZE,9);
       ObjectSetString(0,n,OBJPROP_FONT,"Consolas");
       ObjectSetInteger(0,n,OBJPROP_SELECTABLE,false);
@@ -841,7 +996,12 @@ string Forming(int dir,int lc,const datetime &t[],const double &h[],const double
 void UpdatePanel(const datetime &t[],const double &h[],const double &l[])
 {
    int lc=g_rates-2;
-   PanelLine(0,StringFormat("TDI Div Pro v5 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
+   PanelLine(0,StringFormat("TDI Div Pro v6 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
+   int tr=TrendAt(lc);
+   string tt=StringFormat("Trend: %s (EMA%d slope %+.2f ATR)",TrendName(tr),InpTrendEMA,TrendSlope(lc));
+   if(InpUseTrendFilter && tr!=0)
+      tt+=(tr>0 ? " - buys; sells only at exhaustion" : " - sells; buys only at exhaustion");
+   PanelLine(5,tt,tr>0 ? clrLime : (tr<0 ? clrTomato : clrSilver));
    PanelLine(1,g_lastTxt,clrWhite);
    string p="Pending: none";
    if(g_nPend>0)

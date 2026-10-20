@@ -107,6 +107,19 @@ Provisional setups are shown in a separate colour and are never exposed in the E
 
 No filter set removes all false signals; effect is measured in testing (Deliverable 4).
 
+## 8b. Trend filter and signal kinds (v6, from your marked charts 20 Oct)
+
+Trend on each closed bar `c`: `slope = (EMA50[c] − EMA50[c−10]) / ATR14[c]`. UP if `slope ≥ +0.6`, DOWN if `≤ −0.6`, else NONE.
+
+| Kind | When | Rule |
+|---|---|---|
+| **DIV** | trend NONE, or same direction as signal | Sections 4–6 as before |
+| **EXH** (counter-trend) | divergence AGAINST the trend | allowed only if leg-1 TDI ≥ 68 (sell) / ≤ 32 (buy) **and** outside the volatility band, **and** the confirm bar has green back through the yellow base line (window 10 bars). Otherwise rejected `against trend UP/DOWN` |
+| **CONT** (with trend) | trend UP (buy) / DOWN (sell) | previous TDI swing low → new TDI swing low that is **higher**, price low also **higher**, new TDI low ≤ 45 (buy) / high ≥ 55 (sell), price pulled back ≥ 1 ATR from the swing extreme. Same confirmation as DIV; rejected if the trend is gone on the confirm bar |
+
+Mapping to your examples: V10 13–16 Oct buys and V25 20 Oct buy → DOWN trend, leg-1 TDI not exhausted → blocked. V25 18–19 Oct sells → UP trend; blocked unless leg-1 TDI was outside the upper band. V25 17 Oct and V50 18 Oct pullback buys → CONT / with-trend DIV. V50 top sells and V25 16 Oct bottom buy → EXH (only if TDI was really outside the band).
+Default change: `UseMinPriceDiv` now on (0.25 ATR) to drop flat tops/bottoms (V25 18 Oct 05:00).
+
 ## 9. Multi-timeframe
 
 - A confirmed signal on TF X is "active" for `ActiveBars_X` bars after its confirm bar.
@@ -123,6 +136,8 @@ No filter set removes all false signals; effect is measured in testing (Delivera
 | 9 | SignalID | open time of last-leg TDI swing (datetime as double) |
 | 10 | LegCount | 2…5 |
 | 11 | Direction | +1 buy / −1 sell |
+| 12 | Kind | 1 DIV, 2 EXH, 3 CONT |
+| 13 | Trend | +1 / 0 / −1 on that closed bar |
 
 EA reads bar 1 only, after `BarsCalculated == Bars`, and stores processed SignalIDs in a terminal GlobalVariable so a restart cannot re-enter the same signal. EA contains **no** divergence logic of its own.
 

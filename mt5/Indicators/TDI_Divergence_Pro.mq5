@@ -7,9 +7,15 @@
 //|        price makes LOWER LOWS (market keeps going deeper).       |
 //|  SELL: green makes a LOWER HIGH while price makes HIGHER HIGHS.  |
 //|                                                                  |
-//|  v7 rules (from your marked charts):                             |
+//|  v8 rules (from your marked charts):                             |
 //|   - flat TDI counts: TDI equal within TDITol points while price  |
 //|     goes deeper is a divergence                                  |
+//|   - double top/bottom counts: price about equal (PriceTolATR)    |
+//|     while TDI is clearly lower/higher (DoubleMinTDI points)      |
+//|   - one signal per TDI swing: after a signal, the next one in    |
+//|     the same direction needs the TDI to reset through 50 first   |
+//|   - counter-trend (EXH) must also close beyond the swing between |
+//|     the last two legs (proof that price turned)                  |
 //|   - with the trend: divergence at any TDI level         (DIV)    |
 //|   - no trend: leg-1 TDI must be <= 40 (buy) / >= 60 (sell)        |
 //|   - against the trend ONLY at exhaustion                (EXH):   |
@@ -34,7 +40,7 @@
 //|  12 Kind (1 DIV, 2 EXH counter-trend, 3 CONT)                    |
 //|  13 Trend at that closed bar (+1 up, 0 none, -1 down)            |
 //+------------------------------------------------------------------+
-#property version     "7.00"
+#property version     "8.00"
 #property description "TDI-led divergence (green line vs price). Closed bars only, non-repainting."
 #property indicator_separate_window
 #property indicator_minimum 0
@@ -82,7 +88,7 @@
 #property indicator_label14 "Trend"
 #property indicator_type14  DRAW_NONE
 
-#define PFX "TDV7_"
+#define PFX "TDV8_"
 #define KIND_DIV  1
 #define KIND_EXH  2
 #define KIND_CONT 3
@@ -119,6 +125,9 @@ input int    InpMinLegBars       = 3;     // Min bars between counted legs
 input int    InpMinLegs          = 2;     // Min legs (2 = leg 2 can signal)
 input int    InpMaxLegs          = 4;     // Max legs (4 = up to leg 4 can signal), max 5
 input double InpTDITol           = 2.0;   // TDI "equal" tolerance, points (flat TDI vs deeper price counts)
+input bool   InpUseDouble        = true;  // Double top/bottom: price about equal, TDI clearly diverging
+input double InpPriceTolATR      = 0.5;   //   price may stop this x ATR short of leg 1
+input double InpDoubleMinTDI     = 3.0;   //   then TDI must be this many points better than leg 1
 input bool   InpStrictTDIRise    = false; // Each leg's TDI beyond the previous leg (false = beyond leg 1)
 input int    InpConfirmBars      = 6;     // Bars after the last-leg TDI pivot allowed to confirm
 input int    InpMaxSignalsPerSeq = 2;     // Max signals from the same leg 1
@@ -141,6 +150,8 @@ input bool   InpUseRedCross      = true;  // Confirm: green above red (buy) / be
 input bool   InpUseBase          = false; // Confirm: green above yellow (buy) / below (sell)
 input bool   InpUseCandleDir     = true;  // Confirm: bullish (buy) / bearish (sell) candle
 input bool   InpUseCloseBeyond   = false; // Confirm: close beyond the last-leg candle
+input bool   InpUseReset         = true;  // One signal per TDI swing: TDI must cross back through ResetLevel
+input double InpResetLevel       = 50;    //   level
 input bool   InpUseCooldown      = false; // Cooldown between same-direction signals
 input int    InpCooldownBars     = 10;    //   bars
 
@@ -157,8 +168,9 @@ input double InpExhDeepOB        = 75;    //   ...or fewer legs with leg-1 TDI a
 input double InpExhDeepOS        = 25;    //   ...or fewer legs with leg-1 TDI at or below (buy)
 input bool   InpExhNeedBand      = false; //   leg-1 TDI also outside the volatility band
 input bool   InpExhNeedBase      = false; //   confirm also needs green back through yellow (slower)
+input bool   InpExhNeedBreak     = true;  //   confirm needs close beyond the swing between the last two legs
 input double InpExhMinTDIDiv     = 0;     //   min TDI divergence points (0 = off)
-input int    InpExhConfirmBars   = 8;     //   bars allowed to confirm
+input int    InpExhConfirmBars   = 12;    //   bars allowed to confirm
 input bool   InpUseRangeZone     = true;  // No trend: require leg-1 TDI in zone
 input double InpRangeOS          = 40;    //   buy: leg-1 TDI at or below
 input double InpRangeOB          = 60;    //   sell: leg-1 TDI at or above
@@ -206,6 +218,7 @@ struct SCand
 {
    int    dir;          // +1 buy, -1 sell
    int    kind;         // KIND_DIV / KIND_EXH / KIND_CONT
+   int    dbl;          // 1 = double top/bottom (price about equal, TDI diverging)
    int    xIdx;         // index of leg 1 in g_piv
    int    legs;
    int    legBar[6];
@@ -252,7 +265,8 @@ int OnInit()
       InpATRPeriod<1 || InpPivLeft<1 || InpPivRight<1 || InpPriceSep<0 || InpConfirmBars<InpPivRight ||
       InpMinLegs<2 || InpMaxLegs<InpMinLegs || InpMaxLegs>5 || InpMinSpan<1 || InpMaxSpan<=InpMinSpan ||
       InpMinLegBars<1 || InpMaxSignalsPerSeq<1 || InpMaxBars<InpMaxSpan ||
-      InpTrendEMA<2 || InpTrendSlopeBars<1 || InpExhConfirmBars<InpPivRight || InpTDITol<0 || InpExhMinLegs<2)
+      InpTrendEMA<2 || InpTrendSlopeBars<1 || InpExhConfirmBars<InpPivRight || InpTDITol<0 || InpExhMinLegs<2 ||
+      InpPriceTolATR<0 || InpDoubleMinTDI<0)
    {
       Print("TDI Div Pro: invalid inputs (check periods, legs 2..5, ConfirmBars >= PivRight, MaxSpan > MinSpan)");
       return(INIT_PARAMETERS_INCORRECT);
@@ -286,7 +300,7 @@ int OnInit()
    for(int p=0;p<14;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
    for(int p=0;p<5;p++)  PlotIndexSetInteger(p,PLOT_DRAW_BEGIN,WarmBars());
 
-   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v7");
+   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v8");
    IndicatorSetInteger(INDICATOR_DIGITS,2);
    IndicatorSetInteger(INDICATOR_LEVELS,3);
    IndicatorSetDouble(INDICATOR_LEVELVALUE,0,32);
@@ -561,9 +575,13 @@ bool BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
       int span=N.bar-g_piv[k].bar;
       if(span>InpMaxSpan) break;
       if(span<InpMinSpan) continue;
-      if((g_piv[k].price-N.price)*dir<=0) continue;            // price: last leg must be deeper than leg 1
-      if((N.val-g_piv[k].val)*dir<-InpTDITol) continue;        // TDI: last leg holds above/below leg 1 (equal within tol counts)
-      if(!PriceDeepest(dir,N.price,g_piv[k].pbar,c,h,l)) continue; // last leg is the deepest price since leg 1
+      double deeper =(g_piv[k].price-N.price)*dir;             // > 0: last leg is beyond leg 1 in price
+      double tdiGain=(N.val-g_piv[k].val)*dir;                 // > 0: TDI holds better than leg 1
+      double atrN   =ATRB[N.pbar];
+      bool classic=(deeper>0 && (!InpUseMinPriceDiv || deeper>=InpMinPriceDivATR*atrN) && tdiGain>=-InpTDITol);
+      bool dbl    =(!classic && InpUseDouble && deeper>-InpPriceTolATR*atrN && tdiGain>=InpDoubleMinTDI);
+      if(!classic && !dbl) continue;
+      if(!PriceDeepest(dir,N.price,g_piv[k].pbar+1,c,h,l)) continue; // last leg is the deepest price after leg 1
       if(!TDIExtreme(dir,g_piv[k].val-dir*InpTDITol,g_piv[k].bar,c)) continue; // TDI never clearly beyond leg 1 since
       if(best<0 || (g_piv[k].val-g_piv[best].val)*dir<=0) best=k;  // deepest TDI leg 1, ties -> older
    }
@@ -572,6 +590,7 @@ bool BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
    SCand cd;
    ZeroMemory(cd);
    cd.dir=dir; cd.kind=KIND_DIV; cd.xIdx=best; cd.created=c; cd.deadline=N.bar+InpConfirmBars;
+   cd.dbl=((g_piv[best].price-N.price)*dir>0 ? 0 : 1);
    SetLeg(cd,0,g_piv[best]);
    cd.legs=1;
 
@@ -600,8 +619,6 @@ bool BuildCandidate(int dir,int nIdx,int c,const datetime &t[],const double &h[]
       why=StringFormat("legs %d < min %d",cd.legs,InpMinLegs);
    else if(cd.legs>InpMaxLegs)
       why=StringFormat("legs %d > max %d",cd.legs,InpMaxLegs);
-   else if(InpUseMinPriceDiv && MathAbs(cd.legPrice[0]-N.price)<InpMinPriceDivATR*ATRB[N.pbar])
-      why=StringFormat("price divergence %.2f ATR < %.2f",MathAbs(cd.legPrice[0]-N.price)/MathMax(ATRB[N.pbar],_Point),InpMinPriceDivATR);
    else if(InpUseMinTDIDiv && (N.val-cd.legVal[0])*dir<InpMinTDIDiv)
       why=StringFormat("TDI divergence %.1f < %.1f",(N.val-cd.legVal[0])*dir,InpMinTDIDiv);
    else if(InpUseZone && (dir>0 ? cd.legVal[0]>InpZoneOS : cd.legVal[0]<InpZoneOB))
@@ -697,9 +714,26 @@ void AddPending(const SCand &cd,int c,const datetime &t[],const double &h[],cons
 //+------------------------------------------------------------------+
 //| Confirmation                                                     |
 //+------------------------------------------------------------------+
-string ConfirmMiss(const SCand &cd,int c,bool needBase,const double &o[],const double &h[],const double &l[],const double &cl[])
+// one signal per TDI swing: since the previous same-direction signal the TDI crossed back through the reset level
+bool ResetOK(int d,int c)
+{
+   int last=g_lastSig[DI(d)];
+   if(!InpUseReset || last<0) return(true);
+   for(int k=last+1;k<=c;k++)
+      if((Src(k)-InpResetLevel)*d>0) return(true);
+   return(false);
+}
+
+string ConfirmMiss(const SCand &cd,int c,bool needBase,bool needBreak,const double &o[],const double &h[],const double &l[],const double &cl[])
 {
    int d=cd.dir;
+   if(needBreak && cd.legs>=2)
+   {
+      int a=cd.legPBar[cd.legs-2], b=cd.legPBar[cd.legs-1];
+      double lvl=(d>0) ? -DBL_MAX : DBL_MAX;
+      for(int k=a;k<=b;k++) { if(d>0 && h[k]>lvl) lvl=h[k]; if(d<0 && l[k]<lvl) lvl=l[k]; }
+      if(d>0 ? cl[c]<=lvl : cl[c]>=lvl) return("no close beyond the swing between the last legs");
+   }
    if(InpUseGreenDir  && (Src(c)-Src(c-1))*d<=0) return("TDI not turning");
    if(InpUseRedCross  && (GB[c]-RB[c])*d<=0)     return(d>0 ? "green below red" : "green above red");
    if((InpUseBase || needBase) && (GB[c]-YB[c])*d<=0) return(d>0 ? "green below base" : "green above base");
@@ -736,7 +770,7 @@ void CheckPending(int c,const datetime &t[],const double &o[],const double &h[],
             why="TDI broke the leg-1 level";
       }
       //--- trend on the decision bar
-      bool needBase=false;
+      bool needBase=false, needBreak=false;
       if(why=="" && InpUseTrendFilter)
       {
          int tr=TrendAt(c);
@@ -745,17 +779,19 @@ void CheckPending(int c,const datetime &t[],const double &o[],const double &h[],
          else if(cd.kind!=KIND_CONT && tr==-d)
          {
             if(cd.kind==KIND_EXH || (InpAllowExhaustion && ExhaustionMiss(cd)==""))
-            { cd.kind=KIND_EXH; needBase=InpExhNeedBase; }
+            { cd.kind=KIND_EXH; needBase=InpExhNeedBase; needBreak=InpExhNeedBreak; }
             else why="trend turned "+TrendName(tr);
          }
       }
+      if(cd.kind==KIND_EXH) { needBase=InpExhNeedBase; needBreak=InpExhNeedBreak; }
       if(why=="")
       {
-         string miss=ConfirmMiss(cd,c,needBase,o,h,l,cl);
+         string miss=ConfirmMiss(cd,c,needBase,needBreak,o,h,l,cl);
          if(miss=="")
          {
             if(InpUseCooldown && c-g_lastSig[DI(d)]<InpCooldownBars) why="cooldown";
             else if(SigDir[c]!=EMPTY_VALUE)                          why="another signal on this bar";
+            else if(!ResetOK(d,c))                                   why="TDI has not reset through "+DoubleToString(InpResetLevel,0)+" since the last signal";
             else if(g_piv[cd.xIdx].sigs>=InpMaxSignalsPerSeq)        why="signal limit for this leg 1 reached";
             else confirm=true;
          }
@@ -955,7 +991,8 @@ void DrawSetup(const SCand &cd,int c,const datetime &t[],const double &h[],const
    if(InpShowLegLabels)
       for(int n=0;n<cd.legs;n++)
          ObjText(base+"LB"+IntegerToString(n),0,t[cd.legPBar[n]],cd.legPrice[n],
-                 "L"+IntegerToString(n+1)+(n==cd.legs-1 && cd.kind!=KIND_DIV ? " "+KindName(cd.kind) : ""),col,an,8,"");
+                 "L"+IntegerToString(n+1)+(n==cd.legs-1 && cd.kind!=KIND_DIV ? " "+KindName(cd.kind) : "")+
+                 (n==cd.legs-1 && cd.dbl==1 ? (cd.dir>0 ? " DB" : " DT") : ""),col,an,8,"");
    if(pending) return;
 
    int    li  =cd.legs-1;
@@ -1016,7 +1053,7 @@ string Forming(int dir,int lc,const datetime &t[],const double &h[],const double
 void UpdatePanel(const datetime &t[],const double &h[],const double &l[])
 {
    int lc=g_rates-2;
-   PanelLine(0,StringFormat("TDI Div Pro v7 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
+   PanelLine(0,StringFormat("TDI Div Pro v8 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
    int tr=TrendAt(lc);
    string tt=StringFormat("Trend: %s (EMA%d slope %+.2f ATR)",TrendName(tr),InpTrendEMA,TrendSlope(lc));
    if(InpUseTrendFilter && tr!=0)

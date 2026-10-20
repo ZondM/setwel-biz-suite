@@ -107,7 +107,7 @@ Provisional setups are shown in a separate colour and are never exposed in the E
 
 No filter set removes all false signals; effect is measured in testing (Deliverable 4).
 
-## 8b. Trend filter and signal kinds (v7, from your marked charts)
+## 8b. Trend filter and signal kinds (v8, from your marked charts)
 
 Trend on each closed bar `c`: `slope = (EMA50[c] − EMA50[c−10]) / ATR14[c]`. UP if `slope ≥ +0.6`, DOWN if `≤ −0.6`, else NONE.
 TDI "equal" tolerance `TDITol = 2.0`: TDI flat (within 2 points) while price goes deeper counts as divergence (your V10 M5 missed 2 and 3).
@@ -118,6 +118,11 @@ TDI "equal" tolerance `TDITol = 2.0`: TDI flat (within 2 points) while price goe
 | **DIV** | no trend | leg-1 TDI ≤ 40 (buy) / ≥ 60 (sell) |
 | **EXH** | against the trend | leg-1 TDI ≤ 32 / ≥ 68 **and** ≥ 3 legs, or 2 legs with leg-1 TDI ≤ 25 / ≥ 75. Normal fast confirmation (no yellow-line wait) |
 | **CONT** | with the trend | TDI and price both higher low (buy) / lower high (sell) after ≥ 1 ATR pullback, TDI ≤ 45 / ≥ 55 |
+
+v8 additions:
+- **Double top/bottom** (`UseDouble`, on): price stops up to 0.5 ATR short of leg 1 (or beyond it by less than the min divergence) but the TDI is ≥ 3 points better → valid. Labelled `DT` / `DB`.
+- **One signal per TDI swing** (`UseReset`, on): after a signal, the next same-direction signal needs the TDI to have crossed back through 50 (above 50 after a buy, below 50 after a sell). Removes repeat arrows at one top/bottom.
+- **Counter-trend proof** (`ExhNeedBreak`, on): an EXH signal also needs a close beyond the swing between the last two legs (below the pullback low for a sell, above the bounce high for a buy). Window 12 bars.
 
 Known misses against your marks (from screenshots, not measured): V10 M15 15 Oct 3-leg flat buy (TDI about 30) in a grinding downtrend still qualifies as EXH; V10 M15 11 Oct 2-leg buy with TDI about 18 qualifies as deep EXH.
 

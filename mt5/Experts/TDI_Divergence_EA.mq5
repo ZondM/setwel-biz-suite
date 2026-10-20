@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                            TDI_Divergence_EA.mq5 |
-//|  Trades confirmed signals of TDI_Divergence_Pro (v9) and         |
+//|  Trades confirmed signals of TDI_Divergence_Pro (v9.1) and       |
 //|  protects every managed position with a Stop-Loss Enforcer,      |
 //|  break-even and a trailing stop.                                 |
 //|                                                                  |
@@ -22,7 +22,7 @@
 //|           this file in MQL5\Experts, compile, attach to ONE      |
 //|           chart per symbol, enable Algo Trading.                 |
 //+------------------------------------------------------------------+
-#property version     "1.00"
+#property version     "1.10"
 #property description "TDI divergence EA + Stop-Loss Enforcer, break-even, trailing stop"
 #property tester_indicator "TDI_Divergence_Pro.ex5"
 
@@ -159,36 +159,28 @@ double ATRNow()
    return(a[0]);
 }
 
-//--- indicator parameter list (must match TDI_Divergence_Pro v9 input order)
-void PS(string v) { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_STRING; g_par[g_np].string_value=v;       g_np++; }
-void PI(long v)   { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_INT;    g_par[g_np].integer_value=v;      g_np++; }
-void PD(double v) { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_DOUBLE; g_par[g_np].double_value=v;       g_np++; }
+//--- indicator parameters: only the "Quick settings" group (first 11 inputs of
+//--- TDI_Divergence_Pro), everything else stays at the indicator defaults.
+//--- (MT5 accepts at most 64 parameters here.)
+void PS(string v) { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_STRING; g_par[g_np].string_value=v;        g_np++; }
+void PI(long v)   { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_INT;    g_par[g_np].integer_value=v;       g_np++; }
 void PB(bool v)   { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_BOOL;   g_par[g_np].integer_value=(v?1:0); g_np++; }
-void PC(color v)  { ArrayResize(g_par,g_np+1); g_par[g_np].type=TYPE_COLOR;  g_par[g_np].integer_value=(long)v;  g_np++; }
 
 void BuildParams()
 {
    ArrayResize(g_par,0); g_np=0;
    PS(InpIndName);
-   //--- TDI
-   PI(13); PI(PRICE_CLOSE); PI(2); PI(MODE_SMA); PI(7); PI(MODE_SMA); PI(34); PI(MODE_SMA); PI(34); PD(1.6185); PI(0); PI(14);
-   //--- swing engine
-   PI(5); PI(2); PI(3); PI(5); PI(100); PI(3); PI(2); PI(4); PD(2.0); PB(InpIndUseDouble); PD(0.5); PD(3.0); PB(false); PI(6); PI(2);
-   //--- filters
-   PB(true); PD(3.0); PB(true); PD(0.25); PB(false); PD(2.0); PB(false); PD(1.0); PB(false); PD(40); PD(60); PB(false);
-   PB(true); PB(true); PB(false); PB(true); PB(false); PB(true); PD(50); PB(false); PI(10);
-   //--- trend filter
-   PB(true); PI(50); PI(10); PD(0.6); PB(InpIndAllowExh); PD(68); PD(32); PI(3); PD(75); PD(25); PB(false); PB(false); PB(true); PD(0); PI(12);
-   PB(true); PD(40); PD(60);
-   //--- higher timeframe
-   PB(InpIndUseHTF); PI(PERIOD_CURRENT); PI(50); PI(5); PD(0.5); PI(3); PD(70); PD(30);
-   //--- continuation
-   PB(InpIndUseCont); PD(45); PD(55); PD(1.0);
-   //--- statistics (off in the EA copy)
-   PB(false); PD(0.3); PD(2.0);
-   //--- display / alerts / log (all off in the EA copy)
-   PI(InpIndMaxBars); PB(false); PI(2000); PB(false); PB(false); PB(false); PB(false); PB(false);
-   PB(false); PB(false); PB(false); PB(false); PB(false); PC(clrDeepSkyBlue); PC(clrMagenta); PC(clrGray);
+   PI(InpIndMaxBars);   // InpMaxBars
+   PB(false);           // InpDraw
+   PB(false);           // InpShowPanel
+   PB(false);           // InpAlerts
+   PB(false);           // InpPush
+   PB(false);           // InpLogFile
+   PB(false);           // InpShowStats
+   PB(InpIndAllowExh);  // InpAllowExhaustion
+   PB(InpIndUseHTF);    // InpUseHTF
+   PB(InpIndUseCont);   // InpUseCont
+   PB(InpIndUseDouble); // InpUseDouble
 }
 
 int MakeInd(ENUM_TIMEFRAMES tf)
@@ -200,10 +192,10 @@ int MakeInd(ENUM_TIMEFRAMES tf)
 //+------------------------------------------------------------------+
 int OnInit()
 {
-   if(InpRiskPercent<=0 && InpLotMode==LOT_RISK) { Print("TDI EA: RiskPercent must be > 0"); return(INIT_PARAMETERS_INCORRECT); }
+   if(InpRiskPercent<=0 && InpLotMode==LOT_RISK) { Alert("TDI EA: RiskPercent must be > 0"); return(INIT_PARAMETERS_INCORRECT); }
    if(InpRR<=0 || InpSLBufferATR<0 || InpMaxSL_ATR<=0 || InpEmergencySL_ATR<=0 || InpMaxRetries<1 ||
       InpBETriggerR<=0 || InpBELockR<0 || InpBELockR>=InpBETriggerR || InpTrailATR<=0 || InpTrailStartR<=0)
-   { Print("TDI EA: invalid risk / protection inputs (BELockR must be below BETriggerR)"); return(INIT_PARAMETERS_INCORRECT); }
+   { Alert("TDI EA: invalid risk / protection inputs (BELockR must be below BETriggerR)"); return(INIT_PARAMETERS_INCORRECT); }
 
    g_tf=(InpEntryTF==PERIOD_CURRENT ? (ENUM_TIMEFRAMES)_Period : InpEntryTF);
    g_hInd=MakeInd(g_tf);
@@ -214,7 +206,9 @@ int OnInit()
       (InpConfTF2!=PERIOD_CURRENT && InpConfTF2!=g_tf && g_hConf2==INVALID_HANDLE) ||
       (InpConfTF3!=PERIOD_CURRENT && InpConfTF3!=g_tf && g_hConf3==INVALID_HANDLE))
    {
-      Print("TDI EA: cannot load ",InpIndName," - compile TDI_Divergence_Pro v9 in MQL5\\Indicators first (error ",GetLastError(),")");
+      string m=StringFormat("TDI EA: cannot load indicator '%s' (error %d). Put TDI_Divergence_Pro.mq5 (v9.1) in MQL5\\Indicators and compile it.",
+                            InpIndName,GetLastError());
+      Print(m); Alert(m);
       return(INIT_FAILED);
    }
 

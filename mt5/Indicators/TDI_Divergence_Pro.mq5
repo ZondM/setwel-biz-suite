@@ -7,6 +7,7 @@
 //|        price makes LOWER LOWS (market keeps going deeper).       |
 //|  SELL: green makes a LOWER HIGH while price makes HIGHER HIGHS.  |
 //|                                                                  |
+//|  v9.1: inputs EA needs moved to the top (Quick settings).       |
 //|  v9: SERIOUS TREND = higher timeframe (auto: M1-M15 -> H1,        |
 //|      M30/H1 -> H4). Against it only a 3+ leg exhaustion with     |
 //|      leg-1 TDI >= 70 / <= 30 and a structure break.              |
@@ -46,7 +47,7 @@
 //|  13 Trend at that closed bar (+1 up, 0 none, -1 down)            |
 //|  14 Higher-timeframe trend at that closed bar (+1 / 0 / -1)      |
 //+------------------------------------------------------------------+
-#property version     "9.00"
+#property version     "9.10"
 #property description "TDI-led divergence (green line vs price). Closed bars only, non-repainting."
 #property indicator_separate_window
 #property indicator_minimum 0
@@ -108,7 +109,20 @@ enum ENUM_DIV_SOURCE
    SRC_BASE  = 2    // Yellow Market Base Line
 };
 
-//--- inputs (order matters for the EA's iCustom call)
+//--- inputs: the EA passes only the "Quick settings" group (first 11 inputs); keep that order
+input group "=== Quick settings (the EA sets these, in this order) ==="
+input int    InpMaxBars          = 5000;  // Bars to evaluate
+input bool   InpDraw             = true;  // Draw objects on the chart
+input bool   InpShowPanel        = true;  // Status panel
+input bool   InpAlerts           = true;  // Popup alert on confirmed signal
+input bool   InpPush             = false; // Phone push on confirmed signal
+input bool   InpLogFile          = true;  // CSV log in MQL5\Files
+input bool   InpShowStats        = true;  // Show win/loss per signal kind on the panel + stats CSV
+input bool   InpAllowExhaustion  = true;  // Allow counter-trend ONLY at TDI exhaustion
+input bool            InpUseHTF        = true;           // Use higher-timeframe trend
+input bool   InpUseCont          = true;  // Pullback signals in the trend direction
+input bool   InpUseDouble        = true;  // Double top/bottom: price about equal, TDI clearly diverging
+
 input group "=== TDI ==="
 input int                InpRSIPeriod      = 13;           // RSI period
 input ENUM_APPLIED_PRICE InpPrice          = PRICE_CLOSE;  // RSI applied price
@@ -133,7 +147,6 @@ input int    InpMinLegBars       = 3;     // Min bars between counted legs
 input int    InpMinLegs          = 2;     // Min legs (2 = leg 2 can signal)
 input int    InpMaxLegs          = 4;     // Max legs (4 = up to leg 4 can signal), max 5
 input double InpTDITol           = 2.0;   // TDI "equal" tolerance, points (flat TDI vs deeper price counts)
-input bool   InpUseDouble        = true;  // Double top/bottom: price about equal, TDI clearly diverging
 input double InpPriceTolATR      = 0.5;   //   price may stop this x ATR short of leg 1
 input double InpDoubleMinTDI     = 3.0;   //   then TDI must be this many points better than leg 1
 input bool   InpStrictTDIRise    = false; // Each leg's TDI beyond the previous leg (false = beyond leg 1)
@@ -168,7 +181,6 @@ input bool   InpUseTrendFilter   = true;  // Block divergence against the trend
 input int    InpTrendEMA         = 50;    // Trend EMA period (close)
 input int    InpTrendSlopeBars   = 10;    // EMA slope measured over N bars
 input double InpTrendSlopeATR    = 0.6;   // Slope >= this x ATR = trend
-input bool   InpAllowExhaustion  = true;  // Allow counter-trend ONLY at TDI exhaustion
 input double InpExhOB            = 68;    //   sell: leg-1 TDI at or above
 input double InpExhOS            = 32;    //   buy: leg-1 TDI at or below
 input int    InpExhMinLegs       = 3;     //   and at least this many legs...
@@ -184,7 +196,6 @@ input double InpRangeOS          = 40;    //   buy: leg-1 TDI at or below
 input double InpRangeOB          = 60;    //   sell: leg-1 TDI at or above
 
 input group "=== Serious trend = higher timeframe ==="
-input bool            InpUseHTF        = true;           // Use higher-timeframe trend
 input ENUM_TIMEFRAMES InpHTF           = PERIOD_CURRENT; // HTF (current = auto: M1-M15 -> H1, M30/H1 -> H4, else D1)
 input int             InpHTFEMA        = 50;             //   HTF EMA period
 input int             InpHTFSlopeBars  = 5;              //   HTF EMA slope over N closed HTF bars
@@ -194,29 +205,21 @@ input double          InpHTFExhOB      = 70;             //   against HTF trend:
 input double          InpHTFExhOS      = 30;             //   against HTF trend: buy leg-1 TDI at or below
 
 input group "=== Trend continuation (pullback with the trend) ==="
-input bool   InpUseCont          = true;  // Pullback signals in the trend direction
 input double InpContBuyMaxTDI    = 45;    //   buy: last-leg TDI at or below (real TDI pullback)
 input double InpContSellMinTDI   = 55;    //   sell: last-leg TDI at or above
 input double InpContPullbackATR  = 1.0;   //   price pullback from the swing extreme, x ATR
 
 input group "=== Outcome statistics (hindsight, testing only - never used for signals) ==="
-input bool   InpShowStats        = true;  // Show win/loss per signal kind on the panel + stats CSV
 input double InpStatSLBufATR     = 0.3;   //   SL = last-leg extreme +/- this x ATR
 input double InpStatRR           = 2.0;   //   TP = this x risk
 
 input group "=== Display / alerts / log ==="
-input int    InpMaxBars          = 5000;  // Bars to evaluate
-input bool   InpDraw             = true;  // Draw objects on the chart
 input int    InpDrawBars         = 2000;  // Draw objects only for the last N bars
 input bool   InpShowPending      = true;  // Show provisional (not yet confirmed) setups
 input bool   InpShowRejects      = false; // Diagnostic: label rejected setups with the reason
 input bool   InpShowLegLabels    = true;  // Label L1 / L2 / L3
 input bool   InpShowVLines       = false; // Vertical lines at last leg and confirm bar
-input bool   InpShowPanel        = true;  // Status panel
-input bool   InpAlerts           = true;  // Popup alert on confirmed signal
-input bool   InpPush             = false; // Phone push on confirmed signal
 input bool   InpAlertPending     = false; // Also alert provisional setups
-input bool   InpLogFile          = true;  // CSV log in MQL5\Files
 input bool   InpPrintRejects     = false; // Print rejected setups to the Experts log (live)
 input color  InpBuyColor         = clrDeepSkyBlue;
 input color  InpSellColor        = clrMagenta;
@@ -340,7 +343,7 @@ int OnInit()
    for(int p=0;p<15;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
    for(int p=0;p<5;p++)  PlotIndexSetInteger(p,PLOT_DRAW_BEGIN,WarmBars());
 
-   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v9");
+   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v9.1");
    IndicatorSetInteger(INDICATOR_DIGITS,2);
    IndicatorSetInteger(INDICATOR_LEVELS,3);
    IndicatorSetDouble(INDICATOR_LEVELVALUE,0,32);
@@ -1247,7 +1250,7 @@ string Forming(int dir,int lc,const datetime &t[],const double &h[],const double
 void UpdatePanel(const datetime &t[],const double &h[],const double &l[])
 {
    int lc=g_rates-2;
-   PanelLine(0,StringFormat("TDI Div Pro v9 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
+   PanelLine(0,StringFormat("TDI Div Pro v9.1 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
    int tr=TrendAt(lc);
    string tt=StringFormat("Trend: %s (EMA%d slope %+.2f ATR)",TrendName(tr),InpTrendEMA,TrendSlope(lc));
    if(InpUseTrendFilter && tr!=0)

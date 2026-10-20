@@ -13,3 +13,16 @@ Options -Indexes
 
 # Don't leak server version info in error pages
 ServerSignature Off
+
+# Pages and the service worker must always be revalidated — a code fix
+# pushed to the server has to show up on the next visit, not whenever a
+# browser's own HTTP cache (separate from the service worker's cache)
+# decides to expire.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <Files "sw.js">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </Files>
+</IfModule>

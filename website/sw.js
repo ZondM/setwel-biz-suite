@@ -12,7 +12,7 @@
  * or any api/ response — those must always hit the network.
  */
 
-const CACHE_NAME = 'setwel-shell-v1';
+const CACHE_NAME = 'setwel-shell-v2';
 const APP_SHELL = [
   '/mobile.html',
   '/manifest.json',
@@ -43,6 +43,29 @@ self.addEventListener('fetch', (event) => {
 
   if (event.request.method !== 'GET') return;
 
+  // HTML (the navigation itself, or any .html fetch) must never be served
+  // stale just because it's cached: a code fix shipped to the server has
+  // to show up on the very next load, not "whenever the cache happens to
+  // refresh." Network-first, falling back to the cached copy only when
+  // genuinely offline.
+  const isHTML = event.request.mode === 'navigate' || url.pathname.endsWith('.html');
+  if (isHTML) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok && url.origin === self.location.origin) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Static assets (images, manifest, libraries): cache-first with a
+  // background refresh, so the offline app shell still opens instantly.
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const network = fetch(event.request)

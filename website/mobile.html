@@ -4228,7 +4228,21 @@ window.addEventListener('appinstalled', function(){
    rather than on window 'load' — a slow or failing resource elsewhere
    on the page (e.g. web font) would otherwise delay registration too. */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(function(e){
+  navigator.serviceWorker.register('sw.js').then(function(reg){
+    // Browsers only check sw.js for changes once every ~24h by default,
+    // so a just-shipped fix can sit unnoticed behind an old worker for a
+    // full day. Force a check on every load instead.
+    reg.update().catch(function(){});
+    // If a new worker takes over mid-session, this tab's old cached HTML
+    // is already on screen — reload once so the visitor actually sees
+    // what just activated, instead of needing to reload by hand.
+    var reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function(){
+      if (reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
+  }).catch(function(e){
     console.warn('Service worker registration failed:', e);
   });
 }

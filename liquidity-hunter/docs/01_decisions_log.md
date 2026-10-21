@@ -120,6 +120,13 @@ Checks still needed:
 | Instruments | **Gold only (Deriv XAUUSDmicro)** for now; EURUSD deferred | User |
 | Commission | **$0** on Deriv XAUUSDmicro (spread-only) | User |
 
+## 2026-10-21 — After the research result
+
+| Decision | Source |
+|---|---|
+| Test one pre-registered variant (H1), then build the indicator only (no EA) | User ("option 2 then 3") |
+| Variant H1 failed (docs/11). EA development stays blocked by Gate 3. The indicator is built as a **visual chart tool with no claim of edge**. | Result |
+
 ## Gate status
 
 | Gate | Status |
@@ -127,5 +134,5 @@ Checks still needed:
 | 1 Research specification | Spec v0.4: all pattern definitions implemented (docs/05, docs/06). |
 | 2 Data integrity | **PASS for Deriv XAUUSDmicro**: M1 bars 2022-11 → 2026-10 (docs/03), ticks Sep 2026 (docs/04). Cost model set. Commission still to confirm. EURUSD not received. |
 | 4 Signal integrity (research side) | Look-ahead tests pass for structure, liquidity, patterns and Model B decisions (docs/05, tests). |
-| 3 Baseline evidence | **FAILED on development data:** Model A (docs/07) and Model B (docs/09) show no edge; 0 of 9 pre-registered comparisons significant. Validation/OOS data unopened. |
+| 3 Baseline evidence | **FAILED on development data:** Model A (docs/07), Model B (docs/09) and variant H1 of both (docs/11) show no edge; 0 of 18 pre-registered comparisons significant. No further variants. Validation/OOS data unopened. |
 | 5–9 | Not started |

@@ -100,7 +100,7 @@ Smallest trade = **$0.10 per $1 move**, 10x smaller than XAUUSD's smallest trade
 
 | Stop distance | Volume for $1 risk (rounded down) | Actual risk | % of $200 |
 |---|---|---|---|
-| $2 | 0.4 | ~$0.82 | 0.41% |
+| $2 | 0.4 | ~$0.96 | 0.48% |
 | $5 | 0.1 | ~$0.54 | 0.27% |
 | $9.50 | 0.1 | ~$0.99 | 0.50% |
 | > ~$9.60 | below 0.1 → rejected | — | — |

@@ -127,6 +127,15 @@ Checks still needed:
 | Test one pre-registered variant (H1), then build the indicator only (no EA) | User ("option 2 then 3") |
 | Variant H1 failed (docs/11). EA development stays blocked by Gate 3. The indicator is built as a **visual chart tool with no claim of edge**. | Result |
 
+## 2026-10-22 — Project reclassified as UNVALIDATED; Model B EA to be built
+
+| Decision | Source |
+|---|---|
+| Build the Model B EA despite Gate 3 failing | User ("finalize the EA") |
+| Strategy rules are **not** changed after seeing results (that would be fitting to the data). The EA implements Model B exactly as pre-registered (docs/08, step B4: H4 trend, H1 aligned, M15 CHoCH pullback 30–79%, displacement, mandatory M5 retest, 2R target) | Research discipline |
+| Per Master Prompt Phase 17, the project is **explicitly reclassified as unvalidated**: no evidence of edge (docs/09: B4 = +0.05R on 17 dev trades, CI −0.66 to +0.76) | Phase 17 |
+| EA trades **demo accounts only by default** (input `InpAllowLive=false`). Live trading requires the user to change that input knowingly | Risk control |
+
 ## Gate status
 
 | Gate | Status |

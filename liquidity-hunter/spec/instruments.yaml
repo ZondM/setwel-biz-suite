@@ -67,7 +67,7 @@ instruments:
     spread_floating: true      # 40 points at export (20:34 UTC, near daily break); stats from ticks
     filling_mode: FOK
     execution_mode: market
-    commission_per_lot_roundtrip_usd: TBD
+    commission_per_lot_roundtrip_usd: 0    # confirmed by user 2026-10-21
     swap_mode: points
     swap_long_points: -45      # = -$0.45 per lot per night
     swap_short_points: 20      # = +$0.20 per lot per night
@@ -104,7 +104,7 @@ instruments:
       bars_m1: TBD
       ticks: TBD
       quality_grade: not_assessed
-    status: research_primary   # pending confirmation that EURUSD data comes from Deriv
+    status: deferred   # user 2026-10-21: gold only for now
 
   - id: exness_XAUUSD
     broker: Exness

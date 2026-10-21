@@ -113,10 +113,18 @@ Checks still needed:
 1. **Same price feed?** Research uses XAUUSD history (longer in the terminal). One overlapping month of ticks from both symbols will be compared. If the prices differ, research must use XAUUSDmicro data.
 2. **Spread:** 40 points on micro vs 29 on XAUUSD, but the two snapshots were taken at different times close to the daily break. Tick data decides.
 
+## 2026-10-21 — Scope and costs
+
+| Topic | Decision | Source |
+|---|---|---|
+| Instruments | **Gold only (Deriv XAUUSDmicro)** for now; EURUSD deferred | User |
+| Commission | **$0** on Deriv XAUUSDmicro (spread-only) | User |
+
 ## Gate status
 
 | Gate | Status |
 |---|---|
-| 1 Research specification | Definitions drafted (v0.2). Not frozen. |
+| 1 Research specification | Spec v0.3 (structure + liquidity definitions implemented, docs/05). Not frozen: consolidation, displacement, retest still to implement. |
 | 2 Data integrity | **PASS for Deriv XAUUSDmicro**: M1 bars 2022-11 → 2026-10 (docs/03), ticks Sep 2026 (docs/04). Cost model set. Commission still to confirm. EURUSD not received. |
-| 3–9 | Not started |
+| 4 Signal integrity | Structure/liquidity layer: look-ahead tests pass (docs/05). Patterns and models pending. |
+| 3, 5–9 | Not started |

@@ -44,7 +44,7 @@ By UTC hour (median / p95):
 | Stress test | bar spread + 4 points, and + 15 points |
 | Stop-loss exit slippage | +1× median spread beyond the stop (pessimistic until demo fills are measured) |
 | Entry filter | no new entries 20:00–23:00 UTC (daily break), as already planned |
-| Commission | $0 assumed — **user to confirm** from Deriv's fee page |
+| Commission | $0 (confirmed by user) |
 | Swap | from spec file, applied per night held |
 
 Limitation: one month of ticks. Spreads changed a lot over 2022–2026 (bar medians 5 → 15 points), so the "+2 points" adjustment is measured on 2026 only and is assumed for earlier years.

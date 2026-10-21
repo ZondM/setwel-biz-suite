@@ -126,6 +126,6 @@ Checks still needed:
 |---|---|
 | 1 Research specification | Spec v0.4: all pattern definitions implemented (docs/05, docs/06). |
 | 2 Data integrity | **PASS for Deriv XAUUSDmicro**: M1 bars 2022-11 → 2026-10 (docs/03), ticks Sep 2026 (docs/04). Cost model set. Commission still to confirm. EURUSD not received. |
-| 4 Signal integrity | Structure/liquidity layer: look-ahead tests pass (docs/05). Patterns and models pending. |
-| 3 Baseline evidence | **Model A: no edge shown** on development data (docs/07). No variant goes to validation. Model B not yet tested. |
+| 4 Signal integrity (research side) | Look-ahead tests pass for structure, liquidity, patterns and Model B decisions (docs/05, tests). |
+| 3 Baseline evidence | **FAILED on development data:** Model A (docs/07) and Model B (docs/09) show no edge; 0 of 9 pre-registered comparisons significant. Validation/OOS data unopened. |
 | 5–9 | Not started |

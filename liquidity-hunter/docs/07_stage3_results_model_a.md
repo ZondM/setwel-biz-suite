@@ -1,6 +1,6 @@
 # Stage 3 results — Model A (liquidity reversal), development period
 
-Protocol: docs/06 (committed before this run). Code: run from the working tree on top of `e41ec85`; the exact code is committed as `b34e1c4`. Data: `deriv_XAUUSDmicro_M1_2022-11-09_2026-10-21.zip`, 2022-11-09 to 2025-01-01. Instrument: Deriv XAUUSDmicro. Exit: stop at sweep extreme + buffer, 2R target, 24 h max.
+Protocol: docs/06 (committed before this run). Code: first run on the working tree over `e41ec85` (code committed as `b34e1c4`); re-run after the refactor at `9a9baed` with identical results. Data: `deriv_XAUUSDmicro_M1_2022-11-09_2026-10-21.zip`, 2022-11-09 to 2025-01-01. Instrument: Deriv XAUUSDmicro. Exit: stop at sweep extreme + buffer, 2R target, 24 h max.
 
 ## Results per step (after spread, slippage and swap)
 

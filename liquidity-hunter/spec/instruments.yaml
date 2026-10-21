@@ -45,6 +45,43 @@ instruments:
       quality_grade: not_assessed
     status: research_primary
 
+  - id: deriv_XAUUSDmicro
+    broker: Deriv (BVI) Ltd.
+    server: DerivBVI-Server-02
+    symbol: XAUUSDmicro
+    market_type: metal_cfd
+    spec_file: broker_specs/LH_spec_Deriv_BVI_Ltd._XAUUSDmicro.csv   # exported 2026-10-21
+    account_margin_mode: hedging
+    account_currency: USD
+    leverage: 1000
+    server_time: {fixed_offset_hours: 0}
+    digits: 2
+    tick_size: 0.01
+    tick_value_usd: 0.01       # per 1.0 lot per 0.01 move -> $1 per $1 move per lot
+    contract_size: 1           # oz
+    volume_min: 0.1            # smallest trade = $0.10 per $1 move
+    volume_max: 100.0
+    volume_step: 0.1
+    stops_level_points: 20
+    freeze_level_points: 3
+    spread_floating: true      # 40 points at export (20:34 UTC, near daily break); stats from ticks
+    filling_mode: FOK
+    execution_mode: market
+    commission_per_lot_roundtrip_usd: TBD
+    swap_mode: points
+    swap_long_points: -45      # = -$0.45 per lot per night
+    swap_short_points: 20      # = +$0.20 per lot per night
+    swap_triple_day: wednesday
+    sessions_server_time: same as deriv_XAUUSD
+    history:
+      server_first_date: 2022-11-09
+      terminal_first_m1_bar: 2025-03-25
+    data:
+      bars_m1: TBD
+      ticks: TBD
+      quality_grade: not_assessed
+    status: live_execution_candidate   # research uses deriv_XAUUSD prices if the feeds match
+
   - id: deriv_EURUSD
     broker: Deriv
     symbol: EURUSD

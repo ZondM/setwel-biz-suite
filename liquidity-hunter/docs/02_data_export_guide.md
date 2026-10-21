@@ -30,6 +30,10 @@ Tick files are large. Export **one month per file**.
 2. Name: `deriv_XAUUSD_TICKS_2026-09.csv`.
 3. Start with the latest 12 months. Older months later if history exists.
 
+## Step 3b — Feed check (XAUUSDmicro)
+
+Export **one month of ticks for both** `XAUUSD` and `XAUUSDmicro` for the **same month** (e.g. September 2026). This shows whether the two symbols use the same prices.
+
 ## Step 4 — Send the files
 
 - Zip each file. GitHub's website accepts files up to **25 MB** each. If a monthly tick zip is larger, split it into two half-months.

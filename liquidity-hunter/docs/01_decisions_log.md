@@ -92,6 +92,27 @@ Options put to the user (decision pending):
 3. Trade EURUSD live first: 0.01 lot = ~$0.10 per pip, so $1 risk allows a ~10-pip stop.
 4. Raise risk per trade. Not recommended: at 2.5–5% per trade, the 10% drawdown limit is hit after 2–4 losses.
 
+## 2026-10-21 — Deriv XAUUSDmicro spec received
+
+File: `spec/broker_specs/LH_spec_Deriv_BVI_Ltd._XAUUSDmicro.csv`. 1 lot = 1 oz (XAUUSD: 100 oz). Min 0.1 lot, step 0.1.
+
+Smallest trade = **$0.10 per $1 move**, 10x smaller than XAUUSD's smallest trade.
+
+| Stop distance | Volume for $1 risk (rounded down) | Actual risk | % of $200 |
+|---|---|---|---|
+| $2 | 0.4 | ~$0.82 | 0.41% |
+| $5 | 0.1 | ~$0.54 | 0.27% |
+| $9.50 | 0.1 | ~$0.99 | 0.50% |
+| > ~$9.60 | below 0.1 → rejected | — | — |
+
+(Risk includes the 40-point spread seen at export.) Rounding to 0.1-lot steps often puts actual risk below 0.5%. It is never above.
+
+**Decision:** live execution candidate = `XAUUSDmicro` on Deriv. This makes 0.5% risk on $200 workable for stops up to about $9.60.
+
+Checks still needed:
+1. **Same price feed?** Research uses XAUUSD history (longer in the terminal). One overlapping month of ticks from both symbols will be compared. If the prices differ, research must use XAUUSDmicro data.
+2. **Spread:** 40 points on micro vs 29 on XAUUSD, but the two snapshots were taken at different times close to the daily break. Tick data decides.
+
 ## Gate status
 
 | Gate | Status |

@@ -5,7 +5,7 @@
 //| Read-only: places no orders.                                     |
 //+------------------------------------------------------------------+
 #property copyright "Liquidity Hunter project"
-#property version   "0.10"
+#property version   "1.00"
 #property script_show_inputs
 
 input string InpSymbols = "XAUUSD,EURUSD";   // Symbols, comma-separated, exactly as in Market Watch

@@ -40,7 +40,7 @@ def resample(m1, rule):
     g = m1.set_index("dt").resample(rule, label="left", closed="left")
     df = pd.DataFrame({"open": g["open"].first(), "high": g["high"].max(), "low": g["low"].min(),
                        "close": g["close"].last(), "spread": g["spread"].first()}).dropna()
-    df["time"] = (df.index.astype("int64") // 10**9).astype("int64")
+    df["time"] = df.index.values.astype("datetime64[s]").astype("int64")
     return df.reset_index()
 
 

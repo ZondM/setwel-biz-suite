@@ -71,6 +71,27 @@ File: `spec/broker_specs/LH_spec_Deriv_BVI_Ltd._XAUUSD.csv` (DerivBVI-Server-02)
 
 Risk: 9 months OOS may give fewer than the 100 trades required by acceptance criterion F.2-1. If so, the result is reported as "insufficient evidence", and demo forward testing extends the OOS sample. Gold trended unusually strongly in 2025–2026, so validation and OOS may not resemble development.
 
+## 2026-10-21 — Account balance: $200
+
+0.5% risk = **$1.00 per trade**. On Deriv XAUUSD the smallest trade (0.01 lot) loses $1 per $1 of price move, plus ~$0.29 spread.
+
+| Stop distance (gold) | Risk at 0.01 lot incl. spread | % of $200 |
+|---|---|---|
+| $0.70 | ~$1.00 | 0.5% |
+| $2.00 | ~$2.30 | 1.2% |
+| $5.00 | ~$5.30 | 2.7% |
+| $10.00 | ~$10.30 | 5.2% |
+
+The trade-size calculation would reject every XAUUSD trade with a stop wider than about $0.70. At that stop width, spread is ~30–40% of the risk. **XAUUSD cannot be traded live at 0.5% risk with $200 on Deriv.**
+
+Research is not affected: results are measured in R (multiples of risk) and do not depend on balance. The constraint applies only to the live EA.
+
+Options put to the user (decision pending):
+1. Research now; run demo and live with a larger balance later. **(Recommended)**
+2. Use a cent account (smaller contract), if your broker offers one on MT5, so 0.5% risk is possible.
+3. Trade EURUSD live first: 0.01 lot = ~$0.10 per pip, so $1 risk allows a ~10-pip stop.
+4. Raise risk per trade. Not recommended: at 2.5–5% per trade, the 10% drawdown limit is hit after 2–4 losses.
+
 ## Gate status
 
 | Gate | Status |

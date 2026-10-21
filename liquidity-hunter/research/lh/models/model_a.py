@@ -61,7 +61,7 @@ def build_candidates(m15: pd.DataFrame, atr15: pd.Series, events15: pd.DataFrame
     for r in rc.itertuples(index=False):
         d = int(r.direction)
         i_s, i_r = pos[r.sweep_time], pos[r.reclaim_time]
-        row = dict(pool_id=r.pool_id, pool_type=r.type, pool_tf=r.tf, level=r.level, direction=d,
+        row = dict(cand_id=r.pool_id, pool_id=r.pool_id, pool_type=r.type, pool_tf=r.tf, level=r.level, direction=d,
                    sweep_time=r.sweep_time, sweep_extreme=r.sweep_extreme, sweep_depth_atr=r.sweep_depth_atr,
                    reclaim_time=r.reclaim_time, sig_A=ct.iat[i_r], atr_A=a15[i_r])
         # B: H4 alignment

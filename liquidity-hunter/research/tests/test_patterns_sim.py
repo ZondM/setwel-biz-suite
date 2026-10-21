@@ -158,3 +158,25 @@ def test_patterns_no_lookahead(cut_pos):
     pd.testing.assert_frame_equal(dp, df.iloc[:cut_pos])
     done = rp[rp.end_time.notna()].reset_index(drop=True)
     pd.testing.assert_frame_equal(done, rf[rf.end_time <= cut].reset_index(drop=True))
+
+
+# ---------- Model B: decisions use only information available at the signal ----------
+
+def test_model_b_no_lookahead():
+    from lh.models.model_b import build_candidates as build_b
+    from lh.pipeline import build_base
+    m1 = synthetic_m1(start="2025-01-05 22:00", end="2025-02-21 21:59", seed=11)
+    full = build_base(m1)
+
+    def cands(base):
+        tf, st = base["tf"], base["st"]
+        return build_b(tf["M15"], st["M15"]["atr"], st["M15"]["events"], base["disp"], st["H4"]["state"],
+                       st["H1"]["state"], st["H1"]["events"], tf["M5"])
+
+    cf = cands(full).set_index("cand_id")
+    cut = pd.Timestamp("2025-02-05 12:00", tz="UTC")
+    cp = cands(build_base(m1[m1.index < cut])).set_index("cand_id")
+    early = cp[cp.sig_B1 <= cut - pd.Timedelta(hours=1)]
+    assert len(early) > 50 and early.pass_B1.any()
+    cols = ["direction", "h4_dir", "h1_dir", "pass_B1", "reason_B1", "pass_B2", "reason_B2", "stop_ref"]
+    pd.testing.assert_frame_equal(early[cols], cf.loc[early.index, cols])

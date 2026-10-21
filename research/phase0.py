@@ -26,6 +26,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
 from scipy import stats
 from statsmodels.stats.diagnostic import acorr_ljungbox
 
@@ -123,9 +124,10 @@ def series_tests(r, spread_price, mean_abs_move):
     }
 
 
-def spike_tests(ticks, side, rate, k=8.0):
-    """Detect spikes on mid price and test whether their arrival is memoryless."""
-    mid = ((ticks["bid"] + ticks["ask"]) / 2).to_numpy()
+def spike_tests(ticks, side, rate, k=8.0, mid=None):
+    """Detect spikes on mid price (or any price series) and test whether their arrival is memoryless."""
+    if mid is None:
+        mid = ((ticks["bid"] + ticks["ask"]) / 2).to_numpy()
     ch = np.diff(mid)
     base = np.median(np.abs(ch[ch * side <= 0])) if (ch * side <= 0).any() else np.median(np.abs(ch))
     spikes = np.where((ch * side > 0) & (np.abs(ch) > k * base))[0]
@@ -136,9 +138,25 @@ def spike_tests(ticks, side, rate, k=8.0):
     gaps = np.diff(spikes)
     out["mean_gap"] = gaps.mean()
     out["advertised"] = rate
-    # geometric with p = 1/mean: compare via KS on the continuous exponential approximation
-    ks = stats.kstest(gaps, "expon", args=(0, gaps.mean()))
-    out["ks_p"] = ks.pvalue
+    # gaps are whole numbers (ticks or candles), so test against the DISCRETE memoryless law (geometric):
+    # 1) chi-square of the gap histogram vs geometric with p = 1/mean gap
+    p = 1.0 / gaps.mean()
+    nb = int(max(5, min(20, len(gaps) // 15)))       # bins with equal expected counts (>= ~15 each)
+    edges = np.unique(np.ceil(np.log(1 - np.linspace(0, 1, nb + 1)[1:-1]) / np.log(1 - p)).astype(int))
+    edges = np.r_[0, edges, np.inf]                  # bin j holds gaps in (edges[j], edges[j+1]]
+    F = lambda k: 1 - (1 - p) ** k if np.isfinite(k) else 1.0
+    obs = np.array([((gaps > lo) & (gaps <= hi)).sum() for lo, hi in zip(edges[:-1], edges[1:])], float)
+    exp = np.array([len(gaps) * (F(hi) - F(lo)) for lo, hi in zip(edges[:-1], edges[1:])])
+    keep = exp > 0
+    out["chi2_p"] = stats.chisquare(obs[keep], exp[keep] * obs[keep].sum() / exp[keep].sum(), ddof=1).pvalue
+    # 2) does the chance of a spike change with the time already waited? (logistic hazard on log wait)
+    step = max(1, int(gaps.mean() // 50))            # thin long tick gaps to keep the data small
+    waits = np.concatenate([np.arange(1, g + 1, step) for g in gaps])
+    event = np.concatenate([(np.arange(1, g + 1, step) > g - step).astype(float) for g in gaps])
+    m = sm.Logit(event, sm.add_constant(np.log(waits))).fit(disp=0)
+    out["hazard_slope"] = m.params[1]
+    out["hazard_slope_p"] = m.pvalues[1]
+    out["ks_p"] = min(out["chi2_p"], out["hazard_slope_p"])   # flag if either test rejects
     # hazard: share of waits that end within the next 'h' ticks, after short vs long waits
     med = np.median(gaps)
     h = max(1, int(med / 4))
@@ -196,6 +214,32 @@ def analyse(folder):
                     f"{t['vr10']:.3f} / {fmt_p(t['vr10_p'])} | {fmt_p(t['runs_p'])} | {t['hurst']:.3f} | "
                     f"{t['edge']:.5g} vs {t['spread']:.5g} |")
             lines.append("")
+            if side != 0:
+                c = bars["close"].to_numpy()
+                ch = np.diff(c)
+                base = np.median(np.abs(ch[ch * side <= 0]))
+                spk = (ch * side > 0) & (np.abs(ch) > 8 * base)
+                lr = np.diff(np.log(c))[~spk]
+                t = series_tests(lr, spread_price, np.mean(np.abs(ch[~spk])))
+                lines += [f"M1 drift only (the {int(spk.sum()):,} spike candles removed): lag-1 autocorr {t['ac1']:+.4f} "
+                          f"(±{t['band']:.4f}), Ljung-Box p {fmt_p(t['lb_p'])}, VR(5) {t['vr5']:.3f} p {fmt_p(t['vr5_p'])}, "
+                          f"runs p {fmt_p(t['runs_p'])}.", ""]
+                if t["any_flag"]:
+                    flags.append("M1 drift")
+                if not os.path.exists(os.path.join(folder, name + "_ticks.csv")):
+                    s = spike_tests(None, side, advertised_rate(name), mid=c)
+                    if "note" not in s:
+                        lines += [
+                            f"Spikes from M1 candles: {s['spikes']:,}. Mean gap {s['mean_gap']:.1f} candles"
+                            f" (~{s['mean_gap'] * bars['tick_volume'].median():.0f} ticks; advertised about {s['advertised']}).",
+                            f"Memoryless tests: gaps vs geometric (chi-square) p = {fmt_p(s['chi2_p'])}; "
+                        f"spike chance vs time already waited (logistic slope {s['hazard_slope']:+.3f}) p = {fmt_p(s['hazard_slope_p'])}.",
+                            f"Chance of a spike within the next {s['hazard_window']} candles: "
+                            f"{100 * s['hazard_fresh']:.1f}% right after a spike vs "
+                            f"{100 * s['hazard_after_median_wait']:.1f}% after already waiting the median gap. "
+                            "Equal numbers = a spike is never 'due'.", ""]
+                        if s["ks_p"] < ALPHA:
+                            flags.append("spike timing")
         ticks_path = os.path.join(folder, name + "_ticks.csv")
         if os.path.exists(ticks_path):
             ticks = pd.read_csv(ticks_path)
@@ -215,7 +259,8 @@ def analyse(folder):
                     lines += [
                         f"Spikes: {s['spikes']} in {s['ticks']:,} ticks. Mean gap {s['mean_gap']:.0f} ticks"
                         f" (advertised about {s['advertised']}).",
-                        f"Memoryless test (gaps vs exponential, KS): p = {fmt_p(s['ks_p'])}.",
+                        f"Memoryless tests: gaps vs geometric (chi-square) p = {fmt_p(s['chi2_p'])}; "
+                        f"spike chance vs time already waited (logistic slope {s['hazard_slope']:+.3f}) p = {fmt_p(s['hazard_slope_p'])}.",
                         f"Chance of a spike within the next {s['hazard_window']} ticks: "
                         f"{100 * s['hazard_fresh']:.1f}% right after a spike vs "
                         f"{100 * s['hazard_after_median_wait']:.1f}% after already waiting the median gap. "

@@ -31,7 +31,7 @@ instruments:
     swap_long_points: -45      # = -$45 per lot per night
     swap_short_points: 20      # = +$20 per lot per night
     swap_triple_day: wednesday
-    sessions_server_time:      # seconds after midnight, as exported in October (US summer time)
+    sessions_server_time:      # HH:MM server time (= UTC), exported in October (US summer time)
       sunday: ["22:10-24:00"]
       monday_to_thursday: ["00:00-20:59", "22:05-24:00"]
       friday: ["00:00-20:45"]

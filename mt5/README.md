@@ -41,3 +41,11 @@ No test results exist yet. Nothing here is proven profitable.
 3. Open a manual trade without SL with `InpManageManual=true`: SL installed within ~5 s, or closed after retries (policy CLOSE).
 4. Restart the terminal with an open trade: no duplicate entry; BE / trailing continue.
 5. V10, V25, V50 separately (lot minimums differ; the EA skips instead of over-risking).
+
+## Boom / Crash indicator — `Indicators/TDI_BoomCrash_Pro.mq5` (v1, not compiled yet)
+Same TDI-led divergence rules, adapted:
+- Spike candles (close-to-close move in the spike direction > 4 x the normal move) are marked with an orange dot and removed from the RSI, so the TDI reads the drift between spikes.
+- Mode auto-detects from the symbol name: Boom = BUY signals only, Crash = SELL signals only (spike side). Drift-side signals: `InpTradeDriftSide`.
+- Spike-side signals ignore the trend / HTF filters (the drift always runs the other way).
+- Panel bottom line: how often a spike came within 10 bars after a signal vs after any bar. If the two numbers are about equal, the signal does not time spikes.
+- The EA can trade it: set the EA input `InpIndName = TDI_BoomCrash_Pro`.

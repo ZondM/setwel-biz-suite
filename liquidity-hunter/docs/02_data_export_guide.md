@@ -4,8 +4,10 @@ No coding needed. Do this in the Deriv MT5 terminal on Windows (or the desktop a
 
 ## Step 1 — Symbol specification (5 minutes)
 
-1. Copy `mql5/Scripts/LH_ExportSymbolSpec.mq5` into your terminal: **File → Open Data Folder → MQL5 → Scripts**, paste it there.
-2. In MT5, open **Navigator** (Ctrl+N) → right-click **Scripts** → **Refresh**.
+**Already done for Deriv XAUUSD and XAUUSDmicro. Skip this step unless you need another symbol or broker.**
+
+1. Open the script on GitHub: https://github.com/zondm/setwel-biz-suite/blob/claude/inspiring-albattani-8vtyyk/liquidity-hunter/mql5/Scripts/LH_ExportSymbolSpec.mq5 and click the copy icon.
+2. In MT5 press **F4** (MetaEditor) → **New** → **Script** → name `LH_ExportSymbolSpec` → **Finish**. Delete the template text, paste, press **F7**. Expect "0 errors". Then in MT5: **Ctrl+N** → **Scripts**.
 3. Double-click **LH_ExportSymbolSpec**. In the input box, type the symbol names exactly as shown in Market Watch (e.g. `XAUUSD,EURUSD`). Click OK.
 4. The **Experts** tab at the bottom shows `LH: wrote MQL5\Files\LH_spec_...csv`. Get the file from **File → Open Data Folder → MQL5 → Files**.
 5. If it fails to compile, send me the error text from the **Errors** tab in MetaEditor. (I could not compile it here because MT5 does not run in this environment.)

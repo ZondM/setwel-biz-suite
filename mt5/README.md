@@ -49,3 +49,10 @@ Same TDI-led divergence rules, adapted:
 - Spike-side signals ignore the trend / HTF filters (the drift always runs the other way).
 - Panel bottom line: how often a spike came within 10 bars after a signal vs after any bar. If the two numbers are about equal, the signal does not time spikes.
 - The EA can trade it: set the EA input `InpIndName = TDI_BoomCrash_Pro`.
+
+## Stop-Loss Enforcer for manual trades — `Experts/TDI_SL_Enforcer.mq5` (v1, not compiled yet)
+Attach to ONE chart (Algo Trading ON). It never opens trades. Watches all symbols.
+- Trade without SL → after 20 s grace it installs one: the closer of 2 x ATR(M15) or a 2% of balance loss. 5 retries, then closes the trade (or alerts only).
+- Break-even at 0.5R (locks 0.1R), trailing from 1R at 1.5 x ATR. Never loosens a stop; respects stop/freeze levels; counts a stop only when the server confirms it.
+- Restart-safe (initial risk per ticket stored in terminal global variables). Log: MQL5\Files\TDI_SL_Enforcer.csv.
+Test on a DEMO first: open a trade without SL and watch the panel count down and install it.

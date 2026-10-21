@@ -14,14 +14,14 @@
 //| not a trading system.                                            |
 //+------------------------------------------------------------------+
 #property copyright   "Liquidity Hunter project"
-#property version     "1.00"
+#property version     "1.01"
 #property description "Swings, BOS/CHoCH, regime, liquidity pools and sweeps on closed bars (no repaint)."
 #property description "Visual aid only: these rules showed no trading edge in testing."
 #property indicator_chart_window
 #property indicator_buffers 0
 #property indicator_plots   0
 
-input group "Structure (chart timeframe)"
+//--- Structure (chart timeframe)
 input int    InpSwingLeft       = 2;      // Swing: bars on the left
 input int    InpSwingRight      = 2;      // Swing: bars on the right (confirmation delay)
 input int    InpAtrPeriod       = 14;     // ATR period
@@ -32,7 +32,7 @@ input int    InpRangeN          = 6;      // Range test: last N swings
 input double InpRangeAtr        = 3.0;    // Range test: N swings within x ATR
 input int    InpBarsBack        = 1500;   // Closed bars to analyse
 
-input group "Liquidity and sweeps"
+//--- Liquidity and sweeps
 input int    InpLookbackDays    = 10;     // Draw pools known in the last N days
 input ENUM_TIMEFRAMES InpSweepTF = PERIOD_M15; // Timeframe for sweep detection
 input double InpEqAtr           = 0.10;   // Equal highs/lows tolerance, x ATR(H1)
@@ -45,10 +45,10 @@ input int    InpSweepMinTicks   = 2;      // Sweep: minimum depth, ticks
 input double InpSweepMaxAtr     = 1.0;    // Deeper than this = breakout, x ATR
 input int    InpReclaimBars     = 3;      // Bars allowed to close back inside
 
-input group "Time"
+//--- Time
 input int    InpServerUtcOffset = 0;      // Broker server time minus UTC, hours (Deriv = 0)
 
-input group "Display"
+//--- Display
 input bool   InpShowSwings      = true;
 input bool   InpShowStructure   = true;
 input bool   InpShowDayWeek     = true;
@@ -67,7 +67,7 @@ input color  InpColEqual        = clrTeal;
 input color  InpColSwingPool    = clrGray;
 input color  InpColReclaim      = clrOrangeRed;
 
-input group "Parity export"
+//--- Parity export
 input bool   InpExportCsv       = false;  // Write swings, events and pools to MQL5\Files
 
 #define PFX "LH_"

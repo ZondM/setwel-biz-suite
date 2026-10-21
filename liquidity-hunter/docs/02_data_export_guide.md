@@ -14,8 +14,11 @@ This file tells us tick value, lot limits, stop level, swaps, sessions and the s
 
 ## Step 2 — M1 bars (as much history as available)
 
+**First:** Tools → Options → Charts → **Max bars in chart** → set to **Unlimited**, then restart MT5. Otherwise MT5 may export fewer bars than the server has.
+Deriv's XAUUSD history starts **2022-11-09**, so use that as the start date.
+
 1. **View → Symbols** (Ctrl+U) → select the symbol → **Bars** tab.
-2. Timeframe **M1**. Start date: as early as possible (e.g. 2018-01-01). End: today.
+2. Timeframe **M1**. Start date 2022-11-09. End: today.
 3. Click **Request**. Wait until it stops loading. Note the first date it actually shows.
 4. Click **Export Bars** → save as `deriv_XAUUSD_M1_<from>_<to>.csv`.
 

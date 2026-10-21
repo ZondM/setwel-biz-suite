@@ -1,0 +1,51 @@
+key,value
+export_time_gmt,2026.10.21 20:11:16
+export_time_server,2026.10.21 20:11:16
+server_minus_gmt_seconds,0
+account_company,Deriv (BVI) Ltd.
+account_server,DerivBVI-Server-02
+account_currency,USD
+account_margin_mode,ACCOUNT_MARGIN_MODE_RETAIL_HEDGING
+account_leverage,1000
+symbol,XAUUSD
+description,Gold vs US Dollar
+currency_base,XAU
+currency_profit,USD
+currency_margin,XAU
+digits,2
+point,0.0100000000
+tick_size,0.0100000000
+tick_value,1.0000000000
+tick_value_profit,1.0000000000
+tick_value_loss,1.0000000000
+contract_size,100.0000000000
+volume_min,0.0100000000
+volume_max,10.0000000000
+volume_step,0.0100000000
+volume_limit,10.0000000000
+stops_level_points,20
+freeze_level_points,3
+spread_now_points,29
+spread_float,1
+calc_mode,SYMBOL_CALC_MODE_FOREX
+trade_mode,SYMBOL_TRADE_MODE_FULL
+execution_mode,SYMBOL_TRADE_EXECUTION_MARKET
+filling_mode_flags,1
+order_mode_flags,63
+swap_mode,SYMBOL_SWAP_MODE_POINTS
+swap_long,-45.0000000000
+swap_short,20.0000000000
+swap_rollover3days,WEDNESDAY
+margin_initial,0.0000000000
+session_trade_SUNDAY_0,79800-86400
+session_trade_MONDAY_0,0-75540
+session_trade_MONDAY_1,79500-86400
+session_trade_TUESDAY_0,0-75540
+session_trade_TUESDAY_1,79500-86400
+session_trade_WEDNESDAY_0,0-75540
+session_trade_WEDNESDAY_1,79500-86400
+session_trade_THURSDAY_0,0-75540
+session_trade_THURSDAY_1,79500-86400
+session_trade_FRIDAY_0,0-74700
+first_m1_bar_server_time,2026.01.01 23:01:00
+server_first_date,2022.11.09 00:00:00

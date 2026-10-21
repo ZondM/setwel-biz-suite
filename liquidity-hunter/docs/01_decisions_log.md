@@ -46,6 +46,31 @@ Spec version after this log: **LH-SPEC v0.2** (not frozen).
 3. Exness account type (Standard / Raw Spread / Zero / Pro), because it decides costs.
 4. Commission per lot on each account (from the broker's fee page).
 
+## 2026-10-21 — Deriv XAUUSD contract spec received
+
+File: `spec/broker_specs/LH_spec_Deriv_BVI_Ltd._XAUUSD.csv` (DerivBVI-Server-02).
+
+| Finding | Consequence |
+|---|---|
+| Server time = UTC (offset 0) | Simple conversion. Winter data will confirm there is no DST shift. |
+| 1.00 lot = 100 oz; $1 gold move = $100 per lot; min 0.01 lot = $1 per $1 move | At 0.5% risk, the smallest trade risks $1 per $1 of stop. With a $1,000 balance ($5 risk), any stop wider than $5.00 must be rejected. **Account balance needed** to know how many setups are tradable. |
+| Stop level 20 points ($0.20), freeze level 3 points | Very tight structural stops below $0.20 + spread are rejected. |
+| Spread floating, 29 points ($0.29) at export | Real spread statistics will come from tick data. |
+| Fill policy FOK only | EA must send orders with FOK filling. |
+| Swap: long -$45, short +$20 per lot per night, triple on Wednesday | Included in the cost model for trades held past rollover. Longs held overnight are costly. |
+| Daily break ~20:59–22:05 UTC; Friday close 20:45 UTC | Data checks treat this as expected. No entries are allowed in the 30 min before the break (default). |
+| **Server history starts 2022-11-09** | Only ~4 years of data. The 2018 start date in the plan is impossible on Deriv. |
+
+### Data periods revised (Deriv XAUUSD)
+
+| Segment | Period | Length |
+|---|---|---|
+| Development | 2022-11-09 → 2024-12-31 | ~26 months |
+| Validation | 2025-01-01 → 2025-12-31 | 12 months |
+| Final out-of-sample (opened once) | 2026-01-01 → 2026-09-30 | 9 months |
+
+Risk: 9 months OOS may give fewer than the 100 trades required by acceptance criterion F.2-1. If so, the result is reported as "insufficient evidence", and demo forward testing extends the OOS sample. Gold trended unusually strongly in 2025–2026, so validation and OOS may not resemble development.
+
 ## Gate status
 
 | Gate | Status |

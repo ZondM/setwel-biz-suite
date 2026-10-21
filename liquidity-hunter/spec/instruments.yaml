@@ -5,25 +5,42 @@
 
 instruments:
   - id: deriv_XAUUSD
-    broker: Deriv
-    symbol: XAUUSD            # confirm exact MT5 name
+    broker: Deriv (BVI) Ltd.
+    server: DerivBVI-Server-02
+    symbol: XAUUSD
     market_type: metal_cfd
+    spec_file: broker_specs/LH_spec_Deriv_BVI_Ltd._XAUUSD.csv   # exported 2026-10-21
     account_margin_mode: hedging
     account_currency: USD
-    server_time: TBD          # from server_minus_gmt_seconds
-    tick_size: TBD
-    tick_value: TBD
-    contract_size: TBD
-    volume_min: TBD
-    volume_max: TBD
-    volume_step: TBD
-    stops_level_points: TBD
-    commission_per_lot_roundtrip_usd: TBD   # from broker fee page
-    swap_long: TBD
-    swap_short: TBD
-    sessions: TBD
+    leverage: 1000
+    server_time: {fixed_offset_hours: 0}   # server_minus_gmt_seconds = 0; confirm in winter data
+    digits: 2
+    tick_size: 0.01
+    tick_value_usd: 1.0        # per 1.00 lot per 0.01 move -> $100 per $1 move per lot
+    contract_size: 100         # oz
+    volume_min: 0.01
+    volume_max: 10.0
+    volume_step: 0.01
+    stops_level_points: 20     # $0.20 minimum stop distance
+    freeze_level_points: 3
+    spread_floating: true      # 29 points ($0.29) at export time; real stats come from ticks
+    filling_mode: FOK          # filling_mode_flags = 1 -> EA must use ORDER_FILLING_FOK
+    execution_mode: market
+    commission_per_lot_roundtrip_usd: TBD   # not in MT5 spec; from Deriv fee page
+    swap_mode: points
+    swap_long_points: -45      # = -$45 per lot per night
+    swap_short_points: 20      # = +$20 per lot per night
+    swap_triple_day: wednesday
+    sessions_server_time:      # seconds after midnight, as exported in October (US summer time)
+      sunday: ["22:10-24:00"]
+      monday_to_thursday: ["00:00-20:59", "22:05-24:00"]
+      friday: ["00:00-20:45"]
+    daily_break_utc: "20:59-22:05 (October; check whether it shifts by 1 h in US winter)"
+    history:
+      server_first_date: 2022-11-09   # earliest data Deriv's server holds for this symbol
+      terminal_first_m1_bar: 2026-01-01   # only what the terminal had downloaded so far
     data:
-      bars_m1: TBD            # file names + sha256 once received
+      bars_m1: TBD
       ticks: TBD
       quality_grade: not_assessed
     status: research_primary

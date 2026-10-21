@@ -2,7 +2,7 @@
 
 File: `mql5/Experts/LiquidityHunterB.mq5`. **Status: written, not yet compiled.** Send the Errors tab if compiling fails.
 
-> **UNVALIDATED.** This EA implements Model B exactly as pre-registered (docs/08, step B4). In research it showed **no edge**: +0.05R per trade on 17 development trades, 95% CI −0.66R to +0.76R (docs/09). Expect results anywhere between losing and small profit. It refuses to run on a real account unless `InpAllowLive = true`.
+> **UNVALIDATED.** This EA implements Model B exactly as pre-registered (docs/08, step B4). In research it showed **no edge**: +0.05R per trade on 17 development trades, 95% CI −0.66R to +0.76R (docs/09). Expect results anywhere between losing and small profit. On a real account it stays on the chart but does not trade unless `InpAllowLive = true` (press F7 on the chart to change inputs).
 
 ## What it does
 
@@ -30,7 +30,7 @@ Each setup has an ID (`LHB-YYYYMMDD-HHMM`) stored as the order comment, so it is
 | Missing stop after fill | 2 attempts to set it, otherwise the position is closed (`UNPROTECTED_CLOSE`) |
 | Slippage | closed if filled risk > 1.5 × planned |
 | Stale prices | no entry if the last tick is older than 2 minutes |
-| Real account | blocked unless `InpAllowLive = true` |
+| Real account | attached but not trading unless `InpAllowLive = true` |
 
 Every decision (entry, rejection with reason, exit, lock) is printed in the Experts tab and written to `MQL5\Files\LH_B_log_<symbol>.csv`.
 

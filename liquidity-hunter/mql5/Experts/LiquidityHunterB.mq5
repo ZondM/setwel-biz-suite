@@ -8,13 +8,14 @@
 //|                                                                  |
 //| STATUS: UNVALIDATED. In research this exact model showed no edge |
 //| (docs/09: +0.05R on 17 trades, 95% CI -0.66R..+0.76R).           |
-//| Trades DEMO accounts only unless InpAllowLive = true.            |
+//| On a REAL account it stays attached but does not trade unless   |
+//| InpAllowLive = true.                                             |
 //|                                                                  |
 //| All signals use closed bars and are recomputed from history on   |
 //| each new M5 bar, so a restart rebuilds the same state.           |
 //+------------------------------------------------------------------+
 #property copyright   "Liquidity Hunter project"
-#property version     "1.00"
+#property version     "1.01"
 #property description "Model B trend continuation. UNVALIDATED: no edge shown in research. Demo only by default."
 
 #include <Trade\Trade.mqh>
@@ -84,6 +85,7 @@ struct TFData
 CTrade   g_trade;
 double   g_tick = 0.01;
 datetime g_last_m5 = 0;
+bool     g_blocked = false;
 string   g_gv_hwm, g_gv_day, g_gv_daystart, g_gv_ddlock;
 
 //+------------------------------------------------------------------+
@@ -626,11 +628,16 @@ void ManagePositions()
 //+------------------------------------------------------------------+
 int OnInit()
   {
-   if(!InpAllowLive && AccountInfoInteger(ACCOUNT_TRADE_MODE) == ACCOUNT_TRADE_MODE_REAL)
+   g_blocked = !InpAllowLive && AccountInfoInteger(ACCOUNT_TRADE_MODE) == ACCOUNT_TRADE_MODE_REAL;
+   if(g_blocked)
      {
-      Alert("LiquidityHunterB: real account detected and InpAllowLive = false. This model showed NO edge in research. EA stopped.");
-      return INIT_FAILED;
+      Alert("LiquidityHunterB: REAL account and InpAllowLive = false. The EA stays on the chart but will NOT trade. "
+            "This model showed no edge in research. Press F7 on the chart to change inputs.");
+      Comment("LiquidityHunterB: NOT TRADING - real account, InpAllowLive = false (press F7 to change). Model is UNVALIDATED.");
      }
+   else
+      Comment("LiquidityHunterB: active (" + (AccountInfoInteger(ACCOUNT_TRADE_MODE) == ACCOUNT_TRADE_MODE_REAL ? "REAL" : "DEMO") +
+              " account). Model is UNVALIDATED - no edge shown in research.");
    if(AccountInfoInteger(ACCOUNT_MARGIN_MODE) != ACCOUNT_MARGIN_MODE_RETAIL_HEDGING)
       Print("LH-B: account is not hedging; behaviour was designed for hedging accounts.");
    g_tick = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
@@ -646,8 +653,14 @@ int OnInit()
    return INIT_SUCCEEDED;
   }
 
+void OnDeinit(const int reason)
+  {
+   Comment("");
+  }
+
 void OnTick()
   {
+   if(g_blocked) return;
    ManagePositions();
    datetime m5 = iTime(_Symbol, PERIOD_M5, 0);
    if(m5 == 0 || m5 == g_last_m5) return;

@@ -295,7 +295,12 @@ void Cleanup()
       if(!PositionSelectByTicket(g_prot[i].ticket))
       {
          int n=ArraySize(g_prot);
-         for(int j=i;j<n-1;j++) g_prot[j]=g_prot[j+1];
+         for(int j=i;j<n-1;j++)
+         {
+            g_prot[j].ticket=g_prot[j+1].ticket;   g_prot[j].firstSeen=g_prot[j+1].firstSeen;
+            g_prot[j].tries=g_prot[j+1].tries;     g_prot[j].lastTry=g_prot[j+1].lastTry;
+            g_prot[j].lastAlert=g_prot[j+1].lastAlert; g_prot[j].state=g_prot[j+1].state;
+         }
          ArrayResize(g_prot,n-1);
       }
    for(int i=GlobalVariablesTotal()-1;i>=0;i--)

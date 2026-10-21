@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //|                                            TDI_Divergence_EA.mq5 |
-//|  Trades confirmed signals of TDI_Divergence_Pro (v9.1) and       |
+//|  Trades confirmed signals of TDI_Divergence_Pro (v9.2) and       |
 //|  protects every managed position with a Stop-Loss Enforcer,      |
 //|  break-even and a trailing stop.                                 |
 //|                                                                  |
@@ -18,7 +18,7 @@
 //|  - trailing: after TrailStartR, SL follows price at TrailATR     |
 //|  No martingale, no grid, no averaging.                           |
 //|                                                                  |
-//|  Install: compile TDI_Divergence_Pro v9.1 in MQL5\Indicators,    |
+//|  Install: compile TDI_Divergence_Pro v9.2 in MQL5\Indicators,    |
 //|           then compile this EA, attach to ONE                    |
 //|           chart per symbol, enable Algo Trading.                 |
 //+------------------------------------------------------------------+
@@ -35,7 +35,7 @@ enum ENUM_FAIL_POLICY { FAIL_CLOSE=0, // Close the unprotected position
 
 input group "=== Entries ==="
 input bool            InpEnableEntries   = true;              // MASTER SWITCH: false = no new trades (open trades stay protected)
-input string          InpIndName         = "TDI_Divergence_Pro"; // Indicator name in MQL5\Indicators (v9.1)
+input string          InpIndName         = "TDI_Divergence_Pro"; // Indicator name in MQL5\Indicators (v9.2)
 input ENUM_TIMEFRAMES InpEntryTF         = PERIOD_CURRENT;    // Signal timeframe
 input bool            InpAllowBuys       = true;
 input bool            InpAllowSells      = true;
@@ -61,6 +61,7 @@ input group "=== Risk ==="
 input ENUM_LOT_MODE   InpLotMode         = LOT_RISK;
 input double          InpFixedLots       = 0;                 // Fixed lots (0 = broker minimum)
 input double          InpRiskPercent     = 1.0;               // Risk per trade, % of balance
+input double          InpMaxRiskPercent  = 3.0;               // If the broker MINIMUM lot risks more than RiskPercent: still trade it up to this % (0 = never)
 input double          InpMaxLots         = 0;                 // Lot cap (0 = none)
 input double          InpSLBufferATR     = 0.3;               // SL = last-leg extreme +/- this x ATR
 input double          InpMaxSL_ATR       = 4.0;               // Skip if SL wider than this x ATR
@@ -103,6 +104,7 @@ int             g_hInd=INVALID_HANDLE, g_hATR=INVALID_HANDLE, g_hConf2=INVALID_H
 datetime        g_lastBar=0;
 string          g_gvLastBar;
 string          g_lastMsg="";
+string          g_lastCheck="waiting for the first closed bar";
 MqlParam        g_par[];
 int             g_np=0;
 
@@ -206,7 +208,7 @@ int OnInit()
       (InpConfTF2!=PERIOD_CURRENT && InpConfTF2!=g_tf && g_hConf2==INVALID_HANDLE) ||
       (InpConfTF3!=PERIOD_CURRENT && InpConfTF3!=g_tf && g_hConf3==INVALID_HANDLE))
    {
-      string m=StringFormat("TDI EA: indicator '%s' could not start (error %d). It must be v9.1 (first input group 'Quick settings'), "
+      string m=StringFormat("TDI EA: indicator '%s' could not start (error %d). It must be v9.2+ (first input group 'Quick settings'), "
                             "compiled in MQL5\\Indicators. Details in the Experts tab.",InpIndName,GetLastError());
       Print(m); Alert(m);
       return(INIT_FAILED);
@@ -230,6 +232,22 @@ int OnInit()
    return(INIT_SUCCEEDED);
 }
 
+// after the first ATR value is available: tell what the broker minimum lot risks
+void ReportMinLotRisk()
+{
+   static bool done=false;
+   if(done) return;
+   double atr=ATRNow();
+   if(atr<=0) return;
+   done=true;
+   double vmin=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MIN);
+   double r=RiskPct(1,SymbolInfoDouble(_Symbol,SYMBOL_ASK),2.0*atr,vmin);
+   Say(StringFormat("broker minimum lot %.2f risks about %.2f%% of balance on a typical 2-ATR stop (RiskPercent %.2f%%, hard cap %.2f%%)%s",
+                    vmin,r,InpRiskPercent,InpMaxRiskPercent,
+                    (r>InpMaxRiskPercent && InpLotMode==LOT_RISK) ? " - MOST SIGNALS WILL BE SKIPPED on this symbol" : ""),
+       r>InpMaxRiskPercent && InpLotMode==LOT_RISK);
+}
+
 void OnDeinit(const int reason)
 {
    EventKillTimer();
@@ -240,7 +258,7 @@ void OnDeinit(const int reason)
    Comment("");
 }
 
-void OnTick()  { Protect(); CheckEntry(); ShowStatus(); }
+void OnTick()  { ReportMinLotRisk(); Protect(); CheckEntry(); ShowStatus(); }
 void OnTimer() { Protect(); CleanupGV(); }
 
 //+------------------------------------------------------------------+
@@ -449,7 +467,15 @@ bool ConfOK(int h,int dir)
    return(false);
 }
 
-double CalcLots(int dir,double price,double dist,string &why)
+// risk of 'lots' for a stop 'dist' away, in % of balance (-1 = cannot calculate)
+double RiskPct(int dir,double price,double dist,double lots)
+{
+   double loss=0, bal=AccountInfoDouble(ACCOUNT_BALANCE);
+   if(bal<=0 || !OrderCalcProfit(dir>0 ? ORDER_TYPE_BUY : ORDER_TYPE_SELL,_Symbol,lots,price,price-dir*dist,loss)) return(-1);
+   return(MathAbs(loss)/bal*100.0);
+}
+
+double CalcLots(int dir,double price,double dist,string &why,double &riskPct)
 {
    double vmin=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MIN);
    double vmax=SymbolInfoDouble(_Symbol,SYMBOL_VOLUME_MAX);
@@ -463,21 +489,28 @@ double CalcLots(int dir,double price,double dist,string &why)
    }
    else
    {
-      double loss1=0;
-      if(!OrderCalcProfit(dir>0 ? ORDER_TYPE_BUY : ORDER_TYPE_SELL,_Symbol,1.0,price,price-dir*dist,loss1) || loss1==0)
-      { why="cannot calculate risk per lot"; return(0); }
-      double money=AccountInfoDouble(ACCOUNT_BALANCE)*InpRiskPercent/100.0;
-      lots=money/MathAbs(loss1);
+      double r1=RiskPct(dir,price,dist,1.0);
+      if(r1<=0) { why="cannot calculate risk per lot"; return(0); }
+      lots=InpRiskPercent/r1;
    }
    lots=MathFloor(lots/step+1e-9)*step;
    if(InpMaxLots>0 && lots>InpMaxLots) lots=MathFloor(InpMaxLots/step+1e-9)*step;
    if(lots>vmax) lots=vmax;
    if(lots<vmin)
    {
-      why=StringFormat("minimum lot %.2f would risk more than %.2f%% (lot needed %.3f)",vmin,InpRiskPercent,lots);
-      return(0);
+      double rmin=RiskPct(dir,price,dist,vmin);
+      if(InpMaxRiskPercent>0 && rmin>0 && rmin<=InpMaxRiskPercent)
+         lots=vmin;                                                   // broker minimum, still within the hard cap
+      else
+      {
+         why=StringFormat("broker minimum lot %.2f would risk %.2f%% (limit %.2f%%) - raise InpMaxRiskPercent or the balance",
+                          vmin,rmin,InpMaxRiskPercent);
+         return(0);
+      }
    }
-   return(NormalizeDouble(lots,VolDigits(step)));
+   lots=NormalizeDouble(lots,VolDigits(step));
+   riskPct=RiskPct(dir,price,dist,lots);
+   return(lots);
 }
 
 void CheckEntry()
@@ -492,6 +525,7 @@ void CheckEntry()
 
    g_lastBar=bar1;                                                // one decision per closed bar
    GlobalVariableSet(g_gvLastBar,(double)(long)bar1);
+   g_lastCheck="bar "+TimeToString(bar1,TIME_DATE|TIME_MINUTES)+" checked: "+(dirv==EMPTY_VALUE ? "no signal" : "signal");
    if(dirv==EMPTY_VALUE) return;
 
    int    dir =(int)dirv;
@@ -534,7 +568,8 @@ void CheckEntry()
    double tp=(InpUseTP ? NormPrice(price+dir*InpRR*dist) : 0);
 
    string why="";
-   double lots=CalcLots(dir,price,dist,why);
+   double riskPct=0;
+   double lots=CalcLots(dir,price,dist,why,riskPct);
    if(lots<=0)                                            { Say(tag+" skipped - "+why,true); return; }
    double margin=0;
    if(OrderCalcMargin(dir>0 ? ORDER_TYPE_BUY : ORDER_TYPE_SELL,_Symbol,lots,price,margin) &&
@@ -554,7 +589,7 @@ void CheckEntry()
 
    Say(StringFormat("%s OPENED #%I64u %.2f lots @ %s  SL %s  TP %s  risk %.2f%%",tag,pos,lots,
                     DoubleToString(fill,_Digits),DoubleToString(sl,_Digits),tp>0 ? DoubleToString(tp,_Digits) : "none",
-                    InpLotMode==LOT_RISK ? InpRiskPercent : 0.0),true);
+                    riskPct),true);
    Protect();                                                     // install the stop immediately if the broker dropped it
 }
 
@@ -564,6 +599,6 @@ void ShowStatus()
    Comment(StringFormat("TDI Divergence EA | %s %s | entries %s | EA positions %d\nBE at %.1fR (lock %.2fR) | trail from %.1fR at %.1f ATR | SL enforcer %s\n%s",
                         _Symbol,EnumToString(g_tf),InpEnableEntries ? "ON" : "OFF",CountEA(0,true),
                         InpBETriggerR,InpBELockR,InpTrailStartR,InpTrailATR,
-                        InpFailPolicy==FAIL_CLOSE ? "closes unprotected trades" : "alerts only",g_lastMsg));
+                        InpFailPolicy==FAIL_CLOSE ? "closes unprotected trades" : "alerts only",g_lastCheck+"\n"+g_lastMsg));
 }
 //+------------------------------------------------------------------+

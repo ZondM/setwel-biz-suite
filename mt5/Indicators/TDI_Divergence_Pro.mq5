@@ -7,6 +7,7 @@
 //|        price makes LOWER LOWS (market keeps going deeper).       |
 //|  SELL: green makes a LOWER HIGH while price makes HIGHER HIGHS.  |
 //|                                                                  |
+//|  v9.2: EXH (counter-trend) off by default = same arrows as EA.  |
 //|  v9.1: inputs EA needs moved to the top (Quick settings).       |
 //|  v9: SERIOUS TREND = higher timeframe (auto: M1-M15 -> H1,        |
 //|      M30/H1 -> H4). Against it only a 3+ leg exhaustion with     |
@@ -47,7 +48,7 @@
 //|  13 Trend at that closed bar (+1 up, 0 none, -1 down)            |
 //|  14 Higher-timeframe trend at that closed bar (+1 / 0 / -1)      |
 //+------------------------------------------------------------------+
-#property version     "9.10"
+#property version     "9.20"
 #property description "TDI-led divergence (green line vs price). Closed bars only, non-repainting."
 #property indicator_separate_window
 #property indicator_minimum 0
@@ -118,7 +119,7 @@ input bool   InpAlerts           = true;  // Popup alert on confirmed signal
 input bool   InpPush             = false; // Phone push on confirmed signal
 input bool   InpLogFile          = true;  // CSV log in MQL5\Files
 input bool   InpShowStats        = true;  // Show win/loss per signal kind on the panel + stats CSV
-input bool   InpAllowExhaustion  = true;  // Allow counter-trend ONLY at TDI exhaustion
+input bool   InpAllowExhaustion  = false; // Allow counter-trend EXH signals (off: they lost in the hindsight stats; EA ignores them)
 input bool            InpUseHTF        = true;           // Use higher-timeframe trend
 input bool   InpUseCont          = true;  // Pullback signals in the trend direction
 input bool   InpUseDouble        = true;  // Double top/bottom: price about equal, TDI clearly diverging
@@ -343,7 +344,7 @@ int OnInit()
    for(int p=0;p<15;p++) PlotIndexSetDouble(p,PLOT_EMPTY_VALUE,EMPTY_VALUE);
    for(int p=0;p<5;p++)  PlotIndexSetInteger(p,PLOT_DRAW_BEGIN,WarmBars());
 
-   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v9.1");
+   IndicatorSetString(INDICATOR_SHORTNAME,"TDI Div Pro v9.2");
    IndicatorSetInteger(INDICATOR_DIGITS,2);
    IndicatorSetInteger(INDICATOR_LEVELS,3);
    IndicatorSetDouble(INDICATOR_LEVELVALUE,0,32);
@@ -1250,7 +1251,7 @@ string Forming(int dir,int lc,const datetime &t[],const double &h[],const double
 void UpdatePanel(const datetime &t[],const double &h[],const double &l[])
 {
    int lc=g_rates-2;
-   PanelLine(0,StringFormat("TDI Div Pro v9.1 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
+   PanelLine(0,StringFormat("TDI Div Pro v9.2 | %s %s | closed bars only",_Symbol,TFStr()),clrSilver);
    int tr=TrendAt(lc);
    string tt=StringFormat("Trend: %s (EMA%d slope %+.2f ATR)",TrendName(tr),InpTrendEMA,TrendSlope(lc));
    if(InpUseTrendFilter && tr!=0)

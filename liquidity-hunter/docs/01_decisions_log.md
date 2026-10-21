@@ -124,7 +124,8 @@ Checks still needed:
 
 | Gate | Status |
 |---|---|
-| 1 Research specification | Spec v0.3 (structure + liquidity definitions implemented, docs/05). Not frozen: consolidation, displacement, retest still to implement. |
+| 1 Research specification | Spec v0.4: all pattern definitions implemented (docs/05, docs/06). |
 | 2 Data integrity | **PASS for Deriv XAUUSDmicro**: M1 bars 2022-11 → 2026-10 (docs/03), ticks Sep 2026 (docs/04). Cost model set. Commission still to confirm. EURUSD not received. |
 | 4 Signal integrity | Structure/liquidity layer: look-ahead tests pass (docs/05). Patterns and models pending. |
-| 3, 5–9 | Not started |
+| 3 Baseline evidence | **Model A: no edge shown** on development data (docs/07). No variant goes to validation. Model B not yet tested. |
+| 5–9 | Not started |

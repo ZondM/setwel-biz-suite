@@ -40,7 +40,7 @@ instruments:
       server_first_date: 2022-11-09   # earliest data Deriv's server holds for this symbol
       terminal_first_m1_bar: 2026-01-01   # only what the terminal had downloaded so far
     data:
-      bars_m1: TBD
+      bars_m1: data/raw/deriv_XAUUSD_M1_2022-11-09_2026-10-21.zip   # sha256 9a99f345...63f6, PASS
       ticks: TBD
       quality_grade: not_assessed
     status: research_primary
@@ -77,10 +77,10 @@ instruments:
       server_first_date: 2022-11-09
       terminal_first_m1_bar: 2025-03-25
     data:
-      bars_m1: TBD
+      bars_m1: data/raw/deriv_XAUUSDmicro_M1_2022-11-09_2026-10-21.zip   # sha256 a3c0c4d0...ac19, PASS
       ticks: TBD
-      quality_grade: not_assessed
-    status: live_execution_candidate   # research uses deriv_XAUUSD prices if the feeds match
+      quality_grade: pass_bars_ticks_pending   # docs/03_data_quality_deriv_xauusd.md
+    status: research_primary_and_live   # same feed as deriv_XAUUSD (99.87% identical bars)   # research uses deriv_XAUUSD prices if the feeds match
 
   - id: deriv_EURUSD
     broker: Deriv

@@ -118,5 +118,5 @@ Checks still needed:
 | Gate | Status |
 |---|---|
 | 1 Research specification | Definitions drafted (v0.2). Not frozen. |
-| 2 Data integrity | Tooling built and unit-tested on synthetic data. **No real data received yet.** |
+| 2 Data integrity | Deriv XAUUSD + XAUUSDmicro M1 bars **PASS** (docs/03). Tick data still needed for cost modelling. EURUSD not received. |
 | 3–9 | Not started |

@@ -5,19 +5,22 @@
 //|  Run once: Navigator > Scripts > drag onto any chart > OK.       |
 //|  Then zip the MQL5\Files\phase0 folder and upload it.            |
 //+------------------------------------------------------------------+
-#property version     "1.00"
+#property version     "1.10"
 #property description "Exports M1 bars, ticks and contract specs for the Phase 0 randomness tests"
 #property script_show_inputs
 
 input string InpSymbols  = "Volatility 10 Index,Volatility 25 Index,Volatility 50 Index,Boom 1000 Index,Crash 1000 Index,Crash 600 Index,Crash 100 Index,XAUUSDmicro"; // Symbols, comma separated (exact Market Watch names)
 input int    InpBarDays  = 180;   // Days of M1 bars
-input int    InpTickDays = 7;     // Days of raw ticks
+input int    InpTickDays = 7;     // Days of raw ticks (0 = no ticks)
+input datetime InpFrom    = 0;     // Optional fixed start date for M1 bars (0 = use InpBarDays back from now)
+input datetime InpTo      = 0;     // Optional fixed end date for M1 bars (0 = now)
 
 string SafeName(string s) { StringReplace(s," ","_"); StringReplace(s,"/","_"); return(s); }
 
 bool ExportBars(string sym,string dir)
 {
-   datetime to=TimeCurrent(), from=to-(datetime)InpBarDays*86400;
+   datetime to=(InpTo>0 ? InpTo : TimeCurrent());
+   datetime from=(InpFrom>0 ? InpFrom : to-(datetime)InpBarDays*86400);
    MqlRates r[];
    int n=-1;
    for(int a=0;a<20 && n<=0;a++)                 // history may need downloading first
@@ -36,12 +39,13 @@ bool ExportBars(string sym,string dir)
                         IntegerToString(r[i].spread)+"\r\n");
    FileClose(f);
    Print(sym,": ",n," M1 bars from ",TimeToString(r[0].time)," to ",TimeToString(r[n-1].time),
-         (n<InpBarDays*1440*0.9 ? "  (fewer than requested: raise Tools > Options > Charts > Max bars in chart)" : ""));
+         (InpFrom==0 && n<InpBarDays*1440*0.9 ? "  (fewer than requested: raise Tools > Options > Charts > Max bars in chart)" : ""));
    return(true);
 }
 
 bool ExportTicks(string sym,string dir)
 {
+   if(InpTickDays<=0) return(false);
    ulong to=(ulong)TimeCurrent()*1000, from=to-(ulong)InpTickDays*86400*1000;
    MqlTick t[];
    int n=-1;

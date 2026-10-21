@@ -1,0 +1,68 @@
+# Instrument registry (Master Prompt Phase 9).
+# One entry per broker + symbol. Values marked TBD must come from
+# LH_ExportSymbolSpec.mq5 output or the broker's published fees.
+# Data from different brokers is never mixed.
+
+instruments:
+  - id: deriv_XAUUSD
+    broker: Deriv
+    symbol: XAUUSD            # confirm exact MT5 name
+    market_type: metal_cfd
+    account_margin_mode: hedging
+    account_currency: USD
+    server_time: TBD          # from server_minus_gmt_seconds
+    tick_size: TBD
+    tick_value: TBD
+    contract_size: TBD
+    volume_min: TBD
+    volume_max: TBD
+    volume_step: TBD
+    stops_level_points: TBD
+    commission_per_lot_roundtrip_usd: TBD   # from broker fee page
+    swap_long: TBD
+    swap_short: TBD
+    sessions: TBD
+    data:
+      bars_m1: TBD            # file names + sha256 once received
+      ticks: TBD
+      quality_grade: not_assessed
+    status: research_primary
+
+  - id: deriv_EURUSD
+    broker: Deriv
+    symbol: EURUSD
+    market_type: fx_cfd
+    account_margin_mode: hedging
+    account_currency: USD
+    server_time: TBD
+    tick_size: TBD
+    tick_value: TBD
+    contract_size: TBD
+    volume_min: TBD
+    volume_max: TBD
+    volume_step: TBD
+    stops_level_points: TBD
+    commission_per_lot_roundtrip_usd: TBD
+    swap_long: TBD
+    swap_short: TBD
+    sessions: TBD
+    data:
+      bars_m1: TBD
+      ticks: TBD
+      quality_grade: not_assessed
+    status: research_primary   # pending confirmation that EURUSD data comes from Deriv
+
+  - id: exness_XAUUSD
+    broker: Exness
+    symbol: TBD               # Exness names depend on account type (e.g. suffix)
+    market_type: metal_cfd
+    account_margin_mode: hedging
+    account_currency: USD
+    account_type: TBD         # Standard / Raw Spread / Zero / Pro — changes costs
+    server_time: TBD
+    commission_per_lot_roundtrip_usd: TBD
+    data:
+      bars_m1: TBD
+      ticks: TBD
+      quality_grade: not_assessed
+    status: execution_validation_only   # results from Deriv data do not transfer automatically

@@ -43,6 +43,7 @@ def build_candidates(m15: pd.DataFrame, atr15: pd.Series, events15: pd.DataFrame
     ddir, dk = disp15["disp_dir"].to_numpy(), disp15["disp_bars"].to_numpy()
     h1_ev_dir = np.where(h1_events["kind"].str.endswith("UP"), 1, -1)
     h1_ev_t = h1_events["event_time"]
+    h1_ev_open = h1_events["time"]
 
     rows = []
     for e in events15.itertuples(index=False):
@@ -66,7 +67,7 @@ def build_candidates(m15: pd.DataFrame, atr15: pd.Series, events15: pd.DataFrame
         # B2: pullback = M15 CHoCH + 30-79% retracement of the H1 leg, leg intact
         row["pass_B2"], row["reason_B2"] = False, reason
         if reason is None:
-            row["reason_B2"] = _pullback(row, e, t, d, sig, m15, hi, lo, h1_state, h1_ev_dir, h1_ev_t, pos, p)
+            row["reason_B2"] = _pullback(row, e, t, d, sig, m15, hi, lo, h1_state, h1_ev_dir, h1_ev_t, h1_ev_open, p)
             row["pass_B2"] = row["reason_B2"] is None
 
         # B3: displacement including the break bar, ending at t..t+disp_after
@@ -109,7 +110,7 @@ def build_candidates(m15: pd.DataFrame, atr15: pd.Series, events15: pd.DataFrame
     return pd.DataFrame(rows)
 
 
-def _pullback(row, e, t, d, sig, m15, hi, lo, h1_state, h1_ev_dir, h1_ev_t, pos, p):
+def _pullback(row, e, t, d, sig, m15, hi, lo, h1_state, h1_ev_dir, h1_ev_t, h1_ev_open, p):
     if not e.kind.startswith("CHOCH"):
         return "NOT_A_PULLBACK_CHOCH"
     k = h1_ev_t.searchsorted(sig, side="right") - 1
@@ -117,7 +118,7 @@ def _pullback(row, e, t, d, sig, m15, hi, lo, h1_state, h1_ev_dir, h1_ev_t, pos,
         k -= 1
     if k < 0:
         return "NO_H1_LEG"
-    leg_start = m15.index.searchsorted(h1_ev_t.iat[k] - pd.Timedelta(hours=1), side="left")
+    leg_start = m15.index.searchsorted(h1_ev_open.iat[k], side="left")
     if leg_start >= t:
         return "NO_H1_LEG"
     leg_end = state_at(h1_state, sig, "protected_low" if d > 0 else "protected_high")

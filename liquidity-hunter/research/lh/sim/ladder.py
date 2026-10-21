@@ -5,11 +5,12 @@ import numpy as np
 import pandas as pd
 
 from ..analysis.stats import bootstrap_ci, bootstrap_diff_p, holm, summary, week_key
-from .trades import M1Market, entry_allowed, simulate
+from .trades import ExitParams, M1Market, entry_allowed, simulate
 
 
 def run_step(mk: M1Market, rows: pd.DataFrame, sig_col: str, atr_col: str, stop_col: str,
-             chase_atr: float | None = None, buffer_atr_mult: float = 0.1) -> pd.DataFrame:
+             chase_atr: float | None = None, buffer_atr_mult: float = 0.1,
+             ex: ExitParams = ExitParams()) -> pd.DataFrame:
     """Simulate one trade per row. If chase_atr is set, skip entries more than
     chase_atr * ATR beyond the row's zone_near (status CHASED)."""
     res = []
@@ -23,7 +24,7 @@ def run_step(mk: M1Market, rows: pd.DataFrame, sig_col: str, atr_col: str, stop_
                 if r.direction * (r.zone_near - px) > chase_atr * a:
                     res.append({"cand_id": r.cand_id, "status": "CHASED"})
                     continue
-        t = simulate(mk, sig, int(r.direction), stop_ref=getattr(r, stop_col), buffer_atr=buffer_atr_mult * a)
+        t = simulate(mk, sig, int(r.direction), stop_ref=getattr(r, stop_col), buffer_atr=buffer_atr_mult * a, ex=ex)
         t["cand_id"] = r.cand_id
         res.append(t)
     return pd.DataFrame(res)
@@ -31,7 +32,7 @@ def run_step(mk: M1Market, rows: pd.DataFrame, sig_col: str, atr_col: str, stop_
 
 def random_baseline(mk: M1Market, m15: pd.DataFrame, atr15: pd.Series, trades: pd.DataFrame,
                     atr_by_cand: pd.Series, n_random: int, seed: int,
-                    direction_at: np.ndarray | None = None) -> pd.DataFrame:
+                    direction_at: np.ndarray | None = None, ex: ExitParams = ExitParams()) -> pd.DataFrame:
     """For each filled trade, n_random entries at random M15 closes (entry-time filter applied),
     stop distance = the trade's risk in ATR units x ATR at the random bar.
 
@@ -51,7 +52,7 @@ def random_baseline(mk: M1Market, m15: pd.DataFrame, atr15: pd.Series, trades: p
         dist_atr = tr.risk / atr_by_cand[tr.cand_id]
         for k in rng.integers(0, len(times), n_random):
             d = int(dirs[k]) if dirs is not None else int(tr.direction)
-            t = simulate(mk, pd.Timestamp(times[k]), d, stop_distance=dist_atr * atrs[k])
+            t = simulate(mk, pd.Timestamp(times[k]), d, stop_distance=dist_atr * atrs[k], ex=ex)
             t["cand_id"] = tr.cand_id
             res.append(t)
     return pd.DataFrame(res)

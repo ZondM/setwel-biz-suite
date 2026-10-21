@@ -118,5 +118,5 @@ Checks still needed:
 | Gate | Status |
 |---|---|
 | 1 Research specification | Definitions drafted (v0.2). Not frozen. |
-| 2 Data integrity | Deriv XAUUSD + XAUUSDmicro M1 bars **PASS** (docs/03). Tick data still needed for cost modelling. EURUSD not received. |
+| 2 Data integrity | **PASS for Deriv XAUUSDmicro**: M1 bars 2022-11 → 2026-10 (docs/03), ticks Sep 2026 (docs/04). Cost model set. Commission still to confirm. EURUSD not received. |
 | 3–9 | Not started |

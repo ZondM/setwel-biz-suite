@@ -78,8 +78,8 @@ instruments:
       terminal_first_m1_bar: 2025-03-25
     data:
       bars_m1: data/raw/deriv_XAUUSDmicro_M1_2022-11-09_2026-10-21.zip   # sha256 a3c0c4d0...ac19, PASS
-      ticks: TBD
-      quality_grade: pass_bars_ticks_pending   # docs/03_data_quality_deriv_xauusd.md
+      ticks: data/raw/deriv_XAUUSDmicro_TICKS_2026-09_w1..w4.zip   # PASS, ~82% of Sep 2026
+      quality_grade: pass   # docs/03 and docs/04
     status: research_primary_and_live   # same feed as deriv_XAUUSD (99.87% identical bars)   # research uses deriv_XAUUSD prices if the feeds match
 
   - id: deriv_EURUSD

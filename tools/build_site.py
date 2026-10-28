@@ -27,7 +27,7 @@ PLANS = [
         "monthly": 59.99, "yearly": 599,
         "features": [
             "Quotes that turn into invoices in one click",
-            "PDF invoices to share on WhatsApp or email",
+            "PDF invoices you can send on WhatsApp",
             "Income and expenses by category",
             "VAT worked out at 15% for you",
             "Up to 50 customers and 100 invoices a month",
@@ -44,7 +44,7 @@ PLANS = [
             "Who owes you, and who you owe (aged reports)",
             "Profit and loss statement",
             "VAT201 figures ready for eFiling",
-            "Payslips with PAYE and UIF",
+            "Tax centre: provisional and income tax estimates, filing calendar",
         ],
     },
     {
@@ -52,10 +52,8 @@ PLANS = [
         "monthly": 399, "yearly": 3990,
         "features": [
             "Everything in Grinder",
-            "Payroll: PAYE, UIF and SDL worked out",
-            "Bank reconciliation",
-            "Stock with low-stock alerts",
-            "Provisional tax and filing deadlines",
+            "We help you load your customers and opening balances",
+            "Coming soon, included when released: payroll (PAYE, UIF, SDL), stock, and bank matching",
         ],
     },
     {
@@ -134,7 +132,7 @@ def page(filename, title, description, body, scripts=""):
     <div class="cols">
       <div>
         <h4>Setwel Biz Suite</h4>
-        <p>Invoicing, accounting, payroll and tax for South African businesses. Made in South Africa.</p>
+        <p>Invoicing, accounting, VAT and tax for South African businesses. Made in South Africa.</p>
       </div>
       <div>
         <h4>Get Setwel</h4>
@@ -190,7 +188,7 @@ def home():
 <div class="band">
   <div class="wrap">
     <h1>Your business finances, handled with confidence.</h1>
-    <p class="lead">Invoicing, accounting, payroll and tax in one simple package for South African businesses. Keep your books in order yourself, and bring in an accountant only when you need one.</p>
+    <p class="lead">Invoicing, accounting, VAT and tax in one simple package for South African businesses. Keep your books in order yourself, and bring in an accountant only when you need one.</p>
     {DOWNLOAD_BUTTONS}
     <p class="note">30 days free. No card, no sign-up form. It installs in about a minute.</p>
   </div>
@@ -230,8 +228,8 @@ def home():
     <h2>What Setwel does for you</h2>
     <div class="grid g4">
       <div class="card"><div class="icon">🧾</div><h3>Invoices and quotes</h3><p>Make a quote, turn it into an invoice in one click and send it as a PDF on WhatsApp or email. VAT is worked out for you.</p></div>
-      <div class="card"><div class="icon">💰</div><h3>Your money, in control</h3><p>Track income and expenses, see who owes you, record bills you owe and match your bank. Your profit and loss is always up to date.</p></div>
-      <div class="card"><div class="icon">🏛️</div><h3>Tax and compliance</h3><p>VAT201 figures, payroll with PAYE, UIF and SDL, provisional tax and deadlines, all explained in plain language.</p></div>
+      <div class="card"><div class="icon">💰</div><h3>Your money, in control</h3><p>Track income and expenses, see who owes you and record the bills you owe. Your profit and loss is always up to date.</p></div>
+      <div class="card"><div class="icon">🏛️</div><h3>Tax and compliance</h3><p>VAT201 figures, provisional and income tax estimates, and a calendar of your filing deadlines, all explained in plain language.</p></div>
       <div class="card"><div class="icon">🤝</div><h3>An accountant when it matters</h3><p>Do the day-to-day yourself. When something doesn't add up, we connect you with a Setwel partner accountant.</p></div>
     </div>
   </div>
@@ -274,7 +272,7 @@ def home():
 </section>
 """
     return page("index.html", "Setwel Biz Suite: invoicing, accounting and tax for South African businesses",
-                "Invoicing, accounting, payroll, VAT and tax figures for South African small businesses. 30 days free for Windows, Mac and phones.", body)
+                "Invoicing, accounting, VAT and tax figures for South African small businesses. 30 days free for Windows, Mac and phones.", body)
 
 
 def download():
@@ -528,7 +526,7 @@ FAQ = [
     ("Do I need to sign up to try Setwel?",
      "No. Download it, double-click and start working. Your 30-day trial starts the first time you open it. You only give your details if you decide to pay."),
     ("Does Setwel replace my accountant?",
-     "For the day-to-day, yes: invoices, expenses, who owes you, VAT and payroll figures. For year-end, audits, disputes or anything that doesn't add up, use an accountant. We can connect you with a Setwel partner accountant."),
+     "For the day-to-day, yes: invoices, expenses, who owes you, VAT and tax estimates. For year-end, audits, disputes or anything that doesn't add up, use an accountant. We can connect you with a Setwel partner accountant."),
     ("Does Setwel submit my tax returns for me?",
      "Not yet. Setwel prepares your VAT201 and tax figures so you can copy them onto eFiling yourself in a few minutes, without queuing at a branch."),
     ("Where is my data kept?",

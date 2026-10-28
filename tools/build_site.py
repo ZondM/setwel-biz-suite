@@ -55,7 +55,7 @@ PLANS = [
             "Payroll: PAYE, UIF and SDL worked out",
             "Bank reconciliation",
             "Stock with low-stock alerts",
-            "Provisional tax and SARS deadlines",
+            "Provisional tax and filing deadlines",
         ],
     },
     {
@@ -134,7 +134,7 @@ def page(filename, title, description, body, scripts=""):
     <div class="cols">
       <div>
         <h4>Setwel Biz Suite</h4>
-        <p>Invoices, money and SARS-ready figures for South African businesses. Made in South Africa.</p>
+        <p>Invoicing, accounting, payroll and tax for South African businesses. Made in South Africa.</p>
       </div>
       <div>
         <h4>Get Setwel</h4>
@@ -189,8 +189,8 @@ def home():
     body = f"""
 <div class="band">
   <div class="wrap">
-    <h1>Stop queuing at SARS just to understand your own books.</h1>
-    <p class="lead">Setwel does your invoices, keeps track of your money and prepares your VAT and tax figures, in plain language on your own computer. If something doesn't add up, we put you in touch with an accountant.</p>
+    <h1>Your business finances, handled with confidence.</h1>
+    <p class="lead">Invoicing, accounting, payroll and tax in one simple package for South African businesses. Keep your books in order yourself, and bring in an accountant only when you need one.</p>
     {DOWNLOAD_BUTTONS}
     <p class="note">30 days free. No card, no sign-up form. It installs in about a minute.</p>
   </div>
@@ -204,7 +204,7 @@ def home():
       <div class="before">
         <h3>Without Setwel</h3>
         <ul>
-          <li>Queuing at a SARS branch to sort out returns and tax questions</li>
+          <li>Long queues and waiting just to sort out returns and tax questions</li>
           <li>Invoices in a notebook, on WhatsApp and in your head</li>
           <li>Not sure who still owes you money</li>
           <li>Paying someone just to tell you what you made this month</li>
@@ -217,7 +217,7 @@ def home():
           <li>Professional invoices sent from your phone or PC in seconds</li>
           <li>One screen shows money in, money out and who owes you</li>
           <li>VAT201 and tax figures ready to copy onto eFiling</li>
-          <li>SARS deadlines in front of you, not in a letter</li>
+          <li>Tax deadlines in front of you, not in a letter</li>
           <li>An accountant only when you actually need one</li>
         </ul>
       </div>
@@ -231,7 +231,7 @@ def home():
     <div class="grid g4">
       <div class="card"><div class="icon">🧾</div><h3>Invoices and quotes</h3><p>Make a quote, turn it into an invoice in one click and send it as a PDF on WhatsApp or email. VAT is worked out for you.</p></div>
       <div class="card"><div class="icon">💰</div><h3>Your money, in control</h3><p>Track income and expenses, see who owes you, record bills you owe and match your bank. Your profit and loss is always up to date.</p></div>
-      <div class="card"><div class="icon">🏛️</div><h3>SARS-ready</h3><p>VAT201 figures, payroll with PAYE, UIF and SDL, provisional tax and deadlines, all explained in plain language.</p></div>
+      <div class="card"><div class="icon">🏛️</div><h3>Tax and compliance</h3><p>VAT201 figures, payroll with PAYE, UIF and SDL, provisional tax and deadlines, all explained in plain language.</p></div>
       <div class="card"><div class="icon">🤝</div><h3>An accountant when it matters</h3><p>Do the day-to-day yourself. When something doesn't add up, we connect you with a Setwel partner accountant.</p></div>
     </div>
   </div>
@@ -273,8 +273,8 @@ def home():
   </div>
 </section>
 """
-    return page("index.html", "Setwel Biz Suite: invoicing, accounting and SARS-ready tax",
-                "Invoices, money tracking and SARS-ready VAT and tax figures for South African small businesses. 30 days free for Windows, Mac and phones.", body)
+    return page("index.html", "Setwel Biz Suite: invoicing, accounting and tax for South African businesses",
+                "Invoicing, accounting, payroll, VAT and tax figures for South African small businesses. 30 days free for Windows, Mac and phones.", body)
 
 
 def download():
@@ -529,8 +529,8 @@ FAQ = [
      "No. Download it, double-click and start working. Your 30-day trial starts the first time you open it. You only give your details if you decide to pay."),
     ("Does Setwel replace my accountant?",
      "For the day-to-day, yes: invoices, expenses, who owes you, VAT and payroll figures. For year-end, audits, disputes or anything that doesn't add up, use an accountant. We can connect you with a Setwel partner accountant."),
-    ("Does Setwel submit my returns to SARS?",
-     "Not yet. Setwel prepares your VAT201 and tax figures so you can copy them onto SARS eFiling yourself in a few minutes, without queuing at a branch."),
+    ("Does Setwel submit my tax returns for me?",
+     "Not yet. Setwel prepares your VAT201 and tax figures so you can copy them onto eFiling yourself in a few minutes, without queuing at a branch."),
     ("Where is my data kept?",
      "On the Windows or Mac version, your data stays in a file on your own computer, and Setwel makes a backup copy every day (File → Open backups folder). On a phone, it's kept inside your browser on that phone. We don't see your business data."),
     ("Why does Windows or Mac show a warning when I install?",

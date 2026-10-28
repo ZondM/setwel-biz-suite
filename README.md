@@ -1,110 +1,41 @@
-╔══════════════════════════════════════════════════════════════╗
-║         SETWEL AFRICA BUSINESS SUITE — HOW TO INSTALL       ║
-╚══════════════════════════════════════════════════════════════╝
+# Setwel Biz Suite
 
-The app runs locally on your computer — your data never leaves
-your machine. Follow the steps for your operating system below.
+Invoices, money tracking and SARS-ready figures for South African businesses.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  WINDOWS (Step-by-step)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## What's in this repository
 
-STEP 1 — Install Node.js (one-time, free)
-  1. Go to https://nodejs.org
-  2. Click the big green "LTS" button to download
-  3. Run the downloaded installer — click Next → Next → Install
-  4. Restart your computer after installing
+| Folder | What it is |
+|---|---|
+| `app/` | The Setwel app itself (already built). The desktop installers and the phone version both use it. |
+| `desktop/` | Turns the app into a real Windows `.exe` and Mac `.dmg`, and adds the 30-day trial, licence keys and daily backups. |
+| `website/` | Everything that goes on setwelbusiness.co.za: the pages, the phone version (`/app/`) and the PayFast/licence scripts (`/api/`). |
+| `tools/build_site.py` | Builds the website pages. Edit the text there, then run `python3 tools/build_site.py`. |
+| `.github/workflows/build-installers.yml` | Builds the `.exe` and `.dmg` automatically on GitHub. |
 
-STEP 2 — Extract this ZIP file
-  1. Right-click the ZIP file you downloaded
-  2. Choose "Extract All..."
-  3. Choose a folder (e.g. C:\Setwel or your Desktop)
-  4. Click Extract
+## How customers get Setwel
 
-STEP 3 — Start the app
-  1. Open the extracted folder
-  2. Double-click "Start Setwel Africa.bat"
-  3. A black window will appear — this is normal, leave it open
-  4. Your browser will automatically open to the app
+1. **Windows / Mac:** the download button picks the right file. They double-click it and Setwel installs and opens. There's no Node.js, ZIP or command window.
+2. **Phones:** they open `setwelbusiness.co.za/app/` in the browser and add it to the home screen.
+3. **Trial:** 30 days from the first time the app opens. There's no sign-up form. A reminder shows from day 23.
+4. **Paying:** Pricing → pay.html → PayFast. When PayFast confirms the payment, the server creates a licence key, shows it on the thank-you page with an **Activate** button, and emails it to the customer.
+5. **Renewals:** each PayFast renewal extends the licence automatically. The app re-checks whenever it's online.
+6. **Referrals:** each customer gets a code (REF-XXXXXX). When someone pays with that code, the referrer's licence gets one extra month, and PayFast is asked to skip one charge. If that request fails, you get an email asking you to do it by hand.
 
-STEP 4 — Use the app
-  • The app opens at http://localhost:3000
-  • Bookmark that address — you can also just run Step 3 again
-  • To STOP the app: close the black window
+## Getting new installers
 
+1. GitHub → **Actions** → **Build installers** → **Run workflow** (it also runs by itself when `app/` or `desktop/` changes).
+2. When it finishes, open **Releases** and download `Setwel-Setup.exe` and `Setwel-Mac.dmg`.
+3. In cPanel File Manager, upload both into `public_html/downloads/`, replacing the old ones.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  MAC (Step-by-step)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The installers are not code-signed yet, so Windows and Mac show a one-time warning. The download page explains the clicks to get past it. Signing removes the warning. It costs about $99 a year for Apple and about R3,000–R7,000 a year for Windows.
 
-STEP 1 — Install Node.js (one-time, free)
-  Option A (recommended): https://nodejs.org → click LTS → install
-  Option B (if you use Homebrew): brew install node
+## Putting the website live (cPanel at registerdomain)
 
-STEP 2 — Extract the ZIP
-  Double-click the ZIP file — macOS extracts it automatically
+1. Upload the contents of `website/` into `public_html/`.
+2. Create `public_html/api/config.php` from `api/config.example.php`. Fill in PayFast's merchant ID, key and passphrase, the licence signing key and the admin password. Never commit `config.php`.
+3. Make sure `public_html/data/` is writable by PHP. It stores licences and payment logs, and its own `.htaccess` blocks it from the web.
+4. The licence desk is at `/api/admin.php`. Use it for EFT customers, partner deals, adding months or switching a key off.
 
-STEP 3 — Start the app
-  Open Terminal and run:
-    cd /path/to/extracted/folder
-    bash "Start Setwel Africa.sh"
+## Licence keys
 
-  OR right-click "Start Setwel Africa.sh" → Open With → Terminal
-
-STEP 4 — Browser opens automatically at http://localhost:3000
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  CREATE A DESKTOP SHORTCUT (Windows — optional)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  1. Right-click "Start Setwel Africa.bat"
-  2. Choose "Send to" → "Desktop (create shortcut)"
-  3. Double-click that shortcut anytime to launch the app
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  YOUR DATA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  All your business data is stored in your browser's local
-  storage (IndexedDB). It stays on your computer — nothing is
-  sent to the internet.
-
-  TIP: Always use the same browser (e.g. Chrome) on the same
-  computer to access your data.
-
-  BACKUP: Use Settings → Export or download your reports as
-  PDFs and CSV files regularly.
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  TROUBLESHOOTING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  "Port already in use" error
-    → Another app is using port 3000. Open server.js in Notepad
-      and change PORT = 3000 to PORT = 3001 (or 3002, etc.)
-
-  Black window closes immediately
-    → Node.js may not be installed. Repeat Step 1 above.
-
-  Browser shows "This site can't be reached"
-    → Make sure the black window is still open (don't close it)
-    → Try typing http://localhost:3000 in your browser manually
-
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  WHAT'S IN THIS FOLDER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  dist/                      ← The built app (don't edit)
-  server.js                  ← The local server (no dependencies)
-  Start Setwel Africa.bat    ← Windows launcher (double-click)
-  Start Setwel Africa.sh     ← Mac/Linux launcher
-  INSTALL.txt                ← This file
-  src/                       ← Source code (for developers)
-  electron/                  ← Desktop app wrapper (for developers)
-  README.md                  ← Full developer documentation
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The server signs licences with an Ed25519 private key (`LICENCE_SIGNING_KEY` in config.php). The app checks them with the matching public key in `desktop/licence-public.pem`. If you ever change one, you must change the other and build new installers.

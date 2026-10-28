@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buy Setwel Biz Suite</title>
+<meta name="description" content="Pay for Setwel Biz Suite securely with PayFast.">
+<link rel="icon" type="image/png" href="/setwel-logo.png">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/index.html"><img src="/setwel-logo.png" alt="">Setwel <span>Biz Suite</span></a>
+    <nav class="nav">
+<a href="/index.html">Home</a>
+<a href="/download.html">Download</a>
+<a href="/pricing.html">Pricing</a>
+<a href="/accountants.html">Accountants</a>
+<a href="/refer.html">Refer a friend</a>
+<a href="/help.html">Help</a>
+<a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<div class="band">
+  <div class="wrap">
+    <h1>Buy Setwel</h1>
+    <p class="lead">Fill this in once. You'll pay on PayFast's secure page, then get your licence key straight away.</p>
+  </div>
+</div>
+<section>
+  <div class="wrap">
+    <form class="box" id="payForm" method="get" action="/api/create-payment.php">
+      <div class="summary" id="summary">Loading plan…</div>
+      <input type="hidden" name="plan" id="plan">
+      <input type="hidden" name="billing" id="billing">
+      <label for="first">First name</label>
+      <input id="first" name="first" required autocomplete="given-name">
+      <label for="last">Surname</label>
+      <input id="last" name="last" autocomplete="family-name">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required autocomplete="email">
+      <div class="hint">We'll send your licence key here.</div>
+      <label for="phone">Cellphone / WhatsApp</label>
+      <input id="phone" name="phone" type="tel" required autocomplete="tel">
+      <label for="biz">Business name (optional)</label>
+      <input id="biz" name="biz" autocomplete="organization">
+      <label for="ref">Referral code (optional)</label>
+      <input id="ref" name="ref" placeholder="e.g. REF-AB12CD">
+      <div class="hint">Someone told you about Setwel? Their code gets them a free month.</div>
+      <p><button class="btn btn-main btn-wide" type="submit">Continue to secure payment</button></p>
+      <p class="hint">By paying you agree to our <a href="/terms.html">terms</a> and <a href="/refund.html">refund policy</a>.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>Setwel Biz Suite</h4>
+        <p>Invoices, money and SARS-ready figures for South African businesses. Made in South Africa.</p>
+      </div>
+      <div>
+        <h4>Get Setwel</h4>
+        <ul>
+          <li><a href="/download.html">Download for Windows or Mac</a></li>
+          <li><a href="/app/">Open on your phone</a></li>
+          <li><a href="/pricing.html">Pricing</a></li>
+          <li><a href="/accountants.html">For accountants</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul>
+          <li><a href="https://wa.me/27820829050">WhatsApp 082 082 9050</a></li>
+          <li><a href="mailto:support@setwelbusiness.co.za">support@setwelbusiness.co.za</a></li>
+          <li><a href="/help.html">Questions and answers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terms.html">Terms and conditions</a></li>
+          <li><a href="/refund.html">Refunds and cancellations</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal">© Setwel Africa (Pty) Ltd. Payments are processed securely by PayFast.</p>
+  </div>
+</footer>
+<a class="wa" href="https://wa.me/27820829050" aria-label="Chat on WhatsApp">WhatsApp us</a>
+<script src="/assets/site.js"></script>
+<script>window.SETWEL_PLANS = {"hustler": {"name": "Hustler", "monthly": 59.99, "yearly": 599}, "grinder": {"name": "Grinder", "monthly": 199, "yearly": 1990}, "builder": {"name": "Builder", "monthly": 399, "yearly": 3990}, "enterprise": {"name": "Enterprise", "monthly": 999, "yearly": 9990}, "accountant_partner": {"name": "Accountant Partner", "monthly": 1499, "yearly": null}};</script>
+</body>
+</html>

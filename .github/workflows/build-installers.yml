@@ -1,0 +1,76 @@
+# Builds the Windows (.exe) and Mac (.dmg) installers on real Windows and Mac machines,
+# then attaches both to a GitHub Release. Runs when the app or desktop code changes,
+# or by hand: Actions tab → "Build installers" → Run workflow.
+name: Build installers
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, 'claude/**']
+    paths:
+      - 'app/**'
+      - 'desktop/**'
+      - '.github/workflows/build-installers.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run dist:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Setwel-Setup
+          path: desktop/release/Setwel-Setup.exe
+          if-no-files-found: error
+
+  mac:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: desktop
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run dist:mac
+      # Apple-chip Macs refuse unsigned apps as "damaged"; make sure the ad-hoc signature is there.
+      - name: Check signature
+        run: codesign --verify --deep --verbose=2 "release/mac-universal/Setwel Biz Suite.app"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Setwel-Mac
+          path: desktop/release/Setwel-Mac.dmg
+          if-no-files-found: error
+
+  release:
+    needs: [windows, mac]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="installers-${{ github.run_number }}"
+          gh release create "$tag" out/Setwel-Setup.exe out/Setwel-Mac.dmg \
+            --repo "${{ github.repository }}" --target "${{ github.sha }}" \
+            --title "Setwel installers #${{ github.run_number }}" \
+            --notes "Upload both files to setwelbusiness.co.za/downloads/ (cPanel File Manager), replacing the old ones."

@@ -1,0 +1,8 @@
+website/api/config.php
+website/data/*
+!website/data/.htaccess
+website/downloads/*.exe
+website/downloads/*.dmg
+desktop/node_modules/
+desktop/web/
+desktop/release/

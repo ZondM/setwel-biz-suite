@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'">
+<title>Setwel Biz Suite</title>
+<style>
+  :root { --green:#007A4D; --navy:#0D1B2A; --gold:#F2A900; --muted:#5b6673; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body { margin:0; font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; color:var(--navy); background:#fff; }
+  header { background:var(--navy); color:#fff; padding:22px 28px; }
+  header h1 { margin:0; font-size:20px; }
+  header p { margin:4px 0 0; color:#c9d3dd; font-size:13px; }
+  main { padding:24px 28px; }
+  h2 { font-size:18px; margin:0 0 8px; }
+  p { line-height:1.5; color:var(--muted); margin:0 0 14px; font-size:14px; }
+  label { display:block; font-weight:600; font-size:13px; margin:18px 0 6px; }
+  input { width:100%; padding:12px; font-size:16px; letter-spacing:1px; border:2px solid #cfd6dd; border-radius:6px; text-transform:uppercase; }
+  input:focus { outline:none; border-color:var(--green); }
+  button { width:100%; padding:13px; font-size:15px; font-weight:600; border-radius:6px; border:0; cursor:pointer; margin-top:10px; }
+  .primary { background:var(--green); color:#fff; }
+  .secondary { background:#eef2f5; color:var(--navy); }
+  .link { background:none; color:var(--green); text-decoration:underline; padding:6px; }
+  .msg { margin-top:12px; font-size:14px; min-height:20px; }
+  .msg.err { color:#b42318; }
+  .msg.ok { color:var(--green); font-weight:600; }
+  .pill { display:inline-block; background:#fff4d6; color:#7a5300; border-radius:20px; padding:4px 12px; font-size:13px; font-weight:600; margin-bottom:12px; }
+  hr { border:0; border-top:1px solid #e4e8ec; margin:22px 0 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Setwel Biz Suite</h1>
+  <p>Your invoices, money and tax — sorted.</p>
+</header>
+<main>
+  <div id="pill" class="pill" hidden></div>
+  <h2 id="title">Activate Setwel</h2>
+  <p id="lead"></p>
+
+  <button class="primary" id="buy">See plans and pay securely</button>
+
+  <label for="key">Already paid? Enter your licence key</label>
+  <input id="key" placeholder="SETW-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
+  <button class="secondary" id="activate">Activate</button>
+  <div class="msg" id="msg"></div>
+
+  <button class="link" id="continue" hidden>Continue my free trial</button>
+  <hr>
+  <p>Your data is safe on this computer, even while the app is locked. Stuck? <a href="#" id="wa">WhatsApp us on 082 082 9050</a>.</p>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+
+  async function render() {
+    const s = await window.gate.status();
+    if (s.mode === 'trial') {
+      $('pill').hidden = false;
+      $('pill').textContent = s.daysLeft + ' day' + (s.daysLeft === 1 ? '' : 's') + ' left in your free trial';
+      $('title').textContent = 'Keep everything running after your trial';
+      $('lead').textContent = 'Pick a plan before your trial ends and nothing changes: your invoices, customers and reports stay exactly where they are.';
+      $('continue').hidden = false;
+    } else if (s.mode === 'expired' && s.reason === 'renew') {
+      $('title').textContent = 'Your subscription needs renewing';
+      $('lead').textContent = 'We could not confirm a recent payment. Renew your plan, or connect to the internet so the app can check your licence again.';
+    } else if (s.mode === 'expired') {
+      $('title').textContent = 'Your 30-day free trial has ended';
+      $('lead').textContent = 'Choose a plan to unlock Setwel again. Everything you captured during the trial is still here.';
+    } else {
+      $('title').textContent = 'You are licensed';
+      $('lead').textContent = 'Plan: ' + (s.licence.plan || '') + '. Paid up to ' + new Date(s.licence.paid_until).toLocaleDateString('en-ZA') + '.';
+      $('continue').hidden = false;
+      $('continue').textContent = 'Back to Setwel';
+    }
+  }
+
+  $('buy').onclick = () => window.gate.pricing();
+  $('wa').onclick = (e) => { e.preventDefault(); window.gate.whatsapp(); };
+  $('continue').onclick = () => window.gate.continueTrial();
+  $('activate').onclick = async () => {
+    $('msg').className = 'msg';
+    $('msg').textContent = 'Checking your key…';
+    $('activate').disabled = true;
+    const r = await window.gate.activate($('key').value);
+    $('activate').disabled = false;
+    if (r.error) {
+      $('msg').className = 'msg err';
+      $('msg').textContent = r.error;
+    } else {
+      $('msg').className = 'msg ok';
+      $('msg').textContent = 'Activated. Opening Setwel…';
+    }
+  };
+  $('key').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('activate').click(); });
+
+  if (params.get('key')) {
+    $('key').value = params.get('key');
+    $('activate').click();
+  }
+  render();
+</script>
+</body>
+</html>

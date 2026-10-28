@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Plus, Save } from 'lucide-react';
 import { useApp } from '../state/AppContext';
+import { SupplierModal } from './Suppliers';
 import { Button, Card, PageHeader, Field, Select, Input } from '../components/common/ui';
 import { DocumentItemsEditor } from '../components/common/DocumentItemsEditor';
 import { listSuppliers, listBills, saveBill, getNextBillNumber } from '../db/repository';
@@ -16,6 +17,7 @@ export default function BillEditor() {
   const isNew = !id;
 
   const suppliers = company ? listSuppliers(company.id) : [];
+  const [addingSupplier, setAddingSupplier] = useState(false);
   const existing = id && company ? listBills(company.id).find((b) => b.id === id) ?? null : null;
 
   const [supplierId, setSupplierId] = useState(existing?.supplierId ?? suppliers[0]?.id ?? '');
@@ -58,13 +60,16 @@ export default function BillEditor() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Field label="Supplier" required>
             <Select value={supplierId} onChange={(e) => setSupplierId(e.target.value)}>
-              {suppliers.length === 0 && <option value="">Add a supplier first</option>}
+              {suppliers.length === 0 && <option value="">No suppliers yet</option>}
               {suppliers.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
                 </option>
               ))}
             </Select>
+            <button type="button" onClick={() => setAddingSupplier(true)} className="mt-1.5 flex items-center gap-1 text-sm font-semibold text-brand-green hover:underline">
+              <Plus size={14} /> Add new supplier
+            </button>
           </Field>
           <Field label="Bill date">
             <Input type="date" value={billDate} onChange={(e) => setBillDate(e.target.value)} />
@@ -83,6 +88,17 @@ export default function BillEditor() {
           <Save size={16} /> Save bill
         </Button>
       </div>
+      <SupplierModal
+        open={addingSupplier}
+        onClose={() => setAddingSupplier(false)}
+        editing={null}
+        companyId={company!.id}
+        onSaved={(s) => {
+          setAddingSupplier(false);
+          setSupplierId(s.id);
+          bumpRefresh();
+        }}
+      />
     </div>
   );
 }

@@ -100,7 +100,7 @@ export default function Customers() {
   );
 }
 
-function CustomerModal({ open, onClose, editing, companyId, onSaved }: { open: boolean; onClose: () => void; editing: Customer | null; companyId: string; onSaved: () => void }) {
+export function CustomerModal({ open, onClose, editing, companyId, onSaved }: { open: boolean; onClose: () => void; editing: Customer | null; companyId: string; onSaved: (c: Customer) => void }) {
   const [name, setName] = useState(editing?.name ?? '');
   const [email, setEmail] = useState(editing?.email ?? '');
   const [phone, setPhone] = useState(editing?.phone ?? '');
@@ -119,7 +119,7 @@ function CustomerModal({ open, onClose, editing, companyId, onSaved }: { open: b
 
   function handleSave() {
     if (!name.trim()) return;
-    saveCustomer({
+    const saved = saveCustomer({
       id: editing?.id,
       companyId,
       name: name.trim(),
@@ -129,7 +129,7 @@ function CustomerModal({ open, onClose, editing, companyId, onSaved }: { open: b
       isVatRegistered,
       vatNumber: isVatRegistered ? vatNumber : undefined
     });
-    onSaved();
+    onSaved(saved);
   }
 
   return (

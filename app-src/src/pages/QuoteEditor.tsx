@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRightCircle, Save, Send } from 'lucide-react';
+import { ArrowLeft, ArrowRightCircle, Plus, Save, Send } from 'lucide-react';
 import { useApp } from '../state/AppContext';
+import { CustomerModal } from './Customers';
 import { Button, Card, PageHeader, Field, Select, Input, Textarea, StatusBadge } from '../components/common/ui';
 import { DocumentItemsEditor } from '../components/common/DocumentItemsEditor';
 import { listCustomers, getQuote, saveQuote, getNextQuoteNumber, saveInvoice, getNextInvoiceNumber } from '../db/repository';
@@ -16,6 +17,7 @@ export default function QuoteEditor() {
   const isNew = !id;
 
   const customers = company ? listCustomers(company!.id) : [];
+  const [addingCustomer, setAddingCustomer] = useState(false);
   const existing = id ? getQuote(id) : null;
 
   const [customerId, setCustomerId] = useState(existing?.customerId ?? customers[0]?.id ?? '');
@@ -110,13 +112,16 @@ export default function QuoteEditor() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Field label="Customer" required>
             <Select value={customerId} onChange={(e) => setCustomerId(e.target.value)}>
-              {customers.length === 0 && <option value="">Add a customer first</option>}
+              {customers.length === 0 && <option value="">No customers yet</option>}
               {customers.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
                 </option>
               ))}
             </Select>
+            <button type="button" onClick={() => setAddingCustomer(true)} className="mt-1.5 flex items-center gap-1 text-sm font-semibold text-brand-green hover:underline">
+              <Plus size={14} /> Add new customer
+            </button>
           </Field>
           <Field label="Quote date">
             <Input type="date" value={quoteDate} onChange={(e) => setQuoteDate(e.target.value)} />
@@ -149,6 +154,17 @@ export default function QuoteEditor() {
           </Button>
         )}
       </div>
+      <CustomerModal
+        open={addingCustomer}
+        onClose={() => setAddingCustomer(false)}
+        editing={null}
+        companyId={company!.id}
+        onSaved={(c) => {
+          setAddingCustomer(false);
+          setCustomerId(c.id);
+          bumpRefresh();
+        }}
+      />
     </div>
   );
 }

@@ -34,7 +34,7 @@ export function TopBar({ onMenu }: { onMenu?: () => void }) {
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between gap-3 px-4 md:px-6 shrink-0 no-print">
-      <button onClick={onMenu} className="md:hidden text-brand-navy -ml-1 p-1" aria-label="Open menu">
+      <button onClick={onMenu} className="lg:hidden text-brand-navy -ml-1 p-1" aria-label="Open menu">
         <Menu size={22} />
       </button>
       <div className="min-w-0 flex-1 relative">

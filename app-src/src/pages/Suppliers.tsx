@@ -100,7 +100,7 @@ export default function Suppliers() {
   );
 }
 
-function SupplierModal({ open, onClose, editing, companyId, onSaved }: { open: boolean; onClose: () => void; editing: Supplier | null; companyId: string; onSaved: () => void }) {
+export function SupplierModal({ open, onClose, editing, companyId, onSaved }: { open: boolean; onClose: () => void; editing: Supplier | null; companyId: string; onSaved: (s: Supplier) => void }) {
   const [name, setName] = useState(editing?.name ?? '');
   const [email, setEmail] = useState(editing?.email ?? '');
   const [phone, setPhone] = useState(editing?.phone ?? '');
@@ -117,8 +117,8 @@ function SupplierModal({ open, onClose, editing, companyId, onSaved }: { open: b
 
   function handleSave() {
     if (!name.trim()) return;
-    saveSupplier({ id: editing?.id, companyId, name: name.trim(), email: email || undefined, phone: phone || undefined, address: address || undefined, vatNumber: vatNumber || undefined });
-    onSaved();
+    const saved = saveSupplier({ id: editing?.id, companyId, name: name.trim(), email: email || undefined, phone: phone || undefined, address: address || undefined, vatNumber: vatNumber || undefined });
+    onSaved(saved);
   }
 
   return (

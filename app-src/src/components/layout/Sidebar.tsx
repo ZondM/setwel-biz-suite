@@ -108,11 +108,11 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
 
   return (
     <>
-    {mobileOpen && <div className="fixed inset-0 bg-black/40 z-30 md:hidden no-print" onClick={onClose} />}
+    {mobileOpen && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden no-print" onClick={onClose} />}
     <aside
       className={`bg-brand-navy h-screen flex flex-col shrink-0 transition-all no-print
-        fixed inset-y-0 left-0 z-40 w-64 md:static md:z-auto ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
-        ${collapsed ? 'md:w-[68px]' : 'md:w-64'}`}
+        fixed inset-y-0 left-0 z-40 w-64 lg:static lg:z-auto ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
+        ${collapsed ? 'lg:w-[68px]' : 'lg:w-64'}`}
     >
       <div className="flex items-center gap-2 px-4 py-5">
         <img src="./setwel-logo.png" alt="" className="w-8 h-8 rounded-lg shrink-0 bg-white object-contain" />
@@ -134,7 +134,7 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
         {bottomItems.map(renderItem)}
         <button
           onClick={() => setCollapsed((c) => !c)}
-          className="w-full hidden md:flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5 text-xs"
+          className="w-full hidden lg:flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5 text-xs"
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>

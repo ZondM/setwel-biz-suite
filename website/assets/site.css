@@ -157,3 +157,17 @@ details p { color: var(--muted); margin: 10px 0 0; }
   section { padding: 36px 0; }
   .wa { padding: 11px 14px; }
 }
+
+/* Automation */
+.feature-strip { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; background: var(--slate); color: var(--white); border-radius: 8px; padding: 22px 24px; }
+.feature-strip h3 { margin: 0 0 6px; color: var(--white); }
+.feature-strip p { margin: 0; color: #e4e8ec; max-width: 640px; }
+.auto-box { background: #fdf4e3; border: 1px solid #f0d29a; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-size: 14px; }
+.auto-box ul { margin: 6px 0 0 !important; padding-left: 18px; flex: none !important; font-size: 14px !important; }
+.auto-box li { margin: 3px 0 !important; }
+.plans-on { margin-top: 10px !important; font-size: 14px; font-weight: 700; color: var(--copper) !important; }
+.table-scroll { overflow-x: auto; }
+table.compare { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; }
+table.compare th, table.compare td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: center; }
+table.compare tbody th { text-align: left; font-weight: 600; }
+table.compare thead th { font-size: 14px; }

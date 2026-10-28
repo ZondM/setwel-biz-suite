@@ -28,12 +28,8 @@ PLANS = [
         "features": [
             "Quotes that turn into invoices in one click",
             "Send invoices by WhatsApp or email, PDF attached",
-            "Repeating invoices that create themselves",
-            "Payment reminders for overdue invoices",
-            "Scan receipts with AI: 30 a month",
             "Income and expenses by category",
             "VAT worked out at 15% for you",
-            "Tax deadline alerts and a monthly report",
             "Up to 50 customers and 100 invoices a month",
             "Works with no internet",
         ],
@@ -44,7 +40,6 @@ PLANS = [
         "features": [
             "Everything in Hustler",
             "Unlimited customers and invoices",
-            "Scan receipts with AI: 150 a month",
             "Suppliers and bills you owe",
             "Who owes you, and who you owe (aged reports)",
             "Profit and loss statement",
@@ -57,8 +52,6 @@ PLANS = [
         "monthly": 399, "yearly": 3990,
         "features": [
             "Everything in Grinder",
-            "Bank statement matching: upload your statement, Setwel matches the payments",
-            "Unlimited AI receipt scans",
             "We help you load your customers and opening balances",
             "Coming soon, included when released: payroll and stock",
         ],
@@ -69,7 +62,7 @@ PLANS = [
         "features": [
             "Everything in Builder",
             "Several businesses or branches in one app, with a combined report",
-            "Budgets with over-spend warnings",
+            "Budgets for each expense category",
             "13-week cash-flow forecast",
             "Staff logins: staff can't delete or see profit",
             "Change history: who changed what, and when",
@@ -94,8 +87,54 @@ PLANS = [
     },
 ]
 
+PLAN_IDS = ["hustler", "grinder", "builder", "enterprise", "accountant_partner"]
+UNLIMITED = "Unlimited*"
+
+# What Setwel does by itself, and on which plans. Used by the Automation page, home page and plan cards.
+AUTOMATIONS = [
+    ("scan", "📸", "AI receipt scanning",
+     "Take a photo of a till slip or supplier invoice. Setwel reads the supplier, date, amount, VAT and category and fills in the expense. You check it and press save.",
+     {"hustler": "30 a month", "grinder": "150 a month", "builder": UNLIMITED, "enterprise": UNLIMITED, "accountant_partner": UNLIMITED}),
+    ("repeat", "🔁", "Repeating invoices",
+     "Rent, retainers, monthly service fees: set it once. On each date Setwel makes the next invoice and puts it on your to-do list, ready to send.",
+     dict.fromkeys(PLAN_IDS, True)),
+    ("remind", "⏰", "Payment reminders",
+     "Overdue invoices come up with the reminder already written: friendly at first, firmer after two and six weeks. Send it by WhatsApp or by email with the invoice attached.",
+     dict.fromkeys(PLAN_IDS, True)),
+    ("tax", "🗓️", "Tax and VAT deadline alerts",
+     "VAT201 and provisional tax dates come up before they're due, with the amount Setwel has worked out. Also a warning when your sales near the VAT registration level.",
+     dict.fromkeys(PLAN_IDS, True)),
+    ("report", "📊", "Monthly report",
+     "At month end Setwel makes a one-page report: sales, expenses, profit, who owes you and what's due. Save it as PDF or send it to your accountant.",
+     dict.fromkeys(PLAN_IDS, True)),
+    ("bills", "📥", "Bills due reminders",
+     "Supplier bills due in the next seven days are listed, so nothing is paid late.",
+     {"hustler": False, "grinder": True, "builder": True, "enterprise": True, "accountant_partner": True}),
+    ("bank", "🏦", "Bank statement matching",
+     "Upload the CSV statement from your bank. Setwel matches payments to your invoices and bills, and learns how you categorise everything else.",
+     {"hustler": False, "grinder": False, "builder": True, "enterprise": True, "accountant_partner": True}),
+    ("budget", "🚦", "Budget and cash warnings",
+     "A warning when spending reaches 80% of a budget, and when the 13-week forecast shows cash running short.",
+     {"hustler": False, "grinder": False, "builder": False, "enterprise": True, "accountant_partner": True}),
+]
+AUTOMATION_FOOTNOTE = "*Unlimited scans are fair use, up to 2 000 a month. The free trial includes 30 scans. Scanning and email need internet; everything else works offline."
+
+
+def plan_automations(plan_id):
+    """Plan-card lines for the automations this plan includes."""
+    out = []
+    for _, _, name, _, plans in AUTOMATIONS:
+        v = plans[plan_id]
+        if v is True:
+            out.append(name)
+        elif v:
+            out.append(f"{name}: {v.lower().rstrip('*')}{'*' if v.endswith('*') else ''}")
+    return out
+
+
 NAV = [
     ("index.html", "Home"),
+    ("automation.html", "Automation"),
     ("download.html", "Download"),
     ("pricing.html", "Pricing"),
     ("find-an-accountant.html", "Find an accountant"),
@@ -155,6 +194,7 @@ def page(filename, title, description, body, scripts=""):
         <h4>Get Setwel</h4>
         <ul>
           <li><a href="/download.html">Download for Windows or Mac</a></li>
+          <li><a href="/automation.html">Automation and AI receipt scanning</a></li>
           <li><a href="/app/">Open on your phone</a></li>
           <li><a href="/pricing.html">Pricing</a></li>
           <li><a href="/accountants.html">For accountants</a></li>
@@ -203,15 +243,34 @@ def home():
         f'<p style="margin-top:10px;color:var(--ink);font-weight:700">{rand(p["monthly"])} / month</p></div>'
         for p in PLANS
     )
+    home_autos = "".join(
+        f'<div class="card"><div class="icon">{icon}</div><h3>{name}</h3><p>{desc}</p></div>'
+        for _, icon, name, desc, _ in AUTOMATIONS[:4]
+    )
     body = f"""
 <div class="band">
   <div class="wrap">
     <h1>Your business finances, handled with confidence.</h1>
-    <p class="lead">Invoicing, accounting, VAT and tax in one simple package for South African businesses. Keep your books in order yourself, and bring in an accountant only when you need one.</p>
+    <p class="lead">Invoicing, accounting, VAT and tax in one simple package for South African businesses, with the routine work automated: receipts scanned by AI, invoices that repeat, reminders written for you and deadlines flagged before they arrive.</p>
     {DOWNLOAD_BUTTONS}
     <p class="note">30 days free. No card, no sign-up form. It installs in about a minute.</p>
   </div>
 </div>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Setwel does the routine work for you</h2>
+    <p class="sub">Paperwork that used to take your evenings now happens by itself, or with one tap.</p>
+    <div class="grid g4">{home_autos}</div>
+    <div class="feature-strip">
+      <div>
+        <h3>📸 Snap a receipt. Setwel does the rest.</h3>
+        <p>Photograph a till slip, fuel slip or supplier invoice. AI reads the supplier, amount, VAT and category and fills in the expense for you. No more shoebox of slips at year end.</p>
+      </div>
+      <a class="btn btn-main" href="/automation.html">See all automation</a>
+    </div>
+  </div>
+</section>
 
 <section>
   <div class="wrap">
@@ -294,6 +353,73 @@ def home():
                 "Invoicing, accounting, VAT and tax figures for South African small businesses. 30 days free for Windows, Mac and phones.", body)
 
 
+def automation():
+    names = {p["id"]: p["name"] for p in PLANS}
+    cards = []
+    for sid, icon, name, desc, plans in AUTOMATIONS:
+        on = [names[i] + (f" ({v.rstrip('*').lower()})" if isinstance(v, str) else "") for i, v in plans.items() if v]
+        where = "Every plan" if all(plans.values()) and not any(isinstance(v, str) for v in plans.values()) else ", ".join(on)
+        cards.append(f'<div class="card" id="{sid}"><div class="icon">{icon}</div><h3>{name}</h3><p>{desc}</p>'
+                     f'<p class="plans-on">{where}</p></div>')
+    head = "".join(f"<th>{names[i]}</th>" for i in PLAN_IDS)
+    rows = ""
+    for _, _, name, _, plans in AUTOMATIONS:
+        cells = "".join(
+            f"<td>{'✓' if v is True else (v if v else '–')}</td>" for v in (plans[i] for i in PLAN_IDS))
+        rows += f"<tr><th>{name}</th>{cells}</tr>"
+    body = f"""
+<div class="band">
+  <div class="wrap">
+    <h1>Setwel works while you work.</h1>
+    <p class="lead">The routine paperwork of running a business, done for you: receipts captured by AI, invoices that repeat, reminders written for you, and deadlines flagged before they arrive. Included in your plan, not sold as extras.</p>
+    {DOWNLOAD_BUTTONS}
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>📸 AI receipt scanning</h2>
+    <p class="sub">The fastest way to keep your expenses, and your VAT claims, up to date.</p>
+    <ol class="steps">
+      <li><h3>Snap</h3>In <em>Expenses</em>, press <em>Scan receipt</em> and take a photo of the slip or supplier invoice. A PDF works too.</li>
+      <li><h3>Setwel reads it</h3>AI fills in the supplier, date, amount, VAT and category in a few seconds.</li>
+      <li><h3>Check and save</h3>You look it over and press save. If a slip is hard to read, Setwel tells you.</li>
+    </ol>
+    <p style="margin-top:16px;color:var(--muted)">Hustler 30 scans a month, Grinder 150, Builder and up unlimited*. 30 scans during the free trial. Only claim VAT on valid tax invoices.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Everything Setwel automates</h2>
+    <p class="sub">Setwel checks every time you open it and lists what needs you under <strong>Needs your attention</strong> on the dashboard.</p>
+    <div class="grid g3">{''.join(cards)}</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Automation by plan</h2>
+    <div class="table-scroll">
+      <table class="compare">
+        <thead><tr><th></th>{head}</tr></thead>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;color:var(--muted);font-size:14px">{AUTOMATION_FOOTNOTE}</p>
+    <h3 style="margin-top:28px">What stays in your hands</h3>
+    <p>Setwel never sends anything or pays anyone without you. Repeating invoices are made as drafts for you to send. WhatsApp messages are typed for you and you press send. Email goes out only when you press <em>Send</em>. You always have the final say.</p>
+    <div class="btn-row" style="margin-top:18px">
+      <a class="btn btn-green" href="/pricing.html">See plans and prices</a>
+      <a class="btn btn-plain" data-dl data-keep-text href="/download.html">Try it free for 30 days</a>
+    </div>
+  </div>
+</section>
+"""
+    return page("automation.html", "Automation: AI receipt scanning, repeating invoices and reminders | Setwel Biz Suite",
+                "Setwel scans receipts with AI, creates repeating invoices, writes payment reminders, flags VAT and tax deadlines and matches your bank statement.", body)
+
+
 def download():
     body = f"""
 <div class="band">
@@ -370,12 +496,14 @@ def pricing():
             '<div data-yearly hidden><div class="price">' + rand(p["monthly"]) + '</div><div class="per">per month, monthly billing only</div></div>'
         )
         feats = "".join(f"<li>{f}</li>" for f in p["features"])
+        autos = "".join(f"<li>{a}</li>" for a in plan_automations(p["id"]))
         cards.append(f"""
 <div class="plan{' pop' if p.get('popular') else ''}">
   <h3>{p['name']}</h3>
   <div class="for">{p['for']}</div>
   <div data-monthly><div class="price">{rand(p['monthly'])}</div><div class="per">per month</div></div>
   {yearly}
+  <div class="auto-box"><strong>Automation included</strong><ul>{autos}</ul></div>
   <ul>{feats}</ul>
   <a class="btn btn-green" data-buy="{p['id']}" href="/pay.html?plan={p['id']}&amp;billing=monthly">Buy {p['name']}</a>
   <a class="btn btn-plain" data-dl data-keep-text href="/download.html">Try free for 30 days</a>
@@ -394,6 +522,8 @@ def pricing():
       <button type="button" data-billing="yearly">Yearly (2 months free)</button>
     </div>
     <div class="plans">{''.join(cards)}</div>
+    <p style="margin-top:12px;color:var(--muted);font-size:14px">{AUTOMATION_FOOTNOTE}</p>
+    <p style="margin-top:12px"><a href="/automation.html">What each automation does</a></p>
     <p style="margin-top:24px;color:var(--muted)">Payments go through PayFast: card, Instant EFT, SnapScan, Capitec Pay and more. Not sure which plan fits? <a href="{WHATSAPP}">WhatsApp us</a> and we'll tell you honestly.</p>
   </div>
 </section>
@@ -726,6 +856,7 @@ def web_app():
 def main():
     pages = {
         "index.html": home(),
+        "automation.html": automation(),
         "download.html": download(),
         "pricing.html": pricing(),
         "pay.html": pay(),

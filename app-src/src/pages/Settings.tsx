@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Building2, Tag, Hash, Package, Save, Shield } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
+import { StaffSettings } from '../components/enterprise/StaffSettings';
+import { AccountantSettings, PracticeSettings } from '../components/enterprise/AccountantSettings';
+import { deleteCompany } from '../db/repository';
 import { updateCompany, listCategories, saveCategory, deleteCategory, getSettings, setSetting } from '../db/repository';
 import { Button, Card, PageHeader, Field, Input, Select, Toggle, Tabs } from '../components/common/ui';
 import { ExpenseCategory } from '../core/types';
@@ -11,11 +14,11 @@ const SA_PROVINCES = [
   'Limpopo','Mpumalanga','Northern Cape','North West','Western Cape'
 ];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const BUSINESS_TYPES = ['sole_proprietor','private_company','close_corporation','partnership','trust','non_profit'];
+// Must match BusinessType in core/types.ts: the tax engine uses these exact values.
+const BUSINESS_TYPES = ['sole_proprietor','partnership','pty_ltd','cc','npo'];
 const BUSINESS_TYPE_LABELS: Record<string,string> = {
-  sole_proprietor: 'Sole Proprietor', private_company: 'Private Company (Pty) Ltd',
-  close_corporation: 'Close Corporation (CC)', partnership: 'Partnership',
-  trust: 'Trust', non_profit: 'Non-Profit Organisation'
+  sole_proprietor: 'Sole Proprietor', partnership: 'Partnership',
+  pty_ltd: 'Private Company (Pty) Ltd', cc: 'Close Corporation (CC)', npo: 'Non-Profit Organisation'
 };
 
 const TABS = [
@@ -27,15 +30,50 @@ const TABS = [
 ];
 
 export default function SettingsPage() {
-  const { company, reloadCompany } = useApp();
+  const { company, companies, reloadCompany, switchCompany } = useApp();
+  const { multiBusiness, isPartner } = usePermissions();
   const [activeTab, setActiveTab] = useState('company');
   if (!company) return null;
+  const tabs = [
+    ...TABS.slice(0, 3),
+    { id: 'accountant', label: isPartner ? 'Accountant & practice' : 'My accountant' },
+    ...(multiBusiness ? [{ id: 'staff', label: 'Staff logins' }] : []),
+    ...TABS.slice(3)
+  ];
+
+  function removeBusiness() {
+    const typed = window.prompt(`This permanently deletes "${company!.name}" and all its invoices, expenses and records from this device. Make a backup first (Send to my accountant / Save file). Type the business name to confirm:`);
+    if (typed === null) return;
+    if (typed.trim() !== company!.name) return window.alert('The name did not match, so nothing was deleted.');
+    const next = companies.find((c) => c.id !== company!.id);
+    deleteCompany(company!.id);
+    if (next) switchCompany(next.id);
+    else reloadCompany();
+  }
 
   return (
     <div className="max-w-3xl">
       <PageHeader title="Settings" subtitle="Manage your business information and preferences" />
-      <Tabs tabs={TABS} active={activeTab} onChange={setActiveTab} className="mb-6" />
-      {activeTab === 'company' && <CompanyTab companyId={company.id} company={company} onSaved={reloadCompany} />}
+      <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} className="mb-6" />
+      {activeTab === 'company' && (
+        <>
+          <CompanyTab key={company.id} companyId={company.id} company={company} onSaved={reloadCompany} />
+          {companies.length > 1 && (
+            <Card className="mt-5 border-red-200">
+              <h3 className="font-semibold text-status-overdue mb-1">Remove this business</h3>
+              <p className="text-sm text-gray-500 mb-3">Deletes {company.name} and all its records from this device. Your other businesses are not touched.</p>
+              <Button variant="danger" onClick={removeBusiness}>Remove {company.name}</Button>
+            </Card>
+          )}
+        </>
+      )}
+      {activeTab === 'accountant' && (
+        <div className="space-y-5">
+          {isPartner && <PracticeSettings />}
+          <AccountantSettings key={company.id} companyId={company.id} />
+        </div>
+      )}
+      {activeTab === 'staff' && <StaffSettings key={company.id} companyId={company.id} />}
       {activeTab === 'categories' && <CategoriesTab companyId={company.id} />}
       {activeTab === 'numbering' && <NumberingTab companyId={company.id} />}
       {activeTab === 'package' && <PackageTab />}
@@ -57,18 +95,21 @@ function CompanyTab({ companyId, company, onSaved }: { companyId: string; compan
   const [bankHolder, setBankHolder] = useState(company.bankAccountHolder ?? '');
   const [bankAccount, setBankAccount] = useState(company.bankAccountNumber ?? '');
   const [bankBranch, setBankBranch] = useState(company.bankBranchCode ?? '');
+  const [vatPeriod, setVatPeriod] = useState(company.vatPeriod);
+  const [vatCycle, setVatCycle] = useState(getSettings(companyId)['vatCycle'] ?? '');
   const [saved, setSaved] = useState(false);
 
   function handleSave() {
     if (!name.trim()) return;
     updateCompany(companyId, {
       name: name.trim(), businessType, cipcNumber: cipcNumber || undefined,
-      isVatRegistered, vatNumber: isVatRegistered ? (vatNumber || undefined) : undefined,
+      isVatRegistered, vatNumber: isVatRegistered ? (vatNumber || undefined) : undefined, vatPeriod,
       industry: industry || undefined, province: province || undefined,
       financialYearStartMonth: fyStartMonth,
       bankName: bankName || undefined, bankAccountHolder: bankHolder || undefined,
       bankAccountNumber: bankAccount || undefined, bankBranchCode: bankBranch || undefined
     });
+    if (vatCycle) setSetting(companyId, 'vatCycle', vatCycle);
     onSaved();
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -115,6 +156,23 @@ function CompanyTab({ companyId, company, onSaved }: { companyId: string; compan
             <Field label="VAT number">
               <Input value={vatNumber} onChange={e => setVatNumber(e.target.value)} placeholder="4xxxxxxxxx" maxLength={10} />
             </Field>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Field label="VAT period">
+                <Select value={vatPeriod} onChange={e => setVatPeriod(e.target.value as any)}>
+                  <option value="bi_monthly">Every two months</option>
+                  <option value="monthly">Every month</option>
+                </Select>
+              </Field>
+              {vatPeriod === 'bi_monthly' && (
+                <Field label="Your periods end in" hint="Used for VAT201 deadline alerts">
+                  <Select value={vatCycle} onChange={e => setVatCycle(e.target.value)}>
+                    <option value="">Not sure yet</option>
+                    <option value="odd">Jan, Mar, May, Jul, Sep, Nov</option>
+                    <option value="even">Feb, Apr, Jun, Aug, Oct, Dec</option>
+                  </Select>
+                </Field>
+              )}
+            </div>
           </div>
         )}
         {!isVatRegistered && (
@@ -303,9 +361,9 @@ function PackageTab() {
   const tierDesc: Record<string,string> = {
     hustler: "Hustler: invoices, quotes, expenses, AI receipt scanning and reminders. Grinder adds suppliers, bills, VAT201, profit and loss and aged reports.",
     grinder: "Grinder: everything for a growing business. Builder adds bank statement matching and unlimited AI receipt scans.",
-    builder: "Builder: bank statement matching and unlimited AI receipt scans. Payroll and stock are coming.",
-    enterprise: "Enterprise: everything in Builder, plus setup, training and priority help.",
-    accountant_partner: "Accountant Partner: your partner key runs Setwel for all your clients."
+    builder: "Builder: bank statement matching and unlimited AI receipt scans. Enterprise adds several businesses, budgets, cash-flow forecast, staff logins and change history.",
+    enterprise: "Enterprise: several businesses, budgets, cash-flow forecast, staff logins, change history and month-end packs.",
+    accountant_partner: "Accountant Partner: unlimited client files, practice dashboard, client file import, VAT summary, your branding and setup tools."
   };
 
   return (

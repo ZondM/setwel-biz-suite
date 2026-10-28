@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, FileText, Wallet, AlertTriangle, TrendingUp, Clock, Zap } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, StatCard, MoneyText, StatusBadge } from '../components/common/ui';
 import { listInvoices, listExpenses, listCustomers, listCategories } from '../db/repository';
 import { buildFinancialSummary } from '../core/financialEngine';
@@ -20,6 +20,7 @@ const TIPS = [
 
 export default function Dashboard() {
   const { company, refreshKey } = useApp();
+  const { canSeeFinancials } = usePermissions();
   const navigate = useNavigate();
   const [tipIndex] = useState(() => Math.floor(Math.random() * TIPS.length));
 
@@ -73,7 +74,7 @@ export default function Dashboard() {
   return (
     <div>
 
-      {trialInfo && trialInfo.isTrial && (
+      {canSeeFinancials && trialInfo && trialInfo.isTrial && (
         <div className={`rounded-xl p-4 mb-5 flex items-center justify-between gap-4 ${trialInfo.isExpired ? 'bg-red-50 border border-red-200' : 'bg-amber-50 border border-brand-gold/40'}`}>
           <div className="flex items-center gap-3 min-w-0">
             <Clock size={18} className={trialInfo.isExpired ? 'text-red-500 shrink-0' : 'text-brand-gold shrink-0'} />
@@ -122,6 +123,8 @@ export default function Dashboard() {
 
       <AttentionPanel />
 
+      {canSeeFinancials && (
+      <>
       <div className="bg-brand-navy rounded-xl p-6 mb-6 text-white">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display font-bold text-lg">Your money, at a glance</h2>
@@ -181,6 +184,9 @@ export default function Dashboard() {
           <p className="text-sm text-gray-600">{TIPS[tipIndex]}</p>
         </Card>
       </div>
+
+      </>
+      )}
 
       <Card className="mt-4">
         <h3 className="font-display font-bold text-brand-navy mb-3">Recent invoices</h3>

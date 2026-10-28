@@ -1,29 +1,69 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Company } from '../core/types';
-import { getActiveCompany, updateCompany } from '../db/repository';
+import { getActiveCompany, listCompanies, setActiveCompany, setTierForAll } from '../db/repository';
 import { LicenceInfo, loadLicence } from '../core/licence';
 import { runRecurringInvoices } from '../core/automation';
+import { AppUser, listUsers, setAuditUser } from '../db/enterpriseRepo';
 
 interface AppContextValue {
   company: Company | null;
+  companies: Company[];
   licence: LicenceInfo | null;
   reloadLicence: () => void;
   setCompany: (c: Company | null) => void;
+  switchCompany: (id: string) => void;
   refreshKey: number;
   bumpRefresh: () => void;
   reloadCompany: () => void;
+  // Staff logins: who is signed in to the open business (null = nobody yet)
+  user: AppUser | null;
+  setUser: (u: AppUser | null) => void;
+  // Adding another business / client file (shows the setup screens again)
+  addingBusiness: boolean;
+  setAddingBusiness: (v: boolean) => void;
 }
 
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
+/** When a business has no staff logins, the person using it is the owner. */
+const OWNER: AppUser = { id: 'owner', companyId: '', name: 'Owner', role: 'owner' };
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [company, setCompany] = useState<Company | null>(null);
+  const [company, setCompanyState] = useState<Company | null>(null);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [licence, setLicence] = useState<LicenceInfo | null>(null);
+  const [user, setUserState] = useState<AppUser | null>(null);
+  const [addingBusiness, setAddingBusiness] = useState(false);
 
   const reloadCompany = useCallback(() => {
-    setCompany(getActiveCompany());
+    setCompanyState(getActiveCompany());
+    setCompanies(listCompanies());
   }, []);
+
+  const setUser = useCallback((u: AppUser | null) => {
+    setUserState(u);
+    setAuditUser(u?.name ?? 'Owner');
+  }, []);
+
+  const setCompany = useCallback(
+    (c: Company | null) => {
+      if (c) setActiveCompany(c.id);
+      setCompanyState(c);
+      setCompanies(listCompanies());
+    },
+    []
+  );
+
+  const switchCompany = useCallback(
+    (id: string) => {
+      setActiveCompany(id);
+      setUser(null); // each business has its own logins
+      reloadCompany();
+      setRefreshKey((k) => k + 1);
+    },
+    [reloadCompany, setUser]
+  );
 
   const reloadLicence = useCallback(() => {
     loadLicence()
@@ -36,13 +76,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     reloadLicence();
   }, [reloadCompany, reloadLicence]);
 
-  // Automation engine: create repeating invoices that are due, now and every hour while open.
+  // No staff logins for this business: the owner is signed in automatically.
   const companyId = company?.id;
+  useEffect(() => {
+    if (companyId && !user && listUsers(companyId).length === 0) setUser({ ...OWNER, companyId });
+  }, [companyId, user, setUser]);
+
+  // Automation engine: create repeating invoices that are due, now and every hour while open.
   useEffect(() => {
     if (!companyId) return;
     const tick = () => {
       try {
-        if (runRecurringInvoices(companyId).length > 0) setRefreshKey((k) => k + 1);
+        setAuditUser('Setwel (automatic)');
+        const made = runRecurringInvoices(companyId).length;
+        setAuditUser(user?.name ?? 'Owner');
+        if (made > 0) setRefreshKey((k) => k + 1);
       } catch (err) {
         console.error('Automation run failed', err);
       }
@@ -50,22 +98,44 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     tick();
     const timer = setInterval(tick, 60 * 60 * 1000);
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [companyId]);
 
-  // A paid licence decides the plan. During the trial the customer can try any plan.
+  // A paid licence decides the plan, for every business in this install.
+  // During the trial the customer can try any plan.
   useEffect(() => {
-    if (company && licence?.mode === 'licensed' && licence.plan && company.packageTier !== licence.plan) {
-      updateCompany(company.id, { packageTier: licence.plan });
+    if (company && licence?.mode === 'licensed' && licence.plan && companies.some((c) => c.packageTier !== licence.plan)) {
+      setTierForAll(licence.plan);
       reloadCompany();
     }
-  }, [company, licence, reloadCompany]);
+  }, [company, companies, licence, reloadCompany]);
 
   const bumpRefresh = useCallback(() => {
     setRefreshKey((k) => k + 1);
     reloadCompany();
   }, [reloadCompany]);
 
-  return <AppContext.Provider value={{ company, licence, reloadLicence, setCompany, refreshKey, bumpRefresh, reloadCompany }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider
+      value={{
+        company,
+        companies,
+        licence,
+        reloadLicence,
+        setCompany,
+        switchCompany,
+        refreshKey,
+        bumpRefresh,
+        reloadCompany,
+        user,
+        setUser,
+        addingBusiness,
+        setAddingBusiness
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 }
 
 export function useApp() {
@@ -83,4 +153,19 @@ export function tierAtLeast(current: string | undefined, required: string): bool
   const ri = TIER_ORDER.indexOf(required);
   if (current === 'accountant_partner') return true;
   return ci >= ri;
+}
+
+/** What the signed-in person may do. Staff can sell and capture, but not delete or see the books. */
+export function usePermissions() {
+  const { user, company } = useApp();
+  const isOwner = !user || user.role === 'owner';
+  const tier = company?.packageTier;
+  return {
+    isOwner,
+    canDelete: isOwner,
+    canSeeFinancials: isOwner,
+    canManageSettings: isOwner,
+    multiBusiness: tierAtLeast(tier, 'enterprise'),
+    isPartner: tier === 'accountant_partner'
+  };
 }

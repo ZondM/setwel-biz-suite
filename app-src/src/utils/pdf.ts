@@ -2,6 +2,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Company, Customer, Invoice, Quote } from '../core/types';
 import { formatCurrency, formatDate } from '../core/numbering';
+import { accountantLine } from '../core/accountant';
 
 // Setwel logo colours: copper accent, slate, gold
 const GREEN = [201, 98, 26];
@@ -126,6 +127,11 @@ function drawFooter(doc: jsPDF, company: Company, notes: string | undefined, sta
     doc.text(split, 14, y);
   }
   doc.setFontSize(8);
+  const kept = accountantLine(company.id);
+  if (kept) {
+    doc.setTextColor(NAVY[0], NAVY[1], NAVY[2]);
+    doc.text(kept, 105, 285, { align: 'center' });
+  }
   doc.setTextColor(150, 150, 150);
   doc.text('Generated with Setwel Biz Suite', 105, 290, { align: 'center' });
 }

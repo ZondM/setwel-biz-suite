@@ -62,6 +62,43 @@ if ($authed && in_array($_POST['do'] ?? '', ['extend', 'revoke', 'restore'], tru
     pf_log('Admin ' . $_POST['do'] . ' ' . ($lic['key'] ?? ''), []);
 }
 
+// ---- Partner accountants (shown on find-an-accountant.html) ----
+const PARTNER_SERVICES = ['Setwel setup', 'Training', 'Bookkeeping', 'VAT returns', 'Tax returns', 'Payroll', 'Company registration'];
+$partnersFile = pf_data_dir() . '/partners.json';
+$partners = file_exists($partnersFile) ? (json_decode(file_get_contents($partnersFile), true) ?: []) : [];
+$savePartners = function (array $list) use ($partnersFile) {
+    file_put_contents($partnersFile, json_encode(array_values($list), JSON_PRETTY_PRINT), LOCK_EX);
+};
+if ($authed && ($_POST['do'] ?? '') === 'partner_add') {
+    $c = fn($k, $max = 120) => substr(trim(strip_tags((string)($_POST[$k] ?? ''))), 0, $max);
+    if ($c('firm') === '') {
+        $message = 'Enter the firm name.';
+    } else {
+        $site = $c('website', 200);
+        if ($site !== '' && !preg_match('#^https?://#i', $site)) $site = 'https://' . $site;
+        $partners[] = [
+            'id' => 'p_' . bin2hex(random_bytes(5)),
+            'firm' => $c('firm'), 'name' => $c('name'), 'city' => $c('city', 60), 'province' => $c('province', 40),
+            'phone' => $c('phone', 30), 'email' => filter_var($c('email'), FILTER_VALIDATE_EMAIL) ? $c('email') : '',
+            'website' => filter_var($site, FILTER_VALIDATE_URL) ? $site : '', 'languages' => $c('languages', 80),
+            'services' => array_values(array_intersect(PARTNER_SERVICES, (array)($_POST['services'] ?? []))),
+            'licence_key' => $c('licence_key', 30), 'listed' => true, 'added_at' => date('c'),
+        ];
+        $savePartners($partners);
+        $message = 'Partner listed on the Find an accountant page.';
+    }
+}
+if ($authed && in_array($_POST['do'] ?? '', ['partner_remove', 'partner_toggle'], true)) {
+    $pid = (string)($_POST['pid'] ?? '');
+    foreach ($partners as $i => $p) {
+        if (($p['id'] ?? '') !== $pid) continue;
+        if ($_POST['do'] === 'partner_remove') unset($partners[$i]);
+        else $partners[$i]['listed'] = empty($p['listed']);
+    }
+    $savePartners($partners);
+    $message = 'Partner list updated.';
+}
+
 $recent = [];
 if ($authed) {
     foreach (glob(lic_dir() . '/*.json') as $f) {
@@ -129,6 +166,50 @@ if ($authed) {
     <div><button class="btn btn-plain" name="do" value="revoke">Switch off</button></div>
     <div><button class="btn btn-plain" name="do" value="restore">Switch on</button></div>
   </form>
+
+  <h3 style="margin-top:28px">Partner accountants (Find an accountant page)</h3>
+  <form method="post" class="inline">
+    <input type="hidden" name="pw" value="<?= e($pw) ?>">
+    <input type="hidden" name="do" value="partner_add">
+    <div><label>Firm</label><input name="firm" required></div>
+    <div><label>Contact name</label><input name="name"></div>
+    <div><label>City / town</label><input name="city"></div>
+    <div><label>Province</label>
+      <select name="province">
+        <?php foreach (['Eastern Cape','Free State','Gauteng','KwaZulu-Natal','Limpopo','Mpumalanga','Northern Cape','North West','Western Cape','Online (all provinces)'] as $pv): ?>
+        <option><?= e($pv) ?></option>
+        <?php endforeach; ?>
+      </select></div>
+    <div><label>Phone</label><input name="phone"></div>
+    <div><label>Email</label><input name="email" type="email"></div>
+    <div><label>Website</label><input name="website"></div>
+    <div><label>Languages</label><input name="languages" placeholder="English, isiZulu"></div>
+    <div><label>Licence key (optional)</label><input name="licence_key" placeholder="SETW-..."></div>
+    <div style="grid-column:1/-1"><label>Services</label>
+      <?php foreach (PARTNER_SERVICES as $sv): ?>
+        <label style="display:inline-block;font-weight:400;margin-right:12px"><input type="checkbox" name="services[]" value="<?= e($sv) ?>" style="width:auto" <?= in_array($sv, ['Setwel setup', 'Training'], true) ? 'checked' : '' ?>> <?= e($sv) ?></label>
+      <?php endforeach; ?>
+    </div>
+    <div><button class="btn btn-green">List partner</button></div>
+  </form>
+  <div class="scroll" style="margin-top:12px"><table>
+    <tr><th>Firm</th><th>Where</th><th>Contact</th><th>Services</th><th>Shown</th><th></th></tr>
+    <?php foreach ($partners as $p): ?>
+    <tr>
+      <td><?= e($p['firm']) ?></td>
+      <td><?= e($p['city']) ?>, <?= e($p['province']) ?></td>
+      <td><?= e($p['name']) ?><br><?= e($p['phone']) ?><br><?= e($p['email']) ?></td>
+      <td><?= e(implode(', ', $p['services'] ?? [])) ?></td>
+      <td><?= !empty($p['listed']) ? 'Yes' : 'Hidden' ?></td>
+      <td>
+        <form method="post" style="display:inline"><input type="hidden" name="pw" value="<?= e($pw) ?>"><input type="hidden" name="pid" value="<?= e($p['id']) ?>">
+          <button class="btn btn-plain" name="do" value="partner_toggle"><?= !empty($p['listed']) ? 'Hide' : 'Show' ?></button>
+          <button class="btn btn-plain" name="do" value="partner_remove" onclick="return confirm('Remove this partner?')">Remove</button>
+        </form>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+  </table></div>
 
   <h3 style="margin-top:28px">Latest licences</h3>
   <div class="scroll"><table>

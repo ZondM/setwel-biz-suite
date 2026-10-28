@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Receipt, Search, Trash2, CheckCircle2 } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, EmptyState, StatusBadge, MoneyText } from '../components/common/ui';
 import { listBills, listSuppliers, deleteBill, saveBill } from '../db/repository';
 import { formatDate, todayIso } from '../core/numbering';
 
 export default function Bills() {
   const { company, refreshKey, bumpRefresh } = useApp();
+  const { canDelete } = usePermissions();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
 
@@ -97,9 +98,7 @@ export default function Bills() {
                         <CheckCircle2 size={15} />
                       </button>
                     )}
-                    <button onClick={() => handleDelete(b.id)} className="text-gray-400 hover:text-status-overdue">
-                      <Trash2 size={15} />
-                    </button>
+                    {canDelete && (<button onClick={() => handleDelete(b.id)} className="text-gray-400 hover:text-status-overdue"><Trash2 size={15} /></button>)}
                   </td>
                 </tr>
               ))}

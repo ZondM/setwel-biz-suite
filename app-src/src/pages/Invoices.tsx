@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, FileText, Search, Trash2, Repeat, Pause, Play } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, EmptyState, StatusBadge, MoneyText, Select, Tabs } from '../components/common/ui';
 import { listRecurring, saveRecurring, deleteRecurring } from '../db/automationRepo';
 import { FREQUENCY_LABELS } from '../core/automation';
@@ -11,6 +11,7 @@ import { formatDate, todayIso } from '../core/numbering';
 
 export default function Invoices() {
   const { company, refreshKey, bumpRefresh } = useApp();
+  const { canDelete } = usePermissions();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -128,9 +129,7 @@ export default function Invoices() {
                     <MoneyText amount={inv.total} />
                   </td>
                   <td className="px-5 py-3 text-right">
-                    <button onClick={() => handleDelete(inv.id)} className="text-gray-400 hover:text-status-overdue">
-                      <Trash2 size={15} />
-                    </button>
+                    {canDelete && (<button onClick={() => handleDelete(inv.id)} className="text-gray-400 hover:text-status-overdue"><Trash2 size={15} /></button>)}
                   </td>
                 </tr>
               ))}

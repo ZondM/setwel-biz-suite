@@ -32,6 +32,16 @@ Customers' data stays on their device, so the automation runs inside the app eac
 - **Bank matching** (Builder+): upload a bank statement CSV; payments are matched to invoices, the rest become expenses with learnt categories.
 - **Tax alerts and monthly report**: VAT201 and provisional tax deadlines with estimates, VAT threshold warning, bills due, and a monthly report (PDF, WhatsApp, email).
 
+## Enterprise and Accountant Partner
+
+- **Several businesses / client files** in one install (top-bar switcher). Every record carries `company_id`; the active one is in `app_meta.activeCompanyId`.
+- **Budgets, cash-flow forecast, combined report, change history, month-end pack (ZIP)** (Enterprise+).
+- **Staff logins** (Enterprise+): owner/staff roles with hashed PINs per business. Staff can't delete or see financials.
+- **Business file (.setwel)**: one business's books as JSON, for sending to/from the accountant and as a backup (`core/businessFile.ts`). Importing replaces that business's records only.
+- **Practice dashboard + VAT summary** (Accountant Partner), practice branding on reports, "Books kept with…" line on invoices.
+- **Setup checklist** with CSV templates for customers, suppliers and opening balances.
+- **Website**: `find-an-accountant.html` (partners managed in `api/admin.php`, served by `api/partners.php`) and the training manual `manual.html` (text in `tools/manual.py`).
+
 ## Getting new installers
 
 1. GitHub → **Actions** → **Build installers** → **Run workflow** (it also runs by itself when `app/` or `desktop/` changes).

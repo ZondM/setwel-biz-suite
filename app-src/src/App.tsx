@@ -25,8 +25,17 @@ import Upgrade from './pages/Upgrade';
 import HelpPage from './pages/Help';
 import LockedFeature from './pages/LockedFeature';
 import Banking from './pages/Banking';
+import Budgets from './pages/enterprise/Budgets';
+import CashFlow from './pages/enterprise/CashFlow';
+import History from './pages/enterprise/History';
+import CombinedReport from './pages/enterprise/CombinedReport';
+import Practice from './pages/enterprise/Practice';
+import BusinessFiles from './pages/BusinessFiles';
+import Setup from './pages/Setup';
 import MonthlyReport from './pages/reports/MonthlyReport';
-import { tierAtLeast } from './state/AppContext';
+import { tierAtLeast, usePermissions } from './state/AppContext';
+import { StaffLogin } from './components/enterprise/StaffLogin';
+import { listUsers } from './db/enterpriseRepo';
 import {
   PinLockScreen,
   TrialExpiredScreen,
@@ -41,6 +50,19 @@ function PlanOnly({ tier, label, feature, children }: { tier: string; label: str
   return tierAtLeast(company?.packageTier, tier) ? <>{children}</> : <LockedFeature feature={feature} requiredTier={label} />;
 }
 
+/** Pages only the owner may open when staff logins are used. */
+function OwnerOnly({ children }: { children: React.ReactNode }) {
+  const { isOwner } = usePermissions();
+  return isOwner ? (
+    <>{children}</>
+  ) : (
+    <div className="text-center py-16 px-6">
+      <h3 className="font-display font-bold text-lg text-brand-navy mb-1">Only the owner can open this</h3>
+      <p className="text-sm text-gray-500">Ask the business owner if you need it.</p>
+    </div>
+  );
+}
+
 function ComingSoon({ feature }: { feature: string }) {
   return (
     <div className="text-center py-16 px-6">
@@ -51,15 +73,20 @@ function ComingSoon({ feature }: { feature: string }) {
 }
 
 function Gate() {
-  const { company } = useApp();
+  const { company, user, addingBusiness } = useApp();
   const { isExpired } = useTrialStatus();
   const { unlocked, setUnlocked, pinSet } = usePinGate(company?.id);
 
-  // 1. No company → onboarding
+  // 1. No company → onboarding; adding another business → the same screens
   if (!company) return <Onboarding />;
+  if (addingBusiness) return <Onboarding mode="add" />;
 
-  // 2. PIN lock (if set, require unlock on first render)
-  if (pinSet && !unlocked) {
+  // 2a. Staff logins: pick your name and enter your PIN
+  const hasLogins = listUsers(company.id).length > 0;
+  if (hasLogins && !user) return <StaffLogin />;
+
+  // 2b. Simple app PIN (if set, require unlock on first render)
+  if (!hasLogins && pinSet && !unlocked) {
     return <PinLockScreen companyId={company.id} onUnlock={() => setUnlocked(true)} />;
   }
 
@@ -87,19 +114,26 @@ function Gate() {
             <Route path="/bills" element={<Bills />} />
             <Route path="/bills/new" element={<BillEditor />} />
             <Route path="/bills/:id" element={<BillEditor />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/reports/profit-loss" element={<ProfitLoss />} />
-            <Route path="/reports/vat201" element={<Vat201 />} />
-            <Route path="/reports/aged-debtors" element={<AgedDebtors />} />
-            <Route path="/reports/aged-creditors" element={<AgedCreditors />} />
-            <Route path="/tax-centre" element={<TaxCentre />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/upgrade" element={<Upgrade />} />
+            <Route path="/reports" element={<OwnerOnly><Reports /></OwnerOnly>} />
+            <Route path="/reports/profit-loss" element={<OwnerOnly><ProfitLoss /></OwnerOnly>} />
+            <Route path="/reports/vat201" element={<OwnerOnly><Vat201 /></OwnerOnly>} />
+            <Route path="/reports/aged-debtors" element={<OwnerOnly><AgedDebtors /></OwnerOnly>} />
+            <Route path="/reports/aged-creditors" element={<OwnerOnly><AgedCreditors /></OwnerOnly>} />
+            <Route path="/tax-centre" element={<OwnerOnly><TaxCentre /></OwnerOnly>} />
+            <Route path="/settings" element={<OwnerOnly><SettingsPage /></OwnerOnly>} />
+            <Route path="/upgrade" element={<OwnerOnly><Upgrade /></OwnerOnly>} />
             <Route path="/help" element={<HelpPage />} />
             <Route path="/inventory" element={<ComingSoon feature="Stock" />} />
             <Route path="/payroll" element={<ComingSoon feature="Payroll" />} />
-            <Route path="/banking" element={<PlanOnly tier="builder" label="Builder" feature="Bank statement matching"><Banking /></PlanOnly>} />
-            <Route path="/reports/monthly" element={<MonthlyReport />} />
+            <Route path="/banking" element={<OwnerOnly><PlanOnly tier="builder" label="Builder" feature="Bank statement matching"><Banking /></PlanOnly></OwnerOnly>} />
+            <Route path="/practice" element={<OwnerOnly><PlanOnly tier="accountant_partner" label="Accountant Partner" feature="Practice dashboard"><Practice /></PlanOnly></OwnerOnly>} />
+            <Route path="/setup" element={<OwnerOnly><Setup /></OwnerOnly>} />
+            <Route path="/files" element={<OwnerOnly><BusinessFiles /></OwnerOnly>} />
+            <Route path="/budgets" element={<OwnerOnly><PlanOnly tier="enterprise" label="Enterprise" feature="Budgets"><Budgets /></PlanOnly></OwnerOnly>} />
+            <Route path="/cashflow" element={<OwnerOnly><PlanOnly tier="enterprise" label="Enterprise" feature="Cash-flow forecast"><CashFlow /></PlanOnly></OwnerOnly>} />
+            <Route path="/history" element={<OwnerOnly><PlanOnly tier="enterprise" label="Enterprise" feature="Change history"><History /></PlanOnly></OwnerOnly>} />
+            <Route path="/reports/combined" element={<OwnerOnly><PlanOnly tier="enterprise" label="Enterprise" feature="Combined report"><CombinedReport /></PlanOnly></OwnerOnly>} />
+            <Route path="/reports/monthly" element={<OwnerOnly><MonthlyReport /></OwnerOnly>} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Routes>

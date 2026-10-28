@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Download, Pencil, Send, BellRing, Repeat, CircleDollarSign, Trash2 } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, StatusBadge, MoneyText, Modal, Field, Input, Select } from '../components/common/ui';
 import { getInvoice, getCustomer, listPaymentsForInvoice, recordPayment, deleteInvoice } from '../db/repository';
 import { generateInvoicePdf } from '../utils/pdf';
@@ -15,6 +15,7 @@ import { FREQUENCY_LABELS, isOverdue } from '../core/automation';
 
 export default function InvoiceView() {
   const { company, refreshKey, bumpRefresh } = useApp();
+  const { canDelete } = usePermissions();
   const navigate = useNavigate();
   const { id } = useParams();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -94,9 +95,7 @@ export default function InvoiceView() {
                 <CircleDollarSign size={15} /> Record payment
               </Button>
             )}
-            <button onClick={handleDelete} className="text-gray-400 hover:text-status-overdue px-2">
-              <Trash2 size={16} />
-            </button>
+            {canDelete && (<button onClick={handleDelete} className="text-gray-400 hover:text-status-overdue px-2"><Trash2 size={16} /></button>)}
           </div>
         }
       />

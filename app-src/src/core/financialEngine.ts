@@ -156,7 +156,8 @@ export interface Vat201Result {
 export function calculateVat201(invoices: Invoice[], expenses: Expense[], bills: Bill[], periodStart: string, periodEnd: string): Vat201Result {
   const inRange = (d: string) => d >= periodStart && d <= periodEnd;
 
-  const relevantInvoices = invoices.filter((i) => i.status !== 'draft' && inRange(i.invoiceDate));
+  // Opening balances brought forward during setup were already declared before Setwel was used.
+  const relevantInvoices = invoices.filter((i) => i.status !== 'draft' && inRange(i.invoiceDate) && i.notes !== 'Opening balance loaded during setup');
   const relevantExpenses = expenses.filter((e) => inRange(e.expenseDate));
   const relevantBills = bills.filter((b) => b.status !== 'draft' && inRange(b.billDate));
 

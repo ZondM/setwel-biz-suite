@@ -8,6 +8,7 @@ import { listInvoices, listExpenses, listCategories, listCustomers } from '../db
 import { balanceDue } from './automation';
 import { round2 } from './financialEngine';
 import { formatCurrency } from './numbering';
+import { getPractice, accountantLine } from './accountant';
 
 export interface MonthFigures {
   month: string; // YYYY-MM
@@ -40,7 +41,7 @@ export function previousMonth(month: string) {
   return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, '0')}`;
 }
 
-function figures(companyId: string, month: string): MonthFigures {
+export function figures(companyId: string, month: string): MonthFigures {
   const inMonth = (d: string) => d.slice(0, 7) === month;
   const invoices = listInvoices(companyId).filter((i) => i.status !== 'draft' && inMonth(i.invoiceDate));
   const expenses = listExpenses(companyId).filter((e) => inMonth(e.expenseDate));
@@ -150,6 +151,19 @@ export function reportPdf(company: Company, r: MonthlyReport): jsPDF {
   doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
   doc.text(`Monthly report: ${c.label}`, 14, 23);
+  // Accountant Partner: the practice's name and logo on reports it prepares
+  const practice = company.packageTier === 'accountant_partner' ? getPractice() : null;
+  if (practice && (practice.firm || practice.name)) {
+    doc.setFontSize(9);
+    doc.text(`Prepared by ${practice.firm || practice.name}`, 196, 23, { align: 'right' });
+    if (practice.logo) {
+      try {
+        doc.addImage(practice.logo, 170, 5, 26, 12, undefined, 'FAST');
+      } catch {
+        // unsupported image: name only
+      }
+    }
+  }
 
   const summary: [string, string, string][] = [
     ['Invoiced (excl. VAT)', formatCurrency(c.invoicedExclVat), changeText(c.invoicedExclVat, r.previous.invoicedExclVat)],
@@ -181,6 +195,11 @@ export function reportPdf(company: Company, r: MonthlyReport): jsPDF {
   section('Top customers (invoiced)', c.topCustomers);
   section('Who owes you', r.owedTop);
   doc.setFontSize(8);
+  const kept = accountantLine(company.id);
+  if (kept) {
+    doc.setTextColor(...SLATE);
+    doc.text(kept, 105, 285, { align: 'center' });
+  }
   doc.setTextColor(150, 150, 150);
   doc.text('Figures from your Setwel records. Estimates only; confirm tax amounts with your accountant. Generated with Setwel Biz Suite.', 105, 290, { align: 'center' });
   return doc;

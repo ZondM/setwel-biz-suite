@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Plus, Wallet, Trash2, Pencil, Paperclip, ScanLine, Loader2 } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, EmptyState, Modal, Field, Input, Select, Toggle, MoneyText } from '../components/common/ui';
 import { listExpenses, listCategories, listSuppliers, saveExpense, deleteExpense, saveSupplier } from '../db/repository';
 import { prepareFile, scanReceipt, ScannedReceipt } from '../core/scan';
@@ -18,6 +18,7 @@ interface ScanPrefill {
 
 export default function Expenses() {
   const { company, licence, refreshKey, bumpRefresh } = useApp();
+  const { canDelete } = usePermissions();
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState<Expense | null>(null);
   const [prefill, setPrefill] = useState<ScanPrefill | null>(null);
@@ -130,9 +131,7 @@ export default function Expenses() {
                     <button onClick={() => openEdit(e)} className="text-gray-400 hover:text-brand-navy mr-3">
                       <Pencil size={15} />
                     </button>
-                    <button onClick={() => handleDelete(e)} className="text-gray-400 hover:text-status-overdue">
-                      <Trash2 size={15} />
-                    </button>
+                    {canDelete && (<button onClick={() => handleDelete(e)} className="text-gray-400 hover:text-status-overdue"><Trash2 size={15} /></button>)}
                   </td>
                 </tr>
               ))}

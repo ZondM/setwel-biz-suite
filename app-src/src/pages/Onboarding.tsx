@@ -8,6 +8,7 @@ import { seedDemoData } from '../db/sampleData';
 import { BusinessType, Company, PackageTier } from '../core/types';
 import { todayIso } from '../core/numbering';
 import { useNavigate } from 'react-router-dom';
+import { applyPracticeToClient } from '../core/accountant';
 
 const PROVINCES = [
   'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo', 'Mpumalanga', 'Northern Cape', 'North West', 'Western Cape'
@@ -15,11 +16,14 @@ const PROVINCES = [
 
 type Step = 'welcome' | 'package' | 'company' | 'finish';
 
-export default function Onboarding() {
-  const [step, setStep] = useState<Step>('welcome');
-  const [selectedTier, setSelectedTier] = useState<PackageTier>('hustler');
+/** mode "add": adding another business or client file to an existing install. */
+export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' }) {
+  const { setCompany, bumpRefresh, company: current, setAddingBusiness, setUser } = useApp();
+  const adding = mode === 'add';
+  const [step, setStep] = useState<Step>(adding ? 'company' : 'welcome');
+  const [selectedTier, setSelectedTier] = useState<PackageTier>(current?.packageTier ?? 'hustler');
   const [created, setCreated] = useState<Company | null>(null);
-  const { setCompany, bumpRefresh } = useApp();
+  const isPartner = current?.packageTier === 'accountant_partner';
   const navigate = useNavigate();
 
   return (
@@ -38,11 +42,24 @@ export default function Onboarding() {
           onBack={() => setStep('welcome')}
         />
       )}
+      {adding && step === 'company' && (
+        <p className="text-center text-sm text-gray-500 -mb-2">
+          {isPartner ? 'Add a client. Their books are kept separate from your other clients.' : 'Add another business or branch. Its books are kept separate.'}
+        </p>
+      )}
       {step === 'company' && (
         <CompanyStep
           tier={selectedTier}
-          onBack={() => setStep('package')}
+          onBack={() => (adding ? setAddingBusiness(false) : setStep('package'))}
           onDone={(company) => {
+            if (adding) {
+              if (isPartner) applyPracticeToClient(company.id);
+              setUser(null);
+              setCompany(company);
+              setAddingBusiness(false);
+              navigate('/dashboard');
+              return;
+            }
             // Keep showing onboarding until the last step; the app opens once setCompany runs.
             setCreated(company);
             setStep('finish');

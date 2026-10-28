@@ -192,9 +192,40 @@ CREATE TABLE IF NOT EXISTS bank_rules (
   created_at TEXT NOT NULL
 );
 
+-- Enterprise / Accountant Partner (schema version 3)
+CREATE TABLE IF NOT EXISTS budgets (
+  company_id TEXT NOT NULL,
+  category_id TEXT NOT NULL,
+  monthly_amount REAL NOT NULL,
+  PRIMARY KEY (company_id, category_id)
+);
+
+CREATE TABLE IF NOT EXISTS audit_log (
+  id TEXT PRIMARY KEY,
+  company_id TEXT NOT NULL,
+  at TEXT NOT NULL,
+  user_name TEXT NOT NULL,
+  action TEXT NOT NULL,
+  entity TEXT NOT NULL,
+  entity_id TEXT,
+  summary TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id TEXT PRIMARY KEY,
+  company_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  role TEXT NOT NULL,
+  pin_hash TEXT NOT NULL,
+  pin_salt TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_company ON audit_log(company_id, at);
+CREATE INDEX IF NOT EXISTS idx_users_company ON users(company_id);
 CREATE INDEX IF NOT EXISTS idx_recurring_company ON recurring_invoices(company_id);
 CREATE INDEX IF NOT EXISTS idx_reminders_invoice ON reminders(invoice_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_lines_fp ON bank_lines(company_id, fingerprint);
 `;
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;

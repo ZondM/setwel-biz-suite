@@ -7,6 +7,7 @@ import { balanceDue, daysBetween, needsReminder } from './automation';
 import { buildFinancialSummary, calculateVat201, checkVatRegistrationWarning, estimateProvisionalTax, round2 } from './financialEngine';
 import { formatCurrency, formatDate, todayIso } from './numbering';
 import { ReminderLog } from '../db/automationRepo';
+import { BudgetLine, Forecast } from './planning';
 
 export type AttentionAction =
   | { type: 'send'; invoice: Invoice }
@@ -35,6 +36,8 @@ export interface AttentionInput {
   bankLinesToReview: number;
   canUseBills: boolean;
   canUseBanking: boolean;
+  budgets?: BudgetLine[]; // Enterprise+: this month's budget lines
+  forecast?: Forecast | null; // Enterprise+: cash-flow forecast, if a bank balance was entered
   today?: string;
 }
 
@@ -221,6 +224,30 @@ export function buildAttention(input: AttentionInput): AttentionItem[] {
         ]
       });
     }
+  }
+
+  // Budgets (Enterprise+)
+  for (const b of input.budgets ?? []) {
+    if (b.status !== 'warn' && b.status !== 'over') continue;
+    items.push({
+      id: `budget-${b.category.id}`,
+      level: b.status === 'over' ? 'urgent' : 'soon',
+      title: b.status === 'over' ? `Over budget on ${b.category.name}` : `${b.pct}% of the ${b.category.name} budget used`,
+      detail: `${formatCurrency(b.spent)} spent of ${formatCurrency(b.budget)} this month`,
+      actions: [{ label: 'Budgets', action: { type: 'go', to: '/budgets' } }]
+    });
+  }
+
+  // Cash-flow warning (Enterprise+): balance expected to go below zero within 4 weeks
+  const low = input.forecast?.weeks.slice(0, 4).find((w) => w.closing < 0);
+  if (low) {
+    items.push({
+      id: 'cashflow-low',
+      level: 'urgent',
+      title: `Cash may run short in the week of ${formatDate(low.start)}`,
+      detail: `Expected bank balance ${formatCurrency(low.closing)}. Chase overdue invoices now.`,
+      actions: [{ label: 'Cash-flow forecast', action: { type: 'go', to: '/cashflow' } }]
+    });
   }
 
   // Bank lines to review

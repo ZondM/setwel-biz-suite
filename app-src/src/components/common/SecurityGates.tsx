@@ -14,8 +14,8 @@ export function usePinGate(companyId: string | undefined) {
     if (!companyId) return;
     const saved = getSetting(companyId, 'appPin');
     setPinSet(!!saved);
-    // Auto-unlock if no PIN is configured
-    if (!saved) setUnlocked(true);
+    // Each business asks for its own PIN when you switch to it; no PIN = open straight away.
+    setUnlocked(!saved);
   }, [companyId]);
 
   return { unlocked, setUnlocked, pinSet, setPinSet };

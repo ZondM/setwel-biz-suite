@@ -1,11 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BellRing, CheckCircle2 } from 'lucide-react';
-import { useApp, tierAtLeast } from '../../state/AppContext';
+import { useApp, tierAtLeast, usePermissions } from '../../state/AppContext';
 import { Button, Card, Modal } from '../common/ui';
 import { listInvoices, listCustomers, listExpenses, listBills, listCategories, getSettings, setSetting, getCustomer } from '../../db/repository';
 import { lastReminders, listBankLines } from '../../db/automationRepo';
 import { buildAttention, AttentionAction } from '../../core/alerts';
+import { budgetLines, buildForecast } from '../../core/planning';
+import { listBudgets } from '../../db/enterpriseRepo';
+import { listRecurring } from '../../db/automationRepo';
 import { Invoice } from '../../core/types';
 import { SendModal } from './SendModal';
 
@@ -18,6 +21,7 @@ const LEVEL_STYLE = {
 /** The automation inbox on the dashboard. */
 export function AttentionPanel() {
   const { company, refreshKey, bumpRefresh } = useApp();
+  const { isOwner } = usePermissions();
   const navigate = useNavigate();
   const [sending, setSending] = useState<{ kind: 'invoice' | 'reminder'; invoice: Invoice } | null>(null);
   const [askVatCycle, setAskVatCycle] = useState(false);
@@ -25,21 +29,32 @@ export function AttentionPanel() {
   const items = useMemo(() => {
     if (!company) return [];
     const canUseBanking = tierAtLeast(company.packageTier, 'builder');
+    const enterprise = tierAtLeast(company.packageTier, 'enterprise');
+    const invoices = listInvoices(company.id);
+    const expenses = listExpenses(company.id);
+    const bills = listBills(company.id);
+    const categories = listCategories(company.id);
+    const settings = getSettings(company.id);
     return buildAttention({
       company,
-      invoices: listInvoices(company.id),
+      invoices,
       customers: listCustomers(company.id),
-      expenses: listExpenses(company.id),
-      bills: listBills(company.id),
-      categories: listCategories(company.id),
+      expenses,
+      bills,
+      categories,
+      budgets: enterprise ? budgetLines(categories, expenses, bills, listBudgets(company.id), new Date().toISOString().slice(0, 7)) : undefined,
+      forecast:
+        enterprise && settings.cashBalance !== undefined
+          ? buildForecast({ opening: Number(settings.cashBalance) || 0, invoices, bills, expenses, recurring: listRecurring(company.id) })
+          : null,
       reminders: lastReminders(company.id),
-      settings: getSettings(company.id),
+      settings,
       bankLinesToReview: canUseBanking ? listBankLines(company.id).filter((l) => l.status === 'new').length : 0,
       canUseBills: tierAtLeast(company.packageTier, 'grinder'),
       canUseBanking
-    });
+    }).filter((it) => isOwner || it.actions.some((a) => a.action.type === 'send' || a.action.type === 'remind')); // staff see only sending jobs
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [company, refreshKey]);
+  }, [company, refreshKey, isOwner]);
 
   if (!company) return null;
 

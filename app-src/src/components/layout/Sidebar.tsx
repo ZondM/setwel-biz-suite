@@ -18,19 +18,27 @@ import {
   Lock,
   ChevronLeft,
   ChevronRight,
-  FileStack
+  FileStack,
+  PiggyBank,
+  TrendingUp,
+  History,
+  Briefcase,
+  ClipboardCheck,
+  Send
 } from 'lucide-react';
-import { useApp, tierAtLeast } from '../../state/AppContext';
+import { useApp, tierAtLeast, usePermissions } from '../../state/AppContext';
 
 interface NavItem {
   to: string;
   label: string;
   icon: React.ReactNode;
   requiredTier?: string;
+  ownerOnly?: boolean;
 }
 
 export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean; onClose?: () => void }) {
   const { company } = useApp();
+  const { isOwner, isPartner } = usePermissions();
   const [desktopCollapsed, setCollapsed] = useState(false);
   const collapsed = desktopCollapsed && !mobileOpen;
   const tier = company?.packageTier;
@@ -43,23 +51,30 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
     { to: '/invoices', label: 'Invoices', icon: <FileText size={18} /> },
     { to: '/bills', label: 'Bills', icon: <Receipt size={18} />, requiredTier: 'grinder' },
     { to: '/expenses', label: 'Expenses', icon: <Wallet size={18} /> },
-    { to: '/banking', label: 'Bank matching', icon: <Landmark size={18} />, requiredTier: 'builder' },
+    { to: '/banking', label: 'Bank matching', icon: <Landmark size={18} />, requiredTier: 'builder', ownerOnly: true },
     { to: '/inventory', label: 'Stock (soon)', icon: <Package size={18} /> },
     { to: '/payroll', label: 'Payroll (soon)', icon: <Banknote size={18} /> }
   ];
 
   const reportItems: NavItem[] = [
-    { to: '/reports', label: 'Reports', icon: <BarChart3 size={18} /> },
-    { to: '/tax-centre', label: 'Tax centre', icon: <Calculator size={18} /> }
+    ...(isPartner ? [{ to: '/practice', label: 'Practice dashboard', icon: <Briefcase size={18} />, ownerOnly: true }] : []),
+    { to: '/reports', label: 'Reports', icon: <BarChart3 size={18} />, ownerOnly: true },
+    { to: '/tax-centre', label: 'Tax centre', icon: <Calculator size={18} />, ownerOnly: true },
+    { to: '/budgets', label: 'Budgets', icon: <PiggyBank size={18} />, requiredTier: 'enterprise', ownerOnly: true },
+    { to: '/cashflow', label: 'Cash-flow forecast', icon: <TrendingUp size={18} />, requiredTier: 'enterprise', ownerOnly: true },
+    { to: '/history', label: 'Change history', icon: <History size={18} />, requiredTier: 'enterprise', ownerOnly: true }
   ];
 
   const bottomItems: NavItem[] = [
-    { to: '/settings', label: 'Settings', icon: <SettingsIcon size={18} /> },
-    { to: '/help', label: 'Help & Support', icon: <HelpCircle size={18} /> },
-    { to: '/upgrade', label: 'Upgrade Plan', icon: <ArrowUpCircle size={18} /> }
+    { to: '/setup', label: 'Setup checklist', icon: <ClipboardCheck size={18} />, ownerOnly: true },
+    { to: '/files', label: isPartner ? 'Send books to client' : 'Send to accountant', icon: <Send size={18} />, ownerOnly: true },
+    { to: '/settings', label: 'Settings', icon: <SettingsIcon size={18} />, ownerOnly: true },
+    { to: '/help', label: 'Help & training', icon: <HelpCircle size={18} /> },
+    { to: '/upgrade', label: 'Upgrade Plan', icon: <ArrowUpCircle size={18} />, ownerOnly: true }
   ];
 
   const renderItem = (item: NavItem) => {
+    if (item.ownerOnly && !isOwner) return null;
     const locked = item.requiredTier ? !tierAtLeast(tier, item.requiredTier) : false;
     if (locked) {
       return (

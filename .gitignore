@@ -9,3 +9,4 @@ desktop/release/
 app-src/node_modules/
 app-src/dist/
 app-src/*.tsbuildinfo
+__pycache__/

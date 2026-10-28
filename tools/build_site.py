@@ -68,19 +68,28 @@ PLANS = [
         "monthly": 999, "yearly": 9990,
         "features": [
             "Everything in Builder",
-            "We set it up and load your opening balances",
-            "Training for you and your staff",
-            "Priority help on WhatsApp",
+            "Several businesses or branches in one app, with a combined report",
+            "Budgets with over-spend warnings",
+            "13-week cash-flow forecast",
+            "Staff logins: staff can't delete or see profit",
+            "Change history: who changed what, and when",
+            "Month-end pack for your accountant",
+            "Setup and training by a Setwel partner accountant",
         ],
     },
     {
         "id": "accountant_partner", "name": "Accountant Partner", "for": "Accountants and bookkeepers with clients",
         "monthly": 1499, "yearly": None,
         "features": [
-            "Your partner key runs Setwel for all your clients",
-            "Listed as a Setwel partner accountant",
-            "Setwel customers who need an accountant are sent to you",
-            "Your referral code: a free month for every paying client",
+            "Unlimited client files in one app",
+            "Practice dashboard: every client's VAT and tax deadlines",
+            "Clients send you their books in one file",
+            "VAT summary for all clients in one table",
+            "Your firm's name and logo on client reports",
+            "Setup checklist, spreadsheet imports, opening balances",
+            "Training manual and trainer notes",
+            "Listed on Find an accountant: we send you clients",
+            "All Enterprise features, plus a referral code",
         ],
     },
 ]
@@ -89,7 +98,8 @@ NAV = [
     ("index.html", "Home"),
     ("download.html", "Download"),
     ("pricing.html", "Pricing"),
-    ("accountants.html", "Accountants"),
+    ("find-an-accountant.html", "Find an accountant"),
+    ("accountants.html", "For accountants"),
     ("refer.html", "Refer a friend"),
     ("help.html", "Help"),
     ("contact.html", "Contact"),
@@ -156,6 +166,8 @@ def page(filename, title, description, body, scripts=""):
           <li><a href="{WHATSAPP}">WhatsApp {PHONE}</a></li>
           <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
           <li><a href="/help.html">Questions and answers</a></li>
+          <li><a href="/manual.html">Training manual</a></li>
+          <li><a href="/find-an-accountant.html">Find an accountant</a></li>
         </ul>
       </div>
       <div>
@@ -470,7 +482,7 @@ def accountants():
 <div class="band">
   <div class="wrap">
     <h1>Accountant Partner</h1>
-    <p class="lead">Your clients keep their own invoices and books in Setwel. You get clean records, and Setwel sends you clients who need an accountant.</p>
+    <p class="lead">Run all your clients' books in one app, offer Setwel setup and training as a paid service, and get new clients sent to you.</p>
     <div class="btn-row"><a class="btn btn-main" href="/pay.html?plan=accountant_partner&amp;billing=monthly">Become a partner: {rand(partner['monthly'])} / month</a></div>
     <p class="note">Includes a 30-day free trial of the app. <a href="{WHATSAPP}">Talk to us first</a></p>
   </div>
@@ -478,12 +490,13 @@ def accountants():
 <section>
   <div class="wrap grid g2">
     <div>
-      <h2>Why accountants use Setwel</h2>
+      <h2>What you get in the app</h2>
       <ul>
-        <li>Clients capture invoices and expenses themselves, in categories that make sense.</li>
-        <li>VAT201, profit and loss and aged reports come out the same way for every client.</li>
-        <li>Fewer shoeboxes of slips, and fewer "what is this payment?" messages.</li>
-        <li>You stay the expert. Setwel handles the day-to-day.</li>
+        <li><strong>All your clients in one place.</strong> Switch between client files from the top bar; each client's books stay separate.</li>
+        <li><strong>Practice dashboard.</strong> Every client's next VAT201 and provisional tax date, the estimated amount, money owed to them, and when their file was last updated.</li>
+        <li><strong>Books arrive in one file.</strong> Your client presses "Send to my accountant". You import the file and their records are up to date. Send it back the same way after you've made corrections.</li>
+        <li><strong>VAT summary for all clients</strong>, exported to a spreadsheet in one click.</li>
+        <li><strong>Your brand.</strong> Your firm's name and logo on the reports you prepare, and "Books kept with your firm" on your clients' invoices.</li>
       </ul>
     </div>
     <div class="card">
@@ -493,18 +506,94 @@ def accountants():
   </div>
 </section>
 <section class="alt">
-  <div class="wrap">
-    <h2>How it works</h2>
-    <ol class="steps">
-      <li><h3>Join</h3>Pay for the partner plan. You get your partner key and referral code by email.</li>
-      <li><h3>Set up your clients</h3>Install Setwel on each client's computer and activate it with your partner key.</li>
-      <li><h3>Grow</h3>Clients you refer earn you free months, and customers who need an accountant are sent your way.</li>
-    </ol>
+  <div class="wrap grid g2">
+    <div>
+      <h2>Offer setup and training</h2>
+      <p class="sub">Many businesses want someone to set Setwel up and show them how to use it. As a partner you do that, and charge for it.</p>
+      <ul>
+        <li><strong>Setup checklist</strong> in the app: business details, VAT, banking, customers and suppliers from a spreadsheet, opening balances, staff logins.</li>
+        <li><strong>Training manual</strong> written by Setwel, with a version for each type of business, plus trainer notes: a session plan, practice exercises and a sign-off checklist.</li>
+        <li><strong>Leads from us.</strong> Businesses that ask for setup and training on our website are sent to listed partners.</li>
+      </ul>
+      <p><a class="btn btn-plain" href="/manual.html">Read the training manual</a></p>
+    </div>
+    <div>
+      <h2>How it works</h2>
+      <ol class="steps" style="grid-template-columns:1fr">
+        <li><h3>Join</h3>Pay for the partner plan. You get your partner key and referral code by email, and we list you on Find an accountant.</li>
+        <li><h3>Set up your clients</h3>Add each client in your app, or set Setwel up on their computer with the setup checklist.</li>
+        <li><h3>Train and grow</h3>Train clients with the manual. Every client who pays with your code earns you a free month.</li>
+      </ol>
+    </div>
   </div>
 </section>
 """
     return page("accountants.html", "Accountant Partner plan | Setwel Biz Suite",
-                "Setwel for accountants and bookkeepers: run Setwel for all your clients and get referred new clients.", body)
+                "Setwel for accountants and bookkeepers: all your clients in one app, setup and training tools, and new clients sent to you.", body)
+
+
+def manual():
+    import sys
+    sys.path.insert(0, str(ROOT / "tools"))
+    from manual import manual_body
+    return page("manual.html", "Setwel training manual", "Step-by-step training manual for Setwel Biz Suite, with guides by business type and notes for trainers.", manual_body())
+
+
+def find_accountant():
+    provinces = ["Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo", "Mpumalanga", "Northern Cape", "North West", "Western Cape"]
+    opts = "".join(f"<option>{p}</option>" for p in provinces)
+    body = f"""
+<div class="band">
+  <div class="wrap">
+    <h1>Find an accountant</h1>
+    <p class="lead">Setwel partner accountants set Setwel up for your business, train you and your staff, and help when the numbers don't add up.</p>
+  </div>
+</div>
+<section>
+  <div class="wrap">
+    <div class="btn-row" style="margin-bottom:18px">
+      <label for="pf-prov" style="margin:0">Province</label>
+      <select id="pf-prov" style="max-width:260px"><option value="">All provinces</option>{opts}</select>
+    </div>
+    <div id="partner-list" class="grid g3"><p>Loading partner accountants…</p></div>
+  </div>
+</section>
+<section class="alt">
+  <div class="wrap grid g2">
+    <div>
+      <h2>Ask for setup and training</h2>
+      <p class="sub">Tell us what you need. A partner accountant near you, or our team, will contact you within one business day.</p>
+      <ul>
+        <li><strong>Setup:</strong> your business details, VAT, banking, customers, suppliers and what people owe you, loaded for you.</li>
+        <li><strong>Training:</strong> a session for you and your staff, using the Setwel training manual for your type of business.</li>
+        <li><strong>Ongoing help:</strong> monthly bookkeeping, VAT201 and tax returns.</li>
+      </ul>
+      <p>Setup and training are included in the <a href="/pricing.html">Enterprise plan</a>. On other plans, the partner quotes you directly.</p>
+    </div>
+    <form class="box" id="partnerForm">
+      <label for="rq-biz">Business name</label><input id="rq-biz" name="business">
+      <label for="rq-name">Your name</label><input id="rq-name" name="name" required>
+      <label for="rq-phone">Cellphone / WhatsApp</label><input id="rq-phone" name="phone" type="tel">
+      <label for="rq-email">Email</label><input id="rq-email" name="email" type="email">
+      <label for="rq-prov">Province</label><select id="rq-prov" name="province">{opts}</select>
+      <label for="rq-need">What do you need?</label>
+      <select id="rq-need" name="need"><option>Setup and training</option><option>Training only</option><option>Monthly bookkeeping</option><option>VAT and tax returns</option><option>Something else</option></select>
+      <label for="rq-partner">Preferred partner (optional)</label><select id="rq-partner" name="partner"><option value="">Any partner near me</option></select>
+      <label for="rq-msg">Anything else?</label><textarea id="rq-msg" name="message" rows="3" style="width:100%;padding:12px;font-size:16px;border:1px solid #d6ccc2;border-radius:6px"></textarea>
+      <p><button class="btn btn-main btn-wide" type="submit">Send request</button></p>
+      <p class="hint" id="rq-result"></p>
+    </form>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <h2>Are you an accountant or bookkeeper?</h2>
+    <p class="sub">Join as a Setwel partner: all your clients in one app, the setup and training tools, and a listing on this page.</p>
+    <a class="btn btn-green" href="/accountants.html">The Accountant Partner plan</a>
+  </div>
+</section>
+"""
+    return page("find-an-accountant.html", "Find a Setwel partner accountant", "Find an accountant who sets up Setwel, trains your staff and helps with VAT and tax.", body)
 
 
 def refer():
@@ -630,6 +719,8 @@ def main():
         "thank-you.html": thank_you(),
         "accountants.html": accountants(),
         "refer.html": refer(),
+        "find-an-accountant.html": find_accountant(),
+        "manual.html": manual(),
         "help.html": help_page(),
         "contact.html": contact(),
         "404.html": not_found(),

@@ -1,5 +1,6 @@
 import { run, query, queryOne, transaction } from './database';
-import { uid } from '../core/numbering';
+import { uid, formatCurrency } from '../core/numbering';
+import { logChange } from './enterpriseRepo';
 import {
   Company,
   Customer,
@@ -43,9 +44,60 @@ function rowToCompany(r: any): Company {
   };
 }
 
-export function getActiveCompany(): Company | null {
-  const r = queryOne<any>('SELECT * FROM companies ORDER BY created_at ASC LIMIT 1');
+// ---------- Which business is open ----------
+// One install can hold several businesses (Enterprise) or client files (Accountant Partner).
+// Every record already carries company_id, so each business's books stay separate.
+
+function getMeta(key: string): string | null {
+  return queryOne<any>('SELECT value FROM app_meta WHERE key = :k', { ':k': key })?.value ?? null;
+}
+
+export function setMeta(key: string, value: string) {
+  run('INSERT OR REPLACE INTO app_meta (key, value) VALUES (:k, :v)', { ':k': key, ':v': value });
+}
+
+export function getMetaValue(key: string): string | null {
+  return getMeta(key);
+}
+
+export function listCompanies(): Company[] {
+  return query<any>('SELECT * FROM companies ORDER BY name COLLATE NOCASE ASC').map(rowToCompany);
+}
+
+export function getCompany(id: string): Company | null {
+  const r = queryOne<any>('SELECT * FROM companies WHERE id = :id', { ':id': id });
   return r ? rowToCompany(r) : null;
+}
+
+export function getActiveCompany(): Company | null {
+  const id = getMeta('activeCompanyId');
+  const chosen = id ? queryOne<any>('SELECT * FROM companies WHERE id = :id', { ':id': id }) : null;
+  const r = chosen ?? queryOne<any>('SELECT * FROM companies ORDER BY created_at ASC LIMIT 1');
+  return r ? rowToCompany(r) : null;
+}
+
+export function setActiveCompany(id: string) {
+  setMeta('activeCompanyId', id);
+}
+
+/** Tables that hold one business's records (all have company_id). */
+export const COMPANY_TABLES = [
+  'customers', 'suppliers', 'expense_categories', 'quotes', 'invoices', 'payments', 'expenses', 'bills', 'settings',
+  'recurring_invoices', 'reminders', 'bank_lines', 'bank_rules', 'budgets', 'audit_log', 'users'
+];
+
+/** Permanently removes a business and all its records. */
+export function deleteCompany(id: string) {
+  transaction(() => {
+    for (const t of COMPANY_TABLES) run(`DELETE FROM ${t} WHERE company_id = :id`, { ':id': id });
+    run('DELETE FROM companies WHERE id = :id', { ':id': id });
+  });
+  if (getMeta('activeCompanyId') === id) run("DELETE FROM app_meta WHERE key = 'activeCompanyId'");
+}
+
+/** The paid plan applies to every business in this install. */
+export function setTierForAll(tier: string) {
+  run('UPDATE companies SET package_tier = :t', { ':t': tier });
 }
 
 export function createCompany(input: Omit<Company, 'id' | 'createdAt'>): Company {
@@ -75,6 +127,7 @@ export function createCompany(input: Omit<Company, 'id' | 'createdAt'>): Company
       ':created_at': nowIso()
     }
   );
+  setActiveCompany(id);
   return getActiveCompany()!;
 }
 
@@ -139,7 +192,9 @@ export function saveCustomer(c: Omit<Customer, 'createdAt' | 'id'> & { id?: stri
       `UPDATE customers SET name=:name, email=:email, phone=:phone, address=:address, vat_number=:vat_number, is_vat_registered=:vr WHERE id=:id`,
       { ':id': id, ':name': c.name, ':email': c.email ?? null, ':phone': c.phone ?? null, ':address': c.address ?? null, ':vat_number': c.vatNumber ?? null, ':vr': toInt(c.isVatRegistered) }
     );
+    logChange(c.companyId, 'changed', 'customer', id, `Customer ${c.name}`);
   } else {
+    logChange(c.companyId, 'created', 'customer', id, `Customer ${c.name}`);
     run(
       `INSERT INTO customers (id, company_id, name, email, phone, address, vat_number, is_vat_registered, created_at) VALUES (:id,:cid,:name,:email,:phone,:address,:vat_number,:vr,:created_at)`,
       { ':id': id, ':cid': c.companyId, ':name': c.name, ':email': c.email ?? null, ':phone': c.phone ?? null, ':address': c.address ?? null, ':vat_number': c.vatNumber ?? null, ':vr': toInt(c.isVatRegistered), ':created_at': nowIso() }
@@ -149,6 +204,8 @@ export function saveCustomer(c: Omit<Customer, 'createdAt' | 'id'> & { id?: stri
 }
 
 export function deleteCustomer(id: string) {
+  const c = getCustomer(id);
+  if (c) logChange(c.companyId, 'deleted', 'customer', id, `Customer ${c.name}`);
   run('DELETE FROM customers WHERE id = :id', { ':id': id });
 }
 
@@ -188,7 +245,9 @@ export function saveSupplier(s: Omit<Supplier, 'createdAt' | 'id'> & { id?: stri
       ':address': s.address ?? null,
       ':vat_number': s.vatNumber ?? null
     });
+    logChange(s.companyId, 'changed', 'supplier', id, `Supplier ${s.name}`);
   } else {
+    logChange(s.companyId, 'created', 'supplier', id, `Supplier ${s.name}`);
     run(
       `INSERT INTO suppliers (id, company_id, name, email, phone, address, vat_number, created_at) VALUES (:id,:cid,:name,:email,:phone,:address,:vat_number,:created_at)`,
       { ':id': id, ':cid': s.companyId, ':name': s.name, ':email': s.email ?? null, ':phone': s.phone ?? null, ':address': s.address ?? null, ':vat_number': s.vatNumber ?? null, ':created_at': nowIso() }
@@ -198,6 +257,8 @@ export function saveSupplier(s: Omit<Supplier, 'createdAt' | 'id'> & { id?: stri
 }
 
 export function deleteSupplier(id: string) {
+  const sup = getSupplier(id);
+  if (sup) logChange(sup.companyId, 'deleted', 'supplier', id, `Supplier ${sup.name}`);
   run('DELETE FROM suppliers WHERE id = :id', { ':id': id });
 }
 
@@ -303,6 +364,7 @@ export function saveQuote(q: Omit<Quote, 'createdAt'>): Quote {
     ':cvr': toInt(q.customerVatRegistered),
     ':converted': q.convertedToInvoiceId ?? null
   };
+  logChange(q.companyId, exists ? 'changed' : 'created', 'quote', q.id, `Quote ${q.quoteNumber}, ${formatCurrency(q.total)}, ${q.status}`);
   if (exists) {
     run(
       `UPDATE quotes SET customer_id=:customer_id, quote_number=:quote_number, quote_date=:quote_date, valid_until=:valid_until, status=:status, items_json=:items_json, subtotal=:subtotal, vat_amount=:vat_amount, total=:total, notes=:notes, customer_vat_registered=:cvr, converted_to_invoice_id=:converted WHERE id=:id`,
@@ -319,6 +381,8 @@ export function saveQuote(q: Omit<Quote, 'createdAt'>): Quote {
 }
 
 export function deleteQuote(id: string) {
+  const q = getQuote(id);
+  if (q) logChange(q.companyId, 'deleted', 'quote', id, `Quote ${q.quoteNumber}, ${formatCurrency(q.total)}`);
   run('DELETE FROM quotes WHERE id = :id', { ':id': id });
 }
 
@@ -379,6 +443,7 @@ export function saveInvoice(inv: Omit<Invoice, 'createdAt'>): Invoice {
     ':notes': inv.notes ?? null,
     ':cvr': toInt(inv.customerVatRegistered)
   };
+  logChange(inv.companyId, exists ? 'changed' : 'created', 'invoice', inv.id, `Invoice ${inv.invoiceNumber}, ${formatCurrency(inv.total)}, ${inv.status}`);
   if (exists) {
     run(
       `UPDATE invoices SET customer_id=:customer_id, quote_id=:quote_id, invoice_number=:invoice_number, invoice_date=:invoice_date, due_date=:due_date, status=:status, items_json=:items_json, subtotal=:subtotal, vat_amount=:vat_amount, total=:total, amount_paid=:amount_paid, notes=:notes, customer_vat_registered=:cvr WHERE id=:id`,
@@ -395,6 +460,8 @@ export function saveInvoice(inv: Omit<Invoice, 'createdAt'>): Invoice {
 }
 
 export function deleteInvoice(id: string) {
+  const inv = getInvoice(id);
+  if (inv) logChange(inv.companyId, 'deleted', 'invoice', id, `Invoice ${inv.invoiceNumber}, ${formatCurrency(inv.total)}`);
   run('DELETE FROM invoices WHERE id = :id', { ':id': id });
   run('DELETE FROM payments WHERE invoice_id = :id', { ':id': id });
 }
@@ -432,6 +499,7 @@ export function recordPayment(p: Omit<Payment, 'id' | 'createdAt'>): Payment {
       { ':id': id, ':cid': p.companyId, ':invoice_id': p.invoiceId, ':amount': p.amount, ':payment_date': p.paymentDate, ':method': p.method, ':reference': p.reference ?? null, ':created_at': nowIso() }
     );
     const inv = getInvoice(p.invoiceId);
+    if (inv) logChange(p.companyId, 'payment', 'invoice', inv.id, `Payment of ${formatCurrency(p.amount)} on ${inv.invoiceNumber} (${p.method})`);
     if (inv) {
       const newPaid = Math.round((inv.amountPaid + p.amount) * 100) / 100;
       const newStatus = newPaid >= inv.total ? 'paid' : newPaid > 0 ? 'partial' : inv.status;
@@ -478,6 +546,7 @@ export function saveExpense(e: Omit<Expense, 'createdAt' | 'id'> & { id?: string
     ':expense_date': e.expenseDate,
     ':receipt_photo': e.receiptPhoto ?? null
   };
+  logChange(e.companyId, exists ? 'changed' : 'created', 'expense', id, `Expense ${e.description}, ${formatCurrency(e.amount)}`);
   if (exists) {
     run(
       `UPDATE expenses SET supplier_id=:supplier_id, category_id=:category_id, description=:description, amount=:amount, vat_applicable=:vat_applicable, vat_amount=:vat_amount, expense_date=:expense_date, receipt_photo=:receipt_photo WHERE id=:id`,
@@ -493,6 +562,8 @@ export function saveExpense(e: Omit<Expense, 'createdAt' | 'id'> & { id?: string
 }
 
 export function deleteExpense(id: string) {
+  const e = queryOne<any>('SELECT company_id, description, amount FROM expenses WHERE id = :id', { ':id': id });
+  if (e) logChange(e.company_id, 'deleted', 'expense', id, `Expense ${e.description}, ${formatCurrency(e.amount)}`);
   run('DELETE FROM expenses WHERE id = :id', { ':id': id });
 }
 
@@ -536,6 +607,7 @@ export function saveBill(b: Omit<Bill, 'createdAt'>): Bill {
     ':total': b.total,
     ':amount_paid': b.amountPaid
   };
+  logChange(b.companyId, exists ? 'changed' : 'created', 'bill', b.id, `Bill ${b.billNumber}, ${formatCurrency(b.total)}, ${b.status}`);
   if (exists) {
     run(
       `UPDATE bills SET supplier_id=:supplier_id, bill_number=:bill_number, bill_date=:bill_date, due_date=:due_date, status=:status, items_json=:items_json, subtotal=:subtotal, vat_amount=:vat_amount, total=:total, amount_paid=:amount_paid WHERE id=:id`,
@@ -551,6 +623,8 @@ export function saveBill(b: Omit<Bill, 'createdAt'>): Bill {
 }
 
 export function deleteBill(id: string) {
+  const b = queryOne<any>('SELECT company_id, bill_number, total FROM bills WHERE id = :id', { ':id': id });
+  if (b) logChange(b.company_id, 'deleted', 'bill', id, `Bill ${b.bill_number}, ${formatCurrency(b.total)}`);
   run('DELETE FROM bills WHERE id = :id', { ':id': id });
 }
 

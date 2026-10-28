@@ -77,7 +77,18 @@ export const PACKAGES: PackageDef[] = [
     priceMonthly: 'R999/month',
     priceYearly: 'R9,990/year',
     audience: 'Larger SMEs',
-    features: ['Everything in Builder', 'We set it up and load your opening balances', 'Training for you and your staff', 'Priority help on WhatsApp'],
+    features: [
+      'Everything in Builder',
+      'Several businesses or branches in one app',
+      'Combined report across all your businesses',
+      'Budgets with over-spend warnings',
+      '13-week cash-flow forecast',
+      'Staff logins with owner and staff roles',
+      'Change history: who changed what, and when',
+      'Month-end pack for your accountant',
+      'Setup and training by a Setwel partner accountant',
+      'Priority help on WhatsApp'
+    ],
     notIncluded: []
   },
   {
@@ -88,10 +99,15 @@ export const PACKAGES: PackageDef[] = [
     priceYearly: 'Monthly billing',
     audience: 'Bookkeepers, accounting firms, tax practitioners',
     features: [
-      'Your partner key runs Setwel for all your clients',
-      'All Enterprise features for each client',
-      'Listed as a Setwel partner accountant',
-      'Your referral code: a free month for every paying client'
+      'Unlimited client files in one app',
+      'Practice dashboard: every client\'s VAT and tax deadlines and money owed',
+      'Clients send you their books in one file; you import it',
+      'VAT summary for all clients in one table',
+      'Your firm\'s name and logo on the reports you prepare',
+      'Setup checklist, spreadsheet imports and opening balances',
+      'Training manual and trainer notes to train your clients',
+      'Listed on Find an accountant; clients needing setup and training are sent to you',
+      'All Enterprise features, and a referral code'
     ],
     notIncluded: []
   }

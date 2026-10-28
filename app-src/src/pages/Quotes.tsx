@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, FileStack, Search, Trash2, ArrowRightCircle } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, EmptyState, StatusBadge, MoneyText, Select } from '../components/common/ui';
 import { listQuotes, listCustomers, deleteQuote } from '../db/repository';
 import { formatDate } from '../core/numbering';
 
 export default function Quotes() {
   const { company, refreshKey, bumpRefresh } = useApp();
+  const { canDelete } = usePermissions();
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -106,9 +107,7 @@ export default function Quotes() {
                         <ArrowRightCircle size={16} />
                       </button>
                     )}
-                    <button onClick={() => handleDelete(q.id)} className="text-gray-400 hover:text-status-overdue">
-                      <Trash2 size={15} />
-                    </button>
+                    {canDelete && (<button onClick={() => handleDelete(q.id)} className="text-gray-400 hover:text-status-overdue"><Trash2 size={15} /></button>)}
                   </td>
                 </tr>
               ))}

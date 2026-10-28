@@ -18,7 +18,7 @@ const EMAILS_PER_DAY_PAID = 50;
 const EMAILS_TRIAL_TOTAL = 10;
 const EMAILS_TRIAL_PER_IP_PER_DAY = 5;
 
-$in = app_input(4 * 1024 * 1024);
+$in = app_input(5 * 1024 * 1024);
 $caller = app_caller($in);
 
 $clean = fn($v, $max) => substr(trim(str_replace(["\r", "\0"], '', (string)$v)), 0, $max);
@@ -37,10 +37,14 @@ $attachment = null;
 if (!empty($in['attachment']) && is_array($in['attachment'])) {
     $name = preg_replace('/[^A-Za-z0-9 ._-]/', '', (string)($in['attachment']['filename'] ?? 'document.pdf'));
     $bytes = base64_decode((string)($in['attachment']['base64'] ?? ''), true);
-    if ($bytes === false || strlen($bytes) > 3 * 1024 * 1024 || substr($bytes, 0, 4) !== '%PDF') {
-        app_reply(400, ['error' => 'The attachment must be a PDF under 3 MB.']);
+    // Only two kinds of attachment: a PDF, or a Setwel business file (books sent to/from an accountant).
+    $isPdf = $bytes !== false && substr($bytes, 0, 4) === '%PDF';
+    $isBooks = $bytes !== false && substr(strtolower($name), -7) === '.setwel' && strpos(substr($bytes, 0, 40), '"setwel-business-file"') !== false;
+    if ($bytes === false || strlen($bytes) > 3 * 1024 * 1024 || (!$isPdf && !$isBooks)) {
+        app_reply(400, ['error' => 'The attachment must be a PDF or a Setwel file under 3 MB.']);
     }
-    $attachment = ['name' => $name ?: 'document.pdf', 'bytes' => $bytes];
+    if ($isPdf && substr(strtolower($name), -4) !== '.pdf') $name .= '.pdf';
+    $attachment = ['name' => $name ?: 'document.pdf', 'bytes' => $bytes, 'type' => $isPdf ? 'application/pdf' : 'application/octet-stream'];
 }
 
 // ---- Limits ----
@@ -78,7 +82,7 @@ if ($attachment) {
         . "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
         . chunk_split(base64_encode($body . $footer))
         . "--{$boundary}\r\n"
-        . "Content-Type: application/pdf; name=\"{$attachment['name']}\"\r\n"
+        . "Content-Type: {$attachment['type']}; name=\"{$attachment['name']}\"\r\n"
         . "Content-Transfer-Encoding: base64\r\n"
         . "Content-Disposition: attachment; filename=\"{$attachment['name']}\"\r\n\r\n"
         . chunk_split(base64_encode($attachment['bytes']))

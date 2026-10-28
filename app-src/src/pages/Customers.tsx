@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { Plus, Users, Search, Pencil, Trash2 } from 'lucide-react';
-import { useApp } from '../state/AppContext';
+import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, EmptyState, Modal, Field, Input, Toggle } from '../components/common/ui';
 import { listCustomers, saveCustomer, deleteCustomer } from '../db/repository';
 import { Customer } from '../core/types';
 
 export default function Customers() {
   const { company, refreshKey, bumpRefresh } = useApp();
+  const { canDelete } = usePermissions();
   const [search, setSearch] = useState('');
   const [editing, setEditing] = useState<Customer | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -76,9 +77,7 @@ export default function Customers() {
                     <button onClick={() => openEdit(c)} className="text-gray-400 hover:text-brand-navy mr-3">
                       <Pencil size={15} />
                     </button>
-                    <button onClick={() => handleDelete(c)} className="text-gray-400 hover:text-status-overdue">
-                      <Trash2 size={15} />
-                    </button>
+                    {canDelete && (<button onClick={() => handleDelete(c)} className="text-gray-400 hover:text-status-overdue"><Trash2 size={15} /></button>)}
                   </td>
                 </tr>
               ))}

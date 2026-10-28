@@ -27,9 +27,13 @@ PLANS = [
         "monthly": 59.99, "yearly": 599,
         "features": [
             "Quotes that turn into invoices in one click",
-            "PDF invoices you can send on WhatsApp",
+            "Send invoices by WhatsApp or email, PDF attached",
+            "Repeating invoices that create themselves",
+            "Payment reminders for overdue invoices",
+            "Scan receipts with AI: 30 a month",
             "Income and expenses by category",
             "VAT worked out at 15% for you",
+            "Tax deadline alerts and a monthly report",
             "Up to 50 customers and 100 invoices a month",
             "Works with no internet",
         ],
@@ -40,6 +44,7 @@ PLANS = [
         "features": [
             "Everything in Hustler",
             "Unlimited customers and invoices",
+            "Scan receipts with AI: 150 a month",
             "Suppliers and bills you owe",
             "Who owes you, and who you owe (aged reports)",
             "Profit and loss statement",
@@ -52,8 +57,10 @@ PLANS = [
         "monthly": 399, "yearly": 3990,
         "features": [
             "Everything in Grinder",
+            "Bank statement matching: upload your statement, Setwel matches the payments",
+            "Unlimited AI receipt scans",
             "We help you load your customers and opening balances",
-            "Coming soon, included when released: payroll (PAYE, UIF, SDL), stock, and bank matching",
+            "Coming soon, included when released: payroll and stock",
         ],
     },
     {
@@ -227,9 +234,9 @@ def home():
   <div class="wrap">
     <h2>What Setwel does for you</h2>
     <div class="grid g4">
-      <div class="card"><div class="icon">🧾</div><h3>Invoices and quotes</h3><p>Make a quote, turn it into an invoice in one click and send it as a PDF on WhatsApp or email. VAT is worked out for you.</p></div>
-      <div class="card"><div class="icon">💰</div><h3>Your money, in control</h3><p>Track income and expenses, see who owes you and record the bills you owe. Your profit and loss is always up to date.</p></div>
-      <div class="card"><div class="icon">🏛️</div><h3>Tax and compliance</h3><p>VAT201 figures, provisional and income tax estimates, and a calendar of your filing deadlines, all explained in plain language.</p></div>
+      <div class="card"><div class="icon">🧾</div><h3>Invoices that chase themselves</h3><p>Send invoices on WhatsApp or email. Repeating invoices create themselves, and Setwel reminds you who to chase, with the message already written.</p></div>
+      <div class="card"><div class="icon">💰</div><h3>Your money, in control</h3><p>Snap a receipt and AI fills in the expense. Upload your bank statement and Setwel matches the payments. Your profit and loss is always up to date.</p></div>
+      <div class="card"><div class="icon">🏛️</div><h3>Tax and compliance</h3><p>VAT201 figures, provisional tax estimates and alerts before each deadline, plus a monthly report you can send to your accountant.</p></div>
       <div class="card"><div class="icon">🤝</div><h3>An accountant when it matters</h3><p>Do the day-to-day yourself. When something doesn't add up, we connect you with a Setwel partner accountant.</p></div>
     </div>
   </div>
@@ -529,6 +536,10 @@ FAQ = [
      "For the day-to-day, yes: invoices, expenses, who owes you, VAT and tax estimates. For year-end, audits, disputes or anything that doesn't add up, use an accountant. We can connect you with a Setwel partner accountant."),
     ("Does Setwel submit my tax returns for me?",
      "Not yet. Setwel prepares your VAT201 and tax figures so you can copy them onto eFiling yourself in a few minutes, without queuing at a branch."),
+    ("How does the receipt scanning work?",
+     "Take a photo of a till slip or invoice, or upload a PDF. Setwel reads the supplier, date, amount and VAT and fills in the expense for you to check. The photo is sent securely to be read, then deleted from our server; your copy stays on your device. Each plan includes a number of scans a month."),
+    ("Does Setwel connect to my bank?",
+     "Not directly. Download your statement as a CSV file from your online banking and upload it on the Bank matching page (Builder plan and up). Setwel matches payments to your invoices and suggests categories for the rest, and learns from your choices."),
     ("Where is my data kept?",
      "On the Windows or Mac version, your data stays in a file on your own computer, and Setwel makes a backup copy every day (File → Open backups folder). On a phone, it's kept inside your browser on that phone. We don't see your business data."),
     ("Why does Windows or Mac show a warning when I install?",
@@ -606,7 +617,7 @@ def web_app():
     manifest["start_url"] = "/app/"
     manifest["scope"] = "/app/"
     for icon in manifest["icons"]:
-        icon["src"] = "/app" + icon["src"]
+        icon["src"] = "/app/" + icon["src"].lstrip("./")
     (dest / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 

@@ -6,7 +6,8 @@ Invoices, money tracking and SARS-ready figures for South African businesses.
 
 | Folder | What it is |
 |---|---|
-| `app/` | The Setwel app itself (already built). The desktop installers and the phone version both use it. |
+| `app-src/` | Source code of the Setwel app (React + TypeScript). |
+| `app/` | The built app. The desktop installers and the phone version both use it. Rebuild with `./tools/build_app.sh`. |
 | `desktop/` | Turns the app into a real Windows `.exe` and Mac `.dmg`, and adds the 30-day trial, licence keys and daily backups. |
 | `website/` | Everything that goes on setwelbusiness.co.za: the pages, the phone version (`/app/`) and the PayFast/licence scripts (`/api/`). |
 | `tools/build_site.py` | Builds the website pages. Edit the text there, then run `python3 tools/build_site.py`. |
@@ -20,6 +21,16 @@ Invoices, money tracking and SARS-ready figures for South African businesses.
 4. **Paying:** Pricing → pay.html → PayFast. When PayFast confirms the payment, the server creates a licence key, shows it on the thank-you page with an **Activate** button, and emails it to the customer.
 5. **Renewals:** each PayFast renewal extends the licence automatically. The app re-checks whenever it's online.
 6. **Referrals:** each customer gets a code (REF-XXXXXX). When someone pays with that code, the referrer's licence gets one extra month, and PayFast is asked to skip one charge. If that request fails, you get an email asking you to do it by hand.
+
+## Automation (inside the app)
+
+Customers' data stays on their device, so the automation runs inside the app each time it opens (and hourly while open):
+
+- **Repeating invoices** (Invoices → open one → Repeat): copies are created as drafts and listed under *Needs your attention* to send.
+- **Payment reminders**: overdue invoices appear on the dashboard with a ready-written message (friendly, then firmer). Send by WhatsApp (one tap) or email (sent by `api/send-email.php`, PDF attached, replies go to the owner).
+- **AI receipts** (Expenses → Scan receipt): the photo goes to `api/scan.php`, which asks Claude to read it. Limits: trial 30, Hustler 30/month, Grinder 150/month, Builder and up unlimited. Needs `ANTHROPIC_API_KEY` in `api/config.php`.
+- **Bank matching** (Builder+): upload a bank statement CSV; payments are matched to invoices, the rest become expenses with learnt categories.
+- **Tax alerts and monthly report**: VAT201 and provisional tax deadlines with estimates, VAT threshold warning, bills due, and a monthly report (PDF, WhatsApp, email).
 
 ## Getting new installers
 

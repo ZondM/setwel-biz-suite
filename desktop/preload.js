@@ -9,4 +9,8 @@ contextBridge.exposeInMainWorld('setwelDesktop', {
   },
   saveDatabase: (bytes) => ipcRenderer.invoke('db:save', bytes),
   saveFile: (name, data, isString) => ipcRenderer.invoke('file:save', name, data, isString),
+  // Trial / licence status, server calls and opening website links (see app-src/src/core/licence.ts and api.ts)
+  licence: () => ipcRenderer.invoke('licence:status'),
+  apiPost: (path, body) => ipcRenderer.invoke('api:post', path, body),
+  openExternal: (url) => ipcRenderer.invoke('open:external', url),
 });

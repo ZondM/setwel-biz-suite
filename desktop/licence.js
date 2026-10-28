@@ -31,6 +31,7 @@ function init(userDataDir) {
   }
   const now = Date.now();
   if (!state.firstRun) state.firstRun = now;
+  if (!state.deviceId) state.deviceId = 'dev_' + crypto.randomBytes(12).toString('hex'); // anonymous, for trial limits
   // If the clock was moved back to stretch the trial, count from the latest date seen.
   if (!state.lastSeen || now > state.lastSeen) state.lastSeen = now;
   save();
@@ -54,6 +55,10 @@ function readToken(token) {
   } catch {
     return null;
   }
+}
+
+function deviceId() {
+  return state.deviceId;
 }
 
 function status() {
@@ -115,4 +120,4 @@ async function refresh() {
   return status();
 }
 
-module.exports = { init, status, activate, refresh, normaliseKey };
+module.exports = { init, status, activate, refresh, normaliseKey, deviceId };

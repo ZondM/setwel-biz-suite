@@ -1,11 +1,11 @@
 {
-  "name": "Setwel Africa Business Suite",
-  "short_name": "Setwel Africa",
-  "description": "From SA boardrooms to Ekasi spaza shops \u2014 invoicing, expenses and SARS-ready tax. Works offline.",
+  "name": "Setwel Biz Suite",
+  "short_name": "Setwel",
+  "description": "Invoicing, accounting, VAT and tax for South African businesses. Works offline.",
   "start_url": "/app/",
   "display": "standalone",
-  "background_color": "#0D1B2A",
-  "theme_color": "#007A4D",
+  "background_color": "#2C3743",
+  "theme_color": "#2C3743",
   "orientation": "any",
   "categories": [
     "finance",

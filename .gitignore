@@ -6,3 +6,6 @@ website/downloads/*.dmg
 desktop/node_modules/
 desktop/web/
 desktop/release/
+app-src/node_modules/
+app-src/dist/
+app-src/*.tsbuildinfo

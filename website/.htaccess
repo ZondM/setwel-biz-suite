@@ -35,6 +35,6 @@ AddType application/octet-stream .exe .dmg
 </IfModule>
 
 # Secrets and helper files are never served directly
-<FilesMatch "^(config\.php|config\.example\.php|payfast\.php|licences\.php)$">
+<FilesMatch "^(config\.php|config\.example\.php|payfast\.php|licences\.php|usage\.php)$">
   Require all denied
 </FilesMatch>

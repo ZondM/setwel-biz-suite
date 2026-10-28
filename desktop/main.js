@@ -76,7 +76,31 @@ ipcMain.handle('file:save', async (_e, name, data, isString) => {
 
 /* ---------- licence ---------- */
 
-ipcMain.handle('licence:status', () => licence.status());
+ipcMain.handle('licence:status', () => ({ ...licence.status(), deviceId: licence.deviceId() }));
+
+// Server calls from the app (AI receipt scans, sending email). Done here rather than in the
+// page so the browser's cross-site rules don't apply. Only these endpoints are allowed.
+const API_BASE = process.env.SETWEL_API_BASE || `${SITE}/api`;
+const API_PATHS = new Set(['scan.php', 'send-email.php']);
+ipcMain.handle('api:post', async (_e, apiPath, body) => {
+  if (!API_PATHS.has(apiPath)) return { status: 400, data: { error: 'Unknown request.' } };
+  try {
+    const res = await fetch(`${API_BASE}/${apiPath}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(120000),
+    });
+    const data = await res.json().catch(() => ({}));
+    return { status: res.status, data };
+  } catch {
+    return { status: 0, data: { error: 'No internet connection. Please try again when you are online.' } };
+  }
+});
+
+ipcMain.handle('open:external', (_e, url) => {
+  if (typeof url === 'string' && /^https:\/\//.test(url)) shell.openExternal(url);
+});
 ipcMain.handle('licence:activate', async (_e, key) => {
   try {
     const result = await licence.activate(key);
@@ -136,8 +160,8 @@ function openApp() {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 820,
-    minWidth: 900,
-    minHeight: 600,
+    minWidth: 360,
+    minHeight: 500,
     title: 'Setwel Biz Suite',
     backgroundColor: '#0D1B2A',
     webPreferences: { preload: path.join(__dirname, 'preload.js') },
@@ -146,6 +170,21 @@ function openApp() {
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
+  });
+  // Let the app save its data file before the window goes away.
+  let flushed = false;
+  mainWindow.on('close', (event) => {
+    if (flushed) return;
+    event.preventDefault();
+    const win = mainWindow;
+    const done = () => {
+      flushed = true;
+      if (!win.isDestroyed()) win.close();
+    };
+    win.webContents
+      .executeJavaScript('window.__setwelFlush ? window.__setwelFlush() : null')
+      .then(done, done);
+    setTimeout(done, 3000); // never block closing for long
   });
   mainWindow.on('closed', () => {
     mainWindow = null;

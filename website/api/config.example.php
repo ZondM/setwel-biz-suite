@@ -34,5 +34,13 @@ define('NOTIFY_EMAIL', 'sales@setwelbusiness.co.za');
 // it can make licences. If you lose it, a new app build is needed.
 define('LICENCE_SIGNING_KEY', '');
 
+// --- AI receipt scanning (api/scan.php) ---
+// Create a key at https://console.anthropic.com (Settings -> API Keys). Each scan is
+// billed to this key, so keep it private. Empty = scanning switched off.
+define('ANTHROPIC_API_KEY', '');
+// Model used to read receipts. Leave empty for the default (claude-opus-5-5).
+// 'claude-haiku-5-5' costs far less per scan; try it if accuracy is good enough for you.
+define('ANTHROPIC_MODEL', '');
+
 // --- Password for the licence desk (api/admin.php). Empty = desk switched off. ---
 define('ADMIN_PASSWORD', '');

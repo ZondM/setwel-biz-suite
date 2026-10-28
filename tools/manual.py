@@ -1,5 +1,7 @@
 """
-The Setwel training manual (website/manual.html).
+The Setwel training manual. Subscribers only: served by website/manual.php from
+website/api/private/ after a paid licence key is checked; website/manual.html is
+only the sign-in page.
 
 Written for business owners and staff, and for Setwel partner accountants who set
 businesses up and train them. Only describes what the app really does.
@@ -191,13 +193,16 @@ def manual_body() -> str:
   .tip {{ background: #fdf4e3; border: 1px solid #f0d29a; border-radius: 8px; padding: 12px 14px; margin-top: 12px; }}
   .checks {{ list-style: none; padding-left: 0 !important; }}
   .checks li::before {{ content: "\\2610  "; font-size: 18px; }}
-  @media print {{ .top, .foot, .wa, .noprint {{ display: none !important; }} .band {{ background: none !important; color: #000 !important; padding: 0 !important; }} .band p.lead {{ color: #000 !important; }} section {{ padding: 10px 0 !important; }} .msec {{ break-inside: avoid; }} }}
+  .printmark {{ display: none; }}
+  @media print {{ .printmark {{ display: block; position: fixed; bottom: 0; left: 0; right: 0; text-align: center; font-size: 10px; color: #777; }} .top, .foot, .wa, .noprint {{ display: none !important; }} .band {{ background: none !important; color: #000 !important; padding: 0 !important; }} .band p.lead {{ color: #000 !important; }} section {{ padding: 10px 0 !important; }} .msec {{ break-inside: avoid; }} }}
 </style>
+<div class="printmark"><!--LICENSED-TO--></div>
 <div class="band">
   <div class="wrap">
     <h1>Setwel training manual</h1>
     <p class="lead">Every screen, step by step, for business owners and staff. With guides for each type of business and notes for trainers.</p>
-    <p class="noprint"><button class="btn btn-main" onclick="window.print()">Print or save as PDF</button></p>
+    <p class="lead" style="font-size:15px"><!--LICENSED-TO--></p>
+    <p class="noprint"><button class="btn btn-main" onclick="window.print()">Print or save as PDF</button> <a class="btn btn-plain" href="/manual.php?signout=1">Sign out</a></p>
   </div>
 </div>
 <div class="wrap manual" style="max-width:860px">
@@ -209,6 +214,43 @@ def manual_body() -> str:
   {using}
   <section class="msec" id="types"><h2>Guides by type of business</h2><div class="grid g3">{types}</div>
   <p style="margin-top:14px">Partners: copy the guide closest to your client into your session notes, and add the client's own customers, suppliers and expense categories.</p></section>
-  <section class="msec" id="trainers"><h2>Notes for trainers and partner accountants</h2>{TRAINER}</section>
+  <section class="msec" id="trainers"><h2>Notes for trainers and partner accountants</h2><!--TRAINERS--></section>
+  <p class="hint" style="margin-top:18px"><!--LICENSED-TO--> Licensed for your own business or your own clients only. Please don't share or publish it.</p>
 </div>
+"""
+
+
+def trainer_notes() -> str:
+    return TRAINER
+
+
+def manual_gate_body() -> str:
+    """Public sign-in page: what's inside, and a box for the licence key."""
+    toc = "".join(f"<li>{title}</li>" for _, title, _ in USING)
+    return f"""
+<div class="band">
+  <div class="wrap">
+    <h1>Setwel training manual</h1>
+    <p class="lead">Every screen, step by step, with guides for each type of business. Included with every paid Setwel plan.</p>
+  </div>
+</div>
+<section>
+  <div class="wrap grid g2" style="max-width:960px">
+    <div class="card">
+      <h3>Sign in with your licence key</h3>
+      <p>Your key is in the email you got when you paid, and in the app under <em>Settings</em>. It looks like SETW-ABCD-EFGH-JKLM.</p>
+      <form method="post" action="/manual.php" style="margin-top:12px">
+        <label for="mk">Licence key</label>
+        <input id="mk" name="key" required autocomplete="off" placeholder="SETW-XXXX-XXXX-XXXX" style="text-transform:uppercase">
+        <!--ERROR-->
+        <p style="margin-top:12px"><button class="btn btn-main" type="submit">Open the manual</button></p>
+      </form>
+      <p class="hint" style="margin-top:12px">In the app, <em>Help</em> opens the manual for you. Still on the free trial? Everything you need to start is in the app's Setup checklist. <a href="/pricing.html">Choose a plan</a> to get the full manual.</p>
+    </div>
+    <div class="card">
+      <h3>What's inside</h3>
+      <ul>{toc}<li>Guides by type of business</li><li>Trainer notes: session plan, exercises, sign-off checklist (Accountant Partner plan)</li></ul>
+    </div>
+  </div>
+</section>
 """

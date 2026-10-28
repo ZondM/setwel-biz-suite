@@ -185,6 +185,8 @@ function lic_email_new(array $lic): void
         . "     (Or use the menu: Licence > Enter licence key.)\n\n"
         . "Haven't installed it yet? Download it here: {$site}/download.html\n"
         . "On a phone: {$site}/app/ (enter the key when asked).\n\n"
+        . "TRAINING MANUAL (for subscribers): {$site}/manual.html\n"
+        . "Sign in with your licence key. Please keep it for your own business.\n\n"
         . "YOUR REFERRAL CODE:  {$lic['ref_code']}\n"
         . "Share it with other business owners. Every business that pays with your code gets you a free month.\n"
         . "Share link: {$site}/?ref={$lic['ref_code']}\n\n"

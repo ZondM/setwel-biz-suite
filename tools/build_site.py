@@ -533,10 +533,23 @@ def accountants():
 
 
 def manual():
+    """The public sign-in page. The manual itself goes to api/private/ (see manual_private)."""
     import sys
     sys.path.insert(0, str(ROOT / "tools"))
-    from manual import manual_body
-    return page("manual.html", "Setwel training manual", "Step-by-step training manual for Setwel Biz Suite, with guides by business type and notes for trainers.", manual_body())
+    from manual import manual_gate_body
+    return page("manual.html", "Setwel training manual", "Step-by-step training manual for Setwel Biz Suite, for paying customers and partner accountants.", manual_gate_body())
+
+
+def manual_private():
+    """Subscriber-only files that website/manual.php fills in and serves after checking the licence key."""
+    from manual import manual_body, trainer_notes
+    private = OUT / "api" / "private"
+    private.mkdir(exist_ok=True)
+    (private / ".htaccess").write_text("# Subscriber-only content. Served by /manual.php, never directly.\nRequire all denied\n", encoding="utf-8")
+    (private / "manual-page.html").write_text(
+        page("manual.html", "Setwel training manual", "Setwel training manual", manual_body()), encoding="utf-8")
+    (private / "manual-trainers.html").write_text(trainer_notes(), encoding="utf-8")
+    (private / "manual-gate.html").write_text(manual(), encoding="utf-8")
 
 
 def find_accountant():
@@ -729,6 +742,7 @@ def main():
     }
     for name, content in pages.items():
         (OUT / name).write_text(content, encoding="utf-8")
+    manual_private()
     web_app()
     print("Built", len(pages), "pages and the phone app into", OUT)
 

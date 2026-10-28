@@ -9,7 +9,7 @@ import { listRecurring } from '../db/automationRepo';
 import { getAccountant } from '../core/accountant';
 import { ImportKind, runImport, templateCsv, TEMPLATES, OPENING_NOTE, ImportResult } from '../core/setupImport';
 import { saveOrDownloadFile } from '../db/storageAdapter';
-import { openExternal } from '../core/licence';
+import { openExternal, manualUrl } from '../core/licence';
 import { formatCurrency, todayIso } from '../core/numbering';
 
 interface Step {
@@ -26,7 +26,7 @@ interface Step {
  * Setwel partner accountants use it when they set a business up.
  */
 export default function Setup() {
-  const { company, refreshKey, bumpRefresh } = useApp();
+  const { company, refreshKey, bumpRefresh, licence } = useApp();
   const navigate = useNavigate();
   const [result, setResult] = useState<{ kind: ImportKind; r?: ImportResult; error?: string } | null>(null);
   const inputs = { customers: useRef<HTMLInputElement>(null), suppliers: useRef<HTMLInputElement>(null), opening_debtors: useRef<HTMLInputElement>(null), opening_creditors: useRef<HTMLInputElement>(null) };
@@ -219,7 +219,7 @@ export default function Setup() {
         title="Setup checklist"
         subtitle={`Get ${company.name} ready on Setwel. ${done} of ${steps.length} done.`}
         actions={
-          <Button variant="secondary" size="sm" onClick={() => openExternal('https://setwelbusiness.co.za/manual.html')}>
+          <Button variant="secondary" size="sm" onClick={() => openExternal(manualUrl(licence))}>
             <BookOpen size={15} /> Training manual
           </Button>
         }

@@ -88,6 +88,13 @@ export function buyUrl(plan: PackageTier): string {
   return `https://setwelbusiness.co.za/pay.html?plan=${plan}&billing=monthly`;
 }
 
+/** The training manual is for paying customers: a licence key signs them straight in. */
+export function manualUrl(licence: LicenceInfo | null): string {
+  return licence?.mode === 'licensed' && licence.key
+    ? `https://setwelbusiness.co.za/manual.php?k=${encodeURIComponent(licence.key)}`
+    : 'https://setwelbusiness.co.za/manual.html';
+}
+
 /** Opens a website link: in the system browser on desktop, in a new tab otherwise. */
 export function openExternal(url: string) {
   if (window.setwelDesktop?.openExternal) void window.setwelDesktop.openExternal(url);

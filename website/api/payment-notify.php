@@ -127,7 +127,7 @@ pf_notify_team($expected, $post);
 if ($licence['plan'] === 'accountant_partner' && defined('NOTIFY_EMAIL') && NOTIFY_EMAIL !== '') {
     @mail(NOTIFY_EMAIL, 'New Accountant Partner: ' . $licence['name'],
         "A new Accountant Partner has paid.\n\nName: {$licence['name']}\nEmail: {$licence['email']}\nPhone: {$licence['phone']}\nBusiness: {$licence['biz']}\nKey: {$licence['key']}\n\n"
-        . "To do: list them on the Find an accountant page (licence desk, Partner accountants), and send them the training manual and trainer notes (setwelbusiness.co.za/manual.html).",
+        . "To do: list them on the Find an accountant page (licence desk, Partner accountants), and welcome them. They open the training manual and trainer notes at setwelbusiness.co.za/manual.html with their key.",
         'From: no-reply@setwelbusiness.co.za');
 }
 pf_log('ITN ACCEPTED, licence created ' . $licence['key'], ['payment_id' => $paymentId]);

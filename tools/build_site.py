@@ -112,6 +112,9 @@ def page(filename, title, description, body, scripts=""):
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(description)}">
 <link rel="icon" type="image/png" href="/setwel-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
@@ -180,7 +183,7 @@ DOWNLOAD_BUTTONS = f"""
 def home():
     plans_teaser = "".join(
         f'<div class="card"><h3>{p["name"]}</h3><p>{p["for"]}</p>'
-        f'<p style="margin-top:10px;color:var(--navy);font-weight:700">{rand(p["monthly"])} / month</p></div>'
+        f'<p style="margin-top:10px;color:var(--ink);font-weight:700">{rand(p["monthly"])} / month</p></div>'
         for p in PLANS
     )
     body = f"""

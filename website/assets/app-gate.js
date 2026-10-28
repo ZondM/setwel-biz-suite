@@ -45,30 +45,30 @@
   function overlay(s) {
     var el = document.createElement('div');
     el.id = 'setwel-gate';
-    el.setAttribute('style', 'position:fixed;inset:0;z-index:2147483647;background:#fff;overflow:auto;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#0d1b2a');
+    el.setAttribute('style', 'position:fixed;inset:0;z-index:2147483647;background:#fffdf9;overflow:auto;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#2b2622');
     var title = s.reason === 'renew' ? 'Your subscription needs renewing' : 'Your 30-day free trial has ended';
     var lead = s.reason === 'renew'
       ? 'We could not confirm a recent payment. Renew your plan, or connect to the internet so Setwel can check again.'
       : 'Choose a plan to unlock Setwel again. Everything you captured is still saved on this phone.';
     el.innerHTML =
-      '<div style="background:#0d1b2a;color:#fff;padding:20px 16px"><strong style="font-size:19px">Setwel Biz Suite</strong></div>' +
+      '<div style="background:linear-gradient(160deg,#3e4c5a,#2c3743);color:#fff;padding:20px 16px"><strong style="font-size:19px">Setwel Biz Suite</strong></div>' +
       '<div style="max-width:460px;margin:0 auto;padding:22px 16px">' +
       '<h2 style="margin:0 0 8px;font-size:21px">' + title + '</h2>' +
-      '<p style="color:#5b6673;line-height:1.5">' + lead + '</p>' +
-      '<a href="/pricing.html" style="display:block;text-align:center;background:#007a4d;color:#fff;padding:14px;border-radius:6px;font-weight:700;text-decoration:none">See plans and pay securely</a>' +
+      '<p style="color:#6b625a;line-height:1.5">' + lead + '</p>' +
+      '<a href="/pricing.html" style="display:block;text-align:center;background:linear-gradient(90deg,#e57a1c,#d65536 55%,#c9334e);color:#fff;padding:14px;border-radius:6px;font-weight:700;text-decoration:none">See plans and pay securely</a>' +
       '<label for="sg-key" style="display:block;font-weight:600;margin:20px 0 6px">Already paid? Enter your licence key</label>' +
-      '<input id="sg-key" placeholder="SETW-XXXX-XXXX-XXXX" autocomplete="off" style="width:100%;box-sizing:border-box;padding:12px;font-size:16px;border:2px solid #cfd6dd;border-radius:6px;text-transform:uppercase">' +
-      '<button id="sg-go" style="width:100%;margin-top:10px;padding:13px;font-size:15px;font-weight:700;border:0;border-radius:6px;background:#eef2f5;color:#0d1b2a">Activate</button>' +
+      '<input id="sg-key" placeholder="SETW-XXXX-XXXX-XXXX" autocomplete="off" style="width:100%;box-sizing:border-box;padding:12px;font-size:16px;border:2px solid #d6ccc2;border-radius:6px;text-transform:uppercase">' +
+      '<button id="sg-go" style="width:100%;margin-top:10px;padding:13px;font-size:15px;font-weight:700;border:0;border-radius:6px;background:#f6f1ea;color:#2b2622">Activate</button>' +
       '<p id="sg-msg" style="min-height:20px;font-size:14px"></p>' +
-      '<p style="color:#5b6673;font-size:14px">Stuck? <a href="https://wa.me/27820829050" style="color:#007a4d">WhatsApp us on 082 082 9050</a>.</p>' +
+      '<p style="color:#6b625a;font-size:14px">Stuck? <a href="https://wa.me/27820829050" style="color:#b4531a">WhatsApp us on 082 082 9050</a>.</p>' +
       '</div>';
     document.body.appendChild(el);
     var msg = el.querySelector('#sg-msg');
     el.querySelector('#sg-go').onclick = function () {
-      msg.style.color = '#5b6673';
+      msg.style.color = '#6b625a';
       msg.textContent = 'Checking your key…';
       check(el.querySelector('#sg-key').value.trim().toUpperCase()).then(function () {
-        msg.style.color = '#007a4d';
+        msg.style.color = '#b4531a';
         msg.textContent = 'Activated. Opening Setwel…';
         setTimeout(function () { el.remove(); }, 800);
       }).catch(function (err) {
@@ -82,7 +82,7 @@
     var bar = document.createElement('a');
     bar.href = '/pricing.html';
     bar.textContent = daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' left in your free trial. Choose a plan →';
-    bar.setAttribute('style', 'position:fixed;left:0;right:0;bottom:0;z-index:2147483646;background:#f2a900;color:#0d1b2a;text-align:center;padding:10px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;bottom:0;z-index:2147483646;background:#e3a548;color:#2b2622;text-align:center;padding:10px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none');
     document.body.appendChild(bar);
     setTimeout(function () { bar.remove(); }, 12000);
   }

@@ -109,7 +109,7 @@ function showGate() {
     height: 640,
     resizable: false,
     title: 'Setwel Biz Suite',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#fffdf9',
     webPreferences: { preload: path.join(__dirname, 'gate-preload.js') },
   });
   gateWindow.setMenu(null);

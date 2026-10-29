@@ -22,12 +22,16 @@ ServerSignature Off
 # Correct file types for the app engine and the installers
 AddType application/wasm .wasm
 AddType application/octet-stream .exe .dmg
+AddType video/mp4 .mp4
 <IfModule mod_headers.c>
   <FilesMatch "\.(exe|dmg)$">
     Header set Content-Disposition attachment
   </FilesMatch>
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(mp4|jpg|png)$">
+    Header set Cache-Control "public, max-age=604800"
   </FilesMatch>
   <Files "sw.js">
     Header set Cache-Control "no-cache, must-revalidate"

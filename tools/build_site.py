@@ -237,6 +237,15 @@ DOWNLOAD_BUTTONS = f"""
 """
 
 
+REEL = """<section class="showreel">
+  <div class="wrap">
+    <video class="reel" autoplay muted loop playsinline preload="auto" poster="/assets/automation-poster.jpg" aria-label="Setwel automation: a receipt scanned by AI, an invoice created and sent on WhatsApp, a reminder that gets an invoice paid, and VAT deadline alerts">
+      <source src="/assets/automation.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>"""
+
+
 def home():
     plans_teaser = "".join(
         f'<div class="card"><h3>{p["name"]}</h3><p>{p["for"]}</p>'
@@ -256,6 +265,8 @@ def home():
     <p class="note">30 days free. No card, no sign-up form. It installs in about a minute.</p>
   </div>
 </div>
+
+{REEL}
 
 <section class="alt">
   <div class="wrap">
@@ -375,6 +386,8 @@ def automation():
     {DOWNLOAD_BUTTONS}
   </div>
 </div>
+
+{REEL}
 
 <section>
   <div class="wrap">

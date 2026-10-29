@@ -171,3 +171,8 @@ table.compare { border-collapse: collapse; width: 100%; min-width: 640px; font-s
 table.compare th, table.compare td { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: center; }
 table.compare tbody th { text-align: left; font-weight: 600; }
 table.compare thead th { font-size: 14px; }
+
+/* Home page automation clip */
+.showreel { padding: 0 0 8px; background: linear-gradient(180deg, var(--slate-dark) 0, var(--slate-dark) 38%, var(--soft) 38%); }
+.reel { display: block; width: 100%; max-width: 1100px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 14px; background: var(--slate-dark);
+  box-shadow: 0 30px 60px rgba(44, 55, 67, .35); }

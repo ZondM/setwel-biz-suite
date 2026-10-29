@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Check, ArrowRight, ArrowLeft } from 'lucide-react';
-import { PACKAGES } from '../core/packages';
 import { Button, Card, Field, Input, Select, Toggle } from '../components/common/ui';
 import { useApp } from '../state/AppContext';
 import { createCompany, ensureDefaultCategories } from '../db/repository';
@@ -14,14 +13,16 @@ const PROVINCES = [
   'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo', 'Mpumalanga', 'Northern Cape', 'North West', 'Western Cape'
 ];
 
-type Step = 'welcome' | 'package' | 'company' | 'finish';
+type Step = 'welcome' | 'company' | 'finish';
 
 /** mode "add": adding another business or client file to an existing install. */
 export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' }) {
   const { setCompany, bumpRefresh, company: current, setAddingBusiness, setUser } = useApp();
   const adding = mode === 'add';
   const [step, setStep] = useState<Step>(adding ? 'company' : 'welcome');
-  const [selectedTier, setSelectedTier] = useState<PackageTier>(current?.packageTier ?? 'hustler');
+  // No plan to choose up front: the free trial opens everything, and plans are shown when it ends.
+  // A paid licence sets the real plan as soon as the app loads (see AppContext).
+  const selectedTier: PackageTier = current?.packageTier ?? 'enterprise';
   const [created, setCreated] = useState<Company | null>(null);
   const isPartner = current?.packageTier === 'accountant_partner';
   const navigate = useNavigate();
@@ -33,15 +34,7 @@ export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' 
         <span className="font-display font-bold text-brand-navy">Setwel <span className="text-brand-green">Biz Suite</span></span>
       </header>
 
-      {step === 'welcome' && <Welcome onNext={() => setStep('package')} />}
-      {step === 'package' && (
-        <PackageStep
-          selected={selectedTier}
-          onSelect={setSelectedTier}
-          onNext={() => setStep('company')}
-          onBack={() => setStep('welcome')}
-        />
-      )}
+      {step === 'welcome' && <Welcome onNext={() => setStep('company')} />}
       {adding && step === 'company' && (
         <p className="text-center text-sm text-gray-500 -mb-2">
           {isPartner ? 'Add a client. Their books are kept separate from your other clients.' : 'Add another business or branch. Its books are kept separate.'}
@@ -50,7 +43,7 @@ export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' 
       {step === 'company' && (
         <CompanyStep
           tier={selectedTier}
-          onBack={() => (adding ? setAddingBusiness(false) : setStep('package'))}
+          onBack={() => (adding ? setAddingBusiness(false) : setStep('welcome'))}
           onDone={(company) => {
             if (adding) {
               if (isPartner) applyPracticeToClient(company.id);
@@ -98,50 +91,7 @@ function Welcome({ onNext }: { onNext: () => void }) {
         <Button size="lg" onClick={onNext}>
           Get started <ArrowRight size={18} />
         </Button>
-        <p className="text-xs text-gray-400 mt-4">Free for 30 days. No card needed.</p>
-      </div>
-    </div>
-  );
-}
-
-function PackageStep({ selected, onSelect, onNext, onBack }: { selected: PackageTier; onSelect: (t: PackageTier) => void; onNext: () => void; onBack: () => void }) {
-  return (
-    <div className="flex-1 px-6 py-8 max-w-6xl mx-auto w-full">
-      <h2 className="font-display text-2xl font-bold text-brand-navy text-center mb-1">Choose the package that fits your business today</h2>
-      <p className="text-center text-gray-500 mb-8 text-sm">You can upgrade any time as you grow. All prices in ZAR.</p>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {PACKAGES.map((pkg) => (
-          <Card
-            key={pkg.tier}
-            className={`cursor-pointer flex flex-col gap-3 transition-all ${selected === pkg.tier ? 'border-brand-green ring-2 ring-brand-green' : 'hover:border-gray-300'}`}
-            padded
-          >
-            <div onClick={() => onSelect(pkg.tier)}>
-              <div className="font-display font-bold text-brand-navy">{pkg.name}</div>
-              <div className="text-xs text-gray-400 mb-2">{pkg.tagline}</div>
-              <div className="font-display text-xl font-extrabold text-brand-green mb-3">{pkg.priceMonthly}</div>
-              <ul className="space-y-1.5 text-xs text-gray-600">
-                {pkg.features.slice(0, 5).map((f) => (
-                  <li key={f} className="flex gap-1.5">
-                    <Check size={14} className="text-brand-green shrink-0 mt-0.5" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <Button variant={selected === pkg.tier ? 'primary' : 'secondary'} size="sm" onClick={() => onSelect(pkg.tier)} className="mt-auto">
-              {selected === pkg.tier ? 'Selected' : 'Choose'}
-            </Button>
-          </Card>
-        ))}
-      </div>
-      <div className="flex justify-between mt-8">
-        <Button variant="ghost" onClick={onBack}>
-          <ArrowLeft size={16} /> Back
-        </Button>
-        <Button onClick={onNext}>
-          Continue with {PACKAGES.find((p) => p.tier === selected)?.name} <ArrowRight size={16} />
-        </Button>
+        <p className="text-xs text-gray-400 mt-4">Free for 30 days with every feature. No card needed. Choose a plan only when your trial ends.</p>
       </div>
     </div>
   );

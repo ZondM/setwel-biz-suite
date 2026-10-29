@@ -14,7 +14,7 @@ const TIER_LABELS: Record<string, string> = {
 };
 
 export function TopBar({ onMenu }: { onMenu?: () => void }) {
-  const { company, companies, refreshKey, switchCompany, setAddingBusiness, user, setUser } = useApp();
+  const { company, companies, refreshKey, switchCompany, setAddingBusiness, user, setUser, licence } = useApp();
   const { multiBusiness, isPartner, isOwner } = usePermissions();
   const [open, setOpen] = React.useState(false);
   const hasLogins = !!company && listUsers(company.id).length > 0;
@@ -86,7 +86,9 @@ export function TopBar({ onMenu }: { onMenu?: () => void }) {
         )}
       </div>
       <div className="flex items-center gap-3 md:gap-4">
-        <span className="hidden sm:inline px-2.5 py-1 rounded-md bg-brand-navy text-brand-gold text-xs font-bold tracking-wide">{TIER_LABELS[company.packageTier]}</span>
+        <span className="hidden sm:inline px-2.5 py-1 rounded-md bg-brand-navy text-brand-gold text-xs font-bold tracking-wide">
+          {licence?.mode === 'trial' ? `FREE TRIAL · ${licence.daysLeft ?? 30} DAYS LEFT` : TIER_LABELS[company.packageTier]}
+        </span>
         <div className="relative">
           <Bell size={19} className="text-gray-500" />
           {overdueCount > 0 && (

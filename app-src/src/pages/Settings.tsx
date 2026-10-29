@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, Tag, Hash, Package, Save, Shield } from 'lucide-react';
 import { useApp, usePermissions } from '../state/AppContext';
+import { StaffLaptops } from '../components/enterprise/StaffLaptops';
 import { StaffSettings } from '../components/enterprise/StaffSettings';
 import { AccountantSettings, PracticeSettings } from '../components/enterprise/AccountantSettings';
 import { deleteCompany } from '../db/repository';
@@ -38,6 +39,7 @@ export default function SettingsPage() {
     ...TABS.slice(0, 3),
     { id: 'accountant', label: isPartner ? 'Accountant & practice' : 'My accountant' },
     ...(multiBusiness ? [{ id: 'staff', label: 'Staff logins' }] : []),
+    ...(multiBusiness ? [{ id: 'laptops', label: 'Staff laptops' }] : []),
     ...TABS.slice(3)
   ];
 
@@ -74,6 +76,7 @@ export default function SettingsPage() {
         </div>
       )}
       {activeTab === 'staff' && <StaffSettings key={company.id} companyId={company.id} />}
+      {activeTab === 'laptops' && <StaffLaptops />}
       {activeTab === 'categories' && <CategoriesTab companyId={company.id} />}
       {activeTab === 'numbering' && <NumberingTab companyId={company.id} />}
       {activeTab === 'package' && <PackageTab />}

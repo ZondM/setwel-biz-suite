@@ -386,10 +386,23 @@ export function deleteQuote(id: string) {
   run('DELETE FROM quotes WHERE id = :id', { ':id': id });
 }
 
+/**
+ * Next number after the highest one already used with this prefix (so a deleted document never
+ * gives its number to the next one). A staff laptop adds its own code: INV-FD-00001.
+ */
+function nextNumber(table: 'quotes' | 'invoices', column: string, companyId: string, prefix: string): string {
+  const device = getMeta('syncRole') === 'staff' ? getMeta('syncPrefix') : null;
+  const full = device ? `${prefix}-${device}` : prefix;
+  let max = 0;
+  for (const r of query<any>(`SELECT ${column} AS n FROM ${table} WHERE company_id = :cid AND ${column} LIKE :p`, { ':cid': companyId, ':p': `${full}-%` })) {
+    const rest = String(r.n).slice(full.length + 1);
+    if (/^\d+$/.test(rest)) max = Math.max(max, Number(rest));
+  }
+  return `${full}-${String(max + 1).padStart(5, '0')}`;
+}
+
 export function getNextQuoteNumber(companyId: string, prefix: string): string {
-  const r = queryOne<any>('SELECT COUNT(*) as c FROM quotes WHERE company_id = :cid', { ':cid': companyId });
-  const n = (r?.c ?? 0) + 1;
-  return `${prefix}-${String(n).padStart(5, '0')}`;
+  return nextNumber('quotes', 'quote_number', companyId, prefix);
 }
 
 // ---------- Invoices ----------
@@ -467,9 +480,7 @@ export function deleteInvoice(id: string) {
 }
 
 export function getNextInvoiceNumber(companyId: string, prefix: string): string {
-  const r = queryOne<any>('SELECT COUNT(*) as c FROM invoices WHERE company_id = :cid', { ':cid': companyId });
-  const n = (r?.c ?? 0) + 1;
-  return `${prefix}-${String(n).padStart(5, '0')}`;
+  return nextNumber('invoices', 'invoice_number', companyId, prefix);
 }
 
 // ---------- Payments ----------

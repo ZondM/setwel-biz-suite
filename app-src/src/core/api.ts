@@ -6,15 +6,18 @@
 // the phone version runs on setwelbusiness.co.za itself, so a plain same-site fetch works.
 
 import { LicenceInfo } from './licence';
+import { getMetaValue } from '../db/repository';
 
 export class ApiError extends Error {
-  constructor(message: string, public status: number) {
+  constructor(message: string, public status: number, public code?: string) {
     super(message);
   }
 }
 
 export async function apiPost<T = any>(path: string, body: Record<string, unknown>, licence: LicenceInfo): Promise<T> {
-  const payload = { ...body, key: licence.key ?? '', device: licence.deviceId };
+  // A staff laptop has no licence key of its own: its sync connection stands for the owner's licence
+  const sync = getMetaValue('syncRole') === 'staff' ? getMetaValue('syncToken') ?? '' : '';
+  const payload = { ...body, key: licence.key === 'TEAM' ? '' : licence.key ?? '', device: licence.deviceId, sync };
   const desktop = window.setwelDesktop;
   let status: number;
   let data: any;
@@ -37,7 +40,7 @@ export async function apiPost<T = any>(path: string, body: Record<string, unknow
     data = await res.json().catch(() => ({}));
   }
   if (status < 200 || status >= 300 || data?.error) {
-    throw new ApiError(data?.error || 'Something went wrong. Please try again.', status);
+    throw new ApiError(data?.error || 'Something went wrong. Please try again.', status, data?.code);
   }
   return data as T;
 }

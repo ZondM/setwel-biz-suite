@@ -8,12 +8,14 @@ import { BusinessType, Company, PackageTier } from '../core/types';
 import { todayIso } from '../core/numbering';
 import { useNavigate } from 'react-router-dom';
 import { applyPracticeToClient } from '../core/accountant';
+import { joinTeam } from '../core/sync';
+import { getActiveCompany } from '../db/repository';
 
 const PROVINCES = [
   'Eastern Cape', 'Free State', 'Gauteng', 'KwaZulu-Natal', 'Limpopo', 'Mpumalanga', 'Northern Cape', 'North West', 'Western Cape'
 ];
 
-type Step = 'welcome' | 'company' | 'finish';
+type Step = 'welcome' | 'company' | 'finish' | 'join';
 
 /** mode "add": adding another business or client file to an existing install. */
 export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' }) {
@@ -34,7 +36,8 @@ export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' 
         <span className="font-display font-bold text-brand-navy">Setwel <span className="text-brand-green">Biz Suite</span></span>
       </header>
 
-      {step === 'welcome' && <Welcome onNext={() => setStep('company')} />}
+      {step === 'welcome' && <Welcome onNext={() => setStep('company')} onJoin={() => setStep('join')} />}
+      {step === 'join' && <JoinStep onBack={() => setStep('welcome')} />}
       {adding && step === 'company' && (
         <p className="text-center text-sm text-gray-500 -mb-2">
           {isPartner ? 'Add a client. Their books are kept separate from your other clients.' : 'Add another business or branch. Its books are kept separate.'}
@@ -78,7 +81,7 @@ export default function Onboarding({ mode = 'first' }: { mode?: 'first' | 'add' 
   );
 }
 
-function Welcome({ onNext }: { onNext: () => void }) {
+function Welcome({ onNext, onJoin }: { onNext: () => void; onJoin: () => void }) {
   return (
     <div className="flex-1 flex items-center justify-center px-6">
       <div className="max-w-xl text-center">
@@ -92,6 +95,58 @@ function Welcome({ onNext }: { onNext: () => void }) {
           Get started <ArrowRight size={18} />
         </Button>
         <p className="text-xs text-gray-400 mt-4">Free for 30 days with every feature. No card needed. Choose a plan only when your trial ends.</p>
+        <button onClick={onJoin} className="mt-6 text-sm font-semibold text-brand-green underline">
+          This is a staff laptop: connect it with a code from the owner
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** Staff laptop: join the owner's business with the code made on the owner's laptop. */
+function JoinStep({ onBack }: { onBack: () => void }) {
+  const { licence, setCompany, reloadLicence, restartSync } = useApp();
+  const navigate = useNavigate();
+  const [code, setCode] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleJoin() {
+    setBusy(true);
+    setError('');
+    try {
+      await joinTeam(licence ?? { mode: 'trial', deviceId: '' }, code);
+      reloadLicence();
+      restartSync();
+      setCompany(getActiveCompany());
+      navigate('/invoices');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not connect. Check the code and your internet.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="flex-1 flex items-center justify-center px-6">
+      <div className="max-w-md w-full">
+        <h1 className="font-display text-2xl font-extrabold text-brand-navy mb-2">Connect a staff laptop</h1>
+        <p className="text-gray-600 mb-5 text-sm">
+          On the owner's laptop, go to <strong>Settings → Staff laptops</strong> and press <strong>Add a staff laptop</strong>. Type the code it shows here. This laptop will make quotes and invoices for that one business, and they appear on the owner's laptop automatically.
+        </p>
+        <Field label="Code from the owner">
+          <Input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="ABCD-EFGH" autoFocus style={{ letterSpacing: '0.15em' }} />
+        </Field>
+        {error && <p className="text-sm text-status-overdue mb-3">{error}</p>}
+        <div className="flex gap-2">
+          <Button variant="ghost" onClick={onBack}>
+            <ArrowLeft size={16} /> Back
+          </Button>
+          <Button onClick={handleJoin} disabled={busy || code.replace(/[^A-Z0-9]/g, '').length !== 8}>
+            {busy ? 'Connecting…' : 'Connect this laptop'}
+          </Button>
+        </div>
+        <p className="text-xs text-gray-400 mt-4">Needs internet to connect. After that it also works offline and catches up when it's back online.</p>
       </div>
     </div>
   );

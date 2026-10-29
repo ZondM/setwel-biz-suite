@@ -93,7 +93,8 @@
     else if (s.mode === 'trial' && s.daysLeft <= 7) reminder(s.daysLeft);
 
     var l = licence();
-    if (l && l.key && navigator.onLine && Date.now() - (l.checked || 0) > RECHECK) {
+    // A staff phone (online sync) is kept up to date by each sync instead
+    if (l && l.key && !l.team && navigator.onLine && Date.now() - (l.checked || 0) > RECHECK) {
       check(l.key).then(function () {
         var g = document.getElementById('setwel-gate');
         if (g && state().mode === 'licensed') g.remove();

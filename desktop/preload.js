@@ -12,5 +12,6 @@ contextBridge.exposeInMainWorld('setwelDesktop', {
   // Trial / licence status, server calls and opening website links (see app-src/src/core/licence.ts and api.ts)
   licence: () => ipcRenderer.invoke('licence:status'),
   apiPost: (path, body) => ipcRenderer.invoke('api:post', path, body),
+  setTeamToken: (token) => ipcRenderer.invoke('licence:setTeamToken', token),
   openExternal: (url) => ipcRenderer.invoke('open:external', url),
 });

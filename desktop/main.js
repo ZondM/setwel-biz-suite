@@ -86,10 +86,10 @@ ipcMain.handle('file:save', async (_e, name, data, isString) => {
 
 ipcMain.handle('licence:status', () => ({ ...licence.status(), deviceId: licence.deviceId() }));
 
-// Server calls from the app (AI receipt scans, sending email). Done here rather than in the
+// Server calls from the app (AI receipt scans, sending email, online sync). Done here rather than in the
 // page so the browser's cross-site rules don't apply. Only these endpoints are allowed.
 const API_BASE = process.env.SETWEL_API_BASE || `${SITE}/api`;
-const API_PATHS = new Set(['scan.php', 'send-email.php']);
+const API_PATHS = new Set(['scan.php', 'send-email.php', 'sync.php']);
 ipcMain.handle('api:post', async (_e, apiPath, body) => {
   if (!API_PATHS.has(apiPath)) return { status: 400, data: { error: 'Unknown request.' } };
   try {
@@ -118,6 +118,8 @@ ipcMain.handle('licence:activate', async (_e, key) => {
     return { error: err.message };
   }
 });
+// A staff laptop connected by online sync is licensed by the owner's subscription (token refreshed on every sync)
+ipcMain.handle('licence:setTeamToken', (_e, token) => licence.setTeamToken(token));
 ipcMain.handle('licence:continue', () => {
   if (licence.status().mode !== 'expired') openApp();
 });

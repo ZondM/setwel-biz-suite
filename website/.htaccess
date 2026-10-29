@@ -39,6 +39,6 @@ AddType video/mp4 .mp4
 </IfModule>
 
 # Secrets and helper files are never served directly
-<FilesMatch "^(config\.php|config\.example\.php|payfast\.php|licences\.php|usage\.php)$">
+<FilesMatch "^(config\.php|config\.example\.php|payfast\.php|licences\.php|usage\.php|sync-store\.php)$">
   Require all denied
 </FilesMatch>

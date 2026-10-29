@@ -39,6 +39,16 @@ function app_caller(array $in): array
             return ['id' => 'key:' . $lic['key'], 'plan' => $lic['plan'], 'trial' => false, 'licence' => $lic];
         }
     }
+    // A staff laptop connected by online sync works under the owner's licence
+    $sync = (string)($in['sync'] ?? '');
+    if ($sync !== '') {
+        require_once __DIR__ . '/sync-store.php';
+        $found = sync_licence_for_token($sync);
+        $lic = $found['licence'] ?? null;
+        if ($lic && ($lic['status'] ?? '') !== 'revoked' && strtotime($lic['paid_until']) + 7 * 86400 >= time()) {
+            return ['id' => 'key:' . $lic['key'], 'plan' => $lic['plan'], 'trial' => false, 'licence' => $lic];
+        }
+    }
     $device = preg_replace('/[^A-Za-z0-9_]/', '', (string)($in['device'] ?? ''));
     if (strlen($device) < 8) app_reply(400, ['error' => 'Please update Setwel to the latest version.']);
     return ['id' => 'dev:' . substr($device, 0, 64), 'plan' => 'trial', 'trial' => true, 'licence' => null];

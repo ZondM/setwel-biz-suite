@@ -108,6 +108,16 @@ async function activate(key) {
   return status();
 }
 
+/** Staff laptop: the token comes from online sync, for the owner's plan. Ignored unless genuinely signed. */
+function setTeamToken(token) {
+  const payload = readToken(token);
+  if (!payload || payload.key !== 'TEAM') return status();
+  state.token = token;
+  delete state.key; // nothing to refresh by key: every sync brings a fresh token
+  save();
+  return status();
+}
+
 /** Silent background refresh. Never throws; keeps the old token if offline. */
 async function refresh() {
   if (!state.key) return status();
@@ -120,4 +130,4 @@ async function refresh() {
   return status();
 }
 
-module.exports = { init, status, activate, refresh, normaliseKey, deviceId };
+module.exports = { init, status, activate, refresh, setTeamToken, normaliseKey, deviceId };

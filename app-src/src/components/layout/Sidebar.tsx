@@ -38,7 +38,7 @@ interface NavItem {
 
 export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean; onClose?: () => void }) {
   const { company } = useApp();
-  const { isOwner, isPartner } = usePermissions();
+  const { isOwner, isPartner, staffDevice } = usePermissions();
   const [desktopCollapsed, setCollapsed] = useState(false);
   const collapsed = desktopCollapsed && !mobileOpen;
   const tier = company?.packageTier;
@@ -72,6 +72,10 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
     { to: '/help', label: 'Help & training', icon: <HelpCircle size={18} /> },
     { to: '/upgrade', label: 'Upgrade Plan', icon: <ArrowUpCircle size={18} />, ownerOnly: true }
   ];
+
+  // A staff laptop shows only what it is for
+  const STAFF_PAGES = ['/customers', '/quotes', '/invoices', '/help'];
+  const forDevice = (list: NavItem[]) => (staffDevice ? list.filter((it) => STAFF_PAGES.includes(it.to)) : list);
 
   const renderItem = (item: NavItem) => {
     if (item.ownerOnly && !isOwner) return null;
@@ -125,13 +129,13 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
       </div>
 
       <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
-        {items.map(renderItem)}
+        {forDevice(items).map(renderItem)}
         <div className="h-px bg-white/10 my-2" />
-        {reportItems.map(renderItem)}
+        {forDevice(reportItems).map(renderItem)}
       </nav>
 
       <div className="px-3 pb-3 space-y-1 border-t border-white/10 pt-3">
-        {bottomItems.map(renderItem)}
+        {forDevice(bottomItems).map(renderItem)}
         <button
           onClick={() => setCollapsed((c) => !c)}
           className="w-full hidden lg:flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5 text-xs"

@@ -65,6 +65,7 @@ declare global {
         licence?: { key?: string; plan?: string; paid_until?: string };
       }>;
       apiPost?: (path: string, body: Record<string, unknown>) => Promise<{ status: number; data: any }>;
+      setTeamToken?: (token: string) => Promise<unknown>;
       openExternal?: (url: string) => Promise<void>;
     };
   }

@@ -15,7 +15,7 @@ import { FREQUENCY_LABELS, isOverdue } from '../core/automation';
 
 export default function InvoiceView() {
   const { company, refreshKey, bumpRefresh } = useApp();
-  const { canDelete } = usePermissions();
+  const { canDelete, staffDevice } = usePermissions();
   const navigate = useNavigate();
   const { id } = useParams();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -87,10 +87,12 @@ export default function InvoiceView() {
                 <BellRing size={15} /> Remind to pay
               </Button>
             )}
-            <Button variant="secondary" size="sm" onClick={() => setShowRepeat(true)}>
-              <Repeat size={15} /> {recurring?.active ? 'Repeating' : 'Repeat'}
-            </Button>
-            {balanceDue > 0 && (
+            {!staffDevice && (
+              <Button variant="secondary" size="sm" onClick={() => setShowRepeat(true)}>
+                <Repeat size={15} /> {recurring?.active ? 'Repeating' : 'Repeat'}
+              </Button>
+            )}
+            {balanceDue > 0 && !staffDevice && (
               <Button variant="gold" size="sm" onClick={() => setShowPaymentModal(true)}>
                 <CircleDollarSign size={15} /> Record payment
               </Button>

@@ -65,6 +65,7 @@ PLANS = [
             "Budgets for each expense category",
             "13-week cash-flow forecast",
             "Staff logins: staff can't delete or see profit",
+            "Staff laptops: each does quotes and invoices for one business, synced online to yours",
             "Change history: who changed what, and when",
             "Month-end pack for your accountant",
             "Setup and training by a Setwel partner accountant",

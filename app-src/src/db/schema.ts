@@ -226,6 +226,15 @@ CREATE INDEX IF NOT EXISTS idx_users_company ON users(company_id);
 CREATE INDEX IF NOT EXISTS idx_recurring_company ON recurring_invoices(company_id);
 CREATE INDEX IF NOT EXISTS idx_reminders_invoice ON reminders(invoice_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_bank_lines_fp ON bank_lines(company_id, fingerprint);
+
+-- Online sync: what this laptop last sent or received for each row, so only changes go up
+CREATE TABLE IF NOT EXISTS sync_state (
+  tbl TEXT NOT NULL,
+  row_id TEXT NOT NULL,
+  company_id TEXT NOT NULL,
+  hash TEXT NOT NULL,
+  PRIMARY KEY (tbl, row_id)
+);
 `;
 
 export const SCHEMA_VERSION = 3;

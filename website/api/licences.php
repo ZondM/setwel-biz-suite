@@ -161,6 +161,24 @@ function lic_token(array $lic): string
     return $body . '.' . lic_b64url(sodium_crypto_sign_detached($body, $secret));
 }
 
+/**
+ * Token for a staff laptop: the owner's plan and paid-up date, but not the owner's key,
+ * so the key never sits on a staff laptop. Refreshed on every sync.
+ */
+function lic_team_token(array $lic, string $teamId): string
+{
+    $payload = json_encode([
+        'key' => 'TEAM',
+        'team' => $teamId,
+        'plan' => $lic['plan'],
+        'paid_until' => $lic['paid_until'],
+        'issued' => date('c'),
+    ]);
+    $body = lic_b64url($payload);
+    $secret = base64_decode(LICENCE_SIGNING_KEY);
+    return $body . '.' . lic_b64url(sodium_crypto_sign_detached($body, $secret));
+}
+
 function lic_plan_name(string $plan): string
 {
     $names = [

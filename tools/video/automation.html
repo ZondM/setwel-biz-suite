@@ -108,6 +108,32 @@
   body.tall .cap p { font-size: 34px; }
   body.tall #brand { top: 80px; font-size: 30px; }
   body.tall #steps { left: 50%; margin-left: -138px; bottom: 120px; }
+  /* 9:16 keeps text clear of the TikTok/Reels buttons (right) and captions (bottom) */
+  body.tall #phoneWrap { left: 316px; top: 660px; transform: scale(1.35); transform-origin: 50% 0; }
+  body.tall #shadow { left: 400px; top: 1480px; width: 300px; }
+  body.tall .cap { top: 190px; width: 900px; }
+  body.tall .cap .tag { font-size: 24px; }
+  /* 4:5 feed */
+  body.portrait #brand { top: 60px; left: 60px; font-size: 28px; }
+  body.portrait .cap { left: 60px; top: 330px; width: 520px; }
+  body.portrait .cap h1 { font-size: 58px; }
+  body.portrait .cap p { font-size: 28px; }
+  body.portrait .cap .tag { font-size: 18px; }
+  body.portrait #phoneWrap { left: 650px; top: 250px; transform: scale(1.3); transform-origin: 50% 0; }
+  body.portrait #shadow { left: 690px; top: 1060px; }
+  body.portrait #steps { left: 60px; bottom: 70px; }
+  #hook { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 70px; text-align: center; opacity: 0; }
+  #hook h1 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 96px; line-height: 1.05; }
+  #hook h1 em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  body:not(.tall):not(.portrait) #hook h1 { font-size: 80px; }
+  #cta { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 40px; display: none; align-items: center; justify-content: center; gap: 18px;
+    background: var(--grad); font-weight: 800; font-size: 34px; }
+  body.still #cta { display: flex; }
+  body.still #steps { display: none; }
+  body.tall.still #cta { bottom: 300px; left: 70px; right: 70px; border-radius: 18px; }
+  #end .free { margin-top: 18px; font-size: 26px; color: var(--gold); font-weight: 700; }
+  body.tall #end { zoom: 1.6; } body.portrait #end { zoom: 1.3; }
+  body.tall #hook { padding: 0 40px; } body.tall #hook h1 { font-size: 108px; } body.portrait #hook h1 { font-size: 104px; }
 </style>
 </head>
 <body>
@@ -193,21 +219,35 @@
     </div>
   </div></div></div>
 
-  <div id="end"><img src="../../website/setwel-logo.png" alt=""><h2>Setwel <span>Biz Suite</span></h2><p>Automation built in. Invoices, receipts, reminders and tax.</p><div class="url">setwelbusiness.co.za · 30 days free</div></div>
+  <div id="hook"><h1 id="hookText"></h1></div>
+  <div id="cta">30 days free · setwelbusiness.co.za</div>
+  <div id="end"><img src="../../website/setwel-logo.png" alt=""><h2>Setwel <span>Biz Suite</span></h2><p>Automation built in. Invoices, receipts, reminders and tax.</p><div class="url">setwelbusiness.co.za</div><div class="free">Try it free for 30 days · No card needed</div></div>
 </div>
 
 <script>
   const q = new URLSearchParams(location.search);
   const W = +q.get('w') || 1280, H = +q.get('h') || 720;
-  const tall = H > W;
+  const tall = H / W > 1.5, portrait = !tall && H > W;
   if (tall) document.body.classList.add('tall');
+  if (portrait) document.body.classList.add('portrait');
+  // scene=0..3 makes a short single-feature clip; hook=1 opens with a question; still=1 adds the call-to-action strip
+  const ONE = q.has('scene') ? +q.get('scene') : null;
+  const HOOK = q.has('hook');
+  if (q.has('still')) document.body.classList.add('still');
   document.documentElement.style.width = document.body.style.width = W + 'px';
   document.documentElement.style.height = document.body.style.height = H + 'px';
   const stage = document.getElementById('stage');
   stage.style.width = W + 'px'; stage.style.height = H + 'px';
 
-  const DURATION = 18;
-  window.DURATION = DURATION;
+  const MASTER = 18;
+  const HOOKS = [
+    'Still keeping slips<br>in a <em>shoebox?</em>',
+    'Typing the same invoice<br><em>every month?</em>',
+    'Customers<br><em>paying late?</em>',
+    'VAT deadline<br><em>sneaking up?</em>',
+  ];
+  const HOOK_ALL = 'Your business paperwork,<br><em>on autopilot.</em>';
+  const HOOK_LEN = HOOK ? 1.8 : 0;
   const $ = (id) => document.getElementById(id);
   const clamp = (x) => Math.max(0, Math.min(1, x));
   const seg = (t, a, b) => clamp((t - a) / (b - a));
@@ -224,6 +264,18 @@
   // Scenes: [start, end] in seconds
   const S = [[0, 4.5], [4.5, 9], [9, 13.4], [13.4, 16.2]];
   const END = [16.2, 18];
+  // A short clip plays: [hook] + one scene + end card. The full clip plays everything.
+  const SCENE_LEN = ONE === null ? END[0] : S[ONE][1] - S[ONE][0];
+  const DURATION = HOOK_LEN + SCENE_LEN + (END[1] - END[0]);
+  window.DURATION = DURATION;
+  if (HOOK) $('hookText').innerHTML = ONE === null ? HOOK_ALL : HOOKS[ONE];
+  if (ONE !== null) [...$('steps').children].forEach((el, i) => { if (i !== ONE) el.style.display = 'none'; });
+  function master(t) {
+    if (t < HOOK_LEN) return ONE === null ? 0 : S[ONE][0];
+    const x = t - HOOK_LEN;
+    if (x < SCENE_LEN) return (ONE === null ? 0 : S[ONE][0]) + x;
+    return END[0] + (x - SCENE_LEN);
+  }
   const typed = [...document.querySelectorAll('[data-type]')];
   const lines = [...document.querySelectorAll('[data-l]')];
   const bars = [...document.querySelectorAll('#bars div')];
@@ -236,8 +288,13 @@
     return { v: i === 0 ? (t < b ? 1 - fout : 0) : fin * (1 - fout), fin, fout };
   }
 
-  window.render = function (t) {
-    t = ((t % DURATION) + DURATION) % DURATION;
+  window.render = function (tc) {
+    tc = ((tc % DURATION) + DURATION) % DURATION;
+    const t = master(tc);
+    // Hook card: big question before the phone appears
+    const hk = HOOK ? (1 - ease(seg(tc, HOOK_LEN - 0.35, HOOK_LEN))) * ease(seg(tc, 0, 0.3)) : 0;
+    set($('hook'), hk, `scale(${0.94 + 0.06 * ease(seg(tc, 0, 1.6))})`);
+    const show = 1 - hk;
 
     // Living background
     $('b1').style.transform = `translate(${780 + 140 * Math.sin(t * 0.5)}px, ${-80 + 60 * Math.cos(t * 0.4)}px)`;
@@ -259,17 +316,17 @@
     const rotX = 6 + 3 * Math.cos(t * 0.7);
     const lift = 12 * Math.sin(t * 1.3);
     set($('phone'), 1, `translateY(${lift - endIn * 80}px) rotateY(${rotY}deg) rotateX(${rotX}deg) scale(${1 - 0.25 * endIn})`);
-    $('phoneWrap').style.opacity = 1 - endIn;
-    $('shadow').style.opacity = (1 - endIn) * (0.9 - lift / 40);
+    $('phoneWrap').style.opacity = (1 - endIn) * show;
+    $('shadow').style.opacity = (1 - endIn) * show * (0.9 - lift / 40);
 
     // Captions and progress
     S.forEach((_, i) => {
       const { v } = sceneVis(t, i);
-      set($('cap' + i), v, `translateX(${(1 - v) * -40}px)`);
+      set($('cap' + i), v * show, `translateX(${(1 - v) * -40}px)`);
       $('steps').children[i].firstChild.style.width = (seg(t, S[i][0], S[i][1]) * 100) + '%';
       $('s' + i).style.opacity = v;
     });
-    $('steps').style.opacity = 1 - endIn;
+    $('steps').style.opacity = (1 - endIn) * show;
     set($('brand'), 1 - endIn);
 
     // Scene 0: receipt
@@ -318,6 +375,7 @@
     // End card
     const e = ease(seg(t, END[0] + 0.2, END[0] + 0.9));
     set($('end'), e, `scale(${0.92 + 0.08 * e})`);
+    $('cta').style.opacity = 1 - e;
     $('end').querySelector('img').style.transform = `rotateY(${(1 - e) * 180 + 10 * Math.sin(t * 2)}deg)`;
   };
 

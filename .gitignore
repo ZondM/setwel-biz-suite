@@ -10,3 +10,7 @@ app-src/node_modules/
 app-src/dist/
 app-src/*.tsbuildinfo
 __pycache__/
+
+# Rendered social media files (make them with: node tools/video/render.js social)
+social/videos/
+social/images/

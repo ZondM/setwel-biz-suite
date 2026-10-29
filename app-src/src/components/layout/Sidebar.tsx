@@ -115,7 +115,7 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
         ${collapsed ? 'lg:w-[68px]' : 'lg:w-64'}`}
     >
       <div className="flex items-center gap-2 px-4 py-5">
-        <img src="./setwel-logo.png" alt="" className="w-8 h-8 rounded-lg shrink-0 bg-white object-contain" />
+        <img src="./setwel-logo.png" alt="" className="w-9 h-9 shrink-0 object-contain" />
         {!collapsed && (
           <div className="leading-tight">
             <div className="font-display font-bold text-white text-sm">Setwel</div>

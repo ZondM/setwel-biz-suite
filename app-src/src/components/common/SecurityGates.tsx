@@ -107,7 +107,7 @@ export function TrialExpiredScreen() {
         </div>
         <h2 className="font-display text-2xl font-bold text-brand-navy mb-2">Your free trial has ended</h2>
         <p className="text-gray-500 text-sm mb-6 leading-relaxed">
-          Your 30-day trial of <strong>Setwel Africa Business Suite</strong> has expired.
+          Your 30-day trial of <strong>Setwel Biz Suite</strong> has expired.
           Upgrade to continue accessing your invoices, expenses, and business data.
           <br /><br />
           <span className="text-xs">Your data is safe and waiting — it will be fully restored the moment you upgrade.</span>

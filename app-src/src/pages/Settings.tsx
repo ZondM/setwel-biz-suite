@@ -335,7 +335,7 @@ function SecurityTab({ companyId }: { companyId: string }) {
         <DataSafetyCard />
         <div className="mt-4 text-xs text-gray-500 space-y-1">
           <p>© {new Date().getFullYear()} Setwel Africa (Pty) Ltd. All rights reserved.</p>
-          <p>Setwel Africa Business Suite is protected under South African copyright law and the Copyright Act 98 of 1978. Unauthorised reproduction, distribution, reverse-engineering or resale is prohibited and will be prosecuted.</p>
+          <p>Setwel Biz Suite is protected under South African copyright law and the Copyright Act 98 of 1978. Unauthorised reproduction, distribution, reverse-engineering or resale is prohibited and will be prosecuted.</p>
           <p>Compliant with the Protection of Personal Information Act (POPIA) No. 4 of 2013.</p>
         </div>
       </Card>

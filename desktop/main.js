@@ -58,11 +58,19 @@ function backupOncePerDay() {
   old.forEach((f) => fs.rmSync(path.join(backupDir(), f), { force: true }));
 }
 
+const FILE_TYPES = {
+  pdf: 'PDF document', csv: 'Spreadsheet (CSV)', zip: 'ZIP archive', setwel: 'Setwel business file',
+};
+
 ipcMain.handle('file:save', async (_e, name, data, isString) => {
-  const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
+  const ext = path.extname(name).slice(1).toLowerCase();
+  const { canceled, filePath: chosen } = await dialog.showSaveDialog(mainWindow, {
     defaultPath: path.join(app.getPath('documents'), name),
+    filters: ext ? [{ name: FILE_TYPES[ext] || ext.toUpperCase() + ' file', extensions: [ext] }] : [],
   });
-  if (canceled || !filePath) return;
+  if (canceled || !chosen) return;
+  // A name typed without the extension would save a file nothing can open
+  const filePath = ext && path.extname(chosen).toLowerCase() !== '.' + ext ? `${chosen}.${ext}` : chosen;
   let bytes;
   if (isString) {
     const base64 = data.includes(',') ? data.split(',')[1] : data;

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRightCircle, Plus, Save, Send } from 'lucide-react';
+import { ArrowLeft, ArrowRightCircle, Download, Plus, Save, Send } from 'lucide-react';
 import { useApp } from '../state/AppContext';
 import { CustomerModal } from './Customers';
 import { Button, Card, PageHeader, Field, Select, Input, Textarea, StatusBadge } from '../components/common/ui';
 import { DocumentItemsEditor } from '../components/common/DocumentItemsEditor';
 import { listCustomers, getQuote, saveQuote, getNextQuoteNumber, saveInvoice, getNextInvoiceNumber } from '../db/repository';
+import { generateQuotePdf } from '../utils/pdf';
+import { saveOrDownloadFile } from '../db/storageAdapter';
 import { calculateDocumentTotals } from '../core/financialEngine';
 import { addDays, todayIso, uid } from '../core/numbering';
 import { LineItem, DocStatus } from '../core/types';
@@ -70,6 +72,16 @@ export default function QuoteEditor() {
       setStatus('sent');
       navigate('/quotes');
     }
+  }
+
+  /** Saves the quote as it is on screen, then downloads it as a PDF to send or print. */
+  async function handleDownload() {
+    const saved = persist();
+    if (!saved) return;
+    if (isNew) navigate(`/quotes/${saved.id}`, { replace: true }); // further changes update this quote
+    const customer = customers.find((c) => c.id === saved.customerId) ?? null;
+    const bytes = new Uint8Array(await generateQuotePdf(company!, customer, saved).output('blob').arrayBuffer());
+    await saveOrDownloadFile(`${saved.quoteNumber}.pdf`, bytes, 'application/pdf');
   }
 
   function handleConvert() {
@@ -146,6 +158,9 @@ export default function QuoteEditor() {
           </Button>
           <Button onClick={handleMarkSent}>
             <Send size={16} /> Save & mark as sent
+          </Button>
+          <Button variant="secondary" onClick={handleDownload}>
+            <Download size={16} /> Download PDF
           </Button>
         </div>
         {!isNew && status !== 'converted' && (

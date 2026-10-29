@@ -1,10 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, FileStack, Search, Trash2, ArrowRightCircle } from 'lucide-react';
+import { Plus, FileStack, Search, Trash2, ArrowRightCircle, Download } from 'lucide-react';
 import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, EmptyState, StatusBadge, MoneyText, Select } from '../components/common/ui';
 import { listQuotes, listCustomers, deleteQuote } from '../db/repository';
 import { formatDate } from '../core/numbering';
+import { generateQuotePdf } from '../utils/pdf';
+import { saveOrDownloadFile } from '../db/storageAdapter';
+import { Quote } from '../core/types';
 
 export default function Quotes() {
   const { company, refreshKey, bumpRefresh } = useApp();
@@ -26,6 +29,12 @@ export default function Quotes() {
     const matchesStatus = statusFilter === 'all' || q.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  async function handleDownload(q: Quote) {
+    const customer = listCustomers(company!.id).find((c) => c.id === q.customerId) ?? null;
+    const bytes = new Uint8Array(await generateQuotePdf(company!, customer, q).output('blob').arrayBuffer());
+    await saveOrDownloadFile(`${q.quoteNumber}.pdf`, bytes, 'application/pdf');
+  }
 
   function handleDelete(id: string) {
     if (window.confirm('Delete this quote?')) {
@@ -101,7 +110,10 @@ export default function Quotes() {
                   <td className="px-5 py-3 text-right font-semibold text-brand-navy">
                     <MoneyText amount={q.total} />
                   </td>
-                  <td className="px-5 py-3 text-right">
+                  <td className="px-5 py-3 text-right whitespace-nowrap">
+                    <button onClick={() => handleDownload(q)} className="text-gray-400 hover:text-brand-navy mr-3" title="Download PDF" aria-label={`Download ${q.quoteNumber} as PDF`}>
+                      <Download size={16} />
+                    </button>
                     {q.status !== 'converted' && (
                       <button onClick={() => navigate(`/quotes/${q.id}`)} className="text-gray-400 hover:text-brand-green mr-3" title="Convert to invoice">
                         <ArrowRightCircle size={16} />

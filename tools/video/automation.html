@@ -233,6 +233,10 @@
   // scene=0..3 makes a short single-feature clip; hook=1 opens with a question; still=1 adds the call-to-action strip
   const ONE = q.has('scene') ? +q.get('scene') : null;
   const HOOK = q.has('hook');
+  // hook=Your text|second line *highlighted*  replaces the built-in question; cover makes a thumbnail
+  const toHtml = (x) => x.replace(/\|/g, '<br>').replace(/\*(.+?)\*/g, '<em>$1</em>');
+  const CUSTOM_HOOK = q.get('hook') ? toHtml(q.get('hook')) : null;
+  const COVER = q.has('cover');
   if (q.has('still')) document.body.classList.add('still');
   document.documentElement.style.width = document.body.style.width = W + 'px';
   document.documentElement.style.height = document.body.style.height = H + 'px';
@@ -268,7 +272,16 @@
   const SCENE_LEN = ONE === null ? END[0] : S[ONE][1] - S[ONE][0];
   const DURATION = HOOK_LEN + SCENE_LEN + (END[1] - END[0]);
   window.DURATION = DURATION;
-  if (HOOK) $('hookText').innerHTML = ONE === null ? HOOK_ALL : HOOKS[ONE];
+  const hookHtml = CUSTOM_HOOK || (ONE === null ? HOOK_ALL : HOOKS[ONE]);
+  if (HOOK) $('hookText').innerHTML = hookHtml;
+  if (COVER) {
+    // Thumbnail: the question as the headline over the finished screen
+    document.body.classList.add('still');
+    const cap = $('cap' + (ONE ?? 0));
+    cap.querySelector('h1').innerHTML = hookHtml;
+    cap.querySelector('.tag').style.visibility = 'hidden';
+    cap.querySelector('p').style.visibility = 'hidden';
+  }
   if (ONE !== null) [...$('steps').children].forEach((el, i) => { if (i !== ONE) el.style.display = 'none'; });
   function master(t) {
     if (t < HOOK_LEN) return ONE === null ? 0 : S[ONE][0];
@@ -292,8 +305,8 @@
     tc = ((tc % DURATION) + DURATION) % DURATION;
     const t = master(tc);
     // Hook card: big question before the phone appears
-    const hk = HOOK ? (1 - ease(seg(tc, HOOK_LEN - 0.35, HOOK_LEN))) * ease(seg(tc, 0, 0.3)) : 0;
-    set($('hook'), hk, `scale(${0.94 + 0.06 * ease(seg(tc, 0, 1.6))})`);
+    const hk = HOOK ? 1 - ease(seg(tc, HOOK_LEN - 0.35, HOOK_LEN)) : 0;
+    set($('hook'), hk, `scale(${1.08 - 0.08 * pop(seg(tc, 0, 0.45))})`);
     const show = 1 - hk;
 
     // Living background

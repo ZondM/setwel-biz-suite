@@ -14,3 +14,5 @@ __pycache__/
 # Rendered social media files (make them with: node tools/video/render.js social)
 social/videos/
 social/images/
+social/covers/
+social/hook-tests/

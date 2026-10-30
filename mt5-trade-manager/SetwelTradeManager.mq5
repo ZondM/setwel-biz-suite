@@ -39,6 +39,12 @@ enum ENUM_TM_MANUAL_SL
    TM_MANUAL_SL_CONTINUE = 1  // Continue trailing from the new SL
   };
 
+enum ENUM_TM_PANEL_POS
+  {
+   TM_PANEL_BOTTOM_LEFT = 0, // Bottom left
+   TM_PANEL_TOP_LEFT    = 1  // Top left
+  };
+
 enum ENUM_TM_STATE
   {
    TM_NONE    = 0, // no level at broker, line is only a draft handle
@@ -78,8 +84,9 @@ input group "Display"
 input bool              InpHideNativeLevels= true;                // Hide MT5's own trade level lines on this chart
 input bool              InpShowOthers      = true;                // Show entry lines of non-selected positions
 input bool              InpChartShift      = true;                // Enable chart shift so labels have room
-input int               InpPanelX          = 10;                  // Panel X position
-input int               InpPanelY          = 25;                  // Panel Y position
+input ENUM_TM_PANEL_POS InpPanelPos        = TM_PANEL_BOTTOM_LEFT; // Panel position (also switchable on the panel)
+input int               InpPanelX          = 10;                  // Panel X offset from left edge
+input int               InpPanelY          = 25;                  // Panel Y offset from top / bottom edge
 input int               InpFontSize        = 8;                   // Font size
 input color             InpSLColor         = clrRed;              // SL colour
 input color             InpTPColor         = clrLimeGreen;        // TP colour
@@ -133,6 +140,7 @@ long   g_origLevels   = -1;
 long   g_origShift    = -1;
 string g_editShown[5];
 ulong  g_editShownFor = 0;
+bool   g_panelBottom  = true;
 
 //+------------------------------------------------------------------+
 //| Symbol helpers (all read live from the broker's symbol spec)     |
@@ -970,7 +978,7 @@ void PLabel(string id, int x, int y, string text, color c)
      }
    ObjectSetInteger(0, n, OBJPROP_XDISTANCE, x);
    ObjectSetInteger(0, n, OBJPROP_YDISTANCE, y);
-   ObjectSetString(0, n, OBJPROP_TEXT, text);
+   ObjectSetString(0, n, OBJPROP_TEXT, text == "" ? " " : text); // MT5 shows "Label" for empty text
    ObjectSetInteger(0, n, OBJPROP_COLOR, c);
   }
 
@@ -1000,7 +1008,11 @@ void PEdit(string id, int x, int y, int w, int h)
   {
    string n = TM_PANEL + id;
    if(ObjectFind(0, n) >= 0)
+     {
+      ObjectSetInteger(0, n, OBJPROP_XDISTANCE, x);
+      ObjectSetInteger(0, n, OBJPROP_YDISTANCE, y);
       return;
+     }
    ObjectCreate(0, n, OBJ_EDIT, 0, 0, 0);
    ObjectSetInteger(0, n, OBJPROP_CORNER, CORNER_LEFT_UPPER);
    ObjectSetInteger(0, n, OBJPROP_SELECTABLE, false);
@@ -1045,7 +1057,15 @@ void StatusLine(string &txt, color &c)
 
 void RefreshPanel(int k)
   {
-   int x = InpPanelX, y = InpPanelY, dy = 19, W = 470;
+   int dy = 19, W = 470, H = dy * 12 + 8;
+   int x = InpPanelX, y = InpPanelY;
+   if(g_panelBottom)
+     {
+      int ch = (int)ChartGetInteger(0, CHART_HEIGHT_IN_PIXELS);
+      y = ch - H - InpPanelY + 4;
+      if(y < 4)
+         y = 4;
+     }
    string bg = TM_PANEL + "BG";
    if(ObjectFind(0, bg) < 0)
      {
@@ -1061,7 +1081,8 @@ void RefreshPanel(int k)
    ObjectSetInteger(0, bg, OBJPROP_XDISTANCE, x - 5);
    ObjectSetInteger(0, bg, OBJPROP_YDISTANCE, y - 4);
    ObjectSetInteger(0, bg, OBJPROP_XSIZE, W);
-   ObjectSetInteger(0, bg, OBJPROP_YSIZE, dy * 12 + 8);
+   ObjectSetInteger(0, bg, OBJPROP_YSIZE, H);
+   PButton("MOVE", x + W - 72, y, 62, 16, g_panelBottom ? "To top" : "To bottom", C'60,64,80');
 
    string st; color sc;
    StatusLine(st, sc);
@@ -1301,7 +1322,12 @@ void HandleClick(string name)
       ObjectSetInteger(0, name, OBJPROP_STATE, false);
    int n = ArraySize(g_pos);
    int k = Sel();
-   if((id == "PREV" || id == "NEXT") && n > 0)
+   if(id == "MOVE")
+     {
+      g_panelBottom = !g_panelBottom;
+      GlobalVariableSet("TMEA_PANELPOS_" + IntegerToString(ChartID()), g_panelBottom ? 0.0 : 1.0);
+     }
+   else if((id == "PREV" || id == "NEXT") && n > 0)
      {
       int j = (k < 0) ? 0 : k + (id == "NEXT" ? 1 : -1);
       if(j < 0)  j = n - 1;
@@ -1369,6 +1395,8 @@ int OnInit()
       ChartSetInteger(0, CHART_SHIFT, true);
      }
    ChartSetInteger(0, CHART_EVENT_MOUSE_MOVE, true);
+   string gp = "TMEA_PANELPOS_" + IntegerToString(ChartID());
+   g_panelBottom = GlobalVariableCheck(gp) ? (GlobalVariableGet(gp) < 0.5) : (InpPanelPos == TM_PANEL_BOTTOM_LEFT);
    for(int i = 0; i < 5; i++)
       g_editShown[i] = "~unset~";
    g_wasConnected = (bool)TerminalInfoInteger(TERMINAL_CONNECTED);
@@ -1383,6 +1411,8 @@ int OnInit()
 void OnDeinit(const int reason)
   {
    EventKillTimer();
+   if(reason == REASON_PARAMETERS) // new input wins over the panel button choice
+      GlobalVariableDel("TMEA_PANELPOS_" + IntegerToString(ChartID()));
    ObjectsDeleteAll(0, TM_PFX); // no lines remain that could look like protection
    if(g_origLevels >= 0)
       ChartSetInteger(0, CHART_SHOW_TRADE_LEVELS, g_origLevels != 0);

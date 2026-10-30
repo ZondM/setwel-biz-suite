@@ -61,7 +61,9 @@ Run one copy per chart. If you trade EURUSD and Volatility 75, use two charts wi
 | Confirmation timeout | 8000 ms | If the broker hasn't confirmed by then, the level shows as failed. |
 | Hide native trade levels | true | Hides MT5's own SL/TP lines on this chart while the EA runs. |
 | Show other positions | true | Shows a faint grey entry line for positions that aren't selected. |
-| Panel X/Y, font, colours | — | Look and feel. |
+| Panel position | Bottom left | Bottom left or top left. You can also switch it any time with the **To top / To bottom** button on the panel (remembered per chart). |
+| Panel X/Y | 10 / 25 | Offset from the left edge and from the top or bottom edge. |
+| Font, colours | — | Look and feel. |
 
 Trailing values can also be changed **per position** in the panel (Act / Dist / Step boxes). They are saved in MT5 global variables, so they survive a restart.
 

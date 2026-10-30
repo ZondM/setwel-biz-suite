@@ -27,14 +27,14 @@ function clean(?string $v): string
     return trim(strip_tags($v ?? ''));
 }
 
-$plan    = clean($_GET['plan'] ?? '');
-$billing = clean($_GET['billing'] ?? 'monthly') === 'yearly' ? 'yearly' : 'monthly';
-$first   = clean($_GET['first'] ?? '');
-$last    = clean($_GET['last'] ?? '');
-$email   = clean($_GET['email'] ?? '');
-$phone   = clean($_GET['phone'] ?? '');
-$biz     = clean($_GET['biz'] ?? '');
-$ref     = strtoupper(clean($_GET['ref'] ?? ''));
+$plan    = clean($_POST['plan'] ?? $_GET['plan'] ?? '');
+$billing = clean($_POST['billing'] ?? $_GET['billing'] ?? 'monthly') === 'yearly' ? 'yearly' : 'monthly';
+$first   = clean($_POST['first'] ?? $_GET['first'] ?? '');
+$last    = clean($_POST['last'] ?? $_GET['last'] ?? '');
+$email   = clean($_POST['email'] ?? $_GET['email'] ?? '');
+$phone   = clean($_POST['phone'] ?? $_GET['phone'] ?? '');
+$biz     = clean($_POST['biz'] ?? $_GET['biz'] ?? '');
+$ref     = strtoupper(clean($_POST['ref'] ?? $_GET['ref'] ?? ''));
 
 $errors = [];
 if (!isset(PLAN_PRICES[$plan])) $errors[] = 'plan';

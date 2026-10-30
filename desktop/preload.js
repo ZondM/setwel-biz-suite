@@ -13,5 +13,7 @@ contextBridge.exposeInMainWorld('setwelDesktop', {
   licence: () => ipcRenderer.invoke('licence:status'),
   apiPost: (path, body) => ipcRenderer.invoke('api:post', path, body),
   setTeamToken: (token) => ipcRenderer.invoke('licence:setTeamToken', token),
+  showLicence: () => ipcRenderer.invoke('licence:show'),
+  onLicenceChanged: (callback) => ipcRenderer.on('licence:changed', () => callback()),
   openExternal: (url) => ipcRenderer.invoke('open:external', url),
 });

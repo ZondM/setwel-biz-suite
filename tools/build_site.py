@@ -134,13 +134,10 @@ def plan_automations(plan_id):
 
 
 NAV = [
-    ("index.html", "Home"),
     ("automation.html", "Automation"),
-    ("download.html", "Download"),
     ("pricing.html", "Pricing"),
-    ("find-an-accountant.html", "Find an accountant"),
+    ("download.html", "Download"),
     ("accountants.html", "For accountants"),
-    ("refer.html", "Refer a friend"),
     ("help.html", "Help"),
     ("contact.html", "Contact"),
 ]
@@ -173,15 +170,18 @@ def page(filename, title, description, body, scripts=""):
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/index.html"><img src="/setwel-logo.png" alt="">Setwel <span>Biz Suite</span></a>
-    <nav class="nav">
+    <a class="brand" href="/index.html"><img src="/setwel-logo.png" alt="" width="38" height="38">Setwel <span>Biz Suite</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu"><span></span><span></span><span></span></button>
+    <nav class="nav" id="site-nav" aria-label="Main">
 {nav}
+      <a class="btn btn-main nav-cta" data-dl data-keep-text href="/download.html">Try free</a>
     </nav>
   </div>
 </header>
-<main>
+<main id="main">
 {body}
 </main>
 <footer class="foot">
@@ -190,6 +190,7 @@ def page(filename, title, description, body, scripts=""):
       <div>
         <h4>Setwel Biz Suite</h4>
         <p>Invoicing, accounting, VAT and tax for South African businesses. Made in South Africa.</p>
+        <p style="margin-top:10px"><a href="/refer.html">Refer a business, get a month free</a></p>
       </div>
       <div>
         <h4>Get Setwel</h4>
@@ -223,8 +224,8 @@ def page(filename, title, description, body, scripts=""):
   </div>
 </footer>
 <a class="wa" href="{WHATSAPP}" aria-label="Chat on WhatsApp">WhatsApp us</a>
-<script src="/assets/site.js"></script>
 {scripts}
+<script src="/assets/site.js"></script>
 </body>
 </html>
 """
@@ -249,8 +250,9 @@ REEL = """<section class="showreel">
 
 def home():
     plans_teaser = "".join(
-        f'<div class="card"><h3>{p["name"]}</h3><p>{p["for"]}</p>'
-        f'<p style="margin-top:10px;color:var(--ink);font-weight:700">{rand(p["monthly"])} / month</p></div>'
+        f'<a class="card plan-mini{" pop" if p.get("popular") else ""}" href="/pricing.html">'
+        f'{"<span class=badge>Most popular</span>" if p.get("popular") else ""}<h3>{p["name"]}</h3><p>{p["for"]}</p>'
+        f'<p class="amt">{rand(p["monthly"])}<small> / month</small></p></a>'
         for p in PLANS
     )
     home_autos = "".join(
@@ -258,16 +260,69 @@ def home():
         for _, icon, name, desc, _ in AUTOMATIONS[:4]
     )
     body = f"""
-<div class="band">
-  <div class="wrap">
-    <h1>Your business finances, handled with confidence.</h1>
-    <p class="lead">Invoicing, accounting, VAT and tax in one simple package for South African businesses, with the routine work automated: receipts scanned by AI, invoices that repeat, reminders written for you and deadlines flagged before they arrive.</p>
-    {DOWNLOAD_BUTTONS}
-    <p class="note">30 days free. No card, no sign-up form. It installs in about a minute.</p>
+<div class="band hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Made for South African businesses</p>
+      <h1>Your business finances, handled with confidence.</h1>
+      <p class="lead">Invoices, quotes, expenses, VAT and tax in one simple app. The routine work runs itself: receipts read by AI, invoices that repeat, reminders written for you and deadlines flagged before they arrive.</p>
+      <div class="btn-row">
+        <a class="btn btn-main" data-dl href="/download.html">Download free trial</a>
+        <a class="btn btn-ghost" href="/pricing.html">See prices</a>
+      </div>
+      <p class="note" data-dl-note>Windows and Mac. On a phone? <a href="/app/">Open Setwel in your browser</a>.</p>
+      <ul class="ticks">
+        <li>30 days free</li><li>No card needed</li><li>Works without internet</li>
+      </ul>
+    </div>
+    <div class="hero-media">
+      <video class="reel" autoplay muted loop playsinline preload="metadata" poster="/assets/automation-poster.jpg" width="1280" height="720"
+        data-portrait="/assets/automation-portrait.mp4" data-portrait-poster="/assets/automation-portrait-poster.jpg"
+        aria-label="Setwel automation: a receipt scanned by AI, an invoice created and sent on WhatsApp, a reminder that gets an invoice paid, and VAT deadline alerts">
+        <source src="/assets/automation.mp4" type="video/mp4">
+      </video>
+      <p class="media-cap">18 seconds: what Setwel does for you every day</p>
+    </div>
   </div>
 </div>
 
-{REEL}
+<div class="proof">
+  <div class="wrap proof-row">
+    <div><strong>VAT201-ready</strong><span>figures for eFiling</span></div>
+    <div><strong>WhatsApp</strong><span>invoices and reminders</span></div>
+    <div><strong>AI receipts</strong><span>captured in seconds</span></div>
+    <div><strong>From R59.99</strong><span>a month, in rand</span></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>The load we take off you</h2>
+    <p class="sub">Most business owners don't hate their work. They hate the paperwork that comes with it.</p>
+    <div class="before-after">
+      <div class="before">
+        <h3>Without Setwel</h3>
+        <ul>
+          <li>Hours lost in queues and on hold, just to sort out returns and tax questions</li>
+          <li>Invoices in a notebook, on WhatsApp and in your head</li>
+          <li>Not sure who still owes you money</li>
+          <li>Paying someone just to tell you what you made this month</li>
+          <li>Panic before every VAT or tax deadline</li>
+        </ul>
+      </div>
+      <div class="after">
+        <h3>With Setwel</h3>
+        <ul>
+          <li>Professional invoices sent from your phone or PC in seconds</li>
+          <li>One screen shows money in, money out and who owes you</li>
+          <li>VAT201 and tax figures ready to copy onto eFiling</li>
+          <li>Deadlines in front of you weeks before they're due</li>
+          <li>An accountant only when you actually need one</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="alt">
   <div class="wrap">
@@ -286,46 +341,20 @@ def home():
 
 <section>
   <div class="wrap">
-    <h2>The load we take off you</h2>
-    <p class="sub">Most small business owners don't hate their work. They hate the paperwork that comes with it.</p>
-    <div class="before-after">
-      <div class="before">
-        <h3>Without Setwel</h3>
-        <ul>
-          <li>Long queues and waiting just to sort out returns and tax questions</li>
-          <li>Invoices in a notebook, on WhatsApp and in your head</li>
-          <li>Not sure who still owes you money</li>
-          <li>Paying someone just to tell you what you made this month</li>
-          <li>Panic before every VAT or tax deadline</li>
-        </ul>
-      </div>
-      <div class="after">
-        <h3>With Setwel</h3>
-        <ul>
-          <li>Professional invoices sent from your phone or PC in seconds</li>
-          <li>One screen shows money in, money out and who owes you</li>
-          <li>VAT201 and tax figures ready to copy onto eFiling</li>
-          <li>Tax deadlines in front of you, not in a letter</li>
-          <li>An accountant only when you actually need one</li>
-        </ul>
-      </div>
+    <h2>Everything a growing business needs</h2>
+    <p class="sub">One app instead of a notebook, three spreadsheets and a pile of slips.</p>
+    <div class="grid g3 features">
+      <div><h3>Quotes and invoices</h3><p>Branded PDFs with your logo and banking details. A quote becomes an invoice in one click.</p></div>
+      <div><h3>Who owes you</h3><p>Overdue invoices, part-payments and aged reports, so you know exactly who to call.</p></div>
+      <div><h3>Expenses and bills</h3><p>Every rand out, by category, with VAT claimed only where it should be.</p></div>
+      <div><h3>Bank matching</h3><p>Upload your bank statement. Setwel matches payments to invoices and bills (Builder and up).</p></div>
+      <div><h3>VAT and tax</h3><p>VAT201 figures, provisional and income tax estimates, and a filing calendar.</p></div>
+      <div><h3>Several businesses, staff laptops</h3><p>Run branches side by side; staff laptops do quotes and invoices only (Enterprise).</p></div>
     </div>
   </div>
 </section>
 
 <section class="alt">
-  <div class="wrap">
-    <h2>What Setwel does for you</h2>
-    <div class="grid g4">
-      <div class="card"><div class="icon">🧾</div><h3>Invoices that chase themselves</h3><p>Send invoices on WhatsApp or email. Repeating invoices create themselves, and Setwel reminds you who to chase, with the message already written.</p></div>
-      <div class="card"><div class="icon">💰</div><h3>Your money, in control</h3><p>Snap a receipt and AI fills in the expense. Upload your bank statement and Setwel matches the payments. Your profit and loss is always up to date.</p></div>
-      <div class="card"><div class="icon">🏛️</div><h3>Tax and compliance</h3><p>VAT201 figures, provisional tax estimates and alerts before each deadline, plus a monthly report you can send to your accountant.</p></div>
-      <div class="card"><div class="icon">🤝</div><h3>An accountant when it matters</h3><p>Do the day-to-day yourself. When something doesn't add up, we connect you with a Setwel partner accountant.</p></div>
-    </div>
-  </div>
-</section>
-
-<section>
   <div class="wrap">
     <h2>Up and running in three steps</h2>
     <ol class="steps">
@@ -337,29 +366,50 @@ def home():
   </div>
 </section>
 
-<section class="alt">
+<section>
   <div class="wrap">
     <h2>Simple prices, in rand</h2>
-    <p class="sub">Every plan starts with 30 days free. Pay only if Setwel is making your life easier.</p>
-    <div class="grid g3">{plans_teaser}</div>
+    <p class="sub">Every plan starts with 30 days free and every feature. Choose a plan only when your trial ends.</p>
+    <div class="price-row">{plans_teaser}</div>
     <p style="margin-top:20px"><a class="btn btn-green" href="/pricing.html">Compare plans</a></p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Straight answers</h2>
+    <div class="faq">
+      <details><summary>Where is my data kept?</summary><p>On your own computer or phone, in a file only Setwel opens, with a backup every day. Nothing goes to the internet unless you scan a receipt, send an email or turn on staff laptops.</p></details>
+      <details><summary>Do I still need an accountant?</summary><p>For the day-to-day, no: Setwel keeps your books and works out your VAT and tax figures. For annual financial statements or a tricky tax question, yes, and we can connect you with a Setwel partner accountant.</p></details>
+      <details><summary>What happens after the 30 days?</summary><p>Setwel asks you to choose a plan. Everything you captured stays. If you don't pay, nothing is deleted; it just stays locked until you do.</p></details>
+      <details><summary>Can I cancel?</summary><p>Any time, on WhatsApp. You keep using Setwel until the end of the month you paid for.</p></details>
+      <details><summary>Is it hard to learn?</summary><p>If you can send a WhatsApp, you can send an invoice. The setup checklist walks you through the rest, and paying customers get the full training manual.</p></details>
+    </div>
   </div>
 </section>
 
 <section>
   <div class="wrap grid g2">
-    <div>
-      <h2>Refer a business, get a month free</h2>
-      <p class="sub">Every paying customer gets a referral code. When a business you refer pays for Setwel, your next month is free. There's no limit.</p>
-      <a class="btn btn-plain" href="/refer.html">How referrals work</a>
+    <div class="card">
+      <h3>Refer a business, get a month free</h3>
+      <p>Every paying customer gets a referral code. When a business you refer pays, your next month is free. No limit.</p>
+      <p style="margin-top:14px"><a class="btn btn-plain" href="/refer.html">How referrals work</a></p>
     </div>
-    <div>
-      <h2>Are you an accountant?</h2>
-      <p class="sub">Run Setwel for all your clients on one partner plan, and get sent Setwel customers who need an accountant.</p>
-      <a class="btn btn-plain" href="/accountants.html">The Accountant Partner plan</a>
+    <div class="card">
+      <h3>Are you an accountant?</h3>
+      <p>Run Setwel for all your clients on one partner plan, and get sent Setwel customers who need an accountant.</p>
+      <p style="margin-top:14px"><a class="btn btn-plain" href="/accountants.html">The Accountant Partner plan</a></p>
     </div>
   </div>
 </section>
+
+<div class="band cta-band">
+  <div class="wrap">
+    <h2>Take the paperwork off your plate today.</h2>
+    <p class="lead">Free for 30 days. Installs in about a minute.</p>
+    <div class="btn-row"><a class="btn btn-main" data-dl href="/download.html">Download free trial</a><a class="btn btn-ghost" href="{WHATSAPP}">Ask us on WhatsApp</a></div>
+  </div>
+</div>
 """
     return page("index.html", "Setwel Biz Suite: invoicing, accounting and tax for South African businesses",
                 "Invoicing, accounting, VAT and tax figures for South African small businesses. 30 days free for Windows, Mac and phones.", body)
@@ -557,7 +607,7 @@ def pay():
 </div>
 <section>
   <div class="wrap">
-    <form class="box" id="payForm" method="get" action="/api/create-payment.php">
+    <form class="box" id="payForm" method="post" action="/api/create-payment.php">
       <div class="summary" id="summary">Loading plan…</div>
       <input type="hidden" name="plan" id="plan">
       <input type="hidden" name="billing" id="billing">
@@ -787,7 +837,7 @@ FAQ = [
     ("Does Setwel connect to my bank?",
      "Not directly. Download your statement as a CSV file from your online banking and upload it on the Bank matching page (Builder plan and up). Setwel matches payments to your invoices and suggests categories for the rest, and learns from your choices."),
     ("Where is my data kept?",
-     "On the Windows or Mac version, your data stays in a file on your own computer, and Setwel makes a backup copy every day (File → Open backups folder). On a phone, it's kept inside your browser on that phone. We don't see your business data."),
+     "On the Windows or Mac version, your data stays in a file on your own computer, and Setwel makes a backup copy every day (File → Open backups folder). On a phone, it's kept inside your browser on that phone. We don't see your business data, unless you turn on staff laptops (Enterprise): then a copy is kept on our server to share between your laptops."),
     ("Why does Windows or Mac show a warning when I install?",
      "Because Setwel isn't yet registered in Microsoft's and Apple's paid publisher programmes. The download page shows the two or three clicks to get past it."),
     ("What happens when my 30 days end?",
@@ -795,7 +845,7 @@ FAQ = [
     ("How do I cancel?",
      f"WhatsApp us on {PHONE} or email {EMAIL}. Monthly plans run to the end of the month you've paid for. See the refund policy for yearly plans."),
     ("I have a Mac. Does it work?",
-     "Yes. Download the Mac file (.dmg), drag Setwel into Applications, and open it. It works on Intel and Apple-chip Macs."),
+     "Yes. Download the Mac file (.dmg), drag Setwel into Applications, and open it. The first time, macOS asks you to allow it under System Settings, Privacy &amp; Security, Open Anyway. It works on Intel and Apple-chip Macs."),
 ]
 
 
@@ -809,7 +859,7 @@ def help_page():
   </div>
 </div>
 <section>
-  <div class="wrap" style="max-width:820px">{items}</div>
+  <div class="wrap faq" style="max-width:820px">{items}</div>
 </section>
 """
     return page("help.html", "Help | Setwel Biz Suite", "Answers to common questions about Setwel Biz Suite.", body)

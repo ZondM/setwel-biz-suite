@@ -70,7 +70,7 @@ export function Sidebar({ mobileOpen = false, onClose }: { mobileOpen?: boolean;
     { to: '/files', label: isPartner ? 'Send books to client' : 'Send to accountant', icon: <Send size={18} />, ownerOnly: true },
     { to: '/settings', label: 'Settings', icon: <SettingsIcon size={18} />, ownerOnly: true },
     { to: '/help', label: 'Help & training', icon: <HelpCircle size={18} /> },
-    { to: '/upgrade', label: 'Upgrade Plan', icon: <ArrowUpCircle size={18} />, ownerOnly: true }
+    { to: '/upgrade', label: 'Plan & licence key', icon: <ArrowUpCircle size={18} />, ownerOnly: true }
   ];
 
   // A staff laptop shows only what it is for

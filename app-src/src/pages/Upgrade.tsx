@@ -12,6 +12,12 @@ export default function Upgrade() {
   const { company, licence, bumpRefresh } = useApp();
   const licensed = licence?.mode === 'licensed';
 
+  // Desktop: the licence window. Phone/browser: the licence screen from app-gate.js.
+  function enterKey() {
+    if (window.setwelDesktop?.showLicence) void window.setwelDesktop.showLicence();
+    else (window as any).setwelShowLicence?.();
+  }
+
   // During the free trial the customer may try any plan. Once paid, the licence decides.
   function tryTier(tier: PackageTier) {
     if (!company || licensed || tier === company.packageTier) return;
@@ -27,6 +33,11 @@ export default function Upgrade() {
           licensed
             ? `Licence ${licence?.key ?? ''}${licence?.paidUntil ? `, paid up to ${formatDate(licence.paidUntil)}` : ''}. To change plan, buy the new one and enter its key.`
             : 'You are on a free trial. Try any plan below, then buy the one that fits.'
+        }
+        actions={
+          <Button variant="secondary" size="sm" onClick={enterKey}>
+            {licensed ? 'Enter a new licence key' : 'Already paid? Enter your licence key'}
+          </Button>
         }
       />
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">

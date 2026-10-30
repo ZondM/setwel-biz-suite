@@ -46,10 +46,12 @@
     var el = document.createElement('div');
     el.id = 'setwel-gate';
     el.setAttribute('style', 'position:fixed;inset:0;z-index:2147483647;background:#fffdf9;overflow:auto;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#2b2622');
-    var title = s.reason === 'renew' ? 'Your subscription needs renewing' : 'Your 30-day free trial has ended';
+    var title = s.reason === 'renew' ? 'Your subscription needs renewing' : s.reason === 'enter' ? 'Enter your licence key' : 'Your 30-day free trial has ended';
     var lead = s.reason === 'renew'
       ? 'We could not confirm a recent payment. Renew your plan, or connect to the internet so Setwel can check again.'
-      : 'Choose a plan to unlock Setwel again. Everything you captured is still saved on this phone.';
+      : s.reason === 'enter'
+        ? 'Your key is in the email you got after paying, and on the thank-you page. It looks like SETW-ABCD-EFGH-JKLM.'
+        : 'Choose a plan to unlock Setwel again. Everything you captured is still saved on this phone.';
     el.innerHTML =
       '<div style="background:linear-gradient(160deg,#3e4c5a,#2c3743);color:#fff;padding:20px 16px"><strong style="font-size:19px">Setwel Biz Suite</strong></div>' +
       '<div style="max-width:460px;margin:0 auto;padding:22px 16px">' +
@@ -61,16 +63,19 @@
       '<button id="sg-go" style="width:100%;margin-top:10px;padding:13px;font-size:15px;font-weight:700;border:0;border-radius:6px;background:#f6f1ea;color:#2b2622">Activate</button>' +
       '<p id="sg-msg" style="min-height:20px;font-size:14px"></p>' +
       '<p style="color:#6b625a;font-size:14px">Stuck? <a href="https://wa.me/27820829050" style="color:#b4531a">WhatsApp us on 082 082 9050</a>.</p>' +
+      (s.reason === 'enter' ? '<p><a href="#" id="sg-close" style="color:#6b625a">Not now</a></p>' : '') +
       '</div>';
     document.body.appendChild(el);
     var msg = el.querySelector('#sg-msg');
+    var close = el.querySelector('#sg-close');
+    if (close) close.onclick = function (e) { e.preventDefault(); el.remove(); };
     el.querySelector('#sg-go').onclick = function () {
       msg.style.color = '#6b625a';
       msg.textContent = 'Checking your key…';
       check(el.querySelector('#sg-key').value.trim().toUpperCase()).then(function () {
         msg.style.color = '#b4531a';
         msg.textContent = 'Activated. Opening Setwel…';
-        setTimeout(function () { el.remove(); }, 800);
+        setTimeout(function () { location.reload(); }, 800); // reopen with the paid plan
       }).catch(function (err) {
         msg.style.color = '#b42318';
         msg.textContent = err.message;
@@ -101,6 +106,9 @@
       }).catch(function () { /* keep the stored licence */ });
     }
   }
+
+  // The app's Upgrade page opens this to enter a key during the trial
+  window.setwelShowLicence = function () { if (!document.getElementById('setwel-gate')) overlay({ mode: 'enter', reason: 'enter' }); };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

@@ -66,6 +66,8 @@ declare global {
       }>;
       apiPost?: (path: string, body: Record<string, unknown>) => Promise<{ status: number; data: any }>;
       setTeamToken?: (token: string) => Promise<unknown>;
+      onLicenceChanged?: (callback: () => void) => void;
+      showLicence?: () => Promise<unknown>;
       openExternal?: (url: string) => Promise<void>;
     };
   }

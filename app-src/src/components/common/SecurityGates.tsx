@@ -137,7 +137,7 @@ export function TrialExpiredScreen() {
         </a>
 
         <p className="text-xs text-gray-400">
-          Already paid? Enter your licence key: on a computer use the <strong>Licence</strong> menu, on a phone reopen Setwel and type it in.
+          Already paid? Enter your licence key: on a computer use the <strong>Licence</strong> menu, on a phone, type it on the screen that opens with Setwel.
         </p>
       </div>
     </div>

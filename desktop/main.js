@@ -119,6 +119,7 @@ ipcMain.handle('licence:activate', async (_e, key) => {
   }
 });
 // A staff laptop connected by online sync is licensed by the owner's subscription (token refreshed on every sync)
+ipcMain.handle('licence:show', () => showGate());
 ipcMain.handle('licence:setTeamToken', (_e, token) => licence.setTeamToken(token));
 ipcMain.handle('licence:continue', () => {
   if (licence.status().mode !== 'expired') openApp();
@@ -164,6 +165,7 @@ function closeGate() {
 function openApp() {
   if (mainWindow) {
     closeGate();
+    mainWindow.webContents.send('licence:changed'); // e.g. a key was just entered: show the paid plan straight away
     mainWindow.focus();
     return;
   }

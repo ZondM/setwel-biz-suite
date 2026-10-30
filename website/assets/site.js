@@ -13,6 +13,30 @@
   }
   var os = detectOS();
 
+  // Phone menu
+  var menuBtn = document.querySelector('.menu-btn');
+  var nav = document.getElementById('site-nav');
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', function () {
+      var open = nav.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // Autoplay clips only start when the browser allows it; respect "reduce motion"
+  document.querySelectorAll('video.reel').forEach(function (v) {
+    // On phones an upright version of the clip, so the words in it are big enough to read
+    if (v.dataset.portrait && window.matchMedia && window.matchMedia('(max-width: 700px)').matches) {
+      v.classList.add('portrait');
+      v.poster = v.dataset.portraitPoster;
+      v.src = v.dataset.portrait;
+      v.load();
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; return; }
+    var p = v.play && v.play();
+    if (p && p.catch) p.catch(function () { v.controls = true; });
+  });
+
   // "Download free trial" buttons go straight to the right file.
   document.querySelectorAll('[data-dl]').forEach(function (a) {
     var keep = a.hasAttribute('data-keep-text');

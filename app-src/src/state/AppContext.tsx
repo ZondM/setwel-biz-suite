@@ -80,6 +80,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     reloadCompany();
     reloadLicence();
+    // Desktop: a key entered in the licence window applies at once, without restarting
+    window.setwelDesktop?.onLicenceChanged?.(reloadLicence);
   }, [reloadCompany, reloadLicence]);
 
   // No staff logins for this business: the owner is signed in automatically.

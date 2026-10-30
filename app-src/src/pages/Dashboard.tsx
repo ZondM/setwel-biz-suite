@@ -5,7 +5,7 @@ import { useApp, usePermissions } from '../state/AppContext';
 import { Button, Card, PageHeader, StatCard, MoneyText, StatusBadge } from '../components/common/ui';
 import { listInvoices, listExpenses, listCustomers, listCategories } from '../db/repository';
 import { buildFinancialSummary } from '../core/financialEngine';
-import { formatCurrency, formatDate, todayIso } from '../core/numbering';
+import { formatCurrency, formatDate, ownerFirstName, todayIso } from '../core/numbering';
 import { useTrialStatus } from '../components/common/SecurityGates';
 import { AttentionPanel } from '../components/automation/AttentionPanel';
 
@@ -104,7 +104,7 @@ export default function Dashboard() {
       )}
 
       <PageHeader
-        title={`Welcome back${company.name ? `, ${company.name.split(' ')[0]}` : ''}`}
+        title={welcomeTitle(company.name)}
         subtitle="Here's how your business is doing right now."
         actions={
           <>
@@ -226,4 +226,9 @@ function Ledger({ label, value, negative, highlight, gold }: { label: string; va
       </div>
     </div>
   );
+}
+
+function welcomeTitle(businessName: string): string {
+  const who = ownerFirstName(businessName);
+  return who ? `Welcome back, ${who}` : 'Welcome back';
 }

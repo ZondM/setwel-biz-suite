@@ -5,7 +5,7 @@ import { useApp } from '../state/AppContext';
 import { createCompany, ensureDefaultCategories } from '../db/repository';
 import { seedDemoData } from '../db/sampleData';
 import { BusinessType, Company, PackageTier } from '../core/types';
-import { todayIso } from '../core/numbering';
+import { ownerFirstName, todayIso } from '../core/numbering';
 import { useNavigate } from 'react-router-dom';
 import { applyPracticeToClient } from '../core/accountant';
 import { joinTeam } from '../core/sync';
@@ -281,7 +281,7 @@ function FinishStep({ company, onLoadDemo, onSkip }: { company: Company; onLoadD
         <div className="w-14 h-14 rounded-full bg-brand-green/10 flex items-center justify-center mx-auto mb-4">
           <Check className="text-brand-green" size={28} />
         </div>
-        <h2 className="font-display text-2xl font-bold text-brand-navy mb-2">You're ready, {company?.name?.split(' ')[0] || 'there'}!</h2>
+        <h2 className="font-display text-2xl font-bold text-brand-navy mb-2">You're ready{ownerFirstName(company?.name) ? `, ${ownerFirstName(company?.name)}` : ''}!</h2>
         <p className="text-gray-500 text-sm mb-8">
           Here's what most people do first: create your first customer, send a quote, and check your dashboard. Want to explore with realistic sample data first?
         </p>

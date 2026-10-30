@@ -124,6 +124,45 @@ export function seedDemoData(companyId: string) {
     });
     repo.recordPayment({ companyId, invoiceId: inv4.id, amount: Math.round(t4.total * 0.4 * 100) / 100, paymentDate: addDays(today, -5), method: 'eft', reference: 'Deposit' });
 
+    // Two recent jobs, so the sample business shows a realistic, profitable month
+    const items5 = makeItems([
+      { description: 'Solar inverter and battery installation', quantity: 1, unitPrice: 12500 },
+      { description: 'Labour - 6 hours', quantity: 6, unitPrice: 350 }
+    ]);
+    const t5 = calculateDocumentTotals(items5);
+    const inv5 = repo.saveInvoice({
+      id: uid('inv_'),
+      companyId,
+      customerId: customers[1].id,
+      invoiceNumber: repo.getNextInvoiceNumber(companyId, 'INV'),
+      invoiceDate: addDays(today, -8),
+      dueDate: addDays(today, 22),
+      status: 'sent',
+      items: items5,
+      ...t5,
+      amountPaid: 0,
+      customerVatRegistered: customers[1].isVatRegistered
+    });
+    repo.recordPayment({ companyId, invoiceId: inv5.id, amount: t5.total, paymentDate: addDays(today, -3), method: 'eft', reference: 'SSH-INV' });
+    const items6 = makeItems([
+      { description: 'Geyser timer and isolator switch', quantity: 1, unitPrice: 1650 },
+      { description: 'Call-out fee', quantity: 1, unitPrice: 450 }
+    ]);
+    const t6 = calculateDocumentTotals(items6);
+    repo.saveInvoice({
+      id: uid('inv_'),
+      companyId,
+      customerId: customers[0].id,
+      invoiceNumber: repo.getNextInvoiceNumber(companyId, 'INV'),
+      invoiceDate: addDays(today, -2),
+      dueDate: addDays(today, 28),
+      status: 'sent',
+      items: items6,
+      ...t6,
+      amountPaid: 0,
+      customerVatRegistered: customers[0].isVatRegistered
+    });
+
     // A draft quote awaiting decision
     const qItems = makeItems([
       { description: 'Full home rewire - 3 bedroom house', quantity: 1, unitPrice: 18500 },

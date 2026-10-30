@@ -24,3 +24,9 @@ export function formatDate(isoDate: string): string {
 export function uid(prefix = ''): string {
   return `${prefix}${Math.random().toString(36).slice(2, 10)}${Date.now().toString(36)}`;
 }
+
+/** "Thabo's Electrical" -> "Thabo". A business name without a person in it ("Soweto Spaza Hub") -> null. */
+export function ownerFirstName(businessName: string | undefined): string | null {
+  const m = /^([A-Za-z\u00C0-\u024F-]+)['\u2019]s\b/.exec((businessName ?? '').trim());
+  return m ? m[1] : null;
+}

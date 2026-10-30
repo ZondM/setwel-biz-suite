@@ -1,0 +1,117 @@
+SETWEL: SCRIPTS AND PROMPTS FOR AI VIDEO TOOLS
+==============================================
+Use these with AI video tools to add people, faces and South African scenes
+to the real app recordings in videos/. Check each tool's current price
+before paying; these tools change fast.
+
+GOLDEN RULES
+- Show the REAL app from our recordings. AI tools can't draw the Setwel
+  screens correctly and will invent buttons that don't exist.
+- AI people are actors. Never present them as real customers or put words
+  of praise in their mouths as reviews.
+- Keep every claim true: 30 days free, no card, from R59.99 a month,
+  WhatsApp invoices, AI receipt scanning, VAT201 figures.
+- End every video with: setwelbusiness.co.za · 30 days free.
+
+
+WHICH TOOL FOR WHAT
+-------------------
+CapCut (free; Pro is optional)    Edit everything together, auto-captions,
+                                  trending sounds, TikTok-ready. Start here.
+HeyGen                            A presenter (AI avatar or your own face
+                                  cloned) reading a script to camera.
+Google Veo 3 (in Gemini / Flow)   Realistic short scenes WITH sound:
+                                  people, shops, streets. Best quality today.
+OpenAI Sora                       Same kind of scenes; a good alternative.
+Runway or Kling                   More scene generators; cheaper per clip.
+ElevenLabs                        Natural voice-over. Pick a South African
+                                  English voice, or clone your own voice.
+Canva                             Quick posts, Stories and covers with your
+                                  brand colours and logo.
+Recommended mix: Veo 3 (scenes) + ElevenLabs (voice) + CapCut (edit, captions,
+music) + our real app recordings in the middle.
+
+
+SCRIPT 1: "MEET SETWEL" (30 seconds, presenter, HeyGen)
+-------------------------------------------------------
+Format: 9:16 for TikTok/Reels/Shorts, and 16:9 for YouTube/Facebook.
+Presenter: friendly South African business owner, smart-casual, small office.
+
+  [0-3s]  Running a business is hard enough. The paperwork shouldn't be.
+  [3-8s]  Setwel Biz Suite does your invoices, quotes and expenses in one app.
+  [8-14s] Send invoices on WhatsApp. Snap a till slip and AI fills in the expense.
+  [14-20s] Setwel tells you who owes you, and writes the reminder for you.
+  [20-25s] Your VAT201 figures are ready for eFiling, before the deadline.
+  [25-30s] Try it free for 30 days, no card needed. setwelbusiness.co.za.
+Cut in the real app recordings while lines 2 to 5 play (setwel-tour-16x9.mp4).
+
+
+SCRIPT 2: "THE SHOEBOX" (20 seconds, scenes, Veo 3 or Sora, then app)
+---------------------------------------------------------------------
+Shot 1 (4s) prompt:
+  Night, small township spaza shop in South Africa, warm single bulb. A woman
+  in her 40s sits at the counter surrounded by crumpled till slips and a
+  shoebox of receipts, rubbing her eyes, a calculator beside her. Realistic,
+  handheld, cinematic, natural colours. Sound: quiet street outside, a sigh.
+Shot 2 (3s) prompt:
+  Close-up of her hand photographing a till slip with a smartphone on the
+  shop counter. Shallow depth of field, warm light. Sound: soft camera click.
+Shot 3 (5s): cut to setwel-short-receipt-9x16.mp4 (the AI fills the expense).
+Shot 4 (4s) prompt:
+  Morning, the same woman behind her spaza counter smiling, serving a customer,
+  phone in hand, shelves stocked. Bright natural light, realistic, cinematic.
+  Sound: shop bell, friendly chatter.
+Shot 5 (4s): our end card (last 3 seconds of any Setwel video).
+Voice-over (ElevenLabs):
+  "Still keeping slips in a shoebox? Snap them with Setwel. AI does the rest.
+   Thirty days free at setwelbusiness dot co dot za."
+
+
+SCRIPT 3: "CUSTOMERS PAYING LATE?" (15 seconds, scenes + app)
+------------------------------------------------------------
+Shot 1 (4s) prompt:
+  A South African electrician in work clothes sits in his bakkie, frowning at
+  his phone, scrolling an unanswered chat. Midday Johannesburg street,
+  realistic, cinematic. Sound: traffic, a frustrated exhale.
+Shot 2 (6s): setwel-short-reminder-9x16.mp4 (reminder already written).
+Shot 3 (5s) prompt:
+  The same electrician smiling as his phone shows a payment notification,
+  giving a thumbs up to a colleague. Realistic, warm light.
+Voice-over: "Customers paying late? Setwel writes the reminder. You press send.
+             Try it free for 30 days."
+
+
+SCRIPT 4: FOR ACCOUNTANTS (30 seconds, presenter, HeyGen or LinkedIn video)
+---------------------------------------------------------------------------
+  Are your clients still sending you shoeboxes of slips?
+  With Setwel's Accountant Partner plan, every client keeps their books in
+  one simple app: invoices, expenses, and VAT201 figures.
+  They send you their books in one file. You see every client's VAT and tax
+  deadlines on one dashboard.
+  And Setwel sends you new clients who need an accountant.
+  Become a Setwel partner at setwelbusiness.co.za/accountants.html.
+
+
+SCRIPT 5: YOUTUBE TUTORIAL "SET UP SETWEL IN 5 MINUTES" (record yourself)
+------------------------------------------------------------------------
+Record your own screen with OBS (free) or the Windows Snipping Tool video
+mode, with your own voice. People trust a real founder.
+  1. Download from setwelbusiness.co.za and install (show the Windows
+     "More info, Run anyway" step and the Mac "Open Anyway" step).
+  2. Get started: business name, VAT number, banking details.
+  3. Add a customer, make an invoice, send it on WhatsApp.
+  4. Scan a receipt.
+  5. Show the dashboard and the monthly report.
+  6. How to buy a plan and enter the licence key.
+Title: How to send invoices on WhatsApp and do your VAT | Setwel Biz Suite
+Description first line: Try Setwel free for 30 days: https://setwelbusiness.co.za
+
+
+HOW TO PUT IT TOGETHER IN CAPCUT (10 minutes)
+---------------------------------------------
+1. New project, 9:16. Import the AI scenes and our app recording.
+2. Order: hook scene, app recording, happy scene, Setwel end card.
+3. Text, Auto captions (English). Make the captions big, keep them in the
+   middle of the screen, away from the TikTok buttons.
+4. Audio: add the ElevenLabs voice-over, then a trending sound at about 20%.
+5. Export at 1080p, 30 fps. Post with the captions from POSTING-GUIDE.txt.

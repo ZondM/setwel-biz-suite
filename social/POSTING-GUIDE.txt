@@ -1,0 +1,238 @@
+SETWEL SOCIAL MEDIA KIT
+=======================
+Everything you need to post on Instagram, Facebook, TikTok and WhatsApp,
+and to stop people scrolling past.
+
+
+1. WHAT IS IN THE PACK
+----------------------
+videos/       the main videos, two sizes each
+  9x16 (tall)  -> Reels, TikTok, Facebook Reels, Stories, WhatsApp Status
+  4x5          -> Instagram and Facebook feed posts
+    setwel-automation    20 sec  everything Setwel automates  (pin this one)
+    setwel-receipts       8 sec  AI receipt scanning
+    setwel-invoices       8 sec  repeating invoices on WhatsApp
+    setwel-reminders      8 sec  reminders, invoice gets paid
+    setwel-tax-alerts     6 sec  VAT201 and tax alerts
+covers/       a cover (thumbnail) for every video: the question over the app screen
+hook-tests/   the same tall videos with a different opening line (B and C),
+              each with its own cover, to test which line stops most people
+images/       one picture per feature, a brand card and a question card
+              Carousel order: cover -> receipts -> invoices -> reminders -> tax-alerts -> brand
+
+
+2. WHY THESE STOP THE SCROLL (already built into the videos)
+-------------------------------------------------------------
+- A question on screen from the very first frame: no slow logo intro.
+- Short: 6 to 20 seconds, so most people watch to the end (the apps reward that).
+- Made to work with the sound off: every point is written on screen.
+- Movement every second, and a clear ending: logo, website, 30 days free.
+- Words kept away from the buttons and captions TikTok and Reels put on top.
+What you add when posting: a sound, a cover, the caption below, and quick replies to comments.
+
+
+3. OPENING LINES (A is in videos/, B and C are in hook-tests/)
+--------------------------------------------------------------
+automation   A  Your business paperwork, on autopilot.
+             B  Running a business from your phone?
+             C  Paperwork done. Evenings free.
+receipts     A  Still keeping slips in a shoebox?
+             B  Lost slips mean lost VAT claims.
+             C  Capture an expense in seconds.
+invoices     A  Typing the same invoice every month?
+             B  Stop retyping invoices.
+             C  Invoice your client on WhatsApp.
+reminders    A  Customers paying late?
+             B  Who still owes you money?
+             C  Hate asking for your money?
+tax-alerts   A  VAT deadline sneaking up?
+             B  Know your VAT201 before it is due.
+             C  Do you know what you owe in tax?
+
+How to test: post A. Three or four days later post B of the same video (new
+sound, new caption). Then C. After 48 hours compare in Insights / TikTok
+Analytics: "average watch time" and "% who watched past 3 seconds". Keep the
+winning line and use it in paid ads.
+
+
+4. CAPTIONS (copy and paste)
+----------------------------
+The first line is what shows before "more", so it is the hook.
+Instagram and TikTok: links can't be clicked in captions, so say "link in bio"
+and put setwelbusiness.co.za in your bio.
+Facebook and WhatsApp: the link works in the post.
+
+== automation ==
+Instagram / TikTok:
+Your business paperwork, on autopilot 👇
+Setwel scans your receipts with AI, makes your monthly invoices, writes the payment reminders and tells you when VAT is due. Built for South African businesses.
+Try it free for 30 days, no card needed. Link in bio.
+What takes up most of your admin time? Tell us in the comments.
+#SmallBusinessSA #SMME #SouthAfricanBusiness #Entrepreneur #SetwelBizSuite
+
+Facebook:
+Your business paperwork, on autopilot.
+✔ Receipts scanned by AI
+✔ Invoices that repeat by themselves
+✔ Reminders written for you
+✔ VAT deadlines flagged before they arrive
+30 days free, no card needed: https://setwelbusiness.co.za
+
+Pinned comment:
+Free for 30 days on Windows, Mac and your phone. Download: setwelbusiness.co.za
+
+== receipts ==
+Instagram / TikTok:
+Still keeping slips in a shoebox? 🧾
+Snap a photo and Setwel reads the supplier, amount, VAT and category for you. Your expense is done before you leave the shop.
+30 days free. Link in bio.
+Be honest: how many slips are in your car right now? 😅
+#Receipts #VAT #Bookkeeping #SmallBusinessSA #SetwelBizSuite
+
+Facebook:
+Snap a receipt. Setwel does the rest: supplier, amount, VAT and category filled in for you. No more lost slips at year end.
+Try it free for 30 days: https://setwelbusiness.co.za
+
+Pinned comment:
+Works with till slips, fuel slips and supplier invoices, photo or PDF.
+
+== invoices ==
+Instagram / TikTok:
+Typing the same invoice every month? ✋
+Set it once. Setwel makes the next invoice on the date, ready to send on WhatsApp or email with the PDF attached.
+30 days free. Link in bio.
+Who do you invoice every month? Rent, retainers, service fees?
+#Invoicing #WhatsAppBusiness #SmallBusinessSA #SMME #SetwelBizSuite
+
+Facebook:
+Invoices that create themselves. Set it once, and Setwel makes the next one every week, month or year, ready to send on WhatsApp or email.
+Free for 30 days: https://setwelbusiness.co.za
+
+Pinned comment:
+You always press send yourself, so nothing goes out without you.
+
+== reminders ==
+Instagram / TikTok:
+Customers paying late? 💸
+Setwel shows you who owes you and writes the reminder for you: friendly first, firmer later. You just press send.
+30 days free. Link in bio.
+What's the longest a customer has made you wait? 👇
+#CashFlow #GetPaid #SmallBusinessSA #Entrepreneur #SetwelBizSuite
+
+Facebook:
+Stop chasing payments from memory. Setwel lists every overdue invoice and writes the reminder, by WhatsApp or email.
+Try it free: https://setwelbusiness.co.za
+
+Pinned comment:
+Reminders get firmer after 2 and 6 weeks, written politely for you.
+
+== tax-alerts ==
+Instagram / TikTok:
+VAT deadline sneaking up? ⏰
+Setwel shows your VAT201 and provisional tax dates before they're due, with the amount worked out from your books.
+30 days free. Link in bio.
+Do you do your own VAT, or does someone do it for you?
+#VAT #Tax #Compliance #SmallBusinessSA #SetwelBizSuite
+
+Facebook:
+Deadlines flagged before they arrive: VAT201 and provisional tax, worked out from your own books. Need help? Setwel connects you with a partner accountant.
+Free for 30 days: https://setwelbusiness.co.za
+
+Pinned comment:
+On Grinder and up, the full VAT201 figures are ready to copy onto eFiling.
+
+== referral post (brand image) ==
+Already using Setwel? Share your referral code. Every business that pays with your code gives you a free month. No limit. Your code is in the email you got when you paid.
+
+Hashtags: use 3 to 5. The ones above are enough; more does not help.
+
+
+5. STORIES AND WHATSAPP STATUS (tall videos and images)
+-------------------------------------------------------
+Add one sticker to each Story, it makes people stop and tap:
+  receipts    Poll: "Where are your slips right now?"  Wallet / Car / Lost 😅
+  invoices    Quiz: "How long does an invoice take on Setwel?"  10 min / 1 min / seconds
+  reminders   Question box: "What do you say to a late payer?"
+  tax-alerts  Countdown sticker to your next VAT201 date
+  every Story: Link sticker -> setwelbusiness.co.za
+WhatsApp Status text (type it over the video):
+  "Free for 30 days 👉 setwelbusiness.co.za"
+Then reply personally to everyone who reacts to your Status.
+
+
+6. WHATSAPP BUSINESS TOOLS (set once in WhatsApp Business > Business tools)
+---------------------------------------------------------------------------
+Greeting message:
+  Hi, thanks for contacting Setwel Biz Suite 👋 Setwel does your invoices, receipts, reminders and VAT figures. Try it free for 30 days: setwelbusiness.co.za/download.html  How can we help?
+Away message:
+  Thanks for your message. We reply within one business day. Meanwhile you can start your free trial at setwelbusiness.co.za
+Quick replies (type / and the word):
+  /trial    Download Setwel free for 30 days: setwelbusiness.co.za/download.html
+  /price    Plans start at R59.99 a month. See them all: setwelbusiness.co.za/pricing.html
+  /phone    On a phone, open setwelbusiness.co.za/app/ and tap Get started.
+  /mac      On a Mac, if it says it can't verify Setwel: System Settings > Privacy & Security > Open Anyway.
+  /refer    Every business that pays with your referral code gives you a free month.
+Catalog: add one item per plan with its price and the link to the pricing page.
+Labels: New lead, On trial, Paid, Needs help. Use them to follow up on day 25 of a trial.
+
+
+7. HOW TO POST
+--------------
+Meta Business Suite (Instagram + Facebook together):
+  1. Create reel (or Create post for 4x5 images and carousels).
+  2. Upload the 9x16 video. Tick both Facebook and Instagram.
+  3. Paste the Instagram caption. Facebook can have its own text: use the Facebook caption.
+  4. Cover: Upload image -> pick the matching file from covers/.
+  5. Schedule for a good time (below), or Share now.
+  6. Add the sound in the Instagram app afterwards if Business Suite has none:
+     post from the Instagram app instead, tap the music note, choose a trending sound,
+     keep it low.
+TikTok:
+  1. + -> Upload -> the 9x16 video.
+  2. Sounds -> a trending sound, volume about 30 to 50%.
+  3. Select cover -> Upload -> the file from covers/.
+  4. Paste the caption, then Post. Turn on Duet and Stitch: more people can share it.
+After posting (all apps): stay for the first hour and reply to every comment.
+Pin the "pinned comment" from section 4.
+
+
+8. WHEN TO POST
+---------------
+Weekdays 07:00 to 08:30, 12:00 to 13:00 and 18:30 to 20:30.
+One video a day for the first two weeks, then 3 to 4 a week. Stories every day.
+Two-week plan:
+  Day 1 automation A (pin it)    Day 8  automation B
+  Day 2 receipts A               Day 9  receipts B
+  Day 3 carousel                 Day 10 invoices B
+  Day 4 invoices A               Day 11 reminders B
+  Day 5 reminders A              Day 12 tax-alerts B
+  Day 6 tax-alerts A             Day 13 referral post
+  Day 7 brand image + Story poll Day 14 the best performer again with line C
+
+
+9. PAID ADS (Meta Ads Manager)
+------------------------------
+Objective: Traffic or Leads, to https://setwelbusiness.co.za/download.html
+Placements: Advantage+ (it uses the 9x16 and 4x5 files automatically)
+Audience: South Africa, 25 to 55, interests Small business, Entrepreneurship,
+Self-employment. A separate ad set for accountants and bookkeepers.
+Budget to test: R50 to R100 a day for 7 days. Put opening lines A, B and C in one
+ad set as separate ads; Meta moves the budget to the winner.
+Headline: "30 days free. No card needed."  Button: Download / Learn more.
+
+
+10. WHAT TO WATCH EACH WEEK
+---------------------------
+- % who watched past 3 seconds: below 50% means the opening line is weak.
+- Average watch time: aim for over half the video.
+- Profile visits and link clicks: this is what turns into trials.
+- Saves and shares count for more than likes.
+
+
+HONEST NOTES
+------------
+- Everything shown in the videos is a real feature of the app, in every plan
+  (receipt scans: 30 a month on Hustler, 150 on Grinder, unlimited from Builder).
+- Names and amounts in the videos are examples, not real customers.
+- The videos have no music. Add sound in the TikTok or Instagram app: their
+  music is licensed for this. Don't add a song from YouTube or a CD.

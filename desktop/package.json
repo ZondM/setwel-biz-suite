@@ -1,0 +1,73 @@
+{
+  "name": "setwel-biz-suite",
+  "productName": "Setwel Biz Suite",
+  "version": "1.3.3",
+  "description": "Invoicing, accounting and SARS-ready tax for South African businesses.",
+  "author": "Setwel Africa",
+  "homepage": "https://setwelbusiness.co.za",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "copy-app": "node scripts/copy-app.js",
+    "dist:win": "npm run copy-app && electron-builder --win nsis --x64",
+    "dist:mac": "npm run copy-app && electron-builder --mac dmg --universal"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.17.0"
+  },
+  "build": {
+    "appId": "za.co.setwelbusiness.suite",
+    "productName": "Setwel Biz Suite",
+    "copyright": "Copyright © Setwel Africa",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "licence.js",
+      "licence-public.pem",
+      "gate.html",
+      "gate-preload.js",
+      "web/**/*"
+    ],
+    "protocols": [
+      {
+        "name": "Setwel Biz Suite",
+        "schemes": ["setwel"]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "artifactName": "Setwel-Setup.${ext}",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "runAfterFinish": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "Setwel Biz Suite",
+      "deleteAppDataOnUninstall": false
+    },
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.finance",
+      "artifactName": "Setwel-Mac.${ext}",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "title": "Setwel Biz Suite",
+      "contents": [
+        { "x": 140, "y": 180 },
+        { "x": 400, "y": 180, "type": "link", "path": "/Applications" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# This folder holds pending/completed payment records and logs — never serve it directly.
+Require all denied
+Order deny,allow
+Deny from all

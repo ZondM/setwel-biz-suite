@@ -1,0 +1,20 @@
+website/api/config.php
+website/data/*
+!website/data/.htaccess
+website/downloads/*.exe
+website/downloads/*.dmg
+desktop/node_modules/
+desktop/web/
+desktop/release/
+app-src/node_modules/
+app-src/dist/
+app-src/*.tsbuildinfo
+__pycache__/
+
+# Rendered social media files (make them with: node tools/video/render.js social)
+social/videos/
+social/images/
+social/covers/
+social/hook-tests/
+tools/video/thumb-app.jpg
+deliver/

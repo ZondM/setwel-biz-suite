@@ -43,6 +43,12 @@ if (($lic['status'] ?? '') === 'revoked') {
     reply(403, ['error' => 'This key has been switched off. Please WhatsApp us on 082 082 9050.']);
 }
 
+$problem = lic_signing_problem();
+if ($problem !== null) {
+    pf_log('Licence check FAILED: ' . $problem, ['key' => $key]);
+    reply(503, ['error' => 'Setwel cannot issue licences right now (server setup). Please WhatsApp us on 082 082 9050 and we will sort it out quickly.']);
+}
+
 $lic['last_checked'] = date('c');
 lic_save($lic);
 

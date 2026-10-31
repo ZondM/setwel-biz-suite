@@ -179,6 +179,31 @@ function lic_team_token(array $lic, string $teamId): string
     return $body . '.' . lic_b64url(sodium_crypto_sign_detached($body, $secret));
 }
 
+/** The public key built into the app (desktop/licence-public.pem). Keys signed with anything else are rejected by the app. */
+const LIC_APP_PUBLIC_KEY = 'Sv08Znqc+wlvDQKErIh+7hgtIZ5R2IxLSFoOuXGBB7Q=';
+
+/**
+ * Can this server sign licences the app accepts? Each problem comes with the fix.
+ * Shown in the licence desk and used by licence.php to give a clear error.
+ */
+function lic_signing_problem(): ?string
+{
+    if (!function_exists('sodium_crypto_sign_detached')) {
+        return 'The PHP "sodium" extension is switched off. In cPanel open Select PHP Version, then Extensions, tick sodium and save.';
+    }
+    if (!defined('LICENCE_SIGNING_KEY') || LICENCE_SIGNING_KEY === '') {
+        return 'LICENCE_SIGNING_KEY is missing from api/config.php. Restore the line from your config.php backup.';
+    }
+    $secret = base64_decode(LICENCE_SIGNING_KEY, true);
+    if ($secret === false || strlen($secret) !== SODIUM_CRYPTO_SIGN_SECRETKEYBYTES) {
+        return 'LICENCE_SIGNING_KEY in api/config.php is damaged (it was probably changed by accident). Restore the line from your config.php backup.';
+    }
+    if (base64_encode(sodium_crypto_sign_publickey_from_secretkey($secret)) !== LIC_APP_PUBLIC_KEY) {
+        return 'LICENCE_SIGNING_KEY in api/config.php does not match the app. Restore the original line from your config.php backup.';
+    }
+    return null;
+}
+
 function lic_plan_name(string $plan): string
 {
     $names = [

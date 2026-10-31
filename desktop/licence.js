@@ -77,15 +77,21 @@ function status() {
 }
 
 async function fetchToken(key) {
-  const res = await fetch(API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ key }),
-    signal: AbortSignal.timeout(15000),
-  });
+  let res;
+  try {
+    res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key }),
+      signal: AbortSignal.timeout(15000),
+    });
+  } catch {
+    throw new Error('Could not reach Setwel. Check your internet connection and try again.');
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok || !data.token) {
-    throw new Error(data.error || 'We could not check that key. Check your internet connection and try again.');
+    // The server answered, so this isn't the customer's internet: say so, with the code for support
+    throw new Error(data.error || `Setwel's server could not check the key right now (error ${res.status}). Please WhatsApp us on 082 082 9050.`);
   }
   if (!readToken(data.token)) throw new Error('That licence could not be verified.');
   return data.token;

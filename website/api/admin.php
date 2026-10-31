@@ -138,6 +138,10 @@ if ($authed) {
   </form>
 <?php else: ?>
   <?php if ($message): ?><div class="msg"><?= e($message) ?></div><?php endif; ?>
+  <?php $signing = lic_signing_problem(); ?>
+  <div class="msg" style="<?= $signing ? 'background:#fde8ea;border-color:#f3b7c0;color:#8a1c2e' : '' ?>">
+    <strong>Server check:</strong> <?= $signing ? 'Customers cannot activate keys. ' . e($signing) : 'Licences can be issued and the app will accept them.' ?>
+  </div>
 
   <h3>New licence (EFT payment, partner, or a favour)</h3>
   <form method="post" class="inline">

@@ -18,3 +18,5 @@ social/covers/
 social/hook-tests/
 tools/video/thumb-app.jpg
 deliver/
+social/personal/*.mp4
+social/personal/*.png

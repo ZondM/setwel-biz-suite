@@ -17,14 +17,15 @@ const FPS = 30;
 const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 const ago = (d) => new Date(Date.now() - d * 864e5).toISOString().slice(0, 10);
 
-async function recorder(mode, out) {
+async function recorder(mode, out, scan) {
   const tall = mode === 'tall';
   const browser = await chromium.launch();
-  const ctx = await browser.newContext(tall ? { viewport: { width: 540, height: 960 }, deviceScaleFactor: 2 } : { viewport: { width: 1412, height: 794 }, deviceScaleFactor: 1920 / 1412 });
+  const sa = { locale: 'en-ZA', timezoneId: 'Africa/Johannesburg' }; // South African dates and money, as customers see them
+  const ctx = await browser.newContext(tall ? { ...sa, viewport: { width: 540, height: 960 }, deviceScaleFactor: 2 } : { ...sa, viewport: { width: 1412, height: 794 }, deviceScaleFactor: 1920 / 1412 });
   await ctx.route('**/api/scan.php', (route) => route.fulfill({
     contentType: 'application/json',
     body: JSON.stringify({ remaining: 28, fields: { is_receipt: true, supplier_name: 'Engen Quickshop', supplier_vat_number: '4123456789', document_number: 'TX88231',
-      date: ago(1), total: 1214.9, vat_amount: 158.47, description: 'Diesel and engine oil', category: 'Fuel & travel', confidence: 'high' } }),
+      date: ago(1), total: 1214.9, vat_amount: 158.47, description: 'Diesel and engine oil', category: 'Fuel & travel', confidence: 'high', ...scan } }),
   }));
   const page = await ctx.newPage();
   await page.goto('file://' + path.join(__dirname, 'tour-stage.html') + `?mode=${tall ? 'tall' : 'wide'}`);
@@ -234,8 +235,12 @@ async function shortsTall() {
   }
 }
 
-(async () => {
-  fs.mkdirSync(OUT, { recursive: true });
-  if (process.argv[2] === 'shorts') await shortsTall();
-  else await tourWide();
-})().catch((e) => { console.error('FAILED', e.message.split('\n')[0]); process.exit(1); });
+module.exports = { recorder, goTo, ago, OUT };
+
+if (require.main === module) {
+  (async () => {
+    fs.mkdirSync(OUT, { recursive: true });
+    if (process.argv[2] === 'shorts') await shortsTall();
+    else await tourWide();
+  })().catch((e) => { console.error('FAILED', e.message.split('\n')[0]); process.exit(1); });
+}

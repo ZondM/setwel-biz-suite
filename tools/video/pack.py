@@ -6,7 +6,10 @@ labelled file names in posting order and a WHAT TO POST note in each.
 """
 from pathlib import Path
 import shutil
+import sys
 import zipfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 ROOT = Path(__file__).resolve().parents[2]
 SOCIAL = ROOT / "social"
@@ -76,12 +79,12 @@ def stories(folder: Path, kind: str):
 def write_notes(folder: Path, title: str, lines: list):
     text = [title, "=" * len(title), ""] + lines + [
         "",
-        "Captions and hashtags: 'CAPTIONS - POSTING-GUIDE.txt' in this folder, the section named",
-        "in brackets. Day numbers follow the 30-day launch plan.",
+        "Captions: the CAPTIONS file in this folder, numbered the same as the videos.",
+        "Day numbers follow the 30-day launch plan.",
         "Add a trending sound inside the app when you post; the videos have no music.",
     ]
     (folder / "WHAT TO POST.txt").write_text("\n".join(text) + "\n", encoding="utf-8")
-    shutil.copy2(SOCIAL / "POSTING-GUIDE.txt", folder / "CAPTIONS - POSTING-GUIDE.txt")
+    shutil.copy2(SOCIAL / "POSTING-GUIDE.txt", folder / "Posting tips (all platforms).txt")
 
 
 def build():
@@ -150,6 +153,9 @@ def build():
     stories(wa / "2 Status pictures", "Status")
     put(profile, wa / "Profile picture - Setwel.png")
     write_notes(wa, "WHATSAPP STATUS - WHAT TO POST", notes)
+
+    from captions import write_into
+    write_into(OUT)
 
     # One zip per platform
     for folder in sorted(OUT.iterdir()):

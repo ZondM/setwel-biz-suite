@@ -19,7 +19,8 @@ const ago = (d) => new Date(Date.now() - d * 864e5).toISOString().slice(0, 10);
 
 async function recorder(mode, out, scan) {
   const tall = mode === 'tall';
-  const browser = await chromium.launch();
+  // Day-first dates in the app's date boxes, as South Africans read them (the browser takes this from the system language)
+  const browser = await chromium.launch({ args: ['--lang=en-GB'], env: { ...process.env, LANG: 'en_GB.UTF-8', LANGUAGE: 'en_GB', LC_ALL: 'en_GB.UTF-8' } });
   const sa = { locale: 'en-ZA', timezoneId: 'Africa/Johannesburg' }; // South African dates and money, as customers see them
   const ctx = await browser.newContext(tall ? { ...sa, viewport: { width: 540, height: 960 }, deviceScaleFactor: 2 } : { ...sa, viewport: { width: 1412, height: 794 }, deviceScaleFactor: 1920 / 1412 });
   await ctx.route('**/api/scan.php', (route) => route.fulfill({

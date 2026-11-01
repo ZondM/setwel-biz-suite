@@ -1,0 +1,404 @@
+<!doctype html>
+<!--
+  The home-page automation clip, as an animated scene.
+  tools/video/render.js steps window.render(t) frame by frame and turns the frames into
+  website/assets/automation.mp4 (plus a poster image). Add ?w=1080&h=1920 for the
+  upright social-media version. Open in a browser without ?render to watch it play.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=block" rel="stylesheet">
+<style>
+  :root {
+    --orange: #e57a1c; --crimson: #c9334e; --gold: #e3a548; --slate: #3e4c5a; --slate-dark: #222b35;
+    --grad: linear-gradient(90deg, #e57a1c, #d65536 55%, #c9334e);
+    --paper: #fffdf9; --ink: #2b2622; --muted: #6b625a; --green: #1f9d55; --wa: #25d366;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1280px; height: 720px; overflow: hidden; background: var(--slate-dark); }
+  body { font-family: Inter, "Segoe UI", sans-serif; color: #fff; }
+  #stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; overflow: hidden; transform-origin: 0 0;
+    background: radial-gradient(1200px 700px at 70% 40%, #4a5a6a 0%, var(--slate) 35%, var(--slate-dark) 100%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; }
+  #b1 { width: 420px; height: 420px; background: var(--orange); }
+  #b2 { width: 360px; height: 360px; background: var(--crimson); }
+  #b3 { width: 260px; height: 260px; background: var(--gold); opacity: .3; }
+  .dot { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.35); }
+  #grid { position: absolute; left: -200px; right: -200px; bottom: -120px; height: 380px;
+    background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 60px 60px; transform: perspective(600px) rotateX(62deg); transform-origin: 50% 100%; }
+
+  /* Captions */
+  #brand { position: absolute; left: 70px; top: 52px; display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 22px; }
+  #brand img { width: 46px; height: 46px; }
+  #brand span { color: var(--gold); }
+  .cap { position: absolute; left: 70px; top: 230px; width: 660px; }
+  .cap .tag { display: inline-block; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.12); font-size: 16px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .cap h1 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 60px; line-height: 1.05; }
+  .cap h1 em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .cap p { margin-top: 18px; font-size: 24px; color: #dfe5ea; }
+  #steps { position: absolute; left: 70px; bottom: 56px; display: flex; gap: 10px; }
+  #steps i { display: block; width: 46px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.2); overflow: hidden; }
+  #steps i b { display: block; height: 100%; width: 0; background: var(--grad); }
+
+  /* Phone */
+  #phoneWrap { position: absolute; left: 760px; top: 70px; width: 330px; height: 600px; perspective: 1400px; }
+  #phone { position: absolute; inset: 0; border-radius: 46px; background: #111; padding: 12px; transform-style: preserve-3d;
+    box-shadow: 0 50px 90px rgba(0,0,0,.55), inset 0 0 0 2px #3a3a3a; }
+  #phone::after { content: ""; position: absolute; left: 50%; top: 22px; width: 90px; height: 24px; margin-left: -45px; border-radius: 12px; background: #000; }
+  #screen { position: relative; width: 100%; height: 100%; border-radius: 36px; overflow: hidden; background: #f6f1ea; color: var(--ink); }
+  #shadow { position: absolute; left: 790px; top: 640px; width: 280px; height: 40px; border-radius: 50%; background: rgba(0,0,0,.45); filter: blur(18px); }
+  .bar { height: 78px; padding: 40px 20px 0; display: flex; align-items: center; justify-content: space-between; font-weight: 800; font-size: 15px; color: var(--slate); }
+  .bar img { width: 24px; height: 24px; }
+  .scr { position: absolute; left: 0; right: 0; top: 78px; bottom: 0; padding: 14px 18px; }
+  .h { font-weight: 800; font-size: 21px; margin-bottom: 12px; color: var(--slate); }
+  .card { background: #fff; border: 1px solid #eadfd3; border-radius: 16px; padding: 14px; box-shadow: 0 6px 18px rgba(62,76,90,.08); }
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1e8de; font-size: 14px; }
+  .row:last-child { border-bottom: 0; }
+  .row label { color: var(--muted); }
+  .row b { font-weight: 700; min-height: 18px; }
+  .btn { margin-top: 14px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 800; font-size: 15px; background: var(--grad); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 800; }
+
+  /* Receipt scene */
+  #cam { position: absolute; left: 18px; right: 18px; top: 14px; height: 210px; border-radius: 16px; background: #2a2f36; overflow: hidden; }
+  #slip { position: absolute; left: 50%; top: 18px; width: 214px; margin-left: -107px; white-space: nowrap; background: #fff; color: #333; font-family: "JetBrains Mono", monospace; font-size: 10px; padding: 12px 10px 16px; line-height: 1.6;
+    clip-path: polygon(0 0,100% 0,100% 94%,90% 100%,80% 94%,70% 100%,60% 94%,50% 100%,40% 94%,30% 100%,20% 94%,10% 100%,0 94%); }
+  #slip .c { text-align: center; font-weight: 700; }
+  #scanline { position: absolute; left: 0; right: 0; height: 4px; background: var(--orange); box-shadow: 0 0 18px 6px rgba(229,122,28,.7); }
+  .corner { position: absolute; width: 26px; height: 26px; border: 3px solid var(--gold); }
+  #fields { position: absolute; left: 18px; right: 18px; top: 238px; }
+  #aiTag { position: absolute; right: 26px; top: 24px; background: rgba(0,0,0,.55); color: #fff; }
+
+  /* Invoice scene */
+  .inv-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .inv-head .no { font-weight: 800; font-size: 18px; color: var(--slate); }
+  .line { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px dashed #eadfd3; }
+  .total { display: flex; justify-content: space-between; font-weight: 800; font-size: 18px; padding-top: 10px; }
+  .wa { position: absolute; left: 18px; right: 18px; background: #e7ffdb; border-radius: 14px 14px 4px 14px; padding: 12px 14px; font-size: 13px; line-height: 1.45; box-shadow: 0 8px 20px rgba(0,0,0,.12); }
+  .wa small { display: block; text-align: right; color: #53bdeb; font-weight: 800; margin-top: 4px; }
+  .waHead { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 13px; color: #128c7e; margin-bottom: 6px; }
+  #stamp { position: absolute; left: 50%; top: 150px; margin-left: -110px; width: 220px; text-align: center; border: 6px solid var(--green); color: var(--green); font-weight: 900; font-size: 54px; letter-spacing: .08em; border-radius: 14px; background: rgba(255,255,255,.85); }
+
+  /* Dashboard scene */
+  .alert { display: flex; gap: 10px; align-items: center; background: #fdf4e3; border: 1px solid #f0d29a; border-radius: 14px; padding: 12px; font-size: 13px; margin-bottom: 10px; }
+  .alert .ic { width: 34px; height: 34px; border-radius: 10px; background: var(--grad); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; flex: none; }
+  .bars { display: flex; align-items: flex-end; gap: 10px; height: 120px; padding: 0 4px; }
+  .bars div { flex: 1; border-radius: 8px 8px 3px 3px; background: var(--grad); }
+  .bars div.out { background: #c9d2da; }
+  .kpi { display: flex; gap: 10px; margin-bottom: 10px; }
+  .kpi .card { flex: 1; padding: 10px; }
+  .kpi small { color: var(--muted); font-size: 11px; }
+  .kpi b { display: block; font-size: 17px; color: var(--slate); }
+
+  /* End card */
+  #end { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  #end img { width: 130px; height: 130px; }
+  #end h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 70px; margin-top: 14px; }
+  #end h2 span { color: var(--gold); }
+  #end p { font-size: 28px; color: #e4e8ec; margin-top: 10px; }
+  #end .url { margin-top: 26px; padding: 14px 30px; border-radius: 12px; background: var(--grad); font-weight: 800; font-size: 26px; }
+
+  /* Upright (social) layout */
+  body.tall #phoneWrap { left: 375px; top: 760px; }
+  body.tall #shadow { left: 405px; top: 1330px; }
+  body.tall .cap { left: 70px; top: 210px; width: 940px; }
+  body.tall .cap h1 { font-size: 92px; }
+  body.tall .cap p { font-size: 34px; }
+  body.tall #brand { top: 80px; font-size: 30px; }
+  body.tall #steps { left: 50%; margin-left: -138px; bottom: 120px; }
+  /* 9:16 keeps text clear of the TikTok/Reels buttons (right) and captions (bottom) */
+  body.tall #phoneWrap { left: 316px; top: 660px; transform: scale(1.35); transform-origin: 50% 0; }
+  body.tall #shadow { left: 400px; top: 1480px; width: 300px; }
+  body.tall .cap { top: 190px; width: 900px; }
+  body.tall .cap .tag { font-size: 24px; }
+  /* 4:5 feed */
+  body.portrait #brand { top: 60px; left: 60px; font-size: 28px; }
+  body.portrait .cap { left: 60px; top: 330px; width: 520px; }
+  body.portrait .cap h1 { font-size: 58px; }
+  body.portrait .cap p { font-size: 28px; }
+  body.portrait .cap .tag { font-size: 18px; }
+  body.portrait #phoneWrap { left: 650px; top: 250px; transform: scale(1.3); transform-origin: 50% 0; }
+  body.portrait #shadow { left: 690px; top: 1060px; }
+  body.portrait #steps { left: 60px; bottom: 70px; }
+  #hook { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 70px; text-align: center; opacity: 0; }
+  #hook h1 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 96px; line-height: 1.05; }
+  #hook h1 em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  body:not(.tall):not(.portrait) #hook h1 { font-size: 80px; }
+  #cta { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 40px; display: none; align-items: center; justify-content: center; gap: 18px;
+    background: var(--grad); font-weight: 800; font-size: 34px; }
+  body.still #cta { display: flex; }
+  body.still #steps { display: none; }
+  body.tall.still #cta { bottom: 300px; left: 70px; right: 70px; border-radius: 18px; }
+  #end .free { margin-top: 18px; font-size: 26px; color: var(--gold); font-weight: 700; }
+  body.tall #end { zoom: 1.6; } body.portrait #end { zoom: 1.3; }
+  body.tall #hook { padding: 0 40px; } body.tall #hook h1 { font-size: 108px; } body.portrait #hook h1 { font-size: 104px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="blob" id="b1"></div><div class="blob" id="b2"></div><div class="blob" id="b3"></div>
+  <div id="grid"></div>
+  <div id="dots"></div>
+
+  <div id="brand"><img src="../../brand/setwel-logo-transparent.png" alt="">Setwel <span>Biz Suite</span></div>
+
+  <div class="cap" id="cap0"><div class="tag">AI receipt scanning</div><h1>Snap a receipt.<br><em>Setwel does the rest.</em></h1><p>Supplier, amount, VAT and category filled in for you.</p></div>
+  <div class="cap" id="cap1"><div class="tag">Repeating invoices</div><h1>Invoices that<br><em>create themselves.</em></h1><p>Sent on WhatsApp or email, PDF attached.</p></div>
+  <div class="cap" id="cap2"><div class="tag">Payment reminders</div><h1>Reminders written.<br><em>Money in, faster.</em></h1><p>Setwel tells you who to chase, with the message ready.</p></div>
+  <div class="cap" id="cap3"><div class="tag">Tax and VAT alerts</div><h1>Deadlines flagged<br><em>before they arrive.</em></h1><p>VAT201 and provisional tax, worked out for you.</p></div>
+  <div id="steps"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+
+  <div id="shadow"></div>
+  <div id="phoneWrap"><div id="phone"><div id="screen">
+    <div class="bar"><span>Setwel</span><img src="../../brand/setwel-logo-transparent.png" alt=""></div>
+
+    <!-- 0: receipt -->
+    <div class="scr" id="s0" style="padding:0">
+      <div id="cam">
+        <div id="slip"><div class="c">ENGEN QUICKSHOP</div><div class="c">Tax invoice · VAT 4123456789</div><br>Diesel 50L ...... 1 125.00<br>Oil 1L ............. 89.90<br>-------------------------<br><b>TOTAL ......... R1 214.90</b><br>VAT incl ......... 158.47<br><div class="c">28/10/2026 14:32</div></div>
+        <div id="scanline"></div>
+        <div class="corner" style="left:14px;top:14px;border-right:0;border-bottom:0"></div>
+        <div class="corner" style="right:14px;top:14px;border-left:0;border-bottom:0"></div>
+        <div class="corner" style="left:14px;bottom:14px;border-right:0;border-top:0"></div>
+        <div class="corner" style="right:14px;bottom:14px;border-left:0;border-top:0"></div>
+        <div class="pill" id="aiTag">✦ AI reading…</div>
+      </div>
+      <div id="fields">
+        <div class="card">
+          <div class="row"><label>Supplier</label><b data-type="Engen Quickshop"></b></div>
+          <div class="row"><label>Date</label><b data-type="28 Oct 2026"></b></div>
+          <div class="row"><label>Amount</label><b data-type="R 1 214.90"></b></div>
+          <div class="row"><label>VAT</label><b data-type="R 158.47"></b></div>
+          <div class="row"><label>Category</label><b data-type="Fuel and travel"></b></div>
+        </div>
+        <div class="btn" id="saveBtn">✓ Expense saved</div>
+      </div>
+    </div>
+
+    <!-- 1: invoice -->
+    <div class="scr" id="s1">
+      <div class="h">New invoice</div>
+      <div class="card" id="invCard">
+        <div class="inv-head"><div><div class="no">INV-0042</div><div style="font-size:12px;color:var(--muted)">Mokoena Builders</div></div>
+          <span class="pill" id="repeatPill" style="background:#fdf4e3;color:#b4531a">↻ Every month</span></div>
+        <div class="line" data-l><span>Electrical maintenance</span><b>R 2 400.00</b></div>
+        <div class="line" data-l><span>Call-out fee</span><b>R 600.00</b></div>
+        <div class="line" data-l><span>VAT 15%</span><b>R 450.00</b></div>
+        <div class="total" data-l><span>Total</span><span id="invTotal">R 3 450.00</span></div>
+      </div>
+      <div class="wa" id="wa1" style="top:330px"><div class="waHead">● WhatsApp · Mokoena Builders</div>Hi Sipho, here is invoice INV-0042 for R 3 450.00. Thank you for your business!<small>Sent ✓✓</small></div>
+    </div>
+
+    <!-- 2: reminder -->
+    <div class="scr" id="s2">
+      <div class="h">Needs your attention</div>
+      <div class="card" id="odCard">
+        <div class="inv-head"><div><div class="no">INV-0036</div><div style="font-size:12px;color:var(--muted)">Dlamini Catering</div></div>
+          <span class="pill" id="odPill" style="background:#fde8ea;color:#c9334e">Overdue 14 days</span></div>
+        <div class="total"><span>Owed</span><span>R 4 600.00</span></div>
+        <div class="btn" id="remBtn" style="height:40px;font-size:14px">Send reminder</div>
+      </div>
+      <div class="wa" id="wa2" style="top:250px"><div class="waHead">● WhatsApp · Dlamini Catering</div>Hi Thandi, a friendly reminder that invoice INV-0036 for R 4 600.00 is now 14 days overdue. Thank you!<small>Sent ✓✓</small></div>
+      <div id="stamp">PAID</div>
+      <div class="card" id="moneyCard" style="position:absolute;left:18px;right:18px;bottom:22px;text-align:center">
+        <div style="font-size:12px;color:var(--muted)">Money in this month</div>
+        <div id="moneyIn" style="font-size:30px;font-weight:900;color:var(--green)">R 12 400</div>
+      </div>
+    </div>
+
+    <!-- 3: dashboard -->
+    <div class="scr" id="s3">
+      <div class="h">Dashboard</div>
+      <div class="alert" id="al1"><div class="ic">!</div><div><b>VAT201 due in 5 days</b><br>Setwel worked it out: R 4 210.00</div></div>
+      <div class="alert" id="al2"><div class="ic">✓</div><div><b>Monthly report ready</b><br>Send it to your accountant</div></div>
+      <div class="kpi" id="kpis"><div class="card"><small>Profit this month</small><b id="profit">R 0</b></div><div class="card"><small>Owed to you</small><b>R 8 050</b></div></div>
+      <div class="card"><div style="font-size:12px;color:var(--muted);margin-bottom:8px">Money in vs out</div>
+        <div class="bars" id="bars"><div></div><div class="out"></div><div></div><div class="out"></div><div></div><div class="out"></div><div></div><div class="out"></div></div></div>
+    </div>
+  </div></div></div>
+
+  <div id="hook"><h1 id="hookText"></h1></div>
+  <div id="cta">30 days free · setwelbusiness.co.za</div>
+  <div id="end"><img src="../../brand/setwel-logo-transparent.png" alt=""><h2>Setwel <span>Biz Suite</span></h2><p>Automation built in. Invoices, receipts, reminders and tax.</p><div class="url">setwelbusiness.co.za</div><div class="free">Try it free for 30 days · No card needed</div></div>
+</div>
+
+<script>
+  const q = new URLSearchParams(location.search);
+  const W = +q.get('w') || 1280, H = +q.get('h') || 720;
+  const tall = H / W > 1.5, portrait = !tall && H > W;
+  if (tall) document.body.classList.add('tall');
+  if (portrait) document.body.classList.add('portrait');
+  // scene=0..3 makes a short single-feature clip; hook=1 opens with a question; still=1 adds the call-to-action strip
+  const ONE = q.has('scene') ? +q.get('scene') : null;
+  const HOOK = q.has('hook');
+  // hook=Your text|second line *highlighted*  replaces the built-in question; cover makes a thumbnail
+  const toHtml = (x) => x.replace(/\|/g, '<br>').replace(/\*(.+?)\*/g, '<em>$1</em>');
+  const CUSTOM_HOOK = q.get('hook') ? toHtml(q.get('hook')) : null;
+  const COVER = q.has('cover');
+  if (q.has('still')) document.body.classList.add('still');
+  document.documentElement.style.width = document.body.style.width = W + 'px';
+  document.documentElement.style.height = document.body.style.height = H + 'px';
+  const stage = document.getElementById('stage');
+  stage.style.width = W + 'px'; stage.style.height = H + 'px';
+
+  const MASTER = 18;
+  const HOOKS = [
+    'Still keeping slips<br>in a <em>shoebox?</em>',
+    'Typing the same invoice<br><em>every month?</em>',
+    'Customers<br><em>paying late?</em>',
+    'VAT deadline<br><em>sneaking up?</em>',
+  ];
+  const HOOK_ALL = 'Your business paperwork,<br><em>on autopilot.</em>';
+  const HOOK_LEN = HOOK ? 1.8 : 0;
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+  const ease = (x) => 1 - Math.pow(1 - x, 3);
+  const pop = (x) => { x = clamp(x); return x < 1 ? 1 + 2.4 * Math.pow(x - 1, 3) + 1.4 * Math.pow(x - 1, 2) : 1; }; // overshoot
+  const lerp = (a, b, x) => a + (b - a) * x;
+  const set = (el, o, tr) => { el.style.opacity = o; if (tr !== undefined) el.style.transform = tr; };
+  const rand = (i) => { const x = Math.sin(i * 999.13) * 43758.5453; return x - Math.floor(x); };
+
+  // Background dots
+  const dots = [];
+  for (let i = 0; i < 26; i++) { const d = document.createElement('div'); d.className = 'dot'; $('dots').appendChild(d); dots.push(d); }
+
+  // Scenes: [start, end] in seconds
+  const S = [[0, 4.5], [4.5, 9], [9, 13.4], [13.4, 16.2]];
+  const END = [16.2, 18];
+  // A short clip plays: [hook] + one scene + end card. The full clip plays everything.
+  const SCENE_LEN = ONE === null ? END[0] : S[ONE][1] - S[ONE][0];
+  const DURATION = HOOK_LEN + SCENE_LEN + (END[1] - END[0]);
+  window.DURATION = DURATION;
+  const hookHtml = CUSTOM_HOOK || (ONE === null ? HOOK_ALL : HOOKS[ONE]);
+  if (HOOK) $('hookText').innerHTML = hookHtml;
+  if (COVER) {
+    // Thumbnail: the question as the headline over the finished screen
+    document.body.classList.add('still');
+    const cap = $('cap' + (ONE ?? 0));
+    cap.querySelector('h1').innerHTML = hookHtml;
+    cap.querySelector('.tag').style.visibility = 'hidden';
+    cap.querySelector('p').style.visibility = 'hidden';
+  }
+  if (ONE !== null) [...$('steps').children].forEach((el, i) => { if (i !== ONE) el.style.display = 'none'; });
+  function master(t) {
+    if (t < HOOK_LEN) return ONE === null ? 0 : S[ONE][0];
+    const x = t - HOOK_LEN;
+    if (x < SCENE_LEN) return (ONE === null ? 0 : S[ONE][0]) + x;
+    return END[0] + (x - SCENE_LEN);
+  }
+  const typed = [...document.querySelectorAll('[data-type]')];
+  const lines = [...document.querySelectorAll('[data-l]')];
+  const bars = [...document.querySelectorAll('#bars div')];
+  const barH = [70, 40, 85, 45, 78, 38, 100, 42];
+  const rands = (n) => 'R ' + Math.round(n).toLocaleString('en-ZA').replace(/,/g, ' ');
+
+  function sceneVis(t, i) {
+    const [a, b] = S[i];
+    const fin = ease(seg(t, a, a + 0.5)), fout = ease(seg(t, b - 0.4, b));
+    return { v: i === 0 ? (t < b ? 1 - fout : 0) : fin * (1 - fout), fin, fout };
+  }
+
+  window.render = function (tc) {
+    tc = ((tc % DURATION) + DURATION) % DURATION;
+    const t = master(tc);
+    // Hook card: big question before the phone appears
+    const hk = HOOK ? 1 - ease(seg(tc, HOOK_LEN - 0.35, HOOK_LEN)) : 0;
+    set($('hook'), hk, `scale(${1.08 - 0.08 * pop(seg(tc, 0, 0.45))})`);
+    const show = 1 - hk;
+
+    // Living background
+    $('b1').style.transform = `translate(${780 + 140 * Math.sin(t * 0.5)}px, ${-80 + 60 * Math.cos(t * 0.4)}px)`;
+    $('b2').style.transform = `translate(${1020 + 110 * Math.cos(t * 0.45)}px, ${380 + 80 * Math.sin(t * 0.55)}px)`;
+    $('b3').style.transform = `translate(${200 + 90 * Math.sin(t * 0.35)}px, ${500 + 50 * Math.cos(t * 0.5)}px)`;
+    if (tall) { $('b1').style.transform += ' translate(-400px, 700px)'; $('b2').style.transform += ' translate(-500px, 900px)'; }
+    dots.forEach((d, i) => {
+      const y = (rand(i) * H + ((t * (14 + rand(i + 7) * 26)) % H)) % H;
+      d.style.transform = `translate(${rand(i + 3) * W}px, ${H - y}px) scale(${0.6 + rand(i + 5)})`;
+      d.style.opacity = 0.15 + 0.35 * rand(i + 9);
+    });
+    $('grid').style.backgroundPosition = `0 ${(t * 30) % 60}px`;
+
+    // Phone floats and turns in 3D, with a quick spin between scenes
+    let spin = 0;
+    S.slice(1).forEach(([a]) => { spin += 360 * ease(seg(t, a - 0.35, a + 0.45)); });
+    const endIn = ease(seg(t, END[0], END[0] + 0.6));
+    const rotY = -20 + 8 * Math.sin(t * 0.9) + spin;
+    const rotX = 6 + 3 * Math.cos(t * 0.7);
+    const lift = 12 * Math.sin(t * 1.3);
+    set($('phone'), 1, `translateY(${lift - endIn * 80}px) rotateY(${rotY}deg) rotateX(${rotX}deg) scale(${1 - 0.25 * endIn})`);
+    $('phoneWrap').style.opacity = (1 - endIn) * show;
+    $('shadow').style.opacity = (1 - endIn) * show * (0.9 - lift / 40);
+
+    // Captions and progress
+    S.forEach((_, i) => {
+      const { v } = sceneVis(t, i);
+      set($('cap' + i), v * show, `translateX(${(1 - v) * -40}px)`);
+      $('steps').children[i].firstChild.style.width = (seg(t, S[i][0], S[i][1]) * 100) + '%';
+      $('s' + i).style.opacity = v;
+    });
+    $('steps').style.opacity = (1 - endIn) * show;
+    set($('brand'), 1 - endIn);
+
+    // Scene 0: receipt
+    const t0 = t;
+    set($('slip'), 1, `translateY(${lerp(240, 0, ease(seg(t0, 0.2, 1.0)))}px) rotate(${lerp(14, -2, ease(seg(t0, 0.2, 1.0)))}deg)`);
+    const sweep = seg(t0, 1.0, 1.9);
+    $('scanline').style.top = lerp(10, 200, sweep < 0.5 ? sweep * 2 : 2 - sweep * 2) + 'px';
+    $('scanline').style.opacity = sweep > 0 && sweep < 1 ? 1 : 0;
+    $('aiTag').style.opacity = seg(t0, 1.0, 1.2) * (1 - seg(t0, 3.4, 3.6));
+    typed.forEach((el, i) => {
+      const txt = el.dataset.type, p = seg(t0, 1.9 + i * 0.3, 2.2 + i * 0.3);
+      el.textContent = txt.slice(0, Math.round(txt.length * p));
+    });
+    const sv = pop(seg(t0, 3.5, 3.9));
+    set($('saveBtn'), seg(t0, 3.5, 3.6), `scale(${sv})`);
+    $('saveBtn').style.background = t0 > 3.5 ? 'linear-gradient(90deg,#1f9d55,#25b36a)' : '';
+
+    // Scene 1: invoice
+    const t1 = t - S[1][0];
+    lines.forEach((el, i) => set(el, seg(t1, 0.5 + i * 0.3, 0.8 + i * 0.3), `translateX(${(1 - ease(seg(t1, 0.5 + i * 0.3, 0.8 + i * 0.3))) * 30}px)`));
+    set($('repeatPill'), seg(t1, 1.9, 2.1), `scale(${pop(seg(t1, 1.9, 2.3))})`);
+    const w1 = ease(seg(t1, 2.6, 3.2));
+    set($('wa1'), w1, `translateY(${(1 - w1) * 60}px) scale(${0.9 + 0.1 * w1})`);
+    $('wa1').querySelector('small').style.opacity = seg(t1, 3.4, 3.6);
+
+    // Scene 2: reminder, paid
+    const t2 = t - S[2][0];
+    $('remBtn').style.transform = `scale(${t2 > 1.0 && t2 < 1.25 ? 0.94 : 1})`;
+    const w2 = ease(seg(t2, 1.2, 1.8));
+    set($('wa2'), w2 * (1 - seg(t2, 2.6, 2.9)), `translateY(${(1 - w2) * 60}px)`);
+    const st = seg(t2, 2.8, 3.2);
+    set($('stamp'), st, `rotate(-12deg) scale(${lerp(2.2, 1, ease(st))})`);
+    $('odPill').textContent = t2 > 2.8 ? 'Paid ✓' : 'Overdue 14 days';
+    $('odPill').style.background = t2 > 2.8 ? '#e3f6ea' : '#fde8ea';
+    $('odPill').style.color = t2 > 2.8 ? '#1f9d55' : '#c9334e';
+    $('moneyIn').textContent = rands(lerp(12400, 17000, ease(seg(t2, 3.0, 3.9))));
+    set($('moneyCard'), 1, `scale(${t2 > 3.0 && t2 < 3.9 ? 1.04 : 1})`);
+
+    // Scene 3: dashboard
+    const t3 = t - S[3][0];
+    set($('al1'), seg(t3, 0.4, 0.7), `translateY(${(1 - ease(seg(t3, 0.4, 0.8))) * 24}px)`);
+    set($('al2'), seg(t3, 0.8, 1.1), `translateY(${(1 - ease(seg(t3, 0.8, 1.2))) * 24}px)`);
+    $('profit').textContent = rands(lerp(0, 9860, ease(seg(t3, 1.0, 2.2))));
+    bars.forEach((b, i) => { b.style.height = (barH[i] * ease(seg(t3, 1.0 + i * 0.1, 1.6 + i * 0.1))) + '%'; });
+
+    // End card
+    const e = ease(seg(t, END[0] + 0.2, END[0] + 0.9));
+    set($('end'), e, `scale(${0.92 + 0.08 * e})`);
+    $('cta').style.opacity = 1 - e;
+    $('end').querySelector('img').style.transform = `rotateY(${(1 - e) * 180 + 10 * Math.sin(t * 2)}deg)`;
+  };
+
+  if (!q.has('render')) {
+    const t0 = performance.now();
+    const loop = (now) => { render((now - t0) / 1000); requestAnimationFrame(loop); };
+    document.fonts.ready.then(() => requestAnimationFrame(loop));
+  } else {
+    render(0);
+  }
+</script>
+</body>
+</html>

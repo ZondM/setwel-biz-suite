@@ -1,0 +1,44 @@
+# Setwel Biz Suite — website settings (Apache / cPanel)
+
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+Options -Indexes
+ServerSignature Off
+
+# Always use https
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # Old pages from the previous site
+  RewriteRule ^lifetime\.html$ /pricing.html [L,R=301]
+  RewriteRule ^features\.html$ /index.html [L,R=301]
+  RewriteRule ^about\.html$ /index.html [L,R=301]
+  RewriteRule ^faq\.html$ /help.html [L,R=301]
+  RewriteRule ^mobile\.html$ /app/ [L,R=301]
+  RewriteRule ^tax-calculator\.html$ /app/ [L,R=301]
+</IfModule>
+
+# Correct file types for the app engine and the installers
+AddType application/wasm .wasm
+AddType application/octet-stream .exe .dmg
+AddType video/mp4 .mp4
+<IfModule mod_headers.c>
+  <FilesMatch "\.(exe|dmg)$">
+    Header set Content-Disposition attachment
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(mp4|jpg|png)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+  <Files "sw.js">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </Files>
+</IfModule>
+
+# Secrets and helper files are never served directly
+<FilesMatch "^(config\.php|config\.example\.php|payfast\.php|licences\.php|usage\.php|sync-store\.php)$">
+  Require all denied
+</FilesMatch>

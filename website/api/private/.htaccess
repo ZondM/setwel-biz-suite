@@ -1,0 +1,2 @@
+# Subscriber-only content. Served by /manual.php, never directly.
+Require all denied

@@ -5,8 +5,10 @@
 //|  - Detects positions you open manually (or from any terminal /   |
 //|    mobile app) on the chart symbol and lets you set / move the   |
 //|    REAL stop loss and take profit by dragging lines.             |
-//|  - Optional trailing stop per position (activation / distance /  |
-//|    step). Trailing runs inside this EA: the terminal must stay   |
+//|  - v1.10: profit lock (SL to entry + $X once in profit), money   |
+//|    based settings, trailing held at broker min distance, and     |
+//|    Auto SL/TP (fixed / ATR / swing / money risk).                |
+//|  - Lock and trailing run inside this EA: the terminal must stay  |
 //|    open and connected (PC or VPS). It is NOT a server-side stop. |
 //|  - Never opens or closes trades, never generates signals.        |
 //|  - Line style always shows whether the broker has accepted the   |
@@ -14,8 +16,8 @@
 //|    dotted = sending, orange = rejected (not applied).            |
 //+------------------------------------------------------------------+
 #property copyright "Setwel"
-#property version   "1.00"
-#property description "Drag SL/TP lines and trail stops on your existing positions."
+#property version   "1.10"
+#property description "v1.10 - Drag SL/TP lines, lock profit, trail stops, auto SL/TP."
 #property description "Never opens trades. Solid line = broker confirmed level."
 
 //--- enums ----------------------------------------------------------

@@ -48,16 +48,22 @@ Run one copy per chart. If you trade EURUSD and Volatility 75, use two charts wi
 |---|---|---|
 | Magic number | `0` | `0` = only trades you open by hand. `-1` = every position on this symbol, including other EAs' trades (watch for conflicts). Any other number = only that EA's trades. |
 | When to send SL/TP changes | On release | **On release**: the change goes to the broker when you let go of the line or press Enter in a price box. **Save**: the line stays a draft until you click **Save**. |
-| Unit | Points | Unit for all distances and trailing inputs: points, pips, ticks or price. |
+| Unit | **Money** | Unit for lock, trailing and auto inputs: money (account currency, worked out from each trade's lot size), points, pips, ticks or price. Money means the same thing on every symbol. |
 | Draft SL / TP handle distance | 1× / 2× ATR(14) | Where the dashed "not set" handles appear when a trade has no SL/TP. **Visual only, nothing is sent.** |
-| Trailing ON for new positions | false | When true, every newly detected position starts with trailing on. |
-| Activation | 300 | How far price must move in your favour before trailing starts. |
-| Trailing distance | 200 | How far the SL stays behind price (Bid for buys, Ask for sells). |
-| Trailing step | 50 | The minimum improvement needed before the SL is moved again. This limits requests. |
+| Lock/trail ON for new positions | **true** | Every newly detected trade starts with profit lock and trailing on. It only ever tightens the SL. |
+| Lock when profit reaches | 1.00 | Once the trade is this much in profit, the SL moves to entry + the lock amount. `0` = off. |
+| Lock amount | 0.30 | Profit kept by the lock (for example, SL moved to lock +$0.30). |
+| Trail activation | 2.00 | Profit needed before trailing starts. |
+| Trail distance | 1.00 | How far the SL stays behind price (Bid for buys, Ask for sells). If this is closer than the broker allows, the SL is held at the closest allowed level instead of waiting. |
+| Trail step | 0.20 | The minimum improvement needed before the SL is moved again. This limits requests. |
 | If SL changed manually while trailing | Pause | **Pause**: trailing stops until you click TRAIL to resume. **Continue**: it keeps trailing from your new SL, only ever tightening it. |
-| Auto-place SL/TP on new positions | false | Optional rule. When on, new positions with no SL/TP get the distances below. |
-| Auto SL / Auto TP distance | 0 | In the chosen unit. `0` = skip. |
-| Min time between modifications | 1000 ms | Rate limit per position. |
+| Auto SL/TP mode | Off | For new trades with no SL/TP: **Fixed** distance, **ATR**(14) × multiplier, **Swing** (recent low for buys / high for sells, plus a buffer), or **Money** (fixed max loss). TP = SL distance × R:R. In Save mode the levels appear as drafts until you press Save; otherwise they are sent at once. |
+| Fixed SL / TP | 0 / 0 | Fixed mode distances. TP `0` = use R:R. |
+| ATR multiplier | 1.5 | ATR mode (also the fallback for Swing). |
+| Swing bars / buffer | 20 / 0.2×ATR | Swing mode look-back and extra room. |
+| Money risk | 2.00 | Money mode: the max loss if the SL is hit (before slippage). |
+| Auto R:R | 2.0 | TP distance = SL distance × this. |
+| Min time between modifications | 500 ms | Rate limit per position. |
 | Confirmation timeout | 8000 ms | If the broker hasn't confirmed by then, the level shows as failed. |
 | Hide native trade levels | true | Hides MT5's own SL/TP lines on this chart while the EA runs. |
 | Show other positions | true | Shows a faint grey entry line for positions that aren't selected. |
@@ -65,9 +71,9 @@ Run one copy per chart. If you trade EURUSD and Volatility 75, use two charts wi
 | Panel X/Y | 10 / 25 | Offset from the left edge and from the top or bottom edge. |
 | Font, colours | — | Look and feel. |
 
-Trailing values can also be changed **per position** in the panel (Act / Dist / Step boxes). They are saved in MT5 global variables, so they survive a restart.
+Lock and trailing values can also be changed **per position** in the panel (Act / Dist / Step and Lock boxes). They are saved in MT5 global variables, so they survive a restart.
 
-Default trailing values are in points, and a point is very different on each symbol. For example, 200 points is 20 pips on EURUSD and $2.00 on 2-digit gold. **Set the values for each chart.**
+Defaults are in money, so $1.00 means the same on every symbol and lot size. With a points/pips unit, a point is very different on each symbol, so set the values for each chart.
 
 ---
 
@@ -89,8 +95,10 @@ If the EA is removed or MT5 closes, **all its lines are deleted**, so no line is
 - `<` `>`: switch between positions. You can also click another position's grey entry line. Each position keeps its own drafts and trailing settings.
 - **SL / TP price boxes**: type a price and press Enter. Type `0` to remove the level. **X** also removes it.
 - Below each box: distance from entry, the estimated money lost or locked in (SL) or won (TP), and the R:R.
-- **TRAIL** button: OFF → ON. When PAUSED, one click resumes. Clicking while ON turns it OFF.
-- Trailing status line: Armed (waiting for activation), trailing, waiting (broker stop level), INACTIVE (disconnected / Algo Trading off), REJECTED.
+- **LOCK/TRAIL** button: OFF → ON. When PAUSED, one click resumes. Clicking while ON turns it OFF. It controls the profit lock and trailing together.
+- **Auto SL/TP** button: proposes SL/TP for the selected trade with the chosen auto mode (ATR if the mode is Off). It replaces the current levels: in on-release mode they are sent at once, in Save mode press Save.
+- Lock/trail status line: Armed (waiting for profit), Locked / Trailing (with the money the SL locks in), waiting, INACTIVE (disconnected / Algo Trading off), REJECTED.
+- **Fast spikes (Crash/Boom):** a broker SL is filled at the next available price. A sudden spike can jump past the SL, so the result can be worse than the money shown (slippage). No EA can prevent this.
 - **Save / Cancel** (Save mode) or **Revert draft** (on-release mode).
 - Top status: LIVE / DISCONNECTED / CANNOT MODIFY (with the reason) / no quotes (market may be closed).
 

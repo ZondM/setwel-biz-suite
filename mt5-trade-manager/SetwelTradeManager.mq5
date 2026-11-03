@@ -30,7 +30,17 @@ enum ENUM_TM_UNIT
    TM_UNIT_POINTS = 0, // Points (symbol point)
    TM_UNIT_PIPS   = 1, // Pips (10 points on 3/5-digit symbols, else 1 point)
    TM_UNIT_TICKS  = 2, // Ticks (symbol tick size)
-   TM_UNIT_PRICE  = 3  // Price units
+   TM_UNIT_PRICE  = 3, // Price units
+   TM_UNIT_MONEY  = 4  // Money (account currency, uses each position's volume)
+  };
+
+enum ENUM_TM_AUTO
+  {
+   TM_AUTO_OFF   = 0, // Off
+   TM_AUTO_FIXED = 1, // Fixed distance
+   TM_AUTO_ATR   = 2, // ATR(14) based
+   TM_AUTO_SWING = 3, // Recent swing high / low
+   TM_AUTO_MONEY = 4  // Fixed money risk
   };
 
 enum ENUM_TM_MANUAL_SL
@@ -60,24 +70,31 @@ input long              InpMagic           = 0;                   // Magic numbe
 
 input group "Editing"
 input ENUM_TM_APPLY     InpApplyMode       = TM_APPLY_ON_RELEASE; // When to send SL/TP changes
-input ENUM_TM_UNIT      InpUnit            = TM_UNIT_POINTS;      // Unit for distances and trailing inputs
+input ENUM_TM_UNIT      InpUnit            = TM_UNIT_MONEY;       // Unit for lock / trailing / auto inputs
 input double            InpDraftSLAtr      = 1.0;                 // Draft SL handle distance (x ATR14) when no SL
 input double            InpDraftTPAtr      = 2.0;                 // Draft TP handle distance (x ATR14) when no TP
 
-input group "Trailing stop defaults (editable per position in the panel)"
-input bool              InpTrailOn         = false;               // Trailing ON for new positions
-input double            InpTrailActivation = 300;                 // Activation distance (in unit above)
-input double            InpTrailDistance   = 200;                 // Trailing distance (in unit above)
-input double            InpTrailStep       = 50;                  // Trailing step (in unit above)
+input group "Profit lock + trailing defaults (editable per position in the panel)"
+input bool              InpTrailOn         = true;                // Lock/trail ON for new positions
+input double            InpLockTrigger     = 1.00;                // Lock: when profit reaches (unit), 0 = off
+input double            InpLockAmount      = 0.30;                // Lock: move SL to entry + this profit (unit)
+input double            InpTrailActivation = 2.00;                // Trail: starts when profit reaches (unit)
+input double            InpTrailDistance   = 1.00;                // Trail: SL stays this far behind price (unit)
+input double            InpTrailStep       = 0.20;                // Trail: min improvement before moving SL (unit)
 input ENUM_TM_MANUAL_SL InpManualSLRule    = TM_MANUAL_SL_PAUSE;  // If SL is changed manually while trailing
 
-input group "Optional automatic initial SL/TP (OFF by default)"
-input bool              InpAutoInitial     = false;               // Auto-place SL/TP on NEW positions without them
-input double            InpAutoSL          = 0;                   // Auto SL distance from entry (unit), 0 = none
-input double            InpAutoTP          = 0;                   // Auto TP distance from entry (unit), 0 = none
+input group "Automatic SL/TP for new trades (OFF by default)"
+input ENUM_TM_AUTO      InpAutoMode        = TM_AUTO_OFF;         // How to choose SL for new trades without SL/TP
+input double            InpAutoSL          = 0;                   // Fixed mode: SL distance (unit)
+input double            InpAutoTP          = 0;                   // Fixed mode: TP distance (unit), 0 = use R:R
+input double            InpAutoATRMult     = 1.5;                 // ATR mode: SL = ATR(14) x this
+input int               InpSwingBars       = 20;                  // Swing mode: bars to look back
+input double            InpSwingBufferATR  = 0.2;                 // Swing mode: extra buffer beyond swing (x ATR)
+input double            InpAutoRiskMoney   = 2.0;                 // Money mode: max loss in account currency
+input double            InpAutoRR          = 2.0;                 // TP = SL distance x this (reward:risk)
 
 input group "Safety"
-input int               InpMinModifyMs     = 1000;                // Min time between modifications of one position (ms)
+input int               InpMinModifyMs     = 500;                 // Min time between modifications of one position (ms)
 input int               InpConfirmTimeoutMs= 8000;                // Mark as failed if not confirmed within (ms)
 
 input group "Display"
@@ -114,10 +131,12 @@ struct TMPos
    ulong             sentMs;
    bool              queued;          // drafts waiting to be sent
    bool              manualSent;      // last SL request came from the user
+   bool              autoPending;     // current drafts came from Auto SL/TP
    string            mSL, mTP;        // per-level messages
    ulong             lastModMs;
    bool              trOn, trPaused;
    double            trAct, trDist, trStep; // price units
+   double            beTrig, beLock;  // profit lock, price units (beTrig 0 = off)
    double            trLastSL;        // last SL placed by trailing
    ulong             trBackoffUntil;
    string            trMsg;
@@ -138,7 +157,7 @@ ulong  g_lastSendMs   = 0;
 bool   g_wasConnected = true;
 long   g_origLevels   = -1;
 long   g_origShift    = -1;
-string g_editShown[5];
+string g_editShown[7];
 ulong  g_editShownFor = 0;
 bool   g_panelBottom  = true;
 
@@ -164,34 +183,50 @@ double FloorTick(double p) { double t = TickSz(); return NormalizeDouble(MathFlo
 double CeilTick(double p)  { double t = TickSz(); return NormalizeDouble(MathCeil(p / t - 1e-9) * t, Dg()); }
 bool   Same(double a, double b) { return MathAbs(a - b) < TickSz() * 0.5; }
 
-double UnitSize()
+//--- account-currency profit for a 1.0 price move with this volume
+double MoneyPerPrice(double vol)
+  {
+   double bid = Bid(), mv = TickSz() * 100.0, prof = 0.0;
+   if(vol > 0 && bid > 0 && OrderCalcProfit(ORDER_TYPE_BUY, _Symbol, vol, bid, bid + mv, prof) && prof > 0)
+      return prof / mv;
+   double tv = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+   return (tv > 0 && vol > 0) ? tv / TickSz() * vol : 0.0;
+  }
+
+//--- money unit needs a volume; without one (broker limits) points are used
+bool IsMoneyUnit(double vol) { return InpUnit == TM_UNIT_MONEY && vol > 0 && MoneyPerPrice(vol) > 0; }
+
+double UnitSize(double vol = 0)
   {
    switch(InpUnit)
      {
       case TM_UNIT_PIPS:  return PipSz();
       case TM_UNIT_TICKS: return TickSz();
       case TM_UNIT_PRICE: return 1.0;
+      case TM_UNIT_MONEY: return IsMoneyUnit(vol) ? 1.0 / MoneyPerPrice(vol) : Pt();
      }
    return Pt();
   }
-string UnitName()
+string UnitName(double vol = 0)
   {
    switch(InpUnit)
      {
       case TM_UNIT_PIPS:  return "pips";
       case TM_UNIT_TICKS: return "ticks";
       case TM_UNIT_PRICE: return "price";
+      case TM_UNIT_MONEY: return IsMoneyUnit(vol) ? Ccy() : "pts";
      }
    return "pts";
   }
-int UnitDecimals()
+int UnitDecimals(double vol = 0)
   {
    if(InpUnit == TM_UNIT_PRICE)  return Dg();
+   if(InpUnit == TM_UNIT_MONEY)  return IsMoneyUnit(vol) ? 2 : 0;
    if(InpUnit == TM_UNIT_POINTS) return 0;
    return 1;
   }
-string FmtDist(double d)  { return DoubleToString(d / UnitSize(), UnitDecimals()) + " " + UnitName(); }
-string FmtUnit(double d)  { return DoubleToString(d / UnitSize(), UnitDecimals()); }
+string FmtDist(double d, double vol = 0) { return DoubleToString(d / UnitSize(vol), UnitDecimals(vol)) + " " + UnitName(vol); }
+string FmtUnit(double d, double vol = 0) { return DoubleToString(d / UnitSize(vol), UnitDecimals(vol)); }
 string Money(double m)    { return (m >= 0 ? "+" : "") + DoubleToString(m, 2) + " " + Ccy(); }
 string LevelStr(double v) { return (v > 0) ? Px(v) : "none"; }
 
@@ -266,7 +301,7 @@ string AccountModeText()
 //+------------------------------------------------------------------+
 //| Trailing settings persistence (terminal global variables)        |
 //+------------------------------------------------------------------+
-string GVName(ulong ticket, string key) { return "TMEA_" + IntegerToString(g_login) + "_" + (string)ticket + "_" + key; }
+string GVName(ulong ticket, string key) { return "TMEA2_" + IntegerToString(g_login) + "_" + (string)ticket + "_" + key; }
 
 void SaveTrail(TMPos &p)
   {
@@ -275,6 +310,8 @@ void SaveTrail(TMPos &p)
    GlobalVariableSet(GVName(p.ticket, "ac"), p.trAct);
    GlobalVariableSet(GVName(p.ticket, "di"), p.trDist);
    GlobalVariableSet(GVName(p.ticket, "st"), p.trStep);
+   GlobalVariableSet(GVName(p.ticket, "bt"), p.beTrig);
+   GlobalVariableSet(GVName(p.ticket, "bl"), p.beLock);
   }
 
 void LoadTrail(TMPos &p)
@@ -289,6 +326,11 @@ void LoadTrail(TMPos &p)
    if(a >= 0) p.trAct  = a;
    if(d > 0)  p.trDist = d;
    if(s >= 0) p.trStep = s;
+   if(GlobalVariableCheck(GVName(p.ticket, "bt")))
+     {
+      p.beTrig = MathMax(0.0, GlobalVariableGet(GVName(p.ticket, "bt")));
+      p.beLock = GlobalVariableGet(GVName(p.ticket, "bl"));
+     }
   }
 
 void DeleteTrail(ulong ticket)
@@ -298,6 +340,8 @@ void DeleteTrail(ulong ticket)
    GlobalVariableDel(GVName(ticket, "ac"));
    GlobalVariableDel(GVName(ticket, "di"));
    GlobalVariableDel(GVName(ticket, "st"));
+   GlobalVariableDel(GVName(ticket, "bt"));
+   GlobalVariableDel(GVName(ticket, "bl"));
   }
 
 //+------------------------------------------------------------------+
@@ -409,16 +453,14 @@ int AddPos(ulong t)
    g_pos[n].bSL = 0; g_pos[n].bTP = 0; g_pos[n].dSL = 0; g_pos[n].dTP = 0;
    g_pos[n].sSL = TM_NONE; g_pos[n].sTP = TM_NONE;
    g_pos[n].sentSL = 0; g_pos[n].sentTP = 0; g_pos[n].sentMs = 0;
-   g_pos[n].queued = false; g_pos[n].manualSent = false;
+   g_pos[n].queued = false; g_pos[n].manualSent = false; g_pos[n].autoPending = false;
    g_pos[n].mSL = ""; g_pos[n].mTP = "";
    g_pos[n].lastModMs = 0;
    g_pos[n].trOn = InpTrailOn; g_pos[n].trPaused = false;
-   g_pos[n].trAct  = MathMax(0.0, InpTrailActivation) * UnitSize();
-   g_pos[n].trDist = MathMax(TickSz(), InpTrailDistance * UnitSize());
-   g_pos[n].trStep = MathMax(0.0, InpTrailStep) * UnitSize();
+   g_pos[n].trAct = 0; g_pos[n].trDist = 0; g_pos[n].trStep = 0;
+   g_pos[n].beTrig = 0; g_pos[n].beLock = 0;
    g_pos[n].trLastSL = 0; g_pos[n].trBackoffUntil = 0; g_pos[n].trMsg = "";
    g_pos[n].seen = true;
-   LoadTrail(g_pos[n]);
    return n;
   }
 
@@ -449,7 +491,7 @@ void OnManualSLChange(TMPos &p)
       p.trPaused = true;
       p.trMsg = "";
       SaveTrail(p);
-      SetMsg("Trailing PAUSED on #" + (string)p.ticket + " because SL was changed manually", clrOrange);
+      SetMsg("Lock/trail PAUSED on #" + (string)p.ticket + " because SL was changed manually", clrOrange);
      }
    else
       SetMsg("Trailing continues on #" + (string)p.ticket + " from the new SL", clrSilver);
@@ -523,6 +565,14 @@ bool ReadBroker(TMPos &p)
       p.sTP = (tp > 0) ? TM_ACTIVE : TM_NONE;
       p.dSL = (sl > 0) ? sl : Placeholder(p, true);
       p.dTP = (tp > 0) ? tp : Placeholder(p, false);
+      // lock/trail defaults need the volume (money unit), so they are set here
+      double u = UnitSize(p.volume);
+      p.trAct  = MathMax(0.0, InpTrailActivation) * u;
+      p.trDist = MathMax(TickSz(), InpTrailDistance * u);
+      p.trStep = MathMax(0.0, InpTrailStep) * u;
+      p.beTrig = MathMax(0.0, InpLockTrigger) * u;
+      p.beLock = InpLockAmount * u;
+      LoadTrail(p);
       p.loaded = true;
       return true;
      }
@@ -561,8 +611,7 @@ void Sync()
         {
          g_sel = t;
          SetMsg("New " + (g_pos[k].isBuy ? "BUY" : "SELL") + " #" + (string)t + " detected and selected", clrDeepSkyBlue);
-         if(InpAutoInitial)
-            AutoInitial(g_pos[k]);
+         AutoInitial(g_pos[k]);
         }
      }
    for(int i = ArraySize(g_pos) - 1; i >= 0; i--)
@@ -572,19 +621,105 @@ void Sync()
       g_sel = g_pos[ArraySize(g_pos) - 1].ticket;
   }
 
+//--- choose SL/TP for a position with the configured method
+bool AutoLevels(TMPos &p, ENUM_TM_AUTO mode, double &sl, double &tp, string &why)
+  {
+   double atr = 0.0;
+   double buf[];
+   if(g_atr != INVALID_HANDLE && CopyBuffer(g_atr, 0, 1, 1, buf) == 1)
+      atr = buf[0];
+   double u = UnitSize(p.volume);
+   double d = 0.0;
+   sl = 0; tp = 0;
+   switch(mode)
+     {
+      case TM_AUTO_FIXED:
+         d = InpAutoSL * u;
+         break;
+      case TM_AUTO_ATR:
+         d = atr * InpAutoATRMult;
+         break;
+      case TM_AUTO_MONEY:
+        {
+         double mpp = MoneyPerPrice(p.volume);
+         if(mpp > 0)
+            d = InpAutoRiskMoney / mpp;
+         break;
+        }
+      case TM_AUTO_SWING:
+        {
+         int bars = MathMax(3, InpSwingBars);
+         int i = p.isBuy ? iLowest(_Symbol, PERIOD_CURRENT, MODE_LOW, bars, 1)
+                         : iHighest(_Symbol, PERIOD_CURRENT, MODE_HIGH, bars, 1);
+         if(i >= 0)
+           {
+            double sw = p.isBuy ? iLow(_Symbol, PERIOD_CURRENT, i) : iHigh(_Symbol, PERIOD_CURRENT, i);
+            double b  = atr * InpSwingBufferATR;
+            double lv = p.isBuy ? sw - b : sw + b;
+            if(p.isBuy ? lv < p.open : lv > p.open)
+               d = MathAbs(p.open - lv);
+           }
+         if(d <= 0)
+            d = atr * InpAutoATRMult; // price already beyond the swing: fall back to ATR
+         break;
+        }
+     }
+   if(d <= 0) { why = "auto SL distance is 0 - check the auto settings"; return false; }
+   sl = p.isBuy ? p.open - d : p.open + d;
+   double td = (mode == TM_AUTO_FIXED && InpAutoTP > 0) ? InpAutoTP * u : d * InpAutoRR;
+   tp = (td > 0) ? (p.isBuy ? p.open + td : p.open - td) : 0;
+
+   // keep both outside the broker minimum distance from the current price
+   double minD = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * Pt() + TickSz();
+   double ref = p.isBuy ? Bid() : Ask();
+   if(p.isBuy)
+     {
+      if(sl > ref - minD) sl = ref - minD;
+      if(tp > 0 && tp < ref + minD) tp = ref + minD;
+      sl = FloorTick(sl); tp = (tp > 0) ? CeilTick(tp) : 0;
+     }
+   else
+     {
+      if(sl < ref + minD) sl = ref + minD;
+      if(tp > 0 && tp > ref - minD) tp = ref - minD;
+      sl = CeilTick(sl); tp = (tp > 0) ? FloorTick(tp) : 0;
+     }
+   if(sl <= 0) { why = "auto SL would be below zero"; return false; }
+   if(tp < 0) tp = 0;
+   return true;
+  }
+
+//--- put auto levels in as drafts; sent now (on-release mode) or on Save
+void ApplyAuto(TMPos &p, ENUM_TM_AUTO mode, bool onlyMissing)
+  {
+   double sl, tp;
+   string why;
+   if(!AutoLevels(p, mode, sl, tp, why))
+     {
+      SetMsg("Auto SL/TP not set: " + why, InpFailColor);
+      return;
+     }
+   bool any = false;
+   if(!(onlyMissing && p.bSL > 0) && p.sSL != TM_PENDING)
+     { p.dSL = sl; p.sSL = TM_EDIT; p.mSL = "Auto SL"; any = true; }
+   if(tp > 0 && !(onlyMissing && p.bTP > 0) && p.sTP != TM_PENDING)
+     { p.dTP = tp; p.sTP = TM_EDIT; p.mTP = "Auto TP"; any = true; }
+   if(!any)
+      return;
+   p.autoPending = true;
+   if(InpApplyMode == TM_APPLY_ON_RELEASE)
+     {
+      p.queued = true;
+      SetMsg("Auto SL " + Px(sl) + " / TP " + LevelStr(tp) + " - sending to broker", clrGold);
+     }
+   else
+      SetMsg("Auto SL " + Px(sl) + " / TP " + LevelStr(tp) + " proposed - press Save to send", clrGold);
+  }
+
 void AutoInitial(TMPos &p)
   {
-   double u = UnitSize();
-   if(InpAutoSL > 0 && p.bSL == 0)
-     {
-      p.dSL = NormPrice(p.isBuy ? p.open - InpAutoSL * u : p.open + InpAutoSL * u);
-      p.sSL = TM_EDIT; p.mSL = "Auto initial SL (setting)"; p.queued = true;
-     }
-   if(InpAutoTP > 0 && p.bTP == 0)
-     {
-      p.dTP = NormPrice(p.isBuy ? p.open + InpAutoTP * u : p.open - InpAutoTP * u);
-      p.sTP = TM_EDIT; p.mTP = "Auto initial TP (setting)"; p.queued = true;
-     }
+   if(InpAutoMode != TM_AUTO_OFF)
+      ApplyAuto(p, InpAutoMode, true);
   }
 
 //+------------------------------------------------------------------+
@@ -651,7 +786,8 @@ void ApplyQueued(TMPos &p)
    double tp = doTP ? p.dTP : p.bTP;
    if(doSL) { p.sSL = TM_PENDING; p.sentSL = sl; p.mSL = "Sending..."; }
    if(doTP) { p.sTP = TM_PENDING; p.sentTP = tp; p.mTP = "Sending..."; }
-   p.manualSent = doSL;
+   p.manualSent = doSL && !p.autoPending; // auto SL must not pause lock/trail
+   p.autoPending = false;
    p.sentMs = now;
    Refresh();
 
@@ -669,6 +805,14 @@ void ApplyQueued(TMPos &p)
 //+------------------------------------------------------------------+
 //| Trailing stop (client-side: runs only while this EA runs)        |
 //+------------------------------------------------------------------+
+string LockText(TMPos &p, double sl)
+  {
+   bool ok;
+   double m = MoneyAt(p.isBuy, p.volume, p.open, sl, ok);
+   if(!ok) return "";
+   return (m >= 0 ? " locks " : " risk ") + Money(m);
+  }
+
 void Trail(TMPos &p)
   {
    if(!p.trOn || p.trPaused)
@@ -681,19 +825,41 @@ void Trail(TMPos &p)
    double bid = Bid(), ask = Ask();
    if(bid <= 0 || ask <= 0)           { p.trMsg = "Waiting: no quotes"; return; }
 
+   double v = p.volume;
    double favour = p.isBuy ? bid - p.open : p.open - ask;
-   if(favour < p.trAct)
+   bool lockHit  = (p.beTrig > 0 && favour >= p.beTrig);
+   bool trailHit = (favour >= p.trAct);
+   if(!lockHit && !trailHit)
      {
-      p.trMsg = "Armed: starts after +" + FmtDist(p.trAct) + " (now " + (favour >= 0 ? "+" : "") + FmtDist(favour) + ")";
+      string a = (p.beTrig > 0) ? "lock at +" + FmtDist(p.beTrig, v) + ", " : "";
+      p.trMsg = "Armed: " + a + "trail at +" + FmtDist(p.trAct, v) + " (now " + (favour >= 0 ? "+" : "") + FmtDist(favour, v) + ")";
       return;
      }
-   double cand = p.isBuy ? FloorTick(bid - p.trDist) : CeilTick(ask + p.trDist);
+   // target SL = the tighter of the profit lock and the trailing level
+   double target = 0.0;
+   if(lockHit)
+      target = p.isBuy ? p.open + p.beLock : p.open - p.beLock;
+   if(trailHit)
+     {
+      double t = p.isBuy ? bid - p.trDist : ask + p.trDist;
+      target = (target == 0.0) ? t : (p.isBuy ? MathMax(target, t) : MathMin(target, t));
+     }
+   // never closer than the broker allows: hold at the nearest allowed level instead of waiting
+   double minD = (double)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL) * Pt();
+   double lim  = p.isBuy ? FloorTick(bid - minD - TickSz()) : CeilTick(ask + minD + TickSz());
+   bool held = false;
+   if(p.isBuy ? target > lim : target < lim) { target = lim; held = true; }
+   double cand = p.isBuy ? FloorTick(target) : CeilTick(target);
+   if(cand <= 0)
+      return;
+
    double cur  = p.bSL;
    double need = MathMax(p.trStep, TickSz() * 0.5);
    bool better = (cur == 0) || (p.isBuy ? cand >= cur + need : cand <= cur - need);
+   string stage = trailHit ? "Trailing" : "Locked";
    if(!better)
      {
-      p.trMsg = "Trailing: SL " + LevelStr(cur) + " (next move needs " + FmtDist(p.trStep) + " step)";
+      p.trMsg = stage + ": SL " + LevelStr(cur) + (cur > 0 ? LockText(p, cur) : "");
       return;
      }
    // never loosen: strictly tighter than the current SL
@@ -718,7 +884,7 @@ void Trail(TMPos &p)
             p.sSL = TM_ACTIVE; p.dSL = p.bSL;
             p.mSL = "Rejected draft discarded: trailing moved the SL";
            }
-         p.trMsg = "Moved SL to " + Px(cand) + " (broker confirmed)";
+         p.trMsg = stage + ": SL " + Px(cand) + LockText(p, cand) + " (confirmed)" + (held ? " at broker min distance" : "");
         }
       else
          p.trMsg = "Sent SL " + Px(cand) + ", waiting for confirmation";
@@ -726,8 +892,8 @@ void Trail(TMPos &p)
    else
      {
       p.trMsg = "REJECTED: " + err;
-      p.trBackoffUntil = now + ((StringFind(err, "Market closed") >= 0) ? 30000 : 5000);
-      Print("TradeManager #", p.ticket, " trailing rejected: ", err);
+      p.trBackoffUntil = now + ((StringFind(err, "Market closed") >= 0) ? 30000 : 3000);
+      Print("TradeManager #", p.ticket, " lock/trail rejected: ", err);
      }
   }
 
@@ -1033,7 +1199,7 @@ void SetEdit(int idx, string id, string text, ulong ticket)
   {
    if(g_editShownFor != ticket)
      {
-      for(int i = 0; i < 5; i++)
+      for(int i = 0; i < 7; i++)
          g_editShown[i] = "~unset~";
       g_editShownFor = ticket;
      }
@@ -1057,7 +1223,7 @@ void StatusLine(string &txt, color &c)
 
 void RefreshPanel(int k)
   {
-   int dy = 19, W = 470, H = dy * 12 + 8;
+   int dy = 19, W = 470, H = dy * 13 + 8;
    int x = InpPanelX, y = InpPanelY;
    if(g_panelBottom)
      {
@@ -1102,18 +1268,25 @@ void RefreshPanel(int k)
    PEdit("ESTEP", x + 340, y + dy * 8, 55, 17);
    PLabel("SLN", x, y + dy * 4 + 1, "SL", InpSLColor);
    PLabel("TPN", x, y + dy * 6 + 1, "TP", InpTPColor);
-   PLabel("LACT", x + 122, y + dy * 8 + 1, "Act", clrSilver);
+   PLabel("LACT", x + 123, y + dy * 8 + 1, "Act", clrSilver);
    PLabel("LDIST", x + 212, y + dy * 8 + 1, "Dist", clrSilver);
    PLabel("LSTEP", x + 305, y + dy * 8 + 1, "Step", clrSilver);
-   PLabel("LUNIT", x + 400, y + dy * 8 + 1, UnitName(), clrSilver);
+   double uv = (k >= 0) ? g_pos[k].volume : 0;
+   PLabel("LUNIT", x + 400, y + dy * 8 + 1, UnitName(uv), clrSilver);
+   PEdit("EBT", x + 150, y + dy * 9, 55, 17);
+   PEdit("EBL", x + 245, y + dy * 9, 55, 17);
+   PLabel("LBT", x + 18, y + dy * 9 + 1, "Lock when profit +", clrSilver);
+   PLabel("LBL", x + 210, y + dy * 9 + 1, "keep +", clrSilver);
+   PLabel("LBU", x + 305, y + dy * 9 + 1, UnitName(uv) + "  (0 = off)", clrSilver);
 
    int bx = x;
    if(InpApplyMode == TM_APPLY_ON_SAVE)
      {
-      PButton("SAVE", bx, y + dy * 10, 90, 17, "Save", C'30,110,60');
+      PButton("SAVE", bx, y + dy * 11, 90, 17, "Save", C'30,110,60');
       bx += 96;
      }
-   PButton("CANCEL", bx, y + dy * 10, 110, 17, InpApplyMode == TM_APPLY_ON_SAVE ? "Cancel" : "Revert draft", C'90,60,30');
+   PButton("CANCEL", bx, y + dy * 11, 110, 17, InpApplyMode == TM_APPLY_ON_SAVE ? "Cancel" : "Revert draft", C'90,60,30');
+   PButton("AUTO", bx + 116, y + dy * 11, 110, 17, "Auto SL/TP", C'40,70,120');
 
    if(k < 0)
      {
@@ -1123,10 +1296,11 @@ void RefreshPanel(int k)
       PLabel("SLI", x + 28, y + dy * 5, "", clrSilver);
       PLabel("TPS", x + 152, y + dy * 6 + 1, "", clrSilver);
       PLabel("TPI", x + 28, y + dy * 7, "", clrSilver);
-      PButton("TRAIL", x, y + dy * 8, 115, 17, "TRAIL: -", C'60,64,80');
-      PLabel("TRS", x, y + dy * 9, "", clrSilver);
+      PButton("TRAIL", x, y + dy * 8, 118, 17, "LOCK/TRAIL: -", C'60,64,80');
+      PLabel("TRS", x, y + dy * 10, "", clrSilver);
       SetEdit(0, "ESL", "", 0); SetEdit(1, "ETP", "", 0);
       SetEdit(2, "EACT", "", 0); SetEdit(3, "EDIST", "", 0); SetEdit(4, "ESTEP", "", 0);
+      SetEdit(5, "EBT", "", 0); SetEdit(6, "EBL", "", 0);
      }
    else
      {
@@ -1150,22 +1324,24 @@ void RefreshPanel(int k)
       string etp = (g_pos[idx].sTP == TM_NONE) ? "" : (IsRemoval(g_pos[idx], false) ? "0" : Px(tp));
       SetEdit(0, "ESL", esl, g_pos[idx].ticket);
       SetEdit(1, "ETP", etp, g_pos[idx].ticket);
-      SetEdit(2, "EACT", FmtUnit(g_pos[idx].trAct), g_pos[idx].ticket);
-      SetEdit(3, "EDIST", FmtUnit(g_pos[idx].trDist), g_pos[idx].ticket);
-      SetEdit(4, "ESTEP", FmtUnit(g_pos[idx].trStep), g_pos[idx].ticket);
+      SetEdit(2, "EACT", FmtUnit(g_pos[idx].trAct, uv), g_pos[idx].ticket);
+      SetEdit(3, "EDIST", FmtUnit(g_pos[idx].trDist, uv), g_pos[idx].ticket);
+      SetEdit(4, "ESTEP", FmtUnit(g_pos[idx].trStep, uv), g_pos[idx].ticket);
+      SetEdit(5, "EBT", FmtUnit(g_pos[idx].beTrig, uv), g_pos[idx].ticket);
+      SetEdit(6, "EBL", FmtUnit(g_pos[idx].beLock, uv), g_pos[idx].ticket);
 
       string bt; color bc; string ts; color tc = clrSilver;
-      if(!g_pos[idx].trOn)          { bt = "TRAIL: OFF"; bc = C'60,64,80'; ts = "Trailing OFF"; }
-      else if(g_pos[idx].trPaused)  { bt = "TRAIL: PAUSED"; bc = C'150,90,20'; ts = "PAUSED (SL changed manually) - click TRAIL to resume"; tc = clrOrange; }
+      if(!g_pos[idx].trOn)          { bt = "LOCK/TRAIL: OFF"; bc = C'60,64,80'; ts = "Profit lock and trailing OFF"; }
+      else if(g_pos[idx].trPaused)  { bt = "LOCK/TRAIL: PAUSED"; bc = C'150,90,20'; ts = "PAUSED (SL changed manually) - click the button to resume"; tc = clrOrange; }
       else
         {
-         bt = "TRAIL: ON"; bc = C'30,110,60';
+         bt = "LOCK/TRAIL: ON"; bc = C'30,110,60';
          ts = (g_pos[idx].trMsg != "" ? g_pos[idx].trMsg : "ON") + "  [runs in this terminal only]";
          if(StringFind(g_pos[idx].trMsg, "INACTIVE") == 0 || StringFind(g_pos[idx].trMsg, "REJECTED") == 0)
             tc = clrOrange;
         }
-      PButton("TRAIL", x, y + dy * 8, 115, 17, bt, bc);
-      PLabel("TRS", x, y + dy * 9, ts, tc);
+      PButton("TRAIL", x, y + dy * 8, 118, 17, bt, bc);
+      PLabel("TRS", x, y + dy * 10, ts, tc);
      }
    string m1 = g_msg, m2 = "";
    if(StringLen(m1) > 85)
@@ -1173,8 +1349,8 @@ void RefreshPanel(int k)
       m2 = StringSubstr(m1, 85);
       m1 = StringSubstr(m1, 0, 85);
      }
-   PLabel("MSG1", x, y + dy * 11 - 6, m1, g_msgClr);
-   PLabel("MSG2", x, y + dy * 11 + 7, m2, g_msgClr);
+   PLabel("MSG1", x, y + dy * 12 - 4, m1, g_msgClr);
+   PLabel("MSG2", x, y + dy * 12 + 9, m2, g_msgClr);
   }
 
 void Refresh()
@@ -1200,6 +1376,7 @@ void SetDraft(TMPos &p, bool isSL, double price, string source)
    string e, m = "";
    if(!Validate(p, isSL, price, e))
       m = "Warning: " + e;
+   p.autoPending = false;
    if(isSL) { p.dSL = price; p.sSL = TM_EDIT; p.mSL = m; }
    else     { p.dTP = price; p.sTP = TM_EDIT; p.mTP = m; }
    if(InpApplyMode == TM_APPLY_ON_RELEASE)
@@ -1276,10 +1453,10 @@ void HandleEdit(string name)
       Refresh();
       return;
      }
-   if(id == "EACT" || id == "EDIST" || id == "ESTEP")
+   if(id == "EACT" || id == "EDIST" || id == "ESTEP" || id == "EBT" || id == "EBL")
      {
-      double v = StringToDouble(txt) * UnitSize();
-      if(v < 0 || (id == "EDIST" && v < TickSz()))
+      double v = StringToDouble(txt) * UnitSize(g_pos[k].volume);
+      if((v < 0 && id != "EBL") || (id == "EDIST" && v < TickSz()))
         {
          SetMsg("Invalid trailing value '" + txt + "'", InpFailColor);
         }
@@ -1288,10 +1465,12 @@ void HandleEdit(string name)
          if(id == "EACT")  g_pos[k].trAct  = v;
          if(id == "EDIST") g_pos[k].trDist = v;
          if(id == "ESTEP") g_pos[k].trStep = v;
+         if(id == "EBT")   g_pos[k].beTrig = v;
+         if(id == "EBL")   g_pos[k].beLock = v;
          SaveTrail(g_pos[k]);
          SetMsg("Trailing settings saved for #" + (string)g_pos[k].ticket, clrSilver);
         }
-      for(int i = 2; i < 5; i++)
+      for(int i = 2; i < 7; i++)
          g_editShown[i] = "~unset~";
       Refresh();
      }
@@ -1352,6 +1531,8 @@ void HandleClick(string name)
          CancelDrafts(g_pos[k]);
       else if(id == "XSL")
          SetDraft(g_pos[k], true, 0, "X button");
+      else if(id == "AUTO")
+         ApplyAuto(g_pos[k], InpAutoMode == TM_AUTO_OFF ? TM_AUTO_ATR : InpAutoMode, false);
       else if(id == "XTP")
          SetDraft(g_pos[k], false, 0, "X button");
       else if(id == "TRAIL")
@@ -1359,17 +1540,17 @@ void HandleClick(string name)
          if(!g_pos[k].trOn)
            {
             g_pos[k].trOn = true; g_pos[k].trPaused = false; g_pos[k].trMsg = "";
-            SetMsg("Trailing ON for #" + (string)g_pos[k].ticket + " - works only while this terminal + EA run and are connected", clrGold);
+            SetMsg("Lock/trail ON for #" + (string)g_pos[k].ticket + " - works only while this terminal + EA run and are connected", clrGold);
            }
          else if(g_pos[k].trPaused)
            {
             g_pos[k].trPaused = false; g_pos[k].trMsg = "";
-            SetMsg("Trailing resumed for #" + (string)g_pos[k].ticket, clrGold);
+            SetMsg("Lock/trail resumed for #" + (string)g_pos[k].ticket, clrGold);
            }
          else
            {
             g_pos[k].trOn = false;
-            SetMsg("Trailing OFF for #" + (string)g_pos[k].ticket + " (current SL kept)", clrSilver);
+            SetMsg("Lock/trail OFF for #" + (string)g_pos[k].ticket + " (current SL kept)", clrSilver);
            }
          SaveTrail(g_pos[k]);
         }
@@ -1397,7 +1578,7 @@ int OnInit()
    ChartSetInteger(0, CHART_EVENT_MOUSE_MOVE, true);
    string gp = "TMEA_PANELPOS_" + IntegerToString(ChartID());
    g_panelBottom = GlobalVariableCheck(gp) ? (GlobalVariableGet(gp) < 0.5) : (InpPanelPos == TM_PANEL_BOTTOM_LEFT);
-   for(int i = 0; i < 5; i++)
+   for(int i = 0; i < 7; i++)
       g_editShown[i] = "~unset~";
    g_wasConnected = (bool)TerminalInfoInteger(TERMINAL_CONNECTED);
    Sync();                 // existing positions: shown as they are, nothing changed

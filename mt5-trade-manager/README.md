@@ -57,7 +57,7 @@ Run one copy per chart. If you trade EURUSD and Volatility 75, use two charts wi
 | Trail distance | 1.00 | How far the SL stays behind price (Bid for buys, Ask for sells). If this is closer than the broker allows, the SL is held at the closest allowed level instead of waiting. |
 | Trail step | 0.20 | The minimum improvement needed before the SL is moved again. This limits requests. |
 | If SL changed manually while trailing | Pause | **Pause**: trailing stops until you click TRAIL to resume. **Continue**: it keeps trailing from your new SL, only ever tightening it. |
-| Auto SL/TP mode | Off | For new trades with no SL/TP: **Fixed** distance, **ATR**(14) × multiplier, **Swing** (recent low for buys / high for sells, plus a buffer), or **Money** (fixed max loss). TP = SL distance × R:R. In Save mode the levels appear as drafts until you press Save; otherwise they are sent at once. |
+| Auto SL/TP mode | **ATR** | When you open a trade, the proposed SL and TP prices are typed into the panel boxes for you. Press **APPROVE** to send them, edit a box and press Enter, or press **Reject / Revert**. Nothing is sent until you approve (unless "Send auto SL/TP at once" = true). `Off` = no proposal. Methods: For new trades with no SL/TP: **Fixed** distance, **ATR**(14) × multiplier, **Swing** (recent low for buys / high for sells, plus a buffer), or **Money** (fixed max loss). TP = SL distance × R:R. In Save mode the levels appear as drafts until you press Save; otherwise they are sent at once. |
 | Fixed SL / TP | 0 / 0 | Fixed mode distances. TP `0` = use R:R. |
 | ATR multiplier | 1.5 | ATR mode (also the fallback for Swing). |
 | Swing bars / buffer | 20 / 0.2×ATR | Swing mode look-back and extra room. |
@@ -96,7 +96,8 @@ If the EA is removed or MT5 closes, **all its lines are deleted**, so no line is
 - **SL / TP price boxes**: type a price and press Enter. Type `0` to remove the level. **X** also removes it.
 - Below each box: distance from entry, the estimated money lost or locked in (SL) or won (TP), and the R:R.
 - **LOCK/TRAIL** button: OFF → ON. When PAUSED, one click resumes. Clicking while ON turns it OFF. It controls the profit lock and trailing together.
-- **Auto SL/TP** button: proposes SL/TP for the selected trade with the chosen auto mode (ATR if the mode is Off). It replaces the current levels: in on-release mode they are sent at once, in Save mode press Save.
+- **Propose SL/TP** button: fills the boxes with proposed SL/TP for the selected trade (ATR if the mode is Off). Press **APPROVE** to send them. Lock/trail waits until you approve or reject.
+- **Line width** setting: confirmed SL/TP lines are 1 pixel by default.
 - Lock/trail status line: Armed (waiting for profit), Locked / Trailing (with the money the SL locks in), waiting, INACTIVE (disconnected / Algo Trading off), REJECTED.
 - **Fast spikes (Crash/Boom):** a broker SL is filled at the next available price. A sudden spike can jump past the SL, so the result can be worse than the money shown (slippage). No EA can prevent this.
 - **Save / Cancel** (Save mode) or **Revert draft** (on-release mode).

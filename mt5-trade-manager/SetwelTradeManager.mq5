@@ -16,8 +16,8 @@
 //|    dotted = sending, orange = rejected (not applied).            |
 //+------------------------------------------------------------------+
 #property copyright "Setwel"
-#property version   "1.10"
-#property description "v1.10 - Drag SL/TP lines, lock profit, trail stops, auto SL/TP."
+#property version   "1.20"
+#property description "v1.20 - Drag SL/TP lines, lock profit, trail stops, proposed SL/TP to approve."
 #property description "Never opens trades. Solid line = broker confirmed level."
 
 //--- enums ----------------------------------------------------------
@@ -86,7 +86,8 @@ input double            InpTrailStep       = 0.20;                // Trail: min 
 input ENUM_TM_MANUAL_SL InpManualSLRule    = TM_MANUAL_SL_PAUSE;  // If SL is changed manually while trailing
 
 input group "Automatic SL/TP for new trades (OFF by default)"
-input ENUM_TM_AUTO      InpAutoMode        = TM_AUTO_OFF;         // How to choose SL for new trades without SL/TP
+input ENUM_TM_AUTO      InpAutoMode        = TM_AUTO_ATR;         // How to propose SL/TP for new trades (Off = none)
+input bool              InpAutoSendNow     = false;               // Send auto SL/TP at once (false = wait for Approve)
 input double            InpAutoSL          = 0;                   // Fixed mode: SL distance (unit)
 input double            InpAutoTP          = 0;                   // Fixed mode: TP distance (unit), 0 = use R:R
 input double            InpAutoATRMult     = 1.5;                 // ATR mode: SL = ATR(14) x this
@@ -107,6 +108,7 @@ input ENUM_TM_PANEL_POS InpPanelPos        = TM_PANEL_BOTTOM_LEFT; // Panel posi
 input int               InpPanelX          = 10;                  // Panel X offset from left edge
 input int               InpPanelY          = 25;                  // Panel Y offset from top / bottom edge
 input int               InpFontSize        = 8;                   // Font size
+input int               InpLineWidth       = 1;                   // Width of confirmed SL/TP lines (1 = thinnest)
 input color             InpSLColor         = clrRed;              // SL colour
 input color             InpTPColor         = clrLimeGreen;        // TP colour
 input color             InpEntryColor      = clrDodgerBlue;       // Entry colour
@@ -692,7 +694,7 @@ bool AutoLevels(TMPos &p, ENUM_TM_AUTO mode, double &sl, double &tp, string &why
   }
 
 //--- put auto levels in as drafts; sent now (on-release mode) or on Save
-void ApplyAuto(TMPos &p, ENUM_TM_AUTO mode, bool onlyMissing)
+void ApplyAuto(TMPos &p, ENUM_TM_AUTO mode, bool onlyMissing, bool sendNow)
   {
    double sl, tp;
    string why;
@@ -703,25 +705,26 @@ void ApplyAuto(TMPos &p, ENUM_TM_AUTO mode, bool onlyMissing)
      }
    bool any = false;
    if(!(onlyMissing && p.bSL > 0) && p.sSL != TM_PENDING)
-     { p.dSL = sl; p.sSL = TM_EDIT; p.mSL = "Auto SL"; any = true; }
+     { p.dSL = sl; p.sSL = TM_EDIT; p.mSL = sendNow ? "Auto SL" : "Proposed"; any = true; }
    if(tp > 0 && !(onlyMissing && p.bTP > 0) && p.sTP != TM_PENDING)
-     { p.dTP = tp; p.sTP = TM_EDIT; p.mTP = "Auto TP"; any = true; }
+     { p.dTP = tp; p.sTP = TM_EDIT; p.mTP = sendNow ? "Auto TP" : "Proposed"; any = true; }
    if(!any)
       return;
    p.autoPending = true;
-   if(InpApplyMode == TM_APPLY_ON_RELEASE)
+   p.queued = false;
+   if(sendNow)
      {
       p.queued = true;
       SetMsg("Auto SL " + Px(sl) + " / TP " + LevelStr(tp) + " - sending to broker", clrGold);
      }
    else
-      SetMsg("Auto SL " + Px(sl) + " / TP " + LevelStr(tp) + " proposed - press Save to send", clrGold);
+      SetMsg("Proposed SL " + Px(sl) + " / TP " + LevelStr(tp) + " - edit the boxes or press APPROVE", clrGold);
   }
 
 void AutoInitial(TMPos &p)
   {
    if(InpAutoMode != TM_AUTO_OFF)
-      ApplyAuto(p, InpAutoMode, true);
+      ApplyAuto(p, InpAutoMode, true, InpAutoSendNow);
   }
 
 //+------------------------------------------------------------------+
@@ -821,7 +824,7 @@ void Trail(TMPos &p)
       return;
    string why;
    if(!CanTrade(why))                 { p.trMsg = "INACTIVE: " + why; return; }
-   if(p.sSL == TM_EDIT || p.sSL == TM_PENDING) { p.trMsg = "Waiting: SL draft is unsaved/sending"; return; }
+   if(p.sSL == TM_EDIT || p.sSL == TM_PENDING) { p.trMsg = "Waiting: approve or reject the SL first"; return; }
    ulong now = NowMs();
    if(now < p.trBackoffUntil)         return;
    double bid = Bid(), ask = Ask();
@@ -983,7 +986,7 @@ string StateText(TMPos &p, bool isSL)
      {
       case TM_NONE:    return "DRAFT - not set at broker";
       case TM_ACTIVE:  return "ACTIVE - broker confirmed";
-      case TM_EDIT:    return p.queued ? "QUEUED - sending" : (InpApplyMode == TM_APPLY_ON_SAVE ? "UNSAVED - press Save" : "UNSAVED");
+      case TM_EDIT:    return p.queued ? "QUEUED - sending" : "NOT SENT - press APPROVE";
       case TM_PENDING: return "SENDING - not confirmed yet";
       case TM_FAILED:  return "REJECTED - NOT APPLIED";
      }
@@ -1052,7 +1055,7 @@ void DrawLevel(TMPos &p, bool isSL)
    color c = isSL ? InpSLColor : InpTPColor;
    ENUM_LINE_STYLE st = STYLE_DASH;
    int w = 1;
-   if(s == TM_ACTIVE)  { st = STYLE_SOLID; w = 2; }
+   if(s == TM_ACTIVE)  { st = STYLE_SOLID; w = InpLineWidth; }
    if(s == TM_PENDING) { st = STYLE_DOT; }
    if(s == TM_FAILED)  { st = STYLE_DASHDOT; c = InpFailColor; }
    string txt = LevelLabel(p, isSL, price);
@@ -1281,14 +1284,9 @@ void RefreshPanel(int k)
    PLabel("LBL", x + 210, y + dy * 9 + 1, "keep +", clrSilver);
    PLabel("LBU", x + 305, y + dy * 9 + 1, UnitName(uv) + "  (0 = off)", clrSilver);
 
-   int bx = x;
-   if(InpApplyMode == TM_APPLY_ON_SAVE)
-     {
-      PButton("SAVE", bx, y + dy * 11, 90, 17, "Save", C'30,110,60');
-      bx += 96;
-     }
-   PButton("CANCEL", bx, y + dy * 11, 110, 17, InpApplyMode == TM_APPLY_ON_SAVE ? "Cancel" : "Revert draft", C'90,60,30');
-   PButton("AUTO", bx + 116, y + dy * 11, 110, 17, "Auto SL/TP", C'40,70,120');
+   PButton("SAVE", x, y + dy * 11, 90, 17, "APPROVE", C'30,110,60');
+   PButton("CANCEL", x + 96, y + dy * 11, 110, 17, "Reject / Revert", C'90,60,30');
+   PButton("AUTO", x + 212, y + dy * 11, 110, 17, "Propose SL/TP", C'40,70,120');
 
    if(k < 0)
      {
@@ -1534,7 +1532,7 @@ void HandleClick(string name)
       else if(id == "XSL")
          SetDraft(g_pos[k], true, 0, "X button");
       else if(id == "AUTO")
-         ApplyAuto(g_pos[k], InpAutoMode == TM_AUTO_OFF ? TM_AUTO_ATR : InpAutoMode, false);
+         ApplyAuto(g_pos[k], InpAutoMode == TM_AUTO_OFF ? TM_AUTO_ATR : InpAutoMode, false, false);
       else if(id == "XTP")
          SetDraft(g_pos[k], false, 0, "X button");
       else if(id == "TRAIL")

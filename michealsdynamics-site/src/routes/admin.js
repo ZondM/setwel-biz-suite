@@ -67,7 +67,7 @@ router.get('/', (req, res) => {
   const unpriced = n('SELECT COUNT(*) AS n FROM variants v JOIN products p ON p.id = v.product_id WHERE p.published = 1 AND v.price_cents IS NULL');
   const noPhoto = n('SELECT COUNT(*) AS n FROM products p WHERE p.published = 1 AND NOT EXISTS (SELECT 1 FROM product_images i WHERE i.product_id = p.id)');
   const checklist = [
-    [pay.payfastEnabled() || pay.yocoEnabled(), 'Online payments (PayFast or Yoco) connected', 'Add your PayFast or Yoco keys to the .env file (see README).'],
+    [pay.payfastEnabled() || pay.yocoEnabled(), `Online payments connected${pay.payfastEnabled() ? (config.payfast.sandbox ? ' — PayFast in TEST mode (no real money)' : ' — PayFast LIVE') : ''}`, 'Add your PayFast or Yoco keys to the .env file (see README).'],
     [Boolean(config.mail.host), 'Email sending set up', 'Add SMTP details to the .env file. Until then emails are saved in data/outbox.'],
     [s.local_fee !== '' && s.national_fee !== '', 'Delivery prices set', 'Settings → Delivery.'],
     [Boolean(s.bank_account_no), 'Bank details for EFT set', 'Settings → Bank details.'],
@@ -87,8 +87,8 @@ router.get('/', (req, res) => {
       <a href="/admin/quotes" class="stat"><b>${n("SELECT COUNT(*) AS n FROM quotes WHERE status = 'new'")}</b><span>New quotes</span></a>
       <a href="/admin/messages" class="stat"><b>${n("SELECT COUNT(*) AS n FROM messages WHERE status = 'new'")}</b><span>New messages</span></a>
     </div>
-    ${checklist.some((c) => !c[0]) ? html`<section class="box"><h2>Launch checklist</h2><ul class="plain checklist">
-      ${checklist.map(([ok, label, how]) => html`<li class="${ok ? 'done' : 'todo'}">${ok ? '✓' : '○'} ${label}${ok ? '' : html` — <span class="muted">${how}</span>`}</li>`)}</ul></section>` : ''}
+    ${html`<section class="box"><h2>${checklist.every((c) => c[0]) ? 'Setup complete' : 'Launch checklist'}</h2><ul class="plain checklist">
+      ${checklist.map(([ok, label, how]) => html`<li class="${ok ? 'done' : 'todo'}">${ok ? '✓' : '○'} ${label}${ok ? '' : html` — <span class="muted">${how}</span>`}</li>`)}</ul></section>`}
     ${toShip.length ? html`<section class="box"><h2>Ready to dispatch</h2>${orderTable(toShip)}</section>` : ''}
     ${low.length ? html`<section class="box"><h2>Low stock</h2><ul class="plain">${low.slice(0, 15).map((v) => html`<li>${v.product_name} — ${v.label}: <b>${v.stock}</b></li>`)}</ul><a href="/admin/stock?low=1">Update stock</a></section>` : ''}`));
 });

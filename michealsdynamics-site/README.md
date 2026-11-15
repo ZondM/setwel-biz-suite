@@ -88,7 +88,8 @@ Leave any MX (email) records alone. Changes can take up to 24 hours. HTTPS (the 
 - **PayFast** (recommended; cards + instant EFT): sign up at payfast.io as a business. You'll need company registration documents, director ID, proof of address and a business bank account.
   Then go to Settings → Developer settings, copy the **Merchant ID** and **Merchant Key**, and **set a passphrase**. Put all three in `.env`.
 - **Yoco** (optional, cards): get the secret key from the Yoco portal, put it in `.env`, then run `npm run yoco:webhook` once on the server and paste the printed line into `.env`.
-- Restart the site after changing `.env`: `sudo systemctl restart md-shop`.
+- Check the details: `npm run check:payfast` (shows problems such as typos or spaces; never prints your secrets).
+- Restart the site after changing `.env`: `sudo systemctl restart md-shop`. Admin → Dashboard then shows "PayFast LIVE" (or "TEST mode").
 - Test with PayFast's sandbox first (`PAYFAST_SANDBOX=true`), then switch to live.
 
 ### 4. Email (order confirmations and invoices)

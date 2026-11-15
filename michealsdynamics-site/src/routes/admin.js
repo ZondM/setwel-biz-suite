@@ -10,6 +10,7 @@ const { db, getSettings, setSetting, tx, DEFAULT_SETTINGS } = require('../db');
 const shop = require('../shop');
 const orders = require('../orders');
 const pay = require('./payments');
+const { checkPayfast } = require('../payfast-check');
 const { invoicePdf } = require('../invoice');
 const { html, raw, money, parseRandToCents, slugify, flash, takeFlash, clean, hashPassword, checkPassword, csrfToken, verifyCsrf, rateLimit } = require('../util');
 const { statusText } = require('./cart');
@@ -89,6 +90,11 @@ router.get('/', (req, res) => {
     </div>
     ${html`<section class="box"><h2>${checklist.every((c) => c[0]) ? 'Setup complete' : 'Launch checklist'}</h2><ul class="plain checklist">
       ${checklist.map(([ok, label, how]) => html`<li class="${ok ? 'done' : 'todo'}">${ok ? '✓' : '○'} ${label}${ok ? '' : html` — <span class="muted">${how}</span>`}</li>`)}</ul></section>`}
+    ${pay.payfastEnabled() ? (() => { const pf = checkPayfast(); return html`<section class="box"><h2>PayFast check</h2>
+      <p>Mode: <b>${pf.mode}</b></p>
+      ${pf.problems.length ? html`<ul class="plain checklist">${pf.problems.map((p) => html`<li class="todo">○ ${p}</li>`)}</ul>` : html`<p class="ok">✓ PayFast settings look correct.</p>`}
+      ${pf.notes.map((n) => html`<p class="muted small">${n}</p>`)}
+      <p class="muted small">Fix problems in cPanel → Setup Node.js App → Environment variables, then press Restart.</p></section>`; })() : ''}
     ${toShip.length ? html`<section class="box"><h2>Ready to dispatch</h2>${orderTable(toShip)}</section>` : ''}
     ${low.length ? html`<section class="box"><h2>Low stock</h2><ul class="plain">${low.slice(0, 15).map((v) => html`<li>${v.product_name} — ${v.label}: <b>${v.stock}</b></li>`)}</ul><a href="/admin/stock?low=1">Update stock</a></section>` : ''}`));
 });

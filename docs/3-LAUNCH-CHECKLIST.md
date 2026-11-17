@@ -24,7 +24,7 @@ Tick everything before you tell customers about the site.
 - [ ] Your logo: the store uses the Setwel "S" logo from your current website. If you have a newer/higher-quality file, send it and Claude Code will swap it in.
 
 ## Products
-- [ ] Pricing rules checked (Admin → Pricing rules): HP/Brother/Canon ink & toner 0%, Canon printers 55%, everything else 45%
+- [ ] Pricing rules checked (Admin → Pricing rules): HP/Brother/Canon ink & toner 15%, Canon printers 55%, everything else 45%
 - [ ] First supplier price-list import done, so every product also has its cost price (the website ships with selling prices only)
 - [ ] Specials checked: the 10 flyer products are marked as specials. Canon 725 toner has no price yet ("Price on request") — add the cost or hide it.
 - [ ] Logitech products named "Logitech … (part no. …)" renamed to their real model names

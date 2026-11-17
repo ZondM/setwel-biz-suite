@@ -9,7 +9,7 @@ No coding needed. Everything is done at **https://setwelafrica.com/admin**.
 
 | Products | Markup |
 |---|---|
-| HP, Brother and Canon ink & toner | **0%** — sold at the supplier's (discounted) price, e.g. R1 557.38 → R1 558 |
+| HP, Brother and Canon ink & toner | **15%**, e.g. R1 557.38 → R1 791 |
 | Canon printers | **55%** |
 | Everything else (incl. Kyocera, Ricoh and Pantum cartridges) | **45%** (the default) |
 

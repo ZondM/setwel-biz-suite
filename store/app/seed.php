@@ -50,7 +50,7 @@ function seed_price_rules(): void
     $ink = (int)q_val("SELECT id FROM categories WHERE slug = 'ink-toner'");
     $printers = (int)q_val("SELECT id FROM categories WHERE slug = 'printers-scanners'");
     foreach (['HP', 'Brother', 'Canon'] as $b) {
-        db_insert('price_rules', ['brand_id' => find_or_create('brands', $b), 'category_id' => $ink, 'markup' => 0, 'note' => 'Discounted supplier price — sold as is', 'created_at' => now()]);
+        db_insert('price_rules', ['brand_id' => find_or_create('brands', $b), 'category_id' => $ink, 'markup' => 15, 'note' => 'HP, Brother & Canon cartridges', 'created_at' => now()]);
     }
     db_insert('price_rules', ['brand_id' => find_or_create('brands', 'Canon'), 'category_id' => $printers, 'markup' => 55, 'note' => 'Canon printers', 'created_at' => now()]);
     setting_save('markup_percent', '45');

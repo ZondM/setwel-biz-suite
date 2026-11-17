@@ -35,7 +35,7 @@ CATMAP = {
 }
 RULES = [  # (label, markup, Summary cell)
     ('Everything else (default)', 0.45, 'C4'),
-    ('HP, Brother & Canon ink and toner (supplier price)', 0.0, 'C5'),
+    ('HP, Brother & Canon ink and toner', 0.15, 'C5'),
     ('Canon printers', 0.55, 'C6'),
 ]
 

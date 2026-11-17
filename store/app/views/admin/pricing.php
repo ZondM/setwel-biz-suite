@@ -5,7 +5,7 @@
     <li>Selling price = supplier cost (excl. VAT) × (1 + markup), rounded <strong>up</strong> to the next rand.</li>
     <li>The <strong>most specific</strong> rule wins: brand + category → category only → brand only → the default markup.</li>
   </ol>
-  Example: HP + Ink &amp; Toner = 0% → an HP toner costing R1 557.38 sells for R1 558. A Kyocera toner has no rule of its own, so it gets the default (<?= e(setting('markup_percent')) ?>%).
+  Example: HP + Ink &amp; Toner = 15% → an HP toner costing R1 557.38 sells for R1 791. A Kyocera toner has no rule of its own, so it gets the default (<?= e(setting('markup_percent')) ?>%).
 </div>
 <form method="post" class="card"><?= csrf_field() ?><input type="hidden" name="action" value="save">
   <h2>Your rules</h2>

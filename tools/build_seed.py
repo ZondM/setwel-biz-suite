@@ -5,7 +5,7 @@ Usage:  python3 tools/build_seed.py <Setwel-Product-Catalogue.xlsx>
 
 Only SELLING prices go into the file (the repository is public, so supplier costs stay out).
 Pricing used (same as the default Pricing rules in the store):
-  - HP, Brother and Canon ink & toner: supplier price, no markup
+  - HP, Brother and Canon ink & toner: +15%
   - Canon printers: +55%
   - everything else: +45%
   - always rounded UP to the next rand
@@ -33,7 +33,7 @@ CATEGORY = {
 
 def markup(brand, category):
     if category == 'Ink & Toner' and brand in ('HP', 'Brother', 'Canon'):
-        return 0.0
+        return 0.15
     if category == 'Printers & Scanners' and brand == 'Canon':
         return 0.55
     return 0.45

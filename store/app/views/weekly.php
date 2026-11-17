@@ -5,7 +5,7 @@ foreach ($items as $p) {
     $b = $p['brand_name'] ?: 'Other';
     $brands[$b] = ($brands[$b] ?? 0) + 1;
 }
-$endsTs = strtotime($ends . ' 23:59:59');
+$endsTs = $ends ? strtotime($ends . ' 23:59:59') : 0;
 ?>
 <section class="weekly-hero">
   <div class="wrap weekly-hero-inner">
@@ -14,7 +14,9 @@ $endsTs = strtotime($ends . ' 23:59:59');
       <h1>Weekly Specials</h1>
       <p>Deals on genuine HP, Riso and Brother cartridges. New specials every week, while stocks last.</p>
     </div>
-    <?php if ($items): ?>
+    <?php if ($items && !$endsTs): ?>
+      <div class="countdown"><span class="countdown-label">Limited stock</span><span class="countdown-stock">While stocks last</span></div>
+    <?php elseif ($items): ?>
       <div class="countdown" data-countdown="<?= $endsTs * 1000 ?>">
         <span class="countdown-label">Specials end <?= e(date('l j F', $endsTs)) ?></span>
         <span class="countdown-clock" aria-hidden="true"><span><b data-d>0</b>days</span><span><b data-h>0</b>hrs</span><span><b data-m>0</b>min</span><span><b data-s>0</b>sec</span></span>
@@ -70,6 +72,6 @@ $endsTs = strtotime($ends . ' 23:59:59');
     <div class="grid" style="margin-bottom:24px">
       <?php foreach ($items as $p): ?><div class="grid-item" data-brand="<?= e($p['brand_name'] ?: 'Other') ?>"><?php partial('card', ['p' => $p]); ?></div><?php endforeach; ?>
     </div>
-    <p class="hint" style="margin-bottom:40px">Valid until <?= e(date('j F Y', $endsTs)) ?> or while stocks last. <?= setting('vat_registered') === '1' ? 'Prices include VAT.' : 'Prices are final — we are not VAT registered.' ?> E&amp;OE.</p>
+    <p class="hint" style="margin-bottom:40px"><?= $endsTs ? 'Valid until ' . e(date('j F Y', $endsTs)) . ' or while stocks last.' : 'While stocks last.' ?> <?= setting('vat_registered') === '1' ? 'Prices include VAT.' : 'Prices are final — we are not VAT registered.' ?> E&amp;OE.</p>
   <?php endif; ?>
 </div>

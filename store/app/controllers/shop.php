@@ -98,7 +98,7 @@ function weekly_page(): void
 {
     $items = products_weekly();
     $ends = weekly_ends($items);
-    render('weekly', ['items' => $items, 'ends' => $ends, 'meta' => ['title' => 'Weekly Specials', 'description' => 'This week\'s specials on HP, Riso and Brother ink and toner cartridges at ' . setting('business_name') . '. Valid until ' . date('j F Y', strtotime($ends)) . ' or while stocks last.']]);
+    render('weekly', ['items' => $items, 'ends' => $ends, 'meta' => ['title' => 'Weekly Specials', 'description' => 'This week\'s specials on HP, Riso and Brother ink and toner cartridges at ' . setting('business_name') . ($ends ? '. Valid until ' . date('j F Y', strtotime($ends)) . ' or while stocks last.' : '. While stocks last.')]]);
 }
 
 function new_page(): void

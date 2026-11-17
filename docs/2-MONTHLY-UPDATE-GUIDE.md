@@ -94,7 +94,7 @@ The page **https://setwelafrica.com/weekly-specials** has a sliding showcase, a 
 
 **Or one by one:** Admin → Products → open the product → set **Sale price** and **Sale ends** → tick **Weekly special** → Save.
 
-After the *Sale ends* date the product leaves the page by itself. Next week, load the new list. To clear old ones early: Admin → Products → show **Weekly specials** → tick all → **Remove from Weekly specials**.
+After the *Sale ends* date the product leaves the page by itself. Leave *Sale ends* empty for **while stocks last**: the page then shows "While stocks last" instead of a countdown, and you remove the product yourself when it is sold out. Next week, load the new list. To clear old ones early: Admin → Products → show **Weekly specials** → tick all → **Remove from Weekly specials**.
 
 ## G. Orders
 

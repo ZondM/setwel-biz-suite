@@ -187,11 +187,11 @@ function products_weekly(int $limit = 200): array
         ORDER BY CASE LOWER(b.name) WHEN 'hp' THEN 1 WHEN 'riso' THEN 2 WHEN 'brother' THEN 3 ELSE 4 END, b.name, p.name LIMIT $limit", [date('Y-m-d')]);
 }
 
-/** When this week's specials end: the latest "Sale ends" date among them, else this coming Sunday. */
+/** When this week's specials end: the latest "Sale ends" date among them ('' = no end date, while stocks last). */
 function weekly_ends(array $items): string
 {
     $dates = array_filter(array_column($items, 'sale_ends'));
-    return $dates ? max($dates) : date('Y-m-d', strtotime('sunday this week'));
+    return $dates ? max($dates) : '';
 }
 
 function products_new(int $limit = 8): array

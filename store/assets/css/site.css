@@ -365,6 +365,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--n
 .countdown { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); border-radius: var(--radius); padding: 12px 16px; }
 .countdown-label { display: block; color: var(--gold-2); font-weight: 700; font-size: .85rem; margin-bottom: 6px; }
 .countdown-clock { display: flex; gap: 10px; }
+.countdown-stock { display: block; color: #fff; font-size: 1.4rem; font-weight: 800; }
 .countdown-clock span { display: flex; flex-direction: column; align-items: center; min-width: 52px; font-size: .72rem; text-transform: uppercase; color: #cfd9e4; }
 .countdown-clock b { font-size: 1.6rem; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.1; }
 .ticker { display: flex; align-items: center; background: var(--gold); color: var(--navy); text-decoration: none; overflow: hidden; font-size: .92rem; }

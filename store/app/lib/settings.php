@@ -14,7 +14,7 @@ function setting_defaults(): array
         'orders_email' => 'sa@setwelafrica.com',
         'phone' => '082 082 9050',
         'phone2' => '073 019 7093',
-        'whatsapp' => '073 019 7093',
+        'whatsapp' => '082 082 9050',
         'address' => "124 Adderley Street\nCape Town CBD\n8001",
         'collection_address' => "124 Adderley Street, Cape Town CBD, 8001",
         'hours' => 'Mon–Fri 08:00–17:00',

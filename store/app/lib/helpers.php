@@ -237,7 +237,7 @@ function valid_email(string $email): bool
     return (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-/** Normalise a South African phone number for WhatsApp links: 073 019 7093 → 27730197093 */
+/** Normalise a South African phone number for WhatsApp links: 082 082 9050 → 27820829050 */
 function wa_number(string $phone): string
 {
     $d = preg_replace('/\D+/', '', $phone);

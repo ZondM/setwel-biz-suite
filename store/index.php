@@ -42,6 +42,7 @@ $routes = [
     ['GET', '/search', 'search_page'],
     ['GET', '/specials', 'specials_page'],
     ['GET', '/new', 'new_page'],
+    ['GET', '/weekly-specials', 'weekly_page'],
     ['GET', '/api/suggest', 'suggest_api'],
     ['GET|POST', '/quote', 'quote_page'],
     ['GET|POST', '/contact', 'contact_page'],

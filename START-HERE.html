@@ -352,6 +352,19 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <li>Check <strong>https://setwelafrica.com/specials</strong>. It is your Setwel-branded catalogue. Click <strong>Print / save as PDF catalogue</strong> to get a PDF you can WhatsApp or email to customers.</li>
 <li>On the end date, sale prices and banners switch off by themselves.</li>
 </ol>
+<h2>F2. Weekly specials (HP, Riso, Brother cartridges)</h2>
+<p>The page <strong>https://setwelafrica.com/weekly-specials</strong> has a sliding showcase, a countdown to the end of the week, a moving price strip (also on the home page) and HP / Riso / Brother buttons.</p>
+<p><strong>Load the week's specials (Excel, quickest):</strong></p>
+<ol>
+<li>Open <strong>Weekly-Specials-Template.xlsx</strong> (in the <code>dist</code> folder). Fill in the first sheet, one cartridge per row. The <em>Example</em> sheet shows how.<ul>
+<li>Product already on the website: <strong>SKU</strong>, <strong>Sale price</strong>, <strong>Sale ends</strong> (e.g. Sunday), <strong>Weekly special</strong> = <code>yes</code>.</li>
+<li>New product (e.g. Riso): also <strong>Name</strong>, <strong>Brand</strong>, <strong>Category</strong> (<code>Ink &amp; Toner</code>), <strong>Selling price</strong> (normal price) and descriptions.</li>
+</ul>
+</li>
+<li>Admin → <strong>Import</strong> → choose the file → <strong>Add new &amp; update existing products</strong> → Preview → <strong>Apply</strong>.</li>
+</ol>
+<p><strong>Or one by one:</strong> Admin → Products → open the product → set <strong>Sale price</strong> and <strong>Sale ends</strong> → tick <strong>Weekly special</strong> → Save.</p>
+<p>After the <em>Sale ends</em> date the product leaves the page by itself. Next week, load the new list. To clear old ones early: Admin → Products → show <strong>Weekly specials</strong> → tick all → <strong>Remove from Weekly specials</strong>.</p>
 <h2>G. Orders</h2>
 <ol>
 <li>You get an email for every new order. Admin → <strong>Orders</strong> → open the order.</li>

@@ -30,6 +30,7 @@ function admin_products(): void
         'sale' => 'p.sale_price > 0',
         'new' => 'p.is_new = 1',
         'special' => 'p.is_special = 1',
+        'weekly' => 'p.is_weekly = 1',
         'noprice' => '(p.price IS NULL OR p.price = 0)',
         'noimage' => 'NOT EXISTS (SELECT 1 FROM product_images i WHERE i.product_id = p.id)',
         'out' => "p.stock_status = 'out_of_stock'",
@@ -80,6 +81,12 @@ function admin_products_bulk(): void
             break;
         case 'not_special':
             q("UPDATE products SET is_special = 0 WHERE id IN ($in)");
+            break;
+        case 'weekly':
+            q("UPDATE products SET is_weekly = 1, updated_at = ? WHERE id IN ($in)", [now()]);
+            break;
+        case 'not_weekly':
+            q("UPDATE products SET is_weekly = 0, updated_at = ? WHERE id IN ($in)", [now()]);
             break;
         case 'end_sale':
             q("UPDATE products SET sale_price = NULL, sale_ends = NULL, updated_at = ? WHERE id IN ($in)", [now()]);
@@ -139,6 +146,7 @@ function admin_product_form(?string $id = null): void
         $d['featured'] = !empty($_POST['featured']) ? 1 : 0;
         $d['is_new'] = !empty($_POST['is_new']) ? 1 : 0;
         $d['is_special'] = !empty($_POST['is_special']) ? 1 : 0;
+        $d['is_weekly'] = !empty($_POST['is_weekly']) ? 1 : 0;
         $d['brand_id'] = ($_POST['new_brand'] ?? '') !== '' ? find_or_create('brands', $_POST['new_brand']) : (((int)($_POST['brand_id'] ?? 0)) ?: null);
         $d['category_id'] = ($_POST['new_category'] ?? '') !== '' ? find_or_create('categories', $_POST['new_category']) : (((int)($_POST['category_id'] ?? 0)) ?: null);
         if (!$d['price'] && $d['cost_price']) {
@@ -255,7 +263,7 @@ function admin_export(string $type): void
     if ($type === 'csv') {
         csv_download("$name.csv", $rows);
     }
-    xlsx_download("$name.xlsx", $rows, [14, 48, 12, 16, 14, 12, 11, 12, 13, 8, 9, 40, 50, 50, 40, 40, 14, 14, 20, 30, 40]);
+    xlsx_download("$name.xlsx", $rows, [14, 48, 12, 16, 14, 12, 11, 12, 13, 8, 9, 9, 9, 9, 40, 50, 50, 40, 40, 14, 14, 20, 30, 40]);
 }
 
 

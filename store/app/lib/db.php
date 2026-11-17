@@ -87,7 +87,7 @@ function schema_sql(): array
         'brands' => "id ID, name VARCHAR(120) NOT NULL, slug VARCHAR(130) NOT NULL UNIQUE, description TEXT, logo VARCHAR(255), sort_order INT DEFAULT 0, visible INT DEFAULT 1",
         'products' => "id ID, sku VARCHAR(80) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL UNIQUE, brand_id INT NULL, category_id INT NULL,
             short_description TEXT, description TEXT, specs TEXT, compatible TEXT, cost_price DECIMAL(12,2) NULL, price DECIMAL(12,2) NULL,
-            sale_price DECIMAL(12,2) NULL, sale_ends DATE NULL, stock_status VARCHAR(20) DEFAULT 'in_stock', visible INT DEFAULT 1, featured INT DEFAULT 0, is_new INT DEFAULT 0, is_special INT DEFAULT 0,
+            sale_price DECIMAL(12,2) NULL, sale_ends DATE NULL, stock_status VARCHAR(20) DEFAULT 'in_stock', visible INT DEFAULT 1, featured INT DEFAULT 0, is_new INT DEFAULT 0, is_special INT DEFAULT 0, is_weekly INT DEFAULT 0,
             mpn VARCHAR(80), gtin VARCHAR(40), warranty VARCHAR(120), meta_title VARCHAR(255), meta_description TEXT, created_at DATETIME, updated_at DATETIME",
         'product_images' => "id ID, product_id INT NOT NULL, path VARCHAR(255) NOT NULL, thumb VARCHAR(255), alt VARCHAR(255), sort_order INT DEFAULT 0",
         'orders' => "id ID, ref VARCHAR(20) NOT NULL UNIQUE, token VARCHAR(64) NOT NULL, status VARCHAR(30) NOT NULL, payment_method VARCHAR(20) NOT NULL, payment_status VARCHAR(20) DEFAULT 'unpaid',
@@ -128,7 +128,7 @@ function schema_sql(): array
     return $out;
 }
 
-const SCHEMA_VERSION = '2';
+const SCHEMA_VERSION = '3';
 
 /** Columns added after the first release: added to older databases automatically. */
 function schema_upgrades(): array
@@ -136,6 +136,7 @@ function schema_upgrades(): array
     return [
         ['products', 'is_new', 'INT DEFAULT 0'],
         ['products', 'is_special', 'INT DEFAULT 0'],
+        ['products', 'is_weekly', 'INT DEFAULT 0'],
     ];
 }
 

@@ -38,6 +38,8 @@ $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' =
   <div class="hero-dots"></div>
 </section>
 
+<?php partial('weekly_ticker', ['items' => $weekly ?? []]); ?>
+
 <section class="section" aria-labelledby="cat-h">
   <div class="wrap">
     <div class="section-head"><div><h2 id="cat-h">Shop by category</h2><p>Everything your office, school or home office needs.</p></div><a class="more" href="<?= url('shop') ?>">All products →</a></div>

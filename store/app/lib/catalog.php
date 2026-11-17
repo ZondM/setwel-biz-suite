@@ -180,6 +180,20 @@ function products_specials(int $limit = 8): array
     return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY p.featured DESC, p.updated_at DESC LIMIT $limit", [date('Y-m-d')]);
 }
 
+/** Weekly specials: ticked "Weekly special", shown until their "Sale ends" date. HP, Riso and Brother first. */
+function products_weekly(int $limit = 200): array
+{
+    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_weekly = 1 AND (p.sale_ends IS NULL OR p.sale_ends >= ?)
+        ORDER BY CASE LOWER(b.name) WHEN 'hp' THEN 1 WHEN 'riso' THEN 2 WHEN 'brother' THEN 3 ELSE 4 END, b.name, p.name LIMIT $limit", [date('Y-m-d')]);
+}
+
+/** When this week's specials end: the latest "Sale ends" date among them, else this coming Sunday. */
+function weekly_ends(array $items): string
+{
+    $dates = array_filter(array_column($items, 'sale_ends'));
+    return $dates ? max($dates) : date('Y-m-d', strtotime('sunday this week'));
+}
+
 function products_new(int $limit = 8): array
 {
     return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_new = 1 ORDER BY c.sort_order, p.name LIMIT $limit");

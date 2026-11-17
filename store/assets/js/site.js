@@ -179,4 +179,51 @@
       a.addEventListener('click', function (e) { e.preventDefault(); cookie.classList.add('show'); });
     });
   }
+  // Weekly specials: sliding showcase (auto-advances; pauses on hover/focus; no auto-play with reduced motion)
+  $$('[data-showcase]').forEach(function (box) {
+    var slides = $$('.showcase-slide', box), dots = $$('.showcase-dots button', box), i = 0, timer = null;
+    if (slides.length < 2) { return; }
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var go = function (n) {
+      slides[i].classList.remove('active'); if (dots[i]) { dots[i].classList.remove('active'); }
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('active'); if (dots[i]) { dots[i].classList.add('active'); }
+    };
+    var stop = function () { clearInterval(timer); timer = null; };
+    var start = function () { if (!still && !timer) { timer = setInterval(function () { go(i + 1); }, 4500); } };
+    $('[data-prev]', box).addEventListener('click', function () { stop(); go(i - 1); start(); });
+    $('[data-next]', box).addEventListener('click', function () { stop(); go(i + 1); start(); });
+    dots.forEach(function (d, n) { d.addEventListener('click', function () { stop(); go(n); start(); }); });
+    box.addEventListener('mouseenter', stop);
+    box.addEventListener('mouseleave', start);
+    box.addEventListener('focusin', stop);
+    box.addEventListener('focusout', start);
+    var x0 = null;
+    box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; stop(); }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (x0 !== null) { var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) { go(i + (dx < 0 ? 1 : -1)); } }
+      x0 = null; start();
+    });
+    start();
+  });
+
+  // Weekly specials: countdown to the end of the week's specials
+  $$('[data-countdown]').forEach(function (el) {
+    var end = parseInt(el.getAttribute('data-countdown'), 10);
+    var set = function (k, v) { var b = $('[data-' + k + ']', el); if (b) { b.textContent = v; } };
+    var tick = function () {
+      var s = Math.max(0, Math.floor((end - Date.now()) / 1000));
+      set('d', Math.floor(s / 86400)); set('h', Math.floor(s % 86400 / 3600)); set('m', Math.floor(s % 3600 / 60)); set('s', s % 60);
+    };
+    tick(); setInterval(tick, 1000);
+  });
+
+  // Weekly specials: brand tabs (HP / Riso / Brother …)
+  $$('[data-brand-tab]').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var b = tab.getAttribute('data-brand-tab');
+      $$('[data-brand-tab]').forEach(function (t) { t.classList.toggle('active', t === tab); });
+      $$('[data-brand]').forEach(function (it) { it.hidden = b !== '' && it.getAttribute('data-brand') !== b; });
+    });
+  });
 })();

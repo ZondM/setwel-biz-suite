@@ -4,7 +4,7 @@
 function sitemap_xml(): void
 {
     header('Content-Type: application/xml; charset=utf-8');
-    $urls = [[abs_url('/'), date('Y-m-d')], [abs_url('shop'), date('Y-m-d')], [abs_url('specials'), date('Y-m-d')], [abs_url('quote'), null], [abs_url('contact'), null], [abs_url('credentials'), null]];
+    $urls = [[abs_url('/'), date('Y-m-d')], [abs_url('shop'), date('Y-m-d')], [abs_url('specials'), date('Y-m-d')], [abs_url('weekly-specials'), date('Y-m-d')], [abs_url('quote'), null], [abs_url('contact'), null], [abs_url('credentials'), null]];
     foreach (categories_visible() as $c) {
         $urls[] = [abs_url('category/' . $c['slug']), null];
     }

@@ -66,6 +66,7 @@
       <label class="check"><input type="checkbox" name="featured" value="1" <?= !empty($p['featured']) ? 'checked' : '' ?>> Popular (show on home page)</label>
       <label class="check"><input type="checkbox" name="is_new" value="1" <?= !empty($p['is_new']) ? 'checked' : '' ?>> New in Market</label>
       <label class="check"><input type="checkbox" name="is_special" value="1" <?= !empty($p['is_special']) ? 'checked' : '' ?>> Show on the Specials page</label>
+      <label class="check"><input type="checkbox" name="is_weekly" value="1" <?= !empty($p['is_weekly']) ? 'checked' : '' ?>> Weekly special <span class="hint">(moving showcase on the Weekly Specials page — set a sale price and "Sale ends" date above; it disappears automatically after that date)</span></label>
       <button class="btn btn-primary btn-lg" type="submit">Save product</button>
       <button class="btn" type="submit" name="save_new" value="1">Save &amp; add another</button>
     </div>

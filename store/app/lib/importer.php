@@ -23,6 +23,7 @@ function import_fields(): array
         'featured' => 'Featured (yes/no)',
         'is_new' => 'New in market (yes/no)',
         'is_special' => 'On special (yes/no)',
+        'is_weekly' => 'Weekly special (yes/no)',
         'short_description' => 'Short description',
         'description' => 'Full description',
         'specs' => 'Specifications',
@@ -53,6 +54,7 @@ function import_synonyms(): array
         'featured' => ['featured', 'feature', 'highlight', 'popular'],
         'is_new' => ['new', 'new in market', 'is new', 'new product'],
         'is_special' => ['special', 'on special', 'specials', 'promotion'],
+        'is_weekly' => ['weekly special', 'weekly specials', 'weekly', 'special of the week'],
         'short_description' => ['short description', 'summary', 'short desc', 'tagline'],
         'description' => ['description', 'long description', 'details', 'full description', 'desc'],
         'specs' => ['specs', 'specifications', 'specification', 'features', 'tech specs'],
@@ -275,7 +277,7 @@ function import_analyse(array $rows, array $map, array $opts): array
                 $d['stock_status'] = $s;
             }
         }
-        foreach (['visible', 'featured', 'is_new', 'is_special'] as $f) {
+        foreach (['visible', 'featured', 'is_new', 'is_special', 'is_weekly'] as $f) {
             if (($v = $get($f)) !== '') {
                 $b = parse_yes_no($v);
                 if ($b === -1) {
@@ -397,7 +399,7 @@ function import_apply(array $analysed): array
             }
             $d = $line['data'];
             $row = [];
-            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
+            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'is_weekly', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
                 if (array_key_exists($f, $d)) {
                     $row[$f] = $d[$f];
                 }
@@ -450,7 +452,7 @@ function import_apply(array $analysed): array
 /** Column headings used by the template and by the export (so an export can be edited and re-imported). */
 function export_headers(): array
 {
-    return ['SKU', 'Name', 'Brand', 'Category', 'Supplier cost (excl VAT)', 'Selling price', 'Sale price', 'Sale ends', 'Stock status', 'Visible', 'Featured', 'New in market', 'On special', 'Short description', 'Description', 'Specifications', 'Compatible printers', 'Image URLs', 'MPN', 'GTIN', 'Warranty', 'SEO title', 'SEO description'];
+    return ['SKU', 'Name', 'Brand', 'Category', 'Supplier cost (excl VAT)', 'Selling price', 'Sale price', 'Sale ends', 'Stock status', 'Visible', 'Featured', 'New in market', 'On special', 'Weekly special', 'Short description', 'Description', 'Specifications', 'Compatible printers', 'Image URLs', 'MPN', 'GTIN', 'Warranty', 'SEO title', 'SEO description'];
 }
 
 function export_rows(): array
@@ -461,7 +463,7 @@ function export_rows(): array
         $imgs = array_map(fn($i) => abs_url($i['path']), product_images((int)$p['id']));
         $rows[] = [
             $p['sku'], $p['name'], $p['brand_name'], $p['category_name'], $p['cost_price'], $p['price'], $p['sale_price'], $p['sale_ends'],
-            stock_statuses()[$p['stock_status']] ?? $p['stock_status'], $p['visible'] ? 'yes' : 'no', $p['featured'] ? 'yes' : 'no', !empty($p['is_new']) ? 'yes' : 'no', !empty($p['is_special']) ? 'yes' : 'no',
+            stock_statuses()[$p['stock_status']] ?? $p['stock_status'], $p['visible'] ? 'yes' : 'no', $p['featured'] ? 'yes' : 'no', !empty($p['is_new']) ? 'yes' : 'no', !empty($p['is_special']) ? 'yes' : 'no', !empty($p['is_weekly']) ? 'yes' : 'no',
             $p['short_description'], $p['description'], str_replace("\n", ' | ', (string)$p['specs']), str_replace("\n", ', ', (string)$p['compatible']),
             implode(', ', $imgs), $p['mpn'], $p['gtin'], $p['warranty'], $p['meta_title'], $p['meta_description'],
         ];
@@ -472,7 +474,7 @@ function export_rows(): array
 /** Map our own export headings straight to fields (so round-trips need no manual mapping). */
 function export_header_map(): array
 {
-    return array_combine(array_map('norm_header', export_headers()), ['sku', 'name', 'brand', 'category', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'short_description', 'description', 'specs', 'compatible', 'image_urls', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description']);
+    return array_combine(array_map('norm_header', export_headers()), ['sku', 'name', 'brand', 'category', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'is_weekly', 'short_description', 'description', 'specs', 'compatible', 'image_urls', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description']);
 }
 
 function template_rows(): array

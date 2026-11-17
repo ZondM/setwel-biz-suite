@@ -82,6 +82,20 @@ Products list → tick the products (the top box ticks all) → **With ticked pr
 3. Check **https://setwelafrica.com/specials**. It is your Setwel-branded catalogue. Click **Print / save as PDF catalogue** to get a PDF you can WhatsApp or email to customers.
 4. On the end date, sale prices and banners switch off by themselves.
 
+## F2. Weekly specials (HP, Riso, Brother cartridges)
+
+The page **https://setwelafrica.com/weekly-specials** has a sliding showcase, a countdown to the end of the week, a moving price strip (also on the home page) and HP / Riso / Brother buttons.
+
+**Load the week's specials (Excel, quickest):**
+1. Open **Weekly-Specials-Template.xlsx** (in the `dist` folder). Fill in the first sheet, one cartridge per row. The *Example* sheet shows how.
+   - Product already on the website: **SKU**, **Sale price**, **Sale ends** (e.g. Sunday), **Weekly special** = `yes`.
+   - New product (e.g. Riso): also **Name**, **Brand**, **Category** (`Ink & Toner`), **Selling price** (normal price) and descriptions.
+2. Admin → **Import** → choose the file → **Add new & update existing products** → Preview → **Apply**.
+
+**Or one by one:** Admin → Products → open the product → set **Sale price** and **Sale ends** → tick **Weekly special** → Save.
+
+After the *Sale ends* date the product leaves the page by itself. Next week, load the new list. To clear old ones early: Admin → Products → show **Weekly specials** → tick all → **Remove from Weekly specials**.
+
 ## G. Orders
 
 1. You get an email for every new order. Admin → **Orders** → open the order.

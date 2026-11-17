@@ -84,6 +84,7 @@ $orgSchema = [
         <li><a href="<?= url('category/' . $c['slug']) ?>" class="<?= $current === '/category/' . $c['slug'] ? 'active' : '' ?>"><?= e($c['name']) ?></a></li>
       <?php endforeach; ?>
       <li class="nav-new"><a href="<?= url('new') ?>">New in Market</a></li>
+      <li class="nav-weekly"><a href="<?= url('weekly-specials') ?>" class="<?= $current === '/weekly-specials' ? 'active' : '' ?>">Weekly Specials</a></li>
       <li class="nav-special"><a href="<?= url('specials') ?>">Specials</a></li>
     </ul>
   </div>
@@ -110,6 +111,7 @@ $orgSchema = [
         <ul>
           <?php foreach ($cats as $c): if (!$c['product_count']) continue; ?><li><a href="<?= url('category/' . $c['slug']) ?>"><?= e($c['name']) ?></a></li><?php endforeach; ?>
           <li><a href="<?= url('new') ?>">New in Market</a></li>
+          <li><a href="<?= url('weekly-specials') ?>">Weekly Specials</a></li>
           <li><a href="<?= url('specials') ?>">Specials</a></li>
         </ul>
       </div>

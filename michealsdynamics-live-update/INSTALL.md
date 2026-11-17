@@ -1,4 +1,4 @@
-# Update the live site: remove 2 Novalac items + PayFast payment links
+# Update the live site: remove 7 wrongly priced items + PayFast payment links
 
 You need two files from this folder:
 - `michealsdynamics-site-update.zip`: the website update
@@ -12,12 +12,17 @@ You need two files from this folder:
 
 **Don't delete** the `product`, `images`, `specials`, `about`, `contact` and other existing folders. They stay as they are.
 
-## Step 2 — Remove the 2 Novalac product folders (optional tidy-up)
-In `michealsdynamics.co.za/product`, delete these 2 folders:
+## Step 2 — Remove the 7 old product folders (optional tidy-up)
+In `michealsdynamics.co.za/product`, delete these 7 folders (they had prices under R1):
 - `novalac-ready-to-feed-premium-90ml-91207ea`
 - `novalac-ready-to-feed-premature-70ml-90153ea`
+- `aptamil-1-ready-to-feed-plus-teats-70ml-24-111764ea`
+- `aptamil-1-ready-to-feed-70ml-24-109716ea`
+- `alula-gold-newborn-200ml-ready-to-feed-102304ea`
+- `nuyu-lds-grape-plus-chamomile-lip-balm-10g-108878ea`
+- `nuyu-ladies-watermelon-lip-balm-10g-tube-108871ea`
 
-(Even if you skip this, visitors who open those old links are sent to the Baby Food and Formula page.)
+(Even if you skip this, the update sends anyone opening those old links to the right category page.)
 
 ## Step 3 — PayFast settings (private, 10 min)
 1. In File Manager go to your **home folder**: the top level, where you can see `public_html` and `michealsdynamics.co.za`.

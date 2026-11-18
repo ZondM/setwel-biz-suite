@@ -12,6 +12,7 @@
           <div class="reel-price">
             <?php if ($price > 0): ?><strong><?= money($price, false) ?></strong><?php if ($sale): ?><s><?= money($p['price'], false) ?></s><?php endif; ?><?php else: ?><strong>Ask for price</strong><?php endif; ?>
           </div>
+          <span class="reel-stock"><?= e(stock_label($p)) ?></span>
           <?php if ($sale): ?><span class="reel-save">Save <?= (int)round(100 * (1 - (float)$p['sale_price'] / (float)$p['price'])) ?>%</span><?php endif; ?>
           <?php if (can_buy($p)): ?>
             <form action="<?= url('cart/add') ?>" method="post" class="reel-buy"><?= csrf_field() ?><input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>"><input type="hidden" name="qty" value="1"><button class="btn btn-gold" type="submit" name="buy_now" value="1">Buy now</button><button class="btn btn-ghost-light" type="submit" aria-label="Add <?= e($p['name']) ?> to cart"><?= icon('cart', 18) ?></button></form>

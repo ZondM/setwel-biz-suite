@@ -94,6 +94,8 @@ The page **https://setwelafrica.com/weekly-specials** has a sliding showcase, a 
 
 **Or one by one:** Admin → Products → open the product → set **Sale price** and **Sale ends** → tick **Weekly special** → Save.
 
+**Stock quantities:** put a number in the **Stock** column of the file (e.g. `23`), or in **Quantity in stock** on the product page. The website then shows "23 in stock" or "Only 2 left", stops customers ordering more than you have, and lowers the number by itself when an order is placed. At 0 the product shows "Out of stock". Cancelled orders do not put stock back; correct the number on the product page.
+
 After the *Sale ends* date the product leaves the page by itself. Leave *Sale ends* empty for **while stocks last**: the page then shows "While stocks last" instead of a countdown, and you remove the product yourself when it is sold out. Next week, load the new list. To clear old ones early: Admin → Products → show **Weekly specials** → tick all → **Remove from Weekly specials**.
 
 ## G. Orders

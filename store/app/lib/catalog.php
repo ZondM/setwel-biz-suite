@@ -11,6 +11,33 @@ function stock_statuses(): array
     ];
 }
 
+/** Status that matches a quantity on hand. */
+function stock_status_for_qty(int $qty): string
+{
+    return $qty <= 0 ? 'out_of_stock' : ($qty <= 5 ? 'low_stock' : 'in_stock');
+}
+
+/** What customers see: the quantity when we know it ("23 in stock", "Only 2 left"), else the status. */
+function stock_label(array $p): string
+{
+    if (isset($p['stock_qty']) && $p['stock_qty'] !== null && $p['stock_qty'] !== '') {
+        $n = (int)$p['stock_qty'];
+        return $n <= 0 ? 'Out of stock' : ($n <= 5 ? 'Only ' . $n . ' left' : $n . ' in stock');
+    }
+    return stock_statuses()[$p['stock_status']] ?? '';
+}
+
+/** Lower the quantity on hand after an order (only for products with a quantity). */
+function stock_reduce(int $productId, int $qty): void
+{
+    $cur = q_val('SELECT stock_qty FROM products WHERE id = ?', [$productId]);
+    if ($cur === null || $cur === false || $cur === '') {
+        return;
+    }
+    $left = max(0, (int)$cur - $qty);
+    q('UPDATE products SET stock_qty = ?, stock_status = ?, updated_at = ? WHERE id = ?', [$left, stock_status_for_qty($left), now(), $productId]);
+}
+
 /** Can this product be bought online right now? */
 function can_buy(array $p): bool
 {
@@ -180,11 +207,11 @@ function products_specials(int $limit = 8): array
     return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_weekly = 0 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY p.featured DESC, p.updated_at DESC LIMIT $limit", [date('Y-m-d')]);
 }
 
-/** Weekly specials: ticked "Weekly special", shown until their "Sale ends" date. HP, Riso and Brother first. */
+/** Weekly specials: ticked "Weekly special", shown until their "Sale ends" date. Brother, then HP, then Riso. */
 function products_weekly(int $limit = 200): array
 {
     return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_weekly = 1 AND (p.sale_ends IS NULL OR p.sale_ends >= ?)
-        ORDER BY CASE LOWER(b.name) WHEN 'hp' THEN 1 WHEN 'riso' THEN 2 WHEN 'brother' THEN 3 ELSE 4 END, b.name, p.name LIMIT $limit", [date('Y-m-d')]);
+        ORDER BY CASE LOWER(b.name) WHEN 'brother' THEN 1 WHEN 'hp' THEN 2 WHEN 'riso' THEN 3 ELSE 4 END, b.name, p.name LIMIT $limit", [date('Y-m-d')]);
 }
 
 /** When this week's specials end: the latest "Sale ends" date among them ('' = no end date, while stocks last). */

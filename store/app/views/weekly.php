@@ -46,6 +46,7 @@ $endsTs = $ends ? strtotime($ends . ' 23:59:59') : 0;
                   <?php if ($sale): ?><span class="price-old"><?= money($p['price'], false) ?></span><span class="save">Save <?= money((float)$p['price'] - (float)$p['sale_price'], false) ?> (<?= (int)round(100 * (1 - (float)$p['sale_price'] / (float)$p['price'])) ?>%)</span><?php endif; ?>
                 <?php else: ?><span class="price-quote">Price on request</span><?php endif; ?>
               </div>
+              <p class="showcase-stock stock stock-<?= e($p['stock_status']) ?>"><?= e(stock_label($p)) ?></p>
               <div class="showcase-actions">
                 <?php if (can_buy($p)): ?>
                   <form action="<?= url('cart/add') ?>" method="post"><?= csrf_field() ?><input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>"><input type="hidden" name="qty" value="1"><button class="btn btn-gold btn-lg" type="submit"><?= icon('cart', 18) ?> Add to cart</button></form>

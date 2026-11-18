@@ -275,6 +275,7 @@ function import_analyse(array $rows, array $map, array $opts): array
                 $line['errors'][] = 'Stock "' . $v . '" not understood. Use: in stock, low stock, on order, out of stock, or a quantity.';
             } else {
                 $d['stock_status'] = $s;
+                $d['stock_qty'] = is_numeric(trim($v)) ? max(0, (int)$v) : null;
             }
         }
         foreach (['visible', 'featured', 'is_new', 'is_special', 'is_weekly'] as $f) {
@@ -399,7 +400,7 @@ function import_apply(array $analysed): array
             }
             $d = $line['data'];
             $row = [];
-            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'visible', 'featured', 'is_new', 'is_special', 'is_weekly', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
+            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'stock_qty', 'visible', 'featured', 'is_new', 'is_special', 'is_weekly', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
                 if (array_key_exists($f, $d)) {
                     $row[$f] = $d[$f];
                 }
@@ -463,7 +464,7 @@ function export_rows(): array
         $imgs = array_map(fn($i) => abs_url($i['path']), product_images((int)$p['id']));
         $rows[] = [
             $p['sku'], $p['name'], $p['brand_name'], $p['category_name'], $p['cost_price'], $p['price'], $p['sale_price'], $p['sale_ends'],
-            stock_statuses()[$p['stock_status']] ?? $p['stock_status'], $p['visible'] ? 'yes' : 'no', $p['featured'] ? 'yes' : 'no', !empty($p['is_new']) ? 'yes' : 'no', !empty($p['is_special']) ? 'yes' : 'no', !empty($p['is_weekly']) ? 'yes' : 'no',
+            ($p['stock_qty'] !== null ? (int)$p['stock_qty'] : (stock_statuses()[$p['stock_status']] ?? $p['stock_status'])), $p['visible'] ? 'yes' : 'no', $p['featured'] ? 'yes' : 'no', !empty($p['is_new']) ? 'yes' : 'no', !empty($p['is_special']) ? 'yes' : 'no', !empty($p['is_weekly']) ? 'yes' : 'no',
             $p['short_description'], $p['description'], str_replace("\n", ' | ', (string)$p['specs']), str_replace("\n", ', ', (string)$p['compatible']),
             implode(', ', $imgs), $p['mpn'], $p['gtin'], $p['warranty'], $p['meta_title'], $p['meta_description'],
         ];

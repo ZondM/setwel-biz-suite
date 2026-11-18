@@ -14,7 +14,7 @@
         <?php else: ?>
           <span class="price-quote">Price on request</span>
         <?php endif; ?>
-        <div><span class="stock stock-<?= e($p['stock_status']) ?>"><?= e(stock_statuses()[$p['stock_status']] ?? '') ?></span></div>
+        <div><span class="stock stock-<?= e($p['stock_status']) ?>"><?= e(stock_label($p)) ?></span></div>
       </div>
       <?php if (can_buy($p)): ?>
         <form action="<?= url('cart/add') ?>" method="post">

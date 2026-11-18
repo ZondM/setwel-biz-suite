@@ -6,7 +6,7 @@ $sub = $totals['subtotal'];
 ?>
 <div class="wrap">
   <div class="steps"><span>1. Cart</span> › <span class="on">2. Details &amp; payment</span> › <span>3. Done</span></div>
-  <?php if ($errors): ?><div class="alert alert-error" role="alert">Please check the highlighted fields below.</div><?php endif; ?>
+  <?php if ($errors): ?><div class="alert alert-error" role="alert"><?= isset($errors['stock']) ? e($errors['stock']) . ' <a href="' . url('cart') . '">Go to cart</a>' : 'Please check the highlighted fields below.' ?></div><?php endif; ?>
   <form id="checkout-form" method="post" class="cart-layout" style="padding-top:0" novalidate data-subtotal="<?= e($sub) ?>" data-fee="<?= e((float)setting('delivery_fee')) ?>" data-threshold="<?= e((float)setting('free_delivery_threshold')) ?>">
     <div>
       <h1>Checkout</h1>

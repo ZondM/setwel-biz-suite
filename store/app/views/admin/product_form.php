@@ -61,6 +61,7 @@
     </div>
     <div class="card form">
       <h2>Availability</h2>
+      <label>Quantity in stock<input type="number" name="stock_qty" min="0" step="1" value="<?= isset($p['stock_qty']) && $p['stock_qty'] !== null ? (int)$p['stock_qty'] : '' ?>" style="max-width:140px"><span class="hint">Shown on the website ("23 in stock", "Only 2 left") and lowered automatically when someone orders. Leave empty to use the status below instead.</span></label>
       <label>Stock status<select name="stock_status"><?php foreach (stock_statuses() as $k => $l): ?><option value="<?= $k ?>" <?= ($p['stock_status'] ?? '') === $k ? 'selected' : '' ?>><?= e($l) ?></option><?php endforeach; ?></select><span class="hint">"Out of stock" products can only be quoted, not bought.</span></label>
       <label class="check"><input type="checkbox" name="visible" value="1" <?= !empty($p['visible']) ? 'checked' : '' ?>> Visible on website</label>
       <label class="check"><input type="checkbox" name="featured" value="1" <?= !empty($p['featured']) ? 'checked' : '' ?>> Popular (show on home page)</label>

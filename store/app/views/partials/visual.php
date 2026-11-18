@@ -25,7 +25,7 @@ else:
     <text x="100" y="176" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="14" font-weight="700" fill="#1a2f45"><?= e(trim($brand . ' ' . $model . ' · ' . $label)) ?></text>
   <?php else: ?>
     <rect x="52" y="58" width="96" height="84" rx="10" fill="#1a2f45"/>
-    <text x="100" y="96" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="22" font-weight="800" fill="#e2c070"><?= e(strtoupper($brand ?: 'Setwel')) ?></text>
-    <text x="100" y="124" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="15" font-weight="700" fill="#fff"><?= e($p['sku']) ?></text>
+    <text x="100" y="96" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="22" font-weight="800" fill="#e2c070"<?= strlen($brand) > 5 ? ' textLength="82" lengthAdjust="spacingAndGlyphs"' : '' ?>><?= e(strtoupper($brand ?: 'Setwel')) ?></text>
+    <text x="100" y="124" text-anchor="middle" font-family="system-ui,Segoe UI,Arial" font-size="15" font-weight="700" fill="#fff"<?= strlen($p['sku']) > 8 ? ' textLength="82" lengthAdjust="spacingAndGlyphs"' : '' ?>><?= e($p['sku']) ?></text>
   <?php endif; ?>
 </svg><?php endif;

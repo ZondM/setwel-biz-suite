@@ -51,7 +51,7 @@
         <td><?= e($p['sku']) ?></td>
         <td class="num muted"><?= $p['cost_price'] ? money($p['cost_price']) : '—' ?></td>
         <td class="num"><?= $p['price'] ? money($p['price']) : '<span class="badge warn">Quote</span>' ?><?php if (sale_active($p)): ?><br><span class="badge bad">Sale <?= money($p['sale_price']) ?></span><?php endif; ?></td>
-        <td><?= e(stock_statuses()[$p['stock_status']] ?? '') ?></td>
+        <td><?= e(stock_label($p)) ?></td>
         <td><?= $p['visible'] ? '<span class="badge ok">Visible</span>' : '<span class="badge">Hidden</span>' ?><?= $p['featured'] ? ' <span class="badge gold">Popular</span>' : '' ?><?= !empty($p['is_new']) ? ' <span class="badge info">New</span>' : '' ?><?= !empty($p['is_special']) ? ' <span class="badge bad">Special</span>' : '' ?><?= !empty($p['is_weekly']) ? ' <span class="badge bad">Weekly</span>' : '' ?><br><a href="<?= product_url($p) ?>" target="_blank" class="hint">view ↗</a></td>
       </tr>
     <?php endforeach; ?>

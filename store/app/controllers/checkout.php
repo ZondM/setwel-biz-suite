@@ -15,6 +15,15 @@ function cart_add_action(): void
         back('/shop');
     }
     $qty = max(1, min(999, (int)($_POST['qty'] ?? 1)));
+    $inCart = (int)(cart_raw()[(int)$p['id']] ?? 0);
+    if ($p['stock_qty'] !== null && $inCart + $qty > (int)$p['stock_qty']) {
+        $qty = max(0, (int)$p['stock_qty'] - $inCart);
+        if ($qty < 1) {
+            flash('error', 'Sorry, we only have ' . (int)$p['stock_qty'] . ' of ' . $p['name'] . ' in stock and they are already in your cart.');
+            back('/cart');
+        }
+        flash('info', 'We have ' . (int)$p['stock_qty'] . ' of this item in stock.');
+    }
     cart_add((int)$p['id'], $qty);
     flash('success', $p['name'] . ' added to your cart.');
     if (!empty($_POST['buy_now'])) {
@@ -26,7 +35,13 @@ function cart_add_action(): void
 function cart_update_action(): void
 {
     foreach ((array)($_POST['qty'] ?? []) as $id => $qty) {
-        cart_set((int)$id, max(0, min(999, (int)$qty)));
+        $qty = max(0, min(999, (int)$qty));
+        $have = q_val('SELECT stock_qty FROM products WHERE id = ?', [(int)$id]);
+        if ($have !== null && $have !== false && $qty > (int)$have) {
+            $qty = (int)$have;
+            flash('info', 'We have ' . (int)$have . ' of one of your items in stock, so we changed the quantity.');
+        }
+        cart_set((int)$id, $qty);
     }
     if (!empty($_POST['remove'])) {
         cart_set((int)$_POST['remove'], 0);
@@ -87,6 +102,12 @@ function checkout_page(): void
         if (empty($_POST['terms'])) {
             $errors['terms'] = 'Please accept the terms and privacy policy.';
         }
+        foreach ($lines as $l) {
+            $have = $l['product']['stock_qty'] ?? null;
+            if ($have !== null && $l['qty'] > (int)$have) {
+                $errors['stock'] = 'Only ' . (int)$have . ' of ' . $l['product']['name'] . ' left. Please lower the quantity in your cart.';
+            }
+        }
         if (!$errors) {
             $totals = cart_totals($lines, $d['delivery_method']);
             $ref = random_ref('SA');
@@ -101,6 +122,7 @@ function checkout_page(): void
             ]);
             foreach ($lines as $l) {
                 db_insert('order_items', ['order_id' => $orderId, 'product_id' => $l['product']['id'], 'sku' => $l['product']['sku'], 'name' => $l['product']['name'], 'price' => $l['price'], 'qty' => $l['qty'], 'line_total' => $l['total']]);
+                stock_reduce((int)$l['product']['id'], (int)$l['qty']);
             }
             order_add_history($orderId, 'pending_payment', 'Order placed online (' . ($d['payment_method'] === 'payfast' ? 'PayFast' : 'EFT') . ').');
             $pdo->commit();

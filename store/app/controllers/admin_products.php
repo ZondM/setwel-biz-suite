@@ -99,7 +99,7 @@ function admin_products_bulk(): void
         case 'stock':
             $s = $_POST['stock_status'] ?? '';
             if (isset(stock_statuses()[$s])) {
-                q("UPDATE products SET stock_status = ?, updated_at = ? WHERE id IN ($in)", [$s, now()]);
+                q("UPDATE products SET stock_status = ?, stock_qty = ?, updated_at = ? WHERE id IN ($in)", [$s, $s === 'out_of_stock' ? 0 : null, now()]);
             }
             break;
         case 'delete':
@@ -142,6 +142,11 @@ function admin_product_form(?string $id = null): void
         }
         $d['sale_ends'] = ($_POST['sale_ends'] ?? '') ?: null;
         $d['stock_status'] = isset(stock_statuses()[$_POST['stock_status'] ?? '']) ? $_POST['stock_status'] : 'in_stock';
+        $qtyIn = trim((string)($_POST['stock_qty'] ?? ''));
+        $d['stock_qty'] = $qtyIn === '' ? null : max(0, (int)$qtyIn);
+        if ($d['stock_qty'] !== null) {
+            $d['stock_status'] = stock_status_for_qty($d['stock_qty']);
+        }
         $d['visible'] = !empty($_POST['visible']) ? 1 : 0;
         $d['featured'] = !empty($_POST['featured']) ? 1 : 0;
         $d['is_new'] = !empty($_POST['is_new']) ? 1 : 0;

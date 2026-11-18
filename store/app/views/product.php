@@ -26,7 +26,7 @@ $wa = wa_number(setting('whatsapp'));
       <div class="p-meta">
         <span>SKU: <strong><?= e($p['sku']) ?></strong></span>
         <?php if ($p['mpn'] && $p['mpn'] !== $p['sku']): ?><span>Model: <strong><?= e($p['mpn']) ?></strong></span><?php endif; ?>
-        <span class="stock stock-<?= e($p['stock_status']) ?>"><?= e(stock_statuses()[$p['stock_status']] ?? '') ?></span>
+        <span class="stock stock-<?= e($p['stock_status']) ?>"><?= e(stock_label($p)) ?></span>
       </div>
       <?php if ($p['short_description']): ?><p><?= e($p['short_description']) ?></p><?php endif; ?>
 

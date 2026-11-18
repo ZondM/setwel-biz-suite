@@ -177,7 +177,7 @@ function products_on_sale(int $limit = 8): array
 /** Specials: products marked "special" plus products with a running sale price. */
 function products_specials(int $limit = 8): array
 {
-    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY p.featured DESC, p.updated_at DESC LIMIT $limit", [date('Y-m-d')]);
+    return q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_weekly = 0 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY p.featured DESC, p.updated_at DESC LIMIT $limit", [date('Y-m-d')]);
 }
 
 /** Weekly specials: ticked "Weekly special", shown until their "Sale ends" date. HP, Riso and Brother first. */

@@ -226,4 +226,35 @@
       $$('[data-brand]').forEach(function (it) { it.hidden = b !== '' && it.getAttribute('data-brand') !== b; });
     });
   });
+  // Home page: weekly specials reel (plays like a short video; pauses on hover; tap sides to skip)
+  $$('[data-reel]').forEach(function (reel) {
+    var frames = $$('.reel-frame', reel), bars = $$('.reel-bars span', reel), i = 0, timer = null, ms = 5000;
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    reel.style.setProperty('--reel-ms', ms + 'ms');
+    var show = function (n) {
+      frames[i].classList.remove('active');
+      i = (n + frames.length) % frames.length;
+      frames[i].classList.add('active');
+      bars.forEach(function (b, k) {
+        b.classList.remove('run'); b.classList.toggle('done', k < i);
+      });
+      if (bars[i] && !still) { void bars[i].offsetWidth; bars[i].classList.add('run'); }
+    };
+    var play = function () { if (!still && frames.length > 1 && !timer) { timer = setInterval(function () { show(i + 1); }, ms); } };
+    var pause = function () { clearInterval(timer); timer = null; };
+    show(0); play();
+    reel.addEventListener('mouseenter', function () { pause(); if (bars[i]) { bars[i].style.animationPlayState = 'paused'; } });
+    reel.addEventListener('mouseleave', function () { show(i); play(); });
+    reel.addEventListener('focusin', pause);
+    $('.reel-frames', reel).addEventListener('click', function (e) {
+      if (e.target.closest('a, button, form')) { return; }
+      var r = reel.getBoundingClientRect();
+      pause(); show(i + (e.clientX - r.left < r.width / 3 ? -1 : 1)); play();
+    });
+  });
+
+  // Categories dropdown: close when clicking elsewhere
+  $$('[data-navcats]').forEach(function (d) {
+    document.addEventListener('click', function (e) { if (d.open && !d.contains(e.target)) { d.open = false; } });
+  });
 })();

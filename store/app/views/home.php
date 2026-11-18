@@ -2,13 +2,9 @@
 $link = fn($u) => $u && str_starts_with($u, '/') ? url($u) : $u;
 $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' => 'bag', 'usb' => 'usb', 'ssd' => 'ssd', 'paper' => 'paper', 'plug' => 'plug', 'tag' => 'tag', 'clean' => 'clean', 'laptop' => 'laptop'];
 ?>
-<section class="hero" aria-label="Highlights">
-  <div class="hero-slides">
-    <?php if (!$banners) { $banners = [['title' => 'Genuine printers, ink & toner — delivered nationwide', 'subtitle' => setting('home_description'), 'link_url' => '/shop', 'button_text' => 'Shop now', 'image' => null]]; } ?>
-    <?php foreach ($banners as $i => $b): ?>
-      <div class="hero-slide<?= $i === 0 ? ' active' : '' ?>">
-        <div class="wrap hero-inner">
-          <div>
+<?php
+$heroText = function (array $b, int $i) use ($link) { ?>
+<div>
             <span class="eyebrow"><?= e(setting('reseller_statement')) ?></span>
             <?= $i === 0 ? '<h1>' : '<h2>' ?><?= e($b['title']) ?><?= $i === 0 ? '</h1>' : '</h2>' ?>
             <?php if ($b['subtitle']): ?><p><?= e($b['subtitle']) ?></p><?php endif; ?>
@@ -17,6 +13,26 @@ $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' =
               <a class="btn btn-outline btn-lg" href="<?= url('quote') ?>">Request a business quote</a>
             </div>
           </div>
+<?php };
+?>
+<?php if (!$banners) { $banners = [['title' => 'Genuine printers, ink & toner — delivered nationwide', 'subtitle' => setting('home_description'), 'link_url' => '/shop', 'button_text' => 'Shop now', 'image' => null]]; } ?>
+<?php if (!empty($weekly)): ?>
+<section class="hero hero-with-reel" aria-label="Highlights">
+  <div class="wrap hero-inner">
+    <div class="hero-slides">
+      <?php foreach ($banners as $i => $b): ?><div class="hero-slide<?= $i === 0 ? ' active' : '' ?>"><?php $heroText($b, $i); ?></div><?php endforeach; ?>
+    </div>
+    <?php partial('reel', ['items' => $weekly]); ?>
+  </div>
+  <div class="hero-dots"></div>
+</section>
+<?php else: ?>
+<section class="hero" aria-label="Highlights">
+  <div class="hero-slides">
+    <?php foreach ($banners as $i => $b): ?>
+      <div class="hero-slide<?= $i === 0 ? ' active' : '' ?>">
+        <div class="wrap hero-inner">
+          <?php $heroText($b, $i); ?>
           <div class="hero-media">
             <?php if (!empty($b['image'])): ?>
               <img src="<?= upload_url($b['image']) ?>" alt="" <?= $i === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>
@@ -37,8 +53,18 @@ $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' =
   </div>
   <div class="hero-dots"></div>
 </section>
+<?php endif; ?>
 
 <?php partial('weekly_ticker', ['items' => $weekly ?? []]); ?>
+
+<?php if (!empty($weekly)): $wEnds = weekly_ends($weekly); ?>
+<section class="section weekly-home" aria-labelledby="weekly-h">
+  <div class="wrap">
+    <div class="section-head"><div><h2 id="weekly-h">Weekly Specials</h2><p><?= $wEnds ? 'Until ' . e(date('l j F', strtotime($wEnds))) . ' or while stocks last.' : 'Limited stock — while stocks last.' ?> Pay by card, Instant EFT or bank EFT.</p></div><a class="btn btn-gold" href="<?= url('weekly-specials') ?>">All weekly specials →</a></div>
+    <div class="grid"><?php foreach (array_slice($weekly, 0, 8) as $p) { partial('card', ['p' => $p, 'buy' => true]); } ?></div>
+  </div>
+</section>
+<?php endif; ?>
 
 <section class="section" aria-labelledby="cat-h">
   <div class="wrap">
@@ -57,7 +83,7 @@ $catIcons = ['printer' => 'printer', 'drop' => 'drop', 'scan' => 'scan', 'bag' =
 <?php if ($deals): ?>
 <section class="section section-soft" aria-labelledby="deals-h">
   <div class="wrap">
-    <div class="section-head"><div><h2 id="deals-h">Specials</h2><p>This month’s deals while stocks last.</p></div><a class="more" href="<?= url('specials') ?>">All specials →</a></div>
+    <div class="section-head"><div><h2 id="deals-h">Monthly Specials</h2><p>This month’s deals on printers, bags and more, while stocks last.</p></div><a class="more" href="<?= url('specials') ?>">All monthly specials →</a></div>
     <div class="grid"><?php foreach ($deals as $p) { partial('card', ['p' => $p]); } ?></div>
   </div>
 </section>

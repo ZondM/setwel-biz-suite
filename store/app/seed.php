@@ -35,7 +35,7 @@ function seed_basics(): void
         'link_url' => '/shop', 'button_text' => 'Shop now', 'placement' => 'hero', 'active' => 1, 'sort_order' => 1, 'created_at' => now(),
     ]);
     db_insert('banners', [
-        'title' => 'October specials on Canon printers',
+        'title' => 'Monthly specials on Canon printers',
         'subtitle' => 'Monthly deals while stocks last.',
         'link_url' => '/specials', 'button_text' => 'View specials', 'placement' => 'hero', 'active' => 1, 'sort_order' => 2, 'created_at' => now(),
     ]);

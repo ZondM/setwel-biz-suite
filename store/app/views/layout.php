@@ -78,14 +78,24 @@ $orgSchema = [
 </header>
 <nav class="nav" id="main-nav" aria-label="Main">
   <div class="wrap">
-    <ul>
-      <li><a href="<?= url('shop') ?>" class="<?= $current === '/shop' ? 'active' : '' ?>">All products</a></li>
-      <?php foreach ($cats as $c): if (!$c['product_count']) continue; ?>
-        <li><a href="<?= url('category/' . $c['slug']) ?>" class="<?= $current === '/category/' . $c['slug'] ? 'active' : '' ?>"><?= e($c['name']) ?></a></li>
+    <ul class="nav-main">
+      <li class="nav-cats">
+        <details data-navcats>
+          <summary><?= icon('grid', 16) ?> All categories</summary>
+          <ul class="nav-dd">
+            <li><a href="<?= url('shop') ?>" class="<?= $current === '/shop' ? 'active' : '' ?>">All products</a></li>
+            <?php foreach ($cats as $c): if (!$c['product_count']) continue; ?>
+              <li><a href="<?= url('category/' . $c['slug']) ?>" class="<?= $current === '/category/' . $c['slug'] ? 'active' : '' ?>"><?= e($c['name']) ?> <small><?= (int)$c['product_count'] ?></small></a></li>
+            <?php endforeach; ?>
+          </ul>
+        </details>
+      </li>
+      <?php foreach ($cats as $c): if (!$c['product_count'] || !in_array($c['slug'], ['ink-toner', 'printers-scanners'], true)) continue; ?>
+        <li class="nav-quick"><a href="<?= url('category/' . $c['slug']) ?>" class="<?= $current === '/category/' . $c['slug'] ? 'active' : '' ?>"><?= e($c['name']) ?></a></li>
       <?php endforeach; ?>
-      <li class="nav-new"><a href="<?= url('new') ?>">New in Market</a></li>
-      <li class="nav-weekly"><a href="<?= url('weekly-specials') ?>" class="<?= $current === '/weekly-specials' ? 'active' : '' ?>">Weekly Specials</a></li>
-      <li class="nav-special"><a href="<?= url('specials') ?>">Specials</a></li>
+      <li class="nav-pill nav-new"><a href="<?= url('new') ?>" class="<?= $current === '/new' ? 'active' : '' ?>">New in Market</a></li>
+      <li class="nav-pill nav-special"><a href="<?= url('specials') ?>" class="<?= $current === '/specials' ? 'active' : '' ?>">Monthly Specials</a></li>
+      <li class="nav-pill nav-weekly"><a href="<?= url('weekly-specials') ?>" class="<?= $current === '/weekly-specials' ? 'active' : '' ?>"><?= icon('tag', 15) ?> Weekly Specials</a></li>
     </ul>
   </div>
 </nav>
@@ -112,7 +122,7 @@ $orgSchema = [
           <?php foreach ($cats as $c): if (!$c['product_count']) continue; ?><li><a href="<?= url('category/' . $c['slug']) ?>"><?= e($c['name']) ?></a></li><?php endforeach; ?>
           <li><a href="<?= url('new') ?>">New in Market</a></li>
           <li><a href="<?= url('weekly-specials') ?>">Weekly Specials</a></li>
-          <li><a href="<?= url('specials') ?>">Specials</a></li>
+          <li><a href="<?= url('specials') ?>">Monthly Specials</a></li>
         </ul>
       </div>
       <div>

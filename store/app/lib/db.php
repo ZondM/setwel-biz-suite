@@ -128,7 +128,7 @@ function schema_sql(): array
     return $out;
 }
 
-const SCHEMA_VERSION = '3';
+const SCHEMA_VERSION = '4';
 
 /** Columns added after the first release: added to older databases automatically. */
 function schema_upgrades(): array
@@ -157,6 +157,8 @@ function upgrade_schema(): void
             db()->exec("ALTER TABLE $table ADD COLUMN $col $def");
         }
     }
+    // Specials are monthly, not tied to one month's name.
+    q("UPDATE banners SET title = 'Monthly specials on Canon printers' WHERE title = 'October specials on Canon printers'");
 }
 
 function install_schema(): void

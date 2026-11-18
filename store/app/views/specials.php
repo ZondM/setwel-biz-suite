@@ -2,7 +2,7 @@
   <div class="catalogue-head">
     <img src="<?= asset('assets/img/logo-256.jpg') ?>" alt="" width="64" height="64">
     <div>
-      <h1><?= e(setting('business_name')) ?> specials — <?= e(date('F Y')) ?></h1>
+      <h1><?= e(setting('business_name')) ?> Monthly Specials</h1>
       <p><?= e(setting('reseller_statement')) ?> · <?= e(setting('phone')) ?> · <?= e(setting('email')) ?></p>
     </div>
   </div>

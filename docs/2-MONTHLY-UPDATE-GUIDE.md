@@ -72,11 +72,11 @@ Products list → tick the products (the top box ticks all) → **With ticked pr
 - **Many products:** name each photo with its SKU, e.g. `CMF3010.jpg` (extra photos: `CMF3010-2.jpg`). Then Admin → **Bulk images** → choose all the files → **Upload**.
 - Use photos from the distributor's white-label flyers or the manufacturer's reseller material. Your distributors have confirmed you may advertise their products.
 
-## F. Monthly specials (e.g. "October specials")
+## F. Monthly specials
 
 1. Give products a **Sale price** and a **Sale ends** date, either by editing each product or with the *Sale price* and *Sale ends* columns in your import file.
 2. Admin → **Banners & specials** → edit the banner:
-   - Headline: `October specials`
+   - Headline: `Monthly specials`
    - Button link: `/specials`
    - **Show until:** the last day of the month
 3. Check **https://setwelafrica.com/specials**. It is your Setwel-branded catalogue. Click **Print / save as PDF catalogue** to get a PDF you can WhatsApp or email to customers.

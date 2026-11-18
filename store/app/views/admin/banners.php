@@ -3,7 +3,7 @@
   <strong>Monthly specials in 3 steps:</strong>
   <ol>
     <li>Give products a <strong>sale price</strong> and <strong>sale end date</strong> (edit a product, or use the “Sale price” and “Sale ends” columns in your import file). Right now <strong><?= $onSale ?></strong> product(s) are on special.</li>
-    <li>Create or edit a <strong>banner</strong> below (e.g. “October specials”) with link <code>/specials</code> and an end date.</li>
+    <li>Create or edit a <strong>banner</strong> below (e.g. “Monthly specials”) with link <code>/specials</code> and an end date.</li>
     <li>Your <a href="<?= url('specials') ?>" target="_blank">Specials page</a> fills itself — customers can also print it or save it as a PDF catalogue.</li>
   </ol>
   Banners switch on and off by themselves using the start and end dates.

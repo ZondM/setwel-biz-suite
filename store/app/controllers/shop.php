@@ -89,9 +89,9 @@ function search_page(): void
 
 function specials_page(): void
 {
-    $items = q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY c.sort_order, b.name, p.name", [date('Y-m-d')]);
+    $items = q_all(PRODUCT_SELECT . " WHERE p.visible = 1 AND p.is_weekly = 0 AND (p.is_special = 1 OR (p.sale_price > 0 AND p.sale_price < p.price AND (p.sale_ends IS NULL OR p.sale_ends >= ?))) ORDER BY c.sort_order, b.name, p.name", [date('Y-m-d')]);
     $featured = $items ? [] : products_featured(12);
-    render('specials', ['items' => $items, 'featured' => $featured, 'meta' => ['title' => 'Specials — ' . date('F Y'), 'description' => 'This month\'s specials on printers, ink, toner and office technology at ' . setting('business_name') . '. While stocks last.']]);
+    render('specials', ['items' => $items, 'featured' => $featured, 'meta' => ['title' => 'Monthly Specials', 'description' => 'Monthly specials on printers, ink, toner and office technology at ' . setting('business_name') . '. While stocks last.']]);
 }
 
 function weekly_page(): void

@@ -178,7 +178,7 @@ $orgSchema = [
   <form class="chat-form" data-chat-form><input type="text" name="message" maxlength="1000" placeholder="Type your question…" autocomplete="off" aria-label="Your question"><button class="btn btn-gold" type="submit" aria-label="Send">➤</button></form>
   <a class="chat-wa" href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener">Prefer a person? WhatsApp <?= e(setting('whatsapp')) ?></a>
 </div>
-<button type="button" class="chat-open" data-chat-open aria-label="Ask our assistant"><?= icon('search', 18) ?> <span>Ask us — instant answers</span></button>
+<button type="button" class="chat-open" data-chat-open aria-label="Ask our assistant"><?= icon('chat', 20) ?> <span class="chat-open-long">Ask us — instant answers</span><span class="chat-open-short">Ask us</span></button>
 <?php endif; ?>
 <a class="wa-float" href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode('Hi ' . $biz . ', I have a question about ') ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><?= icon('whatsapp', 30) ?></a>
 

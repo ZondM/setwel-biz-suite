@@ -31,6 +31,7 @@ function admin_products(): void
         'new' => 'p.is_new = 1',
         'special' => 'p.is_special = 1',
         'weekly' => 'p.is_weekly = 1',
+        'dearer' => 'p.competitor_price > 0 AND COALESCE(NULLIF(p.sale_price, 0), p.price) > p.competitor_price',
         'noprice' => '(p.price IS NULL OR p.price = 0)',
         'noimage' => 'NOT EXISTS (SELECT 1 FROM product_images i WHERE i.product_id = p.id)',
         'out' => "p.stock_status = 'out_of_stock'",
@@ -136,11 +137,12 @@ function admin_product_form(?string $id = null): void
         foreach (['sku', 'name', 'short_description', 'description', 'specs', 'compatible', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $k) {
             $d[$k] = trim((string)($_POST[$k] ?? ''));
         }
-        foreach (['cost_price', 'price', 'sale_price'] as $k) {
+        foreach (['cost_price', 'price', 'sale_price', 'competitor_price'] as $k) {
             $v = parse_money($_POST[$k] ?? '');
             $d[$k] = ($v === null || is_nan($v)) ? null : $v;
         }
         $d['sale_ends'] = ($_POST['sale_ends'] ?? '') ?: null;
+        $d['competitor_name'] = mb_substr(trim((string)($_POST['competitor_name'] ?? '')), 0, 120) ?: null;
         $d['stock_status'] = isset(stock_statuses()[$_POST['stock_status'] ?? '']) ? $_POST['stock_status'] : 'in_stock';
         $qtyIn = trim((string)($_POST['stock_qty'] ?? ''));
         $d['stock_qty'] = $qtyIn === '' ? null : max(0, (int)$qtyIn);

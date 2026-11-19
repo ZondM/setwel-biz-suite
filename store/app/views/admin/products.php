@@ -12,7 +12,7 @@
   <select name="brand"><option value="">All brands</option><?php foreach ($brands as $b): ?><option value="<?= (int)$b['id'] ?>" <?= $f['brand'] === (int)$b['id'] ? 'selected' : '' ?>><?= e($b['name']) ?></option><?php endforeach; ?></select>
   <select name="category"><option value="">All categories</option><?php foreach ($categories as $c): ?><option value="<?= (int)$c['id'] ?>" <?= $f['category'] === (int)$c['id'] ? 'selected' : '' ?>><?= e($c['name']) ?></option><?php endforeach; ?></select>
   <select name="show">
-    <?php foreach (['' => 'All', 'visible' => 'Visible', 'hidden' => 'Hidden', 'sale' => 'On sale', 'new' => 'New in Market', 'special' => 'Specials', 'weekly' => 'Weekly specials', 'noprice' => 'No price', 'noimage' => 'No photo', 'out' => 'Out of stock'] as $k => $l): ?><option value="<?= $k ?>" <?= $f['show'] === $k ? 'selected' : '' ?>><?= $l ?></option><?php endforeach; ?>
+    <?php foreach (['' => 'All', 'visible' => 'Visible', 'hidden' => 'Hidden', 'sale' => 'On sale', 'new' => 'New in Market', 'special' => 'Specials', 'weekly' => 'Weekly specials', 'dearer' => 'Dearer than competitor', 'noprice' => 'No price', 'noimage' => 'No photo', 'out' => 'Out of stock'] as $k => $l): ?><option value="<?= $k ?>" <?= $f['show'] === $k ? 'selected' : '' ?>><?= $l ?></option><?php endforeach; ?>
   </select>
   <button class="btn">Filter</button>
 </form>

@@ -58,6 +58,10 @@
       <button type="button" class="btn btn-sm" data-calc-price data-step="<?= e(setting('price_rounding')) ?>" data-default="<?= e(setting('markup_percent')) ?>" data-rules="<?= e(json_encode(array_map(fn($r) => ['b' => $r['brand_id'] !== null ? (int)$r['brand_id'] : null, 'c' => $r['category_id'] !== null ? (int)$r['category_id'] : null, 'm' => (float)$r['markup']], price_rules()))) ?>">Calculate from cost</button>
       <label>Sale price (optional)<input type="text" inputmode="decimal" name="sale_price" value="<?= $v('sale_price') ?>"></label>
       <label>Sale ends<input type="date" name="sale_ends" value="<?= $v('sale_ends') ?>"><span class="hint">After this date the normal price returns automatically.</span></label>
+      <div class="form-row">
+        <label>Competitor price (R)<input type="text" name="competitor_price" value="<?= $v('competitor_price') ?>" inputmode="decimal"><span class="hint">Private. A price you saw elsewhere — for your own comparison and price-match decisions.</span></label>
+        <label>Where / when<input type="text" name="competitor_name" value="<?= $v('competitor_name') ?>" placeholder="e.g. Takealot, 18 Nov"></label>
+      </div>
     </div>
     <div class="card form">
       <h2>Availability</h2>

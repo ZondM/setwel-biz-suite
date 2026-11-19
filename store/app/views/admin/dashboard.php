@@ -3,6 +3,8 @@
   <div class="help"><strong>Before you launch:</strong><ul><?php foreach ($warnings as $w): ?><li><?= e($w) ?></li><?php endforeach; ?></ul></div>
 <?php endif; ?>
 <div class="stats">
+  <a class="stat <?= $stats['leads_new'] ? 'warn' : '' ?>" href="<?= url('admin/leads', ['status' => 'new']) ?>"><strong><?= $stats['leads_new'] ?></strong><span>Leads waiting for a reply</span></a>
+  <a class="stat" href="<?= url('admin/leads') ?>"><strong><?= $stats['leads_month'] ?></strong><span>Leads this month</span></a>
   <a class="stat" href="<?= url('admin/orders') ?>"><strong><?= $stats['orders_open'] ?></strong><span>Open orders</span></a>
   <a class="stat" href="<?= url('admin/orders') ?>"><strong><?= money($stats['sales_month'], false) ?></strong><span>Paid sales this month</span></a>
   <a class="stat" href="<?= url('admin/quotes') ?>"><strong><?= $stats['quotes_new'] ?></strong><span>New quote requests</span></a>

@@ -120,6 +120,10 @@ function suggest_api(): void
         'url' => product_url($p),
         'image' => upload_url($p['thumb'] ?: $p['image']),
         'price' => effective_price($p) > 0 ? money(effective_price($p), false) : 'Quote',
+        'id' => (int)$p['id'],
+        'amount' => effective_price($p),
+        'stock' => stock_label($p),
+        'buyable' => can_buy($p),
     ], $res['items']);
     header('Cache-Control: public, max-age=60');
     json_out(['items' => $items, 'total' => $res['total']]);
@@ -212,61 +216,6 @@ function credential_file(string $id): void
     send_private_file('docs', $d['file_path'], slugify($d['title']) . '.' . pathinfo($d['file_path'], PATHINFO_EXTENSION));
 }
 
-function quote_page(): void
-{
-    $errors = [];
-    $prefill = '';
-    if (!empty($_GET['product'])) {
-        $p = q_one('SELECT name, sku FROM products WHERE id = ? AND visible = 1', [(int)$_GET['product']]);
-        if ($p) {
-            $prefill = $p['name'] . ' (' . $p['sku'] . ') × ' . max(1, (int)($_GET['qty'] ?? 1));
-        }
-    } elseif (!empty($_GET['item'])) {
-        $prefill = mb_substr((string)$_GET['item'], 0, 200);
-    } elseif (!empty($_GET['cart'])) {
-        $prefill = implode("\n", array_map(fn($l) => $l['product']['name'] . ' (' . $l['product']['sku'] . ') × ' . $l['qty'], cart_lines()));
-    }
-    if (is_post()) {
-        $d = [
-            'name' => trim($_POST['name'] ?? ''), 'company' => trim($_POST['company'] ?? ''), 'customer_type' => trim($_POST['customer_type'] ?? ''),
-            'email' => trim($_POST['email'] ?? ''), 'phone' => trim($_POST['phone'] ?? ''), 'items' => trim($_POST['items'] ?? ''), 'message' => trim($_POST['message'] ?? ''),
-        ];
-        if ($d['name'] === '') {
-            $errors['name'] = 'Please enter your name.';
-        }
-        if (!valid_email($d['email'])) {
-            $errors['email'] = 'Please enter a valid email address.';
-        }
-        if ($d['items'] === '') {
-            $errors['items'] = 'Please tell us which products and quantities you need.';
-        }
-        if (empty($_POST['consent'])) {
-            $errors['consent'] = 'Please agree so we can use your details to send the quote.';
-        }
-        if (is_spam() || rate_limited('quote', 5, 3600)) {
-            $errors['form'] = 'Too many requests. Please try again later or WhatsApp us.';
-        }
-        if (!$errors) {
-            $d['ref'] = random_ref('Q');
-            $d['status'] = 'new';
-            $d['created_at'] = now();
-            $id = db_insert('quotes', array_map(fn($v) => mb_substr($v, 0, 5000), $d));
-            $rows = '';
-            foreach (['Name' => $d['name'], 'Company / school' => $d['company'], 'Customer type' => $d['customer_type'], 'Email' => $d['email'], 'Phone' => $d['phone']] as $k => $v) {
-                $rows .= '<tr><td style="color:#5b6573;padding:4px 12px 4px 0">' . e($k) . '</td><td><strong>' . e($v) . '</strong></td></tr>';
-            }
-            $body = '<table>' . $rows . '</table><h3>Products</h3><p>' . nl2br(e($d['items'])) . '</p>' . ($d['message'] ? '<h3>Message</h3><p>' . nl2br(e($d['message'])) . '</p>' : '')
-                . '<p><a href="' . e(abs_url('admin/quotes/' . $id)) . '">Open in admin</a></p>';
-            send_mail(setting('orders_email') ?: setting('email'), 'New quote request ' . $d['ref'] . ' from ' . $d['name'], email_layout('New quote request ' . $d['ref'], $body), [], $d['email']);
-            send_mail($d['email'], 'We received your quote request ' . $d['ref'], email_layout('Thank you — we are preparing your quote', '<p>Hi ' . e($d['name']) . ',</p><p>Thank you for your quote request (reference <strong>' . e($d['ref']) . '</strong>). We will email your quote within one working day.</p><p><strong>You asked for:</strong><br>' . nl2br(e($d['items'])) . '</p><p>Need it urgently? WhatsApp us on ' . e(setting('whatsapp')) . '.</p>'));
-            flash('success', 'Thank you! Your quote request ' . $d['ref'] . ' was sent. We will reply within one working day.');
-            redirect('/quote?sent=1');
-        }
-        keep_old($_POST);
-    }
-    render('quote', ['errors' => $errors, 'prefill' => $prefill, 'meta' => ['title' => 'Request a quote', 'description' => 'Request a quote for printers, ink, toner and office technology. Bulk and business pricing for companies, schools and government.']]);
-}
-
 function contact_page(): void
 {
     $errors = [];
@@ -290,9 +239,9 @@ function contact_page(): void
         if (!$errors) {
             $d['created_at'] = now();
             db_insert('messages', array_map(fn($v) => mb_substr($v, 0, 5000), $d));
-            send_mail(setting('email'), 'Website message: ' . ($d['subject'] ?: 'from ' . $d['name']), email_layout('New website message', '<p><strong>' . e($d['name']) . '</strong> · ' . e($d['email']) . ' · ' . e($d['phone']) . '</p><p>' . nl2br(e($d['message'])) . '</p>'), [], $d['email']);
-            flash('success', 'Thank you — your message was sent. We usually reply within a few working hours.');
-            redirect('/contact');
+            $lead = lead_create(['source' => 'contact', 'name' => $d['name'], 'email' => $d['email'], 'phone' => $d['phone'], 'message' => trim(($d['subject'] ? $d['subject'] . ': ' : '') . $d['message'])]);
+            lead_send_customer_reply($lead);
+            redirect(url('thanks/' . $lead['ref'], ['t' => $lead['token']]));
         }
         keep_old($_POST);
     }

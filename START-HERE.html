@@ -375,8 +375,21 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <li>For collections: set <strong>Ready for collection</strong>. Later, set <strong>Completed</strong>.</li>
 <li>Invoice / receipt PDF: the button at the top of the order.</li>
 </ol>
-<h2>H. Quote requests</h2>
-<p>Admin → <strong>Quote requests</strong> → open one → <strong>Reply by email</strong>. Set the status (Quote sent / Won / Lost) so you can track them.</p>
+<h2>H. Quote requests and leads</h2>
+<p>Every enquiry now lands in <strong>Admin → Leads</strong>: instant quotes, quote requests, contact messages, call-back requests and AI assistant conversations. The Leads page shows this month's numbers (leads, not contacted, time to first reply, quotes given, won, paid orders, WhatsApp clicks, chats). Red/orange rows have waited more than 2 hours.</p>
+<p><strong>Answer a lead:</strong> open it → <strong>Reply on WhatsApp</strong> (opens WhatsApp with a ready message and marks it "Contacted"), or Call / Email. Set the status to <strong>Won</strong> or <strong>Lost</strong> when you know.</p>
+<p><strong>Fix a price on a quote:</strong> open the lead → change the price or quantity under <em>Quote items</em> → <strong>Update &amp; send to customer</strong>. The customer gets the new quote by email with an "Accept &amp; pay" link; for WhatsApp customers, send them the <em>Customer's quote page</em> link.</p>
+<h3>One-time setup (15 minutes)</h3>
+<ol>
+<li><strong>WhatsApp alerts to your phone (free):</strong> save the number <strong>+34 644 66 32 62</strong> in your phone as "CallMeBot", send it the WhatsApp message <code>I allow callmebot to send me messages</code>, and copy the key it sends back into <strong>Admin → Settings → Leads, alerts &amp; follow-ups → WhatsApp alert key</strong>. Every new lead then arrives on your WhatsApp within seconds. (CallMeBot is a free outside service — if it ever stops, you still get the email alert.)</li>
+<li><strong>Follow-ups and reminders:</strong> cPanel → <strong>Cron Jobs</strong> → Common settings <strong>Once Per Hour</strong> → paste the command shown under <em>Cron key</em> in Settings (it starts with <code>wget -q -O /dev/null "https://setwelafrica.com/cron/...</code>) → <strong>Add New Cron Job</strong>. Every hour the store then:<ul>
+<li>emails customers who got an instant quote but did not pay (after 1 day and 3 days), and</li>
+<li>reminds you on WhatsApp/email about any lead nobody has contacted after 2 hours.</li>
+</ul>
+</li>
+<li><strong>Instant reply text:</strong> Settings → <em>Instant reply text</em> — shown on screen and emailed after every enquiry.</li>
+<li><strong>AI assistant (optional, paid per use):</strong> create an API key at <strong>console.anthropic.com</strong> (add a payment card and a monthly spend limit there), paste it into <strong>Settings → AI assistant → Anthropic API key</strong>, tick <strong>Show the AI assistant</strong>, and Save. An "Ask us — instant answers" button appears on every page. Add facts under <em>Extra facts</em> (e.g. same-day delivery areas, school payment terms). Read a few conversations under Leads in the first week.</li>
+</ol>
 <h2>I. Monthly 10-minute checklist</h2>
 <ul>
 <li>☐ Import the new supplier price sheet (A)</li>
@@ -501,8 +514,16 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <td>Free plans for small lists</td>
 </tr>
 <tr>
+<td>WhatsApp lead alerts (CallMeBot)</td>
+<td>Free (outside service, no guarantee — email alert is the backup)</td>
+</tr>
+<tr>
+<td>AI assistant (optional)</td>
+<td>Paid per use to Anthropic. Rough guide: <strong>Claude Opus 5.5 about R0.50–R1 per customer message (R3–R5 for a typical chat)</strong>; <strong>Haiku 5.5 about 40× cheaper</strong>. Depends on chat length; set a monthly spend limit at console.anthropic.com and a daily chat limit in Settings (default 50 chats/day).</td>
+</tr>
+<tr>
 <td><strong>Total extra per month</strong></td>
-<td><strong>About R20 (domain) + PayFast fees per sale</strong></td>
+<td><strong>About R20 (domain) + PayFast fees per sale</strong> (+ AI assistant use if switched on)</td>
 </tr>
 </tbody>
 </table>
@@ -520,5 +541,14 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <li><strong>Newsletter:</strong> the store collects sign-ups and exports the list. Sending the emails is done in Mailchimp/Brevo.</li>
 <li><strong>Courier:</strong> a flat rate plus free delivery over a threshold. No live courier quotes or automatic waybills.</li>
 <li><strong>Tested on:</strong> PHP 8.3 with both SQLite and MariaDB (the MySQL type cPanel uses), on desktop and mobile screen sizes.</li>
+</ul>
+<h2>Leads, WhatsApp and AI assistant — honest limits</h2>
+<ul>
+<li><strong>No automatic WhatsApp messages to customers.</strong> Sending WhatsApp messages <em>to customers</em> automatically (and an AI that answers on your WhatsApp number) needs the official <strong>WhatsApp Business Platform</strong> from Meta: a business verification, a phone number that is not used in the normal WhatsApp app, approved message templates and a fee per conversation. Until then: customers reach you with one tap (every button opens WhatsApp with a ready message), you get an instant WhatsApp alert, and you reply with one tap from Admin → Leads. Follow-ups to customers go by email.</li>
+<li><strong>Competitor prices are entered by you</strong> (product page → Competitor price, or a <em>Competitor price</em> column in an import). The store does not scan other websites — that breaks often and many sites forbid it. Admin → Products → filter <strong>Dearer than competitor</strong> shows where you are more expensive; the AI assistant may mention a recorded comparison but never promises a discount — price-match requests go to you.</li>
+<li><strong>Appointments</strong> are call-back requests with a preferred time (alert to you), not a calendar booking.</li>
+<li><strong>The AI assistant</strong> answers only from your product list and settings. It can still misunderstand a question — it is told to hand over to you when unsure, and every conversation that leads to a quote or call-back is saved under Leads for you to read. It could not be tested against the real AI service here (no API key); the full flow was tested with a stand-in.</li>
+<li><strong>WhatsApp alerts</strong> could not be tested from here (CallMeBot needs your phone to activate).</li>
+<li><strong>Speed:</strong> pages are small (about 120–170 KB, under ~1.3 s on a slow 4G test). If the live site still feels slow, the cause is usually the hosting server's response time — run <strong>pagespeed.web.dev</strong> on setwelafrica.com and send me the result.</li>
 </ul><p class="top"><a href="#">↑ Back to top</a></p></section>
 </main></body></html>

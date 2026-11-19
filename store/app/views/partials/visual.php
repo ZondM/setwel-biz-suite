@@ -4,7 +4,7 @@
  * an ink drop in the cartridge colour (cyan, magenta, …) or a brand tile.
  * @var array $p @var string $class
  */
-$src = ($p['image'] ?? null) ?: ($p['thumb'] ?? null);
+$src = !empty($small) ? (($p['thumb'] ?? null) ?: ($p['image'] ?? null)) : (($p['image'] ?? null) ?: ($p['thumb'] ?? null));
 if ($src):
 ?><img class="<?= e($class ?? '') ?>" src="<?= upload_url($src) ?>" alt="<?= e($p['name']) ?>" loading="lazy" width="400" height="400"><?php
 else:

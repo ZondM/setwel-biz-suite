@@ -4,6 +4,7 @@ $is = fn($p) => $cur === $p || ($p !== '/admin' && str_starts_with($cur, $p . '/
 $newOrders = (int)q_val("SELECT COUNT(*) FROM orders WHERE status IN ('pending_payment','payment_review','processing')");
 $newQuotes = (int)q_val("SELECT COUNT(*) FROM quotes WHERE status = 'new'");
 $newMsgs = (int)q_val('SELECT COUNT(*) FROM messages WHERE handled = 0');
+$newLeads = (int)q_val("SELECT COUNT(*) FROM leads WHERE status = 'new'");
 $pill = fn($n) => $n ? '<span class="pill">' . $n . '</span>' : '';
 ?><!doctype html>
 <html lang="en">
@@ -29,6 +30,7 @@ $pill = fn($n) => $n ? '<span class="pill">' . $n . '</span>' : '';
       <a class="<?= $is('/admin/pricing') ?>" href="<?= url('admin/pricing') ?>">Pricing rules</a>
       <a class="<?= $is('/admin/catalog') ?>" href="<?= url('admin/catalog') ?>">Categories &amp; brands</a>
       <div class="group">Sales</div>
+      <a class="<?= $is('/admin/leads') ?>" href="<?= url('admin/leads') ?>"><strong>Leads</strong> <?= $pill($newLeads) ?></a>
       <a class="<?= $is('/admin/orders') ?>" href="<?= url('admin/orders') ?>">Orders <?= $pill($newOrders) ?></a>
       <a class="<?= $is('/admin/quotes') ?>" href="<?= url('admin/quotes') ?>">Quote requests <?= $pill($newQuotes) ?></a>
       <a class="<?= $is('/admin/messages') ?>" href="<?= url('admin/messages') ?>">Messages <?= $pill($newMsgs) ?></a>

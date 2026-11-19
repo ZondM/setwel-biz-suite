@@ -87,7 +87,7 @@ function schema_sql(): array
         'brands' => "id ID, name VARCHAR(120) NOT NULL, slug VARCHAR(130) NOT NULL UNIQUE, description TEXT, logo VARCHAR(255), sort_order INT DEFAULT 0, visible INT DEFAULT 1",
         'products' => "id ID, sku VARCHAR(80) NOT NULL UNIQUE, name VARCHAR(255) NOT NULL, slug VARCHAR(255) NOT NULL UNIQUE, brand_id INT NULL, category_id INT NULL,
             short_description TEXT, description TEXT, specs TEXT, compatible TEXT, cost_price DECIMAL(12,2) NULL, price DECIMAL(12,2) NULL,
-            sale_price DECIMAL(12,2) NULL, sale_ends DATE NULL, stock_status VARCHAR(20) DEFAULT 'in_stock', visible INT DEFAULT 1, featured INT DEFAULT 0, is_new INT DEFAULT 0, is_special INT DEFAULT 0, is_weekly INT DEFAULT 0, stock_qty INT NULL,
+            sale_price DECIMAL(12,2) NULL, sale_ends DATE NULL, stock_status VARCHAR(20) DEFAULT 'in_stock', visible INT DEFAULT 1, featured INT DEFAULT 0, is_new INT DEFAULT 0, is_special INT DEFAULT 0, is_weekly INT DEFAULT 0, stock_qty INT NULL, competitor_price DECIMAL(12,2) NULL, competitor_name VARCHAR(120) NULL,
             mpn VARCHAR(80), gtin VARCHAR(40), warranty VARCHAR(120), meta_title VARCHAR(255), meta_description TEXT, created_at DATETIME, updated_at DATETIME",
         'product_images' => "id ID, product_id INT NOT NULL, path VARCHAR(255) NOT NULL, thumb VARCHAR(255), alt VARCHAR(255), sort_order INT DEFAULT 0",
         'orders' => "id ID, ref VARCHAR(20) NOT NULL UNIQUE, token VARCHAR(64) NOT NULL, status VARCHAR(30) NOT NULL, payment_method VARCHAR(20) NOT NULL, payment_status VARCHAR(20) DEFAULT 'unpaid',
@@ -107,6 +107,13 @@ function schema_sql(): array
         'pages' => "id ID, slug VARCHAR(80) NOT NULL UNIQUE, title VARCHAR(190) NOT NULL, content TEXT, meta_description TEXT, updated_at DATETIME",
         'price_rules' => "id ID, brand_id INT NULL, category_id INT NULL, markup DECIMAL(6,2) NOT NULL, note VARCHAR(190), created_at DATETIME",
         'import_presets' => "id ID, name VARCHAR(120) NOT NULL UNIQUE, mapping TEXT, created_at DATETIME",
+        'leads' => "id ID, ref VARCHAR(20) NOT NULL, token VARCHAR(48), source VARCHAR(30) NOT NULL, status VARCHAR(20) DEFAULT 'new',
+            name VARCHAR(150), phone VARCHAR(40), email VARCHAR(190), company VARCHAR(150), message TEXT, items TEXT, subtotal DECIMAL(12,2) NULL, total DECIMAL(12,2) NULL,
+            needs_price INT DEFAULT 0, valid_until DATE NULL, preferred_time VARCHAR(120), product_id INT NULL, chat_id INT NULL, order_id INT NULL,
+            followups INT DEFAULT 0, last_followup_at DATETIME NULL, first_response_at DATETIME NULL, owner_alerts INT DEFAULT 0, admin_notes TEXT,
+            created_at DATETIME, updated_at DATETIME",
+        'events' => "id ID, type VARCHAR(30) NOT NULL, label VARCHAR(190), path VARCHAR(255), created_at DATETIME",
+        'chats' => "id ID, skey VARCHAR(64) NOT NULL, messages TEXT, turns INT DEFAULT 0, tokens_in INT DEFAULT 0, tokens_out INT DEFAULT 0, lead_id INT NULL, ip VARCHAR(64), created_at DATETIME, updated_at DATETIME",
     ];
     $mysql = db_driver() === 'mysql';
     $out = [];
@@ -121,6 +128,9 @@ function schema_sql(): array
         ['product_images', 'idx_images_product', 'product_id'],
         ['order_items', 'idx_items_order', 'order_id'],
         ['order_history', 'idx_hist_order', 'order_id'],
+        ['leads', 'idx_leads_created', 'created_at'],
+        ['events', 'idx_events_created', 'created_at'],
+        ['chats', 'idx_chats_skey', 'skey'],
     ];
     foreach ($idx as [$t, $n, $c]) {
         $out[] = $mysql ? "CREATE INDEX $n ON $t ($c)" : "CREATE INDEX IF NOT EXISTS $n ON $t ($c)";
@@ -128,7 +138,7 @@ function schema_sql(): array
     return $out;
 }
 
-const SCHEMA_VERSION = '5';
+const SCHEMA_VERSION = '6';
 
 /** Columns added after the first release: added to older databases automatically. */
 function schema_upgrades(): array
@@ -138,6 +148,8 @@ function schema_upgrades(): array
         ['products', 'is_special', 'INT DEFAULT 0'],
         ['products', 'is_weekly', 'INT DEFAULT 0'],
         ['products', 'stock_qty', 'INT NULL'],
+        ['products', 'competitor_price', 'DECIMAL(12,2) NULL'],
+        ['products', 'competitor_name', 'VARCHAR(120) NULL'],
     ];
 }
 
@@ -157,6 +169,9 @@ function upgrade_schema(): void
         if (!in_array($col, table_columns($table), true)) {
             db()->exec("ALTER TABLE $table ADD COLUMN $col $def");
         }
+    }
+    if ((string)setting('cron_key') === '') {
+        setting_save('cron_key', bin2hex(random_bytes(6)));
     }
     // Specials are monthly, not tied to one month's name.
     q("UPDATE banners SET title = 'Monthly specials on Canon printers' WHERE title = 'October specials on Canon printers'");

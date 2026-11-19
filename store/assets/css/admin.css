@@ -119,3 +119,9 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--n
 .bulkbar select { width: auto; max-width: 100%; }
 .t td a strong { font-weight: 700; }
 .t td > a { text-decoration: none; }
+
+/* Leads */
+.row-warn td { background: #fff4e5; }
+.inline-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.inline-form select { width: auto; }
+.topline small { font-weight: 500; font-size: .9rem; }

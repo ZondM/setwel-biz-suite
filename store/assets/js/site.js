@@ -257,4 +257,114 @@
   $$('[data-navcats]').forEach(function (d) {
     document.addEventListener('click', function (e) { if (d.open && !d.contains(e.target)) { d.open = false; } });
   });
+  // Count WhatsApp / call clicks (anonymous). Every wa.me link counts, plus anything marked data-track.
+  var beacon = function (type, label) {
+    try {
+      var f = new FormData();
+      f.append('type', type); f.append('label', label || ''); f.append('path', location.pathname);
+      if (navigator.sendBeacon) { navigator.sendBeacon(S.base + '/api/track', f); }
+    } catch (e) { /* ignore */ }
+  };
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) { return; }
+    var href = a.getAttribute('href') || '';
+    if (a.hasAttribute('data-track')) { beacon(a.getAttribute('data-track'), a.getAttribute('data-label') || a.textContent.trim().slice(0, 80)); }
+    else if (href.indexOf('wa.me/') !== -1) { beacon('wa_click', a.getAttribute('aria-label') || a.textContent.trim().slice(0, 80)); }
+    else if (href.indexOf('tel:') === 0) { beacon('call_click', href); }
+  });
+  S.beacon = beacon;
+
+  // Instant quote builder: search, add products, live totals (the server re-prices everything).
+  var qb = $('[data-quote-builder]');
+  if (qb) {
+    var tbody = $('tbody', qb), input = $('#qb-q'), results = $('.qb-results', qb), timerQ;
+    var fee = parseFloat(qb.getAttribute('data-fee')) || 0, free = parseFloat(qb.getAttribute('data-free')) || 0;
+    var rands = function (n) { return 'R' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
+    var recalc = function () {
+      var sub = 0, unpriced = 0, rows = $$('tr[data-id]', tbody);
+      rows.forEach(function (tr) {
+        var price = parseFloat(tr.getAttribute('data-price')) || 0, q = parseInt($('input', tr).value, 10) || 0;
+        if (price > 0) { sub += price * q; $('[data-line]', tr).textContent = rands(price * q); }
+        else { unpriced++; $('[data-line]', tr).textContent = 'To confirm'; }
+      });
+      var del = sub > 0 ? (free > 0 && sub >= free ? 0 : fee) : 0;
+      $('[data-sub]', qb).textContent = rands(sub);
+      $('[data-del]', qb).textContent = sub > 0 ? (del ? rands(del) : 'Free') : '—';
+      $('[data-tot]', qb).textContent = rands(sub + del) + (unpriced ? ' + items to confirm' : '');
+      $('.qb-empty', qb).hidden = rows.length > 0;
+    };
+    var addRow = function (it) {
+      var ex = $('tr[data-id="' + it.id + '"]', tbody);
+      if (ex) { var i = $('input', ex); i.value = (parseInt(i.value, 10) || 0) + 1; recalc(); return; }
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-id', it.id); tr.setAttribute('data-price', it.buyable ? it.amount : 0);
+      var esc = function (s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+      tr.innerHTML = '<td><strong>' + esc(it.name) + '</strong><br><small class="muted">' + esc(it.sku) + ' · ' + esc(it.stock || '') + '</small></td>' +
+        '<td class="num">' + (it.buyable && it.amount > 0 ? esc(it.price) : 'We will price') + '</td>' +
+        '<td class="num"><input type="number" name="qty[' + it.id + ']" value="1" min="1" max="999" aria-label="Quantity"></td>' +
+        '<td class="num" data-line></td><td><button type="button" class="btn btn-ghost btn-sm" data-remove aria-label="Remove">✕</button></td>';
+      tbody.appendChild(tr); recalc();
+    };
+    tbody.addEventListener('input', recalc);
+    tbody.addEventListener('click', function (e) { if (e.target.closest('[data-remove]')) { e.target.closest('tr').remove(); recalc(); } });
+    input.addEventListener('input', function () {
+      clearTimeout(timerQ);
+      var q = input.value.trim();
+      if (q.length < 2) { results.hidden = true; return; }
+      timerQ = setTimeout(function () {
+        fetch(S.base + '/api/suggest?q=' + encodeURIComponent(q)).then(function (r) { return r.json(); }).then(function (d) {
+          results.innerHTML = '';
+          (d.items || []).forEach(function (it) {
+            var b = document.createElement('button');
+            b.type = 'button'; b.className = 'qb-hit';
+            b.innerHTML = '<span></span><strong></strong>';
+            b.firstChild.textContent = it.name + ' (' + it.sku + ')'; b.lastChild.textContent = it.price + ' · Add';
+            b.addEventListener('click', function () { addRow(it); results.hidden = true; input.value = ''; input.focus(); });
+            results.appendChild(b);
+          });
+          if (!(d.items || []).length) { results.innerHTML = '<p class="muted" style="padding:10px;margin:0">Not found — type it in "Anything not on our website?" below and we will price it.</p>'; }
+          results.hidden = false;
+        });
+      }, 200);
+    });
+    recalc();
+  }
+  // AI assistant chat widget
+  var chat = $('[data-chat]');
+  if (chat) {
+    var log = $('.chat-log', chat), form = $('[data-chat-form]', chat), field = $('input', form), opener = $('[data-chat-open]'), busy = false, opened = false;
+    var esc = function (s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+    var linkify = function (s) { return esc(s).replace(/(https?:\/\/[^\s<>"'&]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>').replace(/\n/g, '<br>'); };
+    var add = function (cls, html) { var m = document.createElement('div'); m.className = 'msg ' + cls; m.innerHTML = html; log.appendChild(m); log.scrollTop = log.scrollHeight; return m; };
+    var save = function () { try { sessionStorage.setItem('setwel_chat', log.innerHTML); } catch (e) { /* ignore */ } };
+    try { var old = sessionStorage.getItem('setwel_chat'); if (old) { log.innerHTML = old; } } catch (e) { /* ignore */ }
+    var open = function () { chat.hidden = false; opener.hidden = true; field.focus(); log.scrollTop = log.scrollHeight; if (!opened) { opened = true; beacon('chat_open', location.pathname); } };
+    opener.addEventListener('click', open);
+    $('[data-chat-close]', chat).addEventListener('click', function () { chat.hidden = true; opener.hidden = false; });
+    var send = function (text) {
+      if (!text || busy) { return; }
+      busy = true; field.value = '';
+      add('me', esc(text));
+      var typing = add('bot typing', '<span></span><span></span><span></span>');
+      var f = new FormData(); f.append('message', text);
+      fetch(S.base + '/api/chat', { method: 'POST', body: f, headers: { 'X-CSRF-TOKEN': S.csrf }, credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          log.removeChild(typing);
+          add('bot', linkify(d.reply || 'Sorry, something went wrong.'));
+          if (d.quote_url) { add('bot', '<a class="btn btn-gold btn-sm" href="' + esc(d.quote_url) + '">Open my quote &amp; pay</a>'); }
+          save();
+        })
+        .catch(function () { if (typing.parentNode) { log.removeChild(typing); } add('bot', 'Sorry, the connection failed. Please try again or use WhatsApp below.'); })
+        .then(function () { busy = false; });
+    };
+    $$('[data-chip]', chat).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.getAttribute('data-chip');
+        if (/ $/.test(t)) { field.value = t; field.focus(); } else { send(t); }
+      });
+    });
+    form.addEventListener('submit', function (e) { e.preventDefault(); send(field.value.trim()); });
+  }
 })();

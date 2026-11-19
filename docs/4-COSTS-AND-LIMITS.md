@@ -21,7 +21,9 @@ That is roughly R800+ a month for no benefit to you. The PHP store has the same 
 | Manual EFT | Your normal bank fees only |
 | Google Analytics, Search Console, Merchant Center | Free |
 | Newsletter sending (Mailchimp / Brevo) | Free plans for small lists |
-| **Total extra per month** | **About R20 (domain) + PayFast fees per sale** |
+| WhatsApp lead alerts (CallMeBot) | Free (outside service, no guarantee — email alert is the backup) |
+| AI assistant (optional) | Paid per use to Anthropic. Rough guide: **Claude Opus 5.5 about R0.50–R1 per customer message (R3–R5 for a typical chat)**; **Haiku 5.5 about 40× cheaper**. Depends on chat length; set a monthly spend limit at console.anthropic.com and a daily chat limit in Settings (default 50 chats/day). |
+| **Total extra per month** | **About R20 (domain) + PayFast fees per sale** (+ AI assistant use if switched on) |
 
 ## Honest limits — what I could not do or test
 
@@ -37,3 +39,12 @@ That is roughly R800+ a month for no benefit to you. The PHP store has the same 
 - **Newsletter:** the store collects sign-ups and exports the list. Sending the emails is done in Mailchimp/Brevo.
 - **Courier:** a flat rate plus free delivery over a threshold. No live courier quotes or automatic waybills.
 - **Tested on:** PHP 8.3 with both SQLite and MariaDB (the MySQL type cPanel uses), on desktop and mobile screen sizes.
+
+## Leads, WhatsApp and AI assistant — honest limits
+
+- **No automatic WhatsApp messages to customers.** Sending WhatsApp messages *to customers* automatically (and an AI that answers on your WhatsApp number) needs the official **WhatsApp Business Platform** from Meta: a business verification, a phone number that is not used in the normal WhatsApp app, approved message templates and a fee per conversation. Until then: customers reach you with one tap (every button opens WhatsApp with a ready message), you get an instant WhatsApp alert, and you reply with one tap from Admin → Leads. Follow-ups to customers go by email.
+- **Competitor prices are entered by you** (product page → Competitor price, or a *Competitor price* column in an import). The store does not scan other websites — that breaks often and many sites forbid it. Admin → Products → filter **Dearer than competitor** shows where you are more expensive; the AI assistant may mention a recorded comparison but never promises a discount — price-match requests go to you.
+- **Appointments** are call-back requests with a preferred time (alert to you), not a calendar booking.
+- **The AI assistant** answers only from your product list and settings. It can still misunderstand a question — it is told to hand over to you when unsure, and every conversation that leads to a quote or call-back is saved under Leads for you to read. It could not be tested against the real AI service here (no API key); the full flow was tested with a stand-in.
+- **WhatsApp alerts** could not be tested from here (CallMeBot needs your phone to activate).
+- **Speed:** pages are small (about 120–170 KB, under ~1.3 s on a slow 4G test). If the live site still feels slow, the cause is usually the hosting server's response time — run **pagespeed.web.dev** on setwelafrica.com and send me the result.

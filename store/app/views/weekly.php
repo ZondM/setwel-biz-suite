@@ -35,7 +35,7 @@ $endsTs = $ends ? strtotime($ends . ' 23:59:59') : 0;
       <div class="showcase-track">
         <?php foreach ($items as $i => $p): $sale = sale_active($p); $price = effective_price($p); ?>
           <div class="showcase-slide<?= $i === 0 ? ' active' : '' ?>" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= count($items) ?>">
-            <a class="showcase-img" href="<?= product_url($p) ?>" tabindex="-1"><img src="<?= upload_url($p['image'] ?: $p['thumb']) ?>" alt="<?= e($p['name']) ?>" <?= $i ? 'loading="lazy"' : '' ?> width="420" height="420"></a>
+            <a class="showcase-img" href="<?= product_url($p) ?>" tabindex="-1"><?php if ($p['thumb'] || $p['image']): ?><img src="<?= upload_url($p['thumb'] ?: $p['image']) ?>"<?= $p['thumb'] && $p['image'] ? ' srcset="' . e(upload_url($p['thumb'])) . ' 480w, ' . e(upload_url($p['image'])) . ' 1200w" sizes="(max-width: 760px) 240px, 360px"' : '' ?> alt="<?= e($p['name']) ?>" <?= $i ? 'loading="lazy"' : 'fetchpriority="high"' ?> width="420" height="420"><?php else: partial('visual', ['p' => $p]); endif; ?></a>
             <div class="showcase-info">
               <span class="showcase-brand"><?= e($p['brand_name']) ?></span>
               <h2><a href="<?= product_url($p) ?>"><?= e($p['name']) ?></a></h2>

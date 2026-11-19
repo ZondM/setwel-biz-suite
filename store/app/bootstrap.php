@@ -26,7 +26,7 @@ ini_set('error_log', STORAGE_DIR . '/logs/php-errors.log');
 date_default_timezone_set('Africa/Johannesburg');
 mb_internal_encoding('UTF-8');
 
-foreach (['helpers', 'db', 'settings', 'auth', 'catalog', 'cart', 'mailer', 'pdf', 'spreadsheet', 'importer', 'payfast', 'images', 'text', 'orders', 'icons'] as $lib) {
+foreach (['helpers', 'db', 'settings', 'auth', 'catalog', 'cart', 'mailer', 'pdf', 'spreadsheet', 'importer', 'payfast', 'images', 'text', 'orders', 'icons', 'leads', 'assistant'] as $lib) {
     require APP_DIR . '/lib/' . $lib . '.php';
 }
 

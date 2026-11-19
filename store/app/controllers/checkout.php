@@ -124,6 +124,10 @@ function checkout_page(): void
                 db_insert('order_items', ['order_id' => $orderId, 'product_id' => $l['product']['id'], 'sku' => $l['product']['sku'], 'name' => $l['product']['name'], 'price' => $l['price'], 'qty' => $l['qty'], 'line_total' => $l['total']]);
                 stock_reduce((int)$l['product']['id'], (int)$l['qty']);
             }
+            if (!empty($_SESSION['accepted_lead'])) {
+                q("UPDATE leads SET order_id = ?, status = 'won', updated_at = ? WHERE id = ?", [$orderId, now(), (int)$_SESSION['accepted_lead']]);
+                unset($_SESSION['accepted_lead']);
+            }
             order_add_history($orderId, 'pending_payment', 'Order placed online (' . ($d['payment_method'] === 'payfast' ? 'PayFast' : 'EFT') . ').');
             $pdo->commit();
             cart_clear();

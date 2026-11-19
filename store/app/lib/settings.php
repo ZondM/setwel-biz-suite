@@ -54,6 +54,19 @@ function setting_defaults(): array
         'smtp_secure' => 'ssl',
         'smtp_user' => '',
         'smtp_pass' => '',
+        // Leads & alerts
+        'alert_whatsapp_apikey' => '',
+        'alert_email_on' => '1',
+        'quote_valid_days' => '7',
+        'followups_on' => '1',
+        'cron_key' => '',
+        'business_hours_reply' => 'Thank you! We have received your request and will contact you shortly. Need it faster? WhatsApp us now — we reply quickly during business hours (Mon–Fri 8:00–17:00, Sat 9:00–13:00).',
+        // AI assistant
+        'ai_enabled' => '0',
+        'ai_api_key' => '',
+        'ai_model' => 'claude-opus-5-5',
+        'ai_daily_limit' => '50',
+        'ai_extra_info' => '',
         // Marketing
         'ga4_id' => '',
         'meta_pixel_id' => '',

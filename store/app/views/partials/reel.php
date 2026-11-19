@@ -5,7 +5,7 @@
   <div class="reel-frames">
     <?php foreach ($items as $i => $p): $sale = sale_active($p); $price = effective_price($p); ?>
       <div class="reel-frame<?= $i === 0 ? ' active' : '' ?>" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= $n ?>">
-        <a class="reel-visual" href="<?= product_url($p) ?>" tabindex="-1"><?php partial('visual', ['p' => $p]); ?></a>
+        <a class="reel-visual" href="<?= product_url($p) ?>" tabindex="-1"><?php partial('visual', ['p' => $p, 'small' => true]); ?></a>
         <div class="reel-info">
           <span class="reel-brand"><?= e($p['brand_name']) ?></span>
           <a class="reel-name" href="<?= product_url($p) ?>"><?= e($p['name']) ?></a>

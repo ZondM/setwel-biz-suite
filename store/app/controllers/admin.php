@@ -46,6 +46,8 @@ function admin_dashboard(): void
             'orders_open' => (int)q_val("SELECT COUNT(*) FROM orders WHERE status IN ('pending_payment','payment_review','processing','ready_for_collection')"),
             'sales_month' => (float)q_val("SELECT COALESCE(SUM(total),0) FROM orders WHERE payment_status = 'paid' AND created_at >= ?", [$month]),
             'quotes_new' => (int)q_val("SELECT COUNT(*) FROM quotes WHERE status = 'new'"),
+            'leads_new' => (int)q_val("SELECT COUNT(*) FROM leads WHERE status = 'new'"),
+            'leads_month' => (int)q_val('SELECT COUNT(*) FROM leads WHERE created_at >= ?', [$month]),
             'subscribers' => (int)q_val('SELECT COUNT(*) FROM subscribers'),
         ],
         'orders' => q_all('SELECT * FROM orders ORDER BY id DESC LIMIT 8'),
@@ -178,6 +180,21 @@ function settings_groups(): array
             'smtp_user' => ['SMTP username (full email address)', 'text'],
             'smtp_pass' => ['SMTP password', 'password'],
         ],
+        'Leads, alerts & follow-ups' => [
+            'alert_whatsapp_apikey' => ['WhatsApp alert key (CallMeBot)', 'password', 'Free service that sends YOU a WhatsApp message the moment a lead comes in. One-time setup: save +34 644 66 32 62 in your phone, WhatsApp it the words "I allow callmebot to send me messages", and paste the key it replies with here. Alerts go to the WhatsApp number above.'],
+            'alert_email_on' => ['Also email every new lead', 'bool'],
+            'quote_valid_days' => ['Instant quotes are valid for (days)', 'number'],
+            'followups_on' => ['Send follow-up emails to customers who go quiet', 'bool', 'Needs the cron job from the guide (cPanel → Cron Jobs). Sends a reminder 1 day and 3 days after an instant quote that was not paid.'],
+            'cron_key' => ['Cron key', 'text', 'Secret part of the cron link. cPanel → Cron Jobs → "Once Per Hour" → command: wget -q -O /dev/null "' . abs_url('cron/' . setting('cron_key')) . '"'],
+            'business_hours_reply' => ['Instant reply text (shown and emailed after any enquiry)', 'textarea'],
+        ],
+        'AI assistant' => [
+            'ai_enabled' => ['Show the AI assistant on the website', 'bool', 'Answers customers 24/7 from your product list (prices, stock, delivery), makes instant quotes and alerts you when it is not sure.'],
+            'ai_api_key' => ['Anthropic API key', 'password', 'From console.anthropic.com → API keys. Paid per use (see the guide for costs).'],
+            'ai_model' => ['AI model', 'select', 'Opus 5.5 = best answers. Haiku 5.5 = about 40× cheaper, good for simple questions.', ['claude-opus-5-5' => 'Claude Opus 5.5 (best)', 'claude-sonnet-5-5' => 'Claude Sonnet 5.5 (balanced)', 'claude-haiku-5-5' => 'Claude Haiku 5.5 (cheapest)']],
+            'ai_daily_limit' => ['Maximum AI conversations per day', 'number', 'Protects your budget. When reached, the chat offers WhatsApp instead.'],
+            'ai_extra_info' => ['Extra facts the assistant may use', 'textarea', 'e.g. trading hours, which areas you deliver same-day, payment terms for schools. One fact per line.'],
+        ],
         'Marketing & SEO' => [
             'announcement' => ['Announcement bar (top of every page)', 'text', 'Leave blank to hide.'],
             'home_title' => ['Home page title (Google)', 'text'],
@@ -191,6 +208,9 @@ function settings_groups(): array
 function admin_settings(): void
 {
     require_admin();
+    if ((string)setting('cron_key') === '') {
+        setting_save('cron_key', bin2hex(random_bytes(6)));
+    }
     $groups = settings_groups();
     if (is_post()) {
         if (($_POST['action'] ?? '') === 'test_email') {

@@ -159,6 +159,7 @@ function invoice_pdf(array $order, array $items): string
     $gold = 'c9a84c';
     $muted = '5b6573';
     $paid = $order['payment_status'] === 'paid';
+    $isQuote = ($order['doc_type'] ?? '') === 'quote';
 
     $pdf->rect(0, 0, 595.28, 110, $navy);
     $pdf->rect(0, 110, 595.28, 4, $gold);
@@ -168,13 +169,13 @@ function invoice_pdf(array $order, array $items): string
     }
     $pdf->text(120, 50, setting('legal_name') ?: setting('business_name'), 18, true, 'ffffff');
     $pdf->text(120, 70, setting('tagline'), 9, false, 'e2c070');
-    $docTitle = $paid ? 'RECEIPT' : 'INVOICE';
+    $docTitle = $isQuote ? 'QUOTATION' : ($paid ? 'RECEIPT' : 'INVOICE');
     $pdf->text(555, 50, $docTitle, 22, true, 'ffffff', 'R');
     $pdf->text(555, 72, $order['ref'], 11, false, 'e2c070', 'R');
 
     $y = 145;
     $pdf->text(40, $y, 'FROM', 8, true, $muted);
-    $pdf->text(320, $y, 'BILL TO', 8, true, $muted);
+    $pdf->text(320, $y, $isQuote ? 'QUOTE FOR' : 'BILL TO', 8, true, $muted);
     $y += 15;
     $from = array_filter(array_merge(
         [setting('legal_name')],
@@ -185,7 +186,7 @@ function invoice_pdf(array $order, array $items): string
     $to = array_filter([
         $order['customer_name'], $order['company'], $order['customer_vat'] ? 'VAT no: ' . $order['customer_vat'] : '',
         $order['delivery_method'] === 'courier' ? $order['address1'] : '', $order['delivery_method'] === 'courier' ? $order['address2'] : '',
-        $order['delivery_method'] === 'courier' ? trim($order['city'] . ', ' . $order['province'] . ' ' . $order['postal_code'], ', ') : 'Collection',
+        $order['delivery_method'] === 'courier' ? trim($order['city'] . ', ' . $order['province'] . ' ' . $order['postal_code'], ', ') : ($isQuote ? '' : 'Collection'),
         $order['phone'], $order['email'],
     ]);
     $yy = $y;
@@ -200,7 +201,11 @@ function invoice_pdf(array $order, array $items): string
     }
     $y = max($yy, $yy2) + 12;
 
-    $meta = [
+    $meta = $isQuote ? [
+        ['Date', date('d M Y', strtotime($order['created_at']))],
+        ['Valid until', date('d M Y', strtotime($order['valid_until']))],
+        ['Status', 'Prices fixed'],
+    ] : [
         ['Date', date('d M Y', strtotime($order['created_at']))],
         ['Payment', $order['payment_method'] === 'payfast' ? 'PayFast (card / EFT)' : 'Bank EFT'],
         ['Status', $paid ? 'PAID' . ($order['paid_at'] ? ' ' . date('d M Y', strtotime($order['paid_at'])) : '') : 'Awaiting payment'],
@@ -208,7 +213,7 @@ function invoice_pdf(array $order, array $items): string
     $x = 40;
     foreach ($meta as [$k, $v]) {
         $pdf->text($x, $y, strtoupper($k), 7.5, true, $muted);
-        $pdf->text($x, $y + 13, $v, 10, true, $k === 'Status' ? ($paid ? '1e7d4f' : 'a0522d') : '1d2733');
+        $pdf->text($x, $y + 13, $v, 10, true, $k === 'Status' ? ($paid || $isQuote ? '1e7d4f' : 'a0522d') : '1d2733');
         $x += 170;
     }
     $y += 38;
@@ -240,7 +245,7 @@ function invoice_pdf(array $order, array $items): string
     $y += 18;
     $tot = [
         ['Subtotal', money($order['subtotal'])],
-        [$order['delivery_method'] === 'collect' ? 'Collection' : 'Delivery', (float)$order['delivery_fee'] > 0 ? money($order['delivery_fee']) : 'Free'],
+        [$order['delivery_method'] === 'collect' ? 'Collection' : ($isQuote ? 'Courier delivery' : 'Delivery'), (float)$order['delivery_fee'] > 0 ? money($order['delivery_fee']) : 'Free'],
     ];
     foreach ($tot as [$k, $v]) {
         $pdf->text(440, $y, $k, 10, false, $muted, 'R');
@@ -255,6 +260,15 @@ function invoice_pdf(array $order, array $items): string
     if (setting('vat_registered') !== '1') {
         $pdf->text(40, $y, (setting('legal_name') ?: setting('business_name')) . ' is not registered for VAT. No VAT has been charged.', 8.5, false, $muted);
         $y += 16;
+    }
+    if ($isQuote) {
+        $y += 6;
+        $pdf->text(40, $y, 'TO ACCEPT', 8, true, $muted);
+        $y += 14;
+        foreach (array_merge(['Accept and pay online (card, Instant EFT or EFT):'], $pdf->wrap($order['accept_url'], 500, 9), ['Or WhatsApp ' . setting('whatsapp') . ' / email ' . setting('email') . ' quoting ' . $order['ref'] . '.', 'Free collection in Cape Town is also possible. Prices valid while stocks last.']) as $l) {
+            $pdf->text(40, $y, $l, 9);
+            $y += 13;
+        }
     }
     if (!$paid && $order['payment_method'] === 'eft' && setting('bank_account_number')) {
         $y += 6;

@@ -18,6 +18,8 @@ function import_fields(): array
         'price' => 'Selling price',
         'sale_price' => 'Sale price',
         'sale_ends' => 'Sale ends (date)',
+        'competitor_price' => 'Competitor price (private)',
+        'competitor_name' => 'Competitor name / date (private)',
         'stock_status' => 'Stock status / quantity',
         'visible' => 'Visible on website (yes/no)',
         'featured' => 'Featured (yes/no)',
@@ -49,6 +51,8 @@ function import_synonyms(): array
         'price' => ['price', 'selling price', 'sell price', 'retail', 'retail price', 'our price', 'setwel price'],
         'sale_price' => ['sale price', 'sale', 'special', 'discount price', 'promo selling price'],
         'sale_ends' => ['sale ends', 'sale end', 'valid until', 'promo end', 'end date', 'expiry'],
+        'competitor_price' => ['competitor price', 'competitor', 'market price', 'their price'],
+        'competitor_name' => ['competitor name', 'competitor source', 'where seen'],
         'stock_status' => ['stock', 'stock status', 'availability', 'qty', 'quantity', 'soh', 'stock on hand', 'available', 'in stock'],
         'visible' => ['visible', 'show', 'published', 'active', 'online', 'status'],
         'featured' => ['featured', 'feature', 'highlight', 'popular'],
@@ -244,7 +248,7 @@ function import_analyse(array $rows, array $map, array $opts): array
         $existing = q_one('SELECT p.*, b.name AS brand_name, c.name AS category_name FROM products p LEFT JOIN brands b ON b.id = p.brand_id LEFT JOIN categories c ON c.id = p.category_id WHERE LOWER(p.sku) = LOWER(?)', [$sku]);
         $d = [];
 
-        foreach (['cost_price', 'price', 'sale_price'] as $f) {
+        foreach (['cost_price', 'price', 'sale_price', 'competitor_price'] as $f) {
             $raw = $get($f);
             if ($f === 'sale_price' && strtoupper($raw) === 'CLEAR') {
                 $d['sale_price'] = null;
@@ -289,6 +293,9 @@ function import_analyse(array $rows, array $map, array $opts): array
             }
         }
 
+        if (($v = $get('competitor_name')) !== '') {
+            $d['competitor_name'] = mb_substr($v, 0, 120);
+        }
         $pricesOnly = ($opts['mode'] ?? 'full') === 'prices';
         if (!$pricesOnly) {
             foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description', 'image_urls'] as $f) {
@@ -400,7 +407,7 @@ function import_apply(array $analysed): array
             }
             $d = $line['data'];
             $row = [];
-            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'stock_status', 'stock_qty', 'visible', 'featured', 'is_new', 'is_special', 'is_weekly', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
+            foreach (['name', 'short_description', 'description', 'specs', 'compatible', 'cost_price', 'price', 'sale_price', 'sale_ends', 'competitor_price', 'competitor_name', 'stock_status', 'stock_qty', 'visible', 'featured', 'is_new', 'is_special', 'is_weekly', 'mpn', 'gtin', 'warranty', 'meta_title', 'meta_description'] as $f) {
                 if (array_key_exists($f, $d)) {
                     $row[$f] = $d[$f];
                 }

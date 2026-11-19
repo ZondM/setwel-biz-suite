@@ -46,6 +46,14 @@ $routes = [
     ['GET', '/api/suggest', 'suggest_api'],
     ['GET|POST', '/quote', 'quote_page'],
     ['GET|POST', '/contact', 'contact_page'],
+    ['GET', '/q/([A-Z0-9-]+)', 'quote_view'],
+    ['GET', '/q/([A-Z0-9-]+)/pdf', 'quote_view_pdf'],
+    ['GET', '/q/([A-Z0-9-]+)/accept', 'quote_accept'],
+    ['GET', '/thanks/([A-Z0-9-]+)', 'thanks_page'],
+    ['POST', '/callback', 'callback_request'],
+    ['POST', '/api/track', 'track_api'],
+    ['POST', '/api/chat', 'chat_api'],
+    ['GET', '/cron/([A-Za-z0-9_-]+)', 'cron_run'],
     ['POST', '/newsletter', 'newsletter_signup'],
     ['GET', '/credentials', 'credentials_page'],
     ['GET', '/credentials/(\d+)', 'credential_file'],
@@ -97,6 +105,8 @@ $routes = [
     ['GET|POST', '/admin/catalog', 'admin_catalog'],
     ['GET|POST', '/admin/pricing', 'admin_pricing'],
     ['GET|POST', '/admin/settings', 'admin_settings'],
+    ['GET', '/admin/leads', 'admin_leads'],
+    ['GET|POST', '/admin/leads/(\d+)', 'admin_lead'],
     ['GET|POST', '/admin/account', 'admin_account'],
 ];
 
@@ -106,7 +116,7 @@ foreach ($routes as [$methods, $pattern, $handler]) {
     }
     if (preg_match('#^' . $pattern . '$#', $path, $m)) {
         array_shift($m);
-        if ($method === 'POST' && $handler !== 'payfast_notify') {
+        if ($method === 'POST' && !in_array($handler, ['payfast_notify', 'track_api'], true)) {
             csrf_check();
         }
         try {

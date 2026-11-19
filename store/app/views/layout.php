@@ -128,7 +128,7 @@ $orgSchema = [
       <div>
         <h3>Help</h3>
         <ul>
-          <li><a href="<?= url('quote') ?>">Request a quote</a></li>
+          <li><a href="<?= url('quote') ?>">Instant quote</a></li>
           <li><a href="<?= url('contact') ?>">Contact us</a></li>
           <li><a href="<?= url('page/delivery-returns') ?>">Delivery &amp; returns</a></li>
           <li><a href="<?= url('page/warranty') ?>">Warranty</a></li>
@@ -163,6 +163,23 @@ $orgSchema = [
   </div>
 </footer>
 
+<?php if (assistant_enabled()): ?>
+<div class="chat" data-chat hidden>
+  <div class="chat-head"><div><strong>Setwel assistant</strong><span>Prices, stock &amp; quotes — answers instantly, 24/7</span></div><button type="button" class="chat-x" data-chat-close aria-label="Close chat">✕</button></div>
+  <div class="chat-log" aria-live="polite">
+    <div class="msg bot">Hi! 👋 Ask me for a price, stock, which cartridge fits your printer, or a quick quote.</div>
+  </div>
+  <div class="chat-chips">
+    <button type="button" data-chip="What are this week's specials?">This week's specials</button>
+    <button type="button" data-chip="Which toner fits my printer? My printer model is ">Toner for my printer</button>
+    <button type="button" data-chip="I would like a quote for ">Get a quote</button>
+    <button type="button" data-chip="How much is delivery and how long does it take?">Delivery</button>
+  </div>
+  <form class="chat-form" data-chat-form><input type="text" name="message" maxlength="1000" placeholder="Type your question…" autocomplete="off" aria-label="Your question"><button class="btn btn-gold" type="submit" aria-label="Send">➤</button></form>
+  <a class="chat-wa" href="https://wa.me/<?= e($wa) ?>" target="_blank" rel="noopener">Prefer a person? WhatsApp <?= e(setting('whatsapp')) ?></a>
+</div>
+<button type="button" class="chat-open" data-chat-open aria-label="Ask our assistant"><?= icon('search', 18) ?> <span>Ask us — instant answers</span></button>
+<?php endif; ?>
 <a class="wa-float" href="https://wa.me/<?= e($wa) ?>?text=<?= rawurlencode('Hi ' . $biz . ', I have a question about ') ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><?= icon('whatsapp', 30) ?></a>
 
 <div class="cookie" id="cookie" role="dialog" aria-labelledby="cookie-title" aria-live="polite">
@@ -175,6 +192,7 @@ $orgSchema = [
 <script>
 window.STORE = {
   base: <?= json_encode(base_path()) ?>,
+  csrf: <?= json_encode(csrf_token()) ?>,
   ga: <?= json_encode(setting('ga4_id')) ?>,
   pixel: <?= json_encode(setting('meta_pixel_id')) ?>,
   events: <?= json_encode($meta['events'] ?? []) ?>

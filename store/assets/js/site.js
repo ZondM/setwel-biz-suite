@@ -353,7 +353,11 @@
         .then(function (d) {
           log.removeChild(typing);
           add('bot', linkify(d.reply || 'Sorry, something went wrong.'));
-          if (d.quote_url) { add('bot', '<a class="btn btn-gold btn-sm" href="' + esc(d.quote_url) + '">Open my quote &amp; pay</a>'); }
+          if (d.quote_url) {
+            add('bot', '<a class="btn btn-gold btn-sm" href="' + esc(d.quote_url) + '">Open my quote</a>');
+            add('bot', 'Please double-check with a person on <strong>' + esc(S.waNumber) + '</strong> via WhatsApp before sending payment.<br>'
+              + '<a class="btn btn-wa btn-sm" style="margin-top:8px" target="_blank" rel="noopener" href="https://wa.me/' + esc(S.wa) + '?text=' + encodeURIComponent('Hi, please confirm my quote before I pay: ' + d.quote_url) + '">Confirm on WhatsApp</a>');
+          }
           save();
         })
         .catch(function () { if (typing.parentNode) { log.removeChild(typing); } add('bot', 'Sorry, the connection failed. Please try again or use WhatsApp below.'); })

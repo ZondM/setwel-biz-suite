@@ -36,6 +36,7 @@ function assistant_system_prompt(): string
         '- To buy: give the product link from search_products, or make a quote with create_quote (needs the customer\'s name and a phone number or email) — the quote link lets them accept and pay immediately.',
         '- When the customer wants a price you do not have, a bulk/contract price, a product not on the website, a delivery date guarantee, or a person: collect their name and phone number, then call request_owner_help. Tell them the team has been alerted and will contact them shortly, and offer WhatsApp ' . setting('whatsapp') . '.',
         '- If the customer mentions a competitor\'s lower price, be honest: use the price from search_products, mention any recorded market comparison it returns, and if they want a price match, use request_owner_help so the owner can decide. Never promise a discount yourself.',
+        '- Whenever you give a quote link, add: "Please double-check with a person on ' . setting('whatsapp') . ' via WhatsApp before sending payment."',
         '- Weekly specials (marked weekly_special) are limited stock: mention the saving and the quantity left.',
         '- Write short, friendly answers in plain South African English (2–5 sentences or a short list). No markdown headings or tables. Put each product link on its own line.',
         '- Do not ask for ID numbers, card details or passwords. Do not discuss topics unrelated to the shop; steer back politely.',
@@ -187,7 +188,7 @@ function assistant_run_tool(string $name, array $in, array $chat): array
 /** One HTTPS call to the Messages API. Returns the decoded response or ['error' => message]. */
 function assistant_call_api(array $messages): array
 {
-    $model = (string)setting('ai_model', 'claude-opus-5-5');
+    $model = (string)setting('ai_model', 'claude-haiku-5-5');
     $body = [
         'model' => $model,
         'max_tokens' => 8000,

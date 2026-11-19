@@ -117,12 +117,12 @@ Every enquiry now lands in **Admin → Leads**: instant quotes, quote requests, 
 
 ### One-time setup (15 minutes)
 
-1. **WhatsApp alerts to your phone (free):** save the number **+34 644 66 32 62** in your phone as "CallMeBot", send it the WhatsApp message `I allow callmebot to send me messages`, and copy the key it sends back into **Admin → Settings → Leads, alerts & follow-ups → WhatsApp alert key**. Every new lead then arrives on your WhatsApp within seconds. (CallMeBot is a free outside service — if it ever stops, you still get the email alert.)
+1. **WhatsApp alerts to your phone (free):** save the number **+34 644 66 32 62** in your phone as "CallMeBot", send it the WhatsApp message `I allow callmebot to send me messages`, and copy the key it sends back into **Admin → Settings → Leads, alerts & follow-ups → WhatsApp alert key**. Click **Save**, then **Send test WhatsApp** (further down the Settings page) — you should get a message within a minute. Every new lead then arrives on your WhatsApp within seconds. (CallMeBot is a free outside service — if it ever stops, you still get the email alert. If the number above does not answer, check the current number on callmebot.com.)
 2. **Follow-ups and reminders:** cPanel → **Cron Jobs** → Common settings **Once Per Hour** → paste the command shown under *Cron key* in Settings (it starts with `wget -q -O /dev/null "https://setwelafrica.com/cron/...`) → **Add New Cron Job**. Every hour the store then:
    - emails customers who got an instant quote but did not pay (after 1 day and 3 days), and
    - reminds you on WhatsApp/email about any lead nobody has contacted after 2 hours.
 3. **Instant reply text:** Settings → *Instant reply text* — shown on screen and emailed after every enquiry.
-4. **AI assistant (optional, paid per use):** create an API key at **console.anthropic.com** (add a payment card and a monthly spend limit there), paste it into **Settings → AI assistant → Anthropic API key**, tick **Show the AI assistant**, and Save. An "Ask us — instant answers" button appears on every page. Add facts under *Extra facts* (e.g. same-day delivery areas, school payment terms). Read a few conversations under Leads in the first week.
+4. **AI assistant (optional, paid per use):** create an API key at **console.anthropic.com** (add a payment card and a monthly spend limit there), paste it into **Settings → AI assistant → Anthropic API key**, check that **AI model** says *Claude Haiku 5.5*, tick **Show the AI assistant**, and Save. When it makes a quote, the assistant always asks the customer to double-check with a person on WhatsApp before paying. An "Ask us — instant answers" button appears on every page. Add facts under *Extra facts* (e.g. same-day delivery areas, school payment terms). Read a few conversations under Leads in the first week.
 
 ## I. Monthly 10-minute checklist
 

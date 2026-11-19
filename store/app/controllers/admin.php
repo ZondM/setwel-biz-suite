@@ -191,7 +191,7 @@ function settings_groups(): array
         'AI assistant' => [
             'ai_enabled' => ['Show the AI assistant on the website', 'bool', 'Answers customers 24/7 from your product list (prices, stock, delivery), makes instant quotes and alerts you when it is not sure.'],
             'ai_api_key' => ['Anthropic API key', 'password', 'From console.anthropic.com → API keys. Paid per use (see the guide for costs).'],
-            'ai_model' => ['AI model', 'select', 'Opus 5.5 = best answers. Haiku 5.5 = about 40× cheaper, good for simple questions.', ['claude-opus-5-5' => 'Claude Opus 5.5 (best)', 'claude-sonnet-5-5' => 'Claude Sonnet 5.5 (balanced)', 'claude-haiku-5-5' => 'Claude Haiku 5.5 (cheapest)']],
+            'ai_model' => ['AI model', 'select', 'Haiku 5.5 = cheapest, good for prices, stock and quotes. Opus 5.5 = best answers, about 40× the cost.', ['claude-haiku-5-5' => 'Claude Haiku 5.5 (cheapest — recommended)', 'claude-sonnet-5-5' => 'Claude Sonnet 5.5 (balanced)', 'claude-opus-5-5' => 'Claude Opus 5.5 (best)']],
             'ai_daily_limit' => ['Maximum AI conversations per day', 'number', 'Protects your budget. When reached, the chat offers WhatsApp instead.'],
             'ai_extra_info' => ['Extra facts the assistant may use', 'textarea', 'e.g. trading hours, which areas you deliver same-day, payment terms for schools. One fact per line.'],
         ],
@@ -213,6 +213,11 @@ function admin_settings(): void
     }
     $groups = settings_groups();
     if (is_post()) {
+        if (($_POST['action'] ?? '') === 'test_whatsapp') {
+            $ok = owner_whatsapp('Test from ' . setting('business_name') . ': WhatsApp lead alerts are working.');
+            flash($ok ? 'success' : 'error', $ok ? 'Test WhatsApp sent to ' . setting('whatsapp') . '. Check your phone.' : 'WhatsApp test failed. Check the CallMeBot key and the WhatsApp number in Settings (details in storage/logs/alerts.log).');
+            redirect('/admin/settings');
+        }
         if (($_POST['action'] ?? '') === 'test_email') {
             $ok = send_mail(setting('orders_email') ?: setting('email'), 'Test email from your store', email_layout('It works!', '<p>Your store can send email. 🎉</p>'));
             flash($ok ? 'success' : 'error', $ok ? 'Test email sent to ' . (setting('orders_email') ?: setting('email')) . '. Check your inbox (and spam folder).' : 'Email failed. Check the SMTP details. Technical detail is in storage/logs/mail.log.');

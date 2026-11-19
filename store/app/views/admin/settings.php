@@ -24,4 +24,5 @@
   </div>
 <?php endforeach; ?>
 </form>
+<form method="post" class="card"><?= csrf_field() ?><input type="hidden" name="action" value="test_whatsapp"><h2>Test WhatsApp alert</h2><p class="hint">Save your CallMeBot key first, then send a test to <?= e(setting('whatsapp')) ?>.</p><button class="btn">Send test WhatsApp</button></form>
 <form method="post" class="card"><?= csrf_field() ?><input type="hidden" name="action" value="test_email"><h2>Test email</h2><p class="hint">Save your email settings first, then send a test to <?= e(setting('orders_email') ?: setting('email')) ?>.</p><button class="btn">Send test email</button></form>

@@ -22,7 +22,7 @@ That is roughly R800+ a month for no benefit to you. The PHP store has the same 
 | Google Analytics, Search Console, Merchant Center | Free |
 | Newsletter sending (Mailchimp / Brevo) | Free plans for small lists |
 | WhatsApp lead alerts (CallMeBot) | Free (outside service, no guarantee — email alert is the backup) |
-| AI assistant (optional) | Paid per use to Anthropic. Rough guide: **Claude Opus 5.5 about R0.50–R1 per customer message (R3–R5 for a typical chat)**; **Haiku 5.5 about 40× cheaper**. Depends on chat length; set a monthly spend limit at console.anthropic.com and a daily chat limit in Settings (default 50 chats/day). |
+| AI assistant (optional) | Paid per use to Anthropic. Rough guide with the default **Claude Haiku 5.5: about R0.10–R0.15 per typical chat** (Opus 5.5, if you ever switch: about R3–R5 per chat). Depends on chat length; set a monthly spend limit at console.anthropic.com and a daily chat limit in Settings (default 50 chats/day). |
 | **Total extra per month** | **About R20 (domain) + PayFast fees per sale** (+ AI assistant use if switched on) |
 
 ## Honest limits — what I could not do or test

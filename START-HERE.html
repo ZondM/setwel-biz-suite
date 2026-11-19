@@ -381,14 +381,14 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 <p><strong>Fix a price on a quote:</strong> open the lead → change the price or quantity under <em>Quote items</em> → <strong>Update &amp; send to customer</strong>. The customer gets the new quote by email with an "Accept &amp; pay" link; for WhatsApp customers, send them the <em>Customer's quote page</em> link.</p>
 <h3>One-time setup (15 minutes)</h3>
 <ol>
-<li><strong>WhatsApp alerts to your phone (free):</strong> save the number <strong>+34 644 66 32 62</strong> in your phone as "CallMeBot", send it the WhatsApp message <code>I allow callmebot to send me messages</code>, and copy the key it sends back into <strong>Admin → Settings → Leads, alerts &amp; follow-ups → WhatsApp alert key</strong>. Every new lead then arrives on your WhatsApp within seconds. (CallMeBot is a free outside service — if it ever stops, you still get the email alert.)</li>
+<li><strong>WhatsApp alerts to your phone (free):</strong> save the number <strong>+34 644 66 32 62</strong> in your phone as "CallMeBot", send it the WhatsApp message <code>I allow callmebot to send me messages</code>, and copy the key it sends back into <strong>Admin → Settings → Leads, alerts &amp; follow-ups → WhatsApp alert key</strong>. Click <strong>Save</strong>, then <strong>Send test WhatsApp</strong> (further down the Settings page) — you should get a message within a minute. Every new lead then arrives on your WhatsApp within seconds. (CallMeBot is a free outside service — if it ever stops, you still get the email alert. If the number above does not answer, check the current number on callmebot.com.)</li>
 <li><strong>Follow-ups and reminders:</strong> cPanel → <strong>Cron Jobs</strong> → Common settings <strong>Once Per Hour</strong> → paste the command shown under <em>Cron key</em> in Settings (it starts with <code>wget -q -O /dev/null "https://setwelafrica.com/cron/...</code>) → <strong>Add New Cron Job</strong>. Every hour the store then:<ul>
 <li>emails customers who got an instant quote but did not pay (after 1 day and 3 days), and</li>
 <li>reminds you on WhatsApp/email about any lead nobody has contacted after 2 hours.</li>
 </ul>
 </li>
 <li><strong>Instant reply text:</strong> Settings → <em>Instant reply text</em> — shown on screen and emailed after every enquiry.</li>
-<li><strong>AI assistant (optional, paid per use):</strong> create an API key at <strong>console.anthropic.com</strong> (add a payment card and a monthly spend limit there), paste it into <strong>Settings → AI assistant → Anthropic API key</strong>, tick <strong>Show the AI assistant</strong>, and Save. An "Ask us — instant answers" button appears on every page. Add facts under <em>Extra facts</em> (e.g. same-day delivery areas, school payment terms). Read a few conversations under Leads in the first week.</li>
+<li><strong>AI assistant (optional, paid per use):</strong> create an API key at <strong>console.anthropic.com</strong> (add a payment card and a monthly spend limit there), paste it into <strong>Settings → AI assistant → Anthropic API key</strong>, check that <strong>AI model</strong> says <em>Claude Haiku 5.5</em>, tick <strong>Show the AI assistant</strong>, and Save. When it makes a quote, the assistant always asks the customer to double-check with a person on WhatsApp before paying. An "Ask us — instant answers" button appears on every page. Add facts under <em>Extra facts</em> (e.g. same-day delivery areas, school payment terms). Read a few conversations under Leads in the first week.</li>
 </ol>
 <h2>I. Monthly 10-minute checklist</h2>
 <ul>
@@ -519,7 +519,7 @@ You need: your registerdomain cPanel login, your PayFast login, and the file <st
 </tr>
 <tr>
 <td>AI assistant (optional)</td>
-<td>Paid per use to Anthropic. Rough guide: <strong>Claude Opus 5.5 about R0.50–R1 per customer message (R3–R5 for a typical chat)</strong>; <strong>Haiku 5.5 about 40× cheaper</strong>. Depends on chat length; set a monthly spend limit at console.anthropic.com and a daily chat limit in Settings (default 50 chats/day).</td>
+<td>Paid per use to Anthropic. Rough guide with the default <strong>Claude Haiku 5.5: about R0.10–R0.15 per typical chat</strong> (Opus 5.5, if you ever switch: about R3–R5 per chat). Depends on chat length; set a monthly spend limit at console.anthropic.com and a daily chat limit in Settings (default 50 chats/day).</td>
 </tr>
 <tr>
 <td><strong>Total extra per month</strong></td>

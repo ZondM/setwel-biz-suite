@@ -64,7 +64,7 @@ function setting_defaults(): array
         // AI assistant
         'ai_enabled' => '0',
         'ai_api_key' => '',
-        'ai_model' => 'claude-opus-5-5',
+        'ai_model' => 'claude-haiku-5-5',
         'ai_daily_limit' => '50',
         'ai_extra_info' => '',
         // Marketing

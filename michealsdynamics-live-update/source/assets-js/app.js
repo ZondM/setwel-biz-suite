@@ -223,7 +223,7 @@
   document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') dds.forEach(function (d) { d.open = false; }); });
 
   /* ---------- Moving 3D specials showcase ---------- */
-  $$('[data-specials]').forEach(function (el) { el.innerHTML = R.specialsBlock(D, BUILT); el.hidden = !el.innerHTML; var sec = el.closest('[data-specials-section]'); if (sec) sec.hidden = !el.innerHTML; });
+  $$('[data-specials]').forEach(function (el) { var sp = R.specials(D); el.innerHTML = sp.length ? '<div class="grid">' + sp.map(function (p) { return R.card(p, BUILT); }).join('') + '</div>' : ''; /* still grid, no motion */ el.hidden = !el.innerHTML; var sec = el.closest('[data-specials-section]'); if (sec) sec.hidden = !el.innerHTML; });
   $$('[data-spin]').forEach(function (root) {
     var ring = $('.sp3d__ring', root), stage = $('.sp3d__stage', root), items = $$('.sp3d__item', root), n = items.length;
     if (!n) return;
